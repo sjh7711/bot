@@ -1,0 +1,25 @@
+function response(room, msg, sender, isGroupChat, replier, imageDB) {
+    if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
+        replier.reply(sender+" 안녕~");
+    }
+    if(msg=="야"){
+        replier.reply("뭐");
+    }
+	if(msg=="!기능"){
+		replier.reply("오버워치");
+	}
+	if(msg.indexOf("!오버워치")>=0){
+		var name=msg.substr(6);
+		replier.reply(name+" 검색");
+		name=name.replace("#","-");
+		var u = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name);
+		var s = u.split("u-align-center h5");
+		var t = u.split("rank-icons/rank-");
+		var mt = u.split("data-mode=\"competitive\"><section class=\"u-max-width-container career-section\"");
+		var m=mt[1].split("<div class=\"ProgressBar-title\">")[1].split("<")[0];
+		replier.reply("Tier : "+t[1].split("Tier.")[0]+" / Score : "+s[1].split("<")[0].substr(3).trim()+"\n--------------\n추가 검색\n!모스트영웅\n!?");
+		if("msg==!모스트영웅"){
+			replier.reply("1."+m);
+		}
+	}
+}
