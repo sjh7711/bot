@@ -6,6 +6,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         replier.reply("뭐");
     }
 }
+var i=1;
 function saveFile(){
     file="storage/emulated/0/kbot/response.js";
     str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response").split("<table class=\"highlight tab-size js-file-line-container\" data-tab-size=\"8\">")[1].split("<details class=\"details-reset details-overlay BlobToolbar")[0].replace(/(<([^>]+)>)/g, "").trim().replace(/&gt;/g,">");
