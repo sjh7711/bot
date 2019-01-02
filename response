@@ -8,10 +8,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 }
 function saveFile(){
     file="storage/emulated/0/kbot/response.js";
-    str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response");
+    str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response").replace(/&gt;/g,">").replace(/&lt;/g,"<");
     str1 = str.split("<table class=\"highlight tab-size js-file-line-container\" data-tab-size=\"8\">")[1];
     str2 = str1.split("<details class=\"details-reset details-overlay BlobToolbar")[0];
-    str3 = str2.replace(/(<([^>]+)>)/g, "").trim().replace(/&gt;/g,">");
+    str3 = str2.replace(/(<([^>]+)>)/g, "").trim();
     str4 = str3.replace(/\r/g, "");
     var filedir = new java.io.File(file);
     try {
