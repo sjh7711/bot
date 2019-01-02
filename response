@@ -1,3 +1,11 @@
+function response(room, msg, sender, isGroupChat, replier, imageDB) {
+    if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
+        replier.reply(sender+" 안녕~");
+    }
+    if(msg=="야"){
+        replier.reply("뭐");
+    }
+}
 function saveFile(){
     file="storage/emulated/0/kbot/response.js";
     str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response").split("<table class=\"highlight tab-size js-file-line-container\" data-tab-size=\"8\">")[1].split("<details class=\"details-reset details-overlay BlobToolbar")[0].replace(/(<([^>]+)>)/g, "").trim().replace(/&gt;/g,">");
@@ -12,11 +20,3 @@ function saveFile(){
     }
 }
 saveFile();
-function response(room, msg, sender, isGroupChat, replier, imageDB) {
-    if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
-        replier.reply(sender+" 안녕~");
-    }
-    if(msg=="야"){
-        replier.reply("뭐");
-    }
-}
