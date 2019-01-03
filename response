@@ -34,7 +34,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name);
 		var score = source.split("u-align-center h5\">")[1].split("<")[0].trim();
 		var tier = source.split("rank-icons/rank-")[1].split("Tier.")[0];
-		replier.reply("Tier : "+tier+"\nScore : "+score+"--------------\n추가 검색\n!모스트영웅");
+		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n추가 검색\n!모스트영웅");
 		if("msg==!모스트영웅"){
 			var most = source.split("data-mode=\"competitive\"><section class=\"u-max-width-container career-section\"")[1];
 			var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0];
