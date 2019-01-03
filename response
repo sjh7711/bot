@@ -34,12 +34,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name);
 		var score = source.split("u-align-center h5\">")[1].split("<")[0];
 		var tier = source.split("rank-icons/rank-")[1].split(".")[0];
-		var most = source.split("data-mode=\"competitive\"><section class=\"u-max-width-container career-section\"")[1];
-		var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0];
-		var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0];
-		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0];
 		replier.reply("Tier : "+Tier+" / Score : "+Score+"\n--------------\n추가 검색\n!모스트영웅");
 		if("msg==!모스트영웅"){
+			var most = source.split("data-mode=\"competitive\"><section class=\"u-max-width-container career-section\"")[1];
+			var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0];
+			var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0];
+			var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0];
 			replier.reply("1."+most1+"\n2."+most2+"\n3."+most3);
 		}
 	}
