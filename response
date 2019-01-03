@@ -1,12 +1,3 @@
-function response(room, msg, sender, isGroupChat, replier, imageDB) {
-    if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
-        replier.reply(sender+" 안녕~");
-    }
-    if(msg=="야"){
-        replier.reply("뭐");
-    }
-}
-
 function saveFile(){
     file="storage/emulated/0/kbot/response.js";
     str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response");
@@ -14,7 +5,7 @@ function saveFile(){
     str2 = str1.split("<details class=\"details-reset details-overlay BlobToolbar")[0];
     str3 = str2.replace(/(<([^>]+)>)/g, "").trim();
     str4 = str3.replace(/&nbsp;/g, "\t").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
-    str5 = str4.replace(/            \n            \n             \n/g, "");
+    str5 = str4.replace(/            \n            \n             \n/g, "").replace(/            /g,"");
 	var filedir = new java.io.File(file);
     try {
         var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
@@ -26,3 +17,12 @@ function saveFile(){
     }
 }
 saveFile();
+
+function response(room, msg, sender, isGroupChat, replier, imageDB) {
+    if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
+        replier.reply(sender+" 안녕~");
+    }
+    if(msg=="야"){
+        replier.reply("뭐");
+    }
+}
