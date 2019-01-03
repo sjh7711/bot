@@ -25,4 +25,23 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if(msg=="야"){
         replier.reply("뭐");
     }
+	if(msg=="!기능"){
+		replier.reply("오버워치");
+	}
+	if(msg.indexOf("!오버워치")>=0){
+		var name=msg.substr(6);
+		replier.reply(name+" 검색");
+		name=name.replace("#","-");
+		var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name);
+		var score = source.split("u-align-center h5\">")[1].split("<")[0];
+		var tier = source.split("rank-icons/rank-")[1].split(".")[0];
+		var most = source.split("data-mode=\"competitive\"><section class=\"u-max-width-container career-section\"")[1];
+		var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0];
+		var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0];
+		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0];
+		replier.reply("Tier : "+t[1].split("Tier.")[0]+" / Score : "+s[1].split("<")[0].substr(3).trim()+"\n--------------\n추가 검색\n!모스트영웅\n!?");
+		if("msg==!모스트영웅"){
+			replier.reply("1."+most1+"\n2."+most2+"\n3."+most3);
+		}
+	}
 }
