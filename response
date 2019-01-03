@@ -13,7 +13,7 @@ function saveFile(){
     str2 = str1.split("<details class=\"details-reset details-overlay BlobToolbar")[0];
     str3 = str2.replace(/\r/g, "");
     str4 = str3.replace(/(<([^>]+)>)/g, "").trim();
-	str5 = str4.replace(/&nbsp;/g, "\t").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
+    str5 = str4.replace(/&nbsp;/g, "\t").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
     var filedir = new java.io.File(file);
     try {
         var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
