@@ -1,27 +1,28 @@
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-    if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
-        replier.reply(sender+" 안녕~");
-    }
-    if(msg=="야"){
-        replier.reply("뭐");
-    }
+	if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
+		replier.reply(sender+" 안녕~");
+	}
+	if(msg=="야"){
+		replier.reply("뭐");
+	}
 }
+
 function saveFile(){
-    file="storage/emulated/0/kbot/response.js";
-    str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response");
-    str1 = str.split("<table class=\"highlight tab-size js-file-line-container\" data-tab-size=\"8\">")[1];
-    str2 = str1.split("<details class=\"details-reset details-overlay BlobToolbar")[0];
-    str3 = str2.replace(/\r/g, "");
-    str4 = str3.replace(/(<([^>]+)>)/g, "").trim();
-    str5 = str4.replace(/&nbsp;/g, "\t").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
-    var filedir = new java.io.File(file);
-    try {
-        var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-        bw.write(str5.toString());
-        bw.close();
-    }
-    catch (e) {
-        return e;
-    }
+	file="storage/emulated/0/kbot/response.js";
+	str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response");
+	str1 = str.split("<table class=\"highlight tab-size js-file-line-container\" data-tab-size=\"8\">")[1];
+	str2 = str1.split("<details class=\"details-reset details-overlay BlobToolbar")[0];
+	str3 = str2.replace(/\n/g, "");
+	str4 = str3.replace(/(<([^>]+)>)/g, "").trim();
+	str5 = str4.replace(/&nbsp;/g, "\t").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
+	var filedir = new java.io.File(file);
+	try {
+		var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
+		bw.write(str5.toString());
+		bw.close();
+	}
+	catch (e) {
+		return e;
+	}
 }
 saveFile();
