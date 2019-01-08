@@ -38,6 +38,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
 		var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
 		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
-		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n모스트 영웅\n1."+most1+"\n2."+most2+"\n3."+most3);
+		replier.reply(most1);
+		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n모스트 영웅\n1. "+most1+"\n2. "+most2+"\n3. "+most3);
 	}
 }
