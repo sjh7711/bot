@@ -34,10 +34,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name);
 		var score = source.split("u-align-center h5\">")[1].split("<")[0].trim();
 		var tier = source.split("rank-icons/rank-")[1].split("Tier.")[0];
-		var most = source.split("u-max-width-container career-section")[4];
+		var most = source.split("u-max-width-container career-section")[3];
 		var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0];
 		var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0];
 		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0];
-		//replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n모스트 영웅\n1."+most1+"\n2."+most2+"\n3."+most3");
+		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n모스트 영웅\n1."+most1+"\n2."+most2+"\n3."+most3");
 	}
 }
