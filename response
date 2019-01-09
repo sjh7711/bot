@@ -43,7 +43,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
 		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n경쟁전 모스트 영웅\n1. "+most1+"\n2. "+most2+"\n3. "+most3+"\n--------------\n추가기능\n!빠른대전\n!경쟁전");
 		if(msg=="!경쟁전"){
-			replier.reply("영웅별 스텟을 보여줍니다.\n!목처\n!승률);
+			replier.reply("영웅별 스텟을 보여줍니다.\n!목처\n!승률");
 			if(msg=="!목처"){
 				replier.reply("영웅의 이름을 입력해주세요");
 				if(source.indexOf(msg)>=0){
@@ -53,7 +53,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 					replier.reply("영웅의 이름을 잘못 입력했습니다.");
 				}
 			}
-			if(msg==!승률){
+			if(msg=="!승률"){
 			}
 		}
 		}
