@@ -44,12 +44,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
 		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n경쟁전 모스트 영웅\n1. "+most1+"\n2. "+most2+"\n3. "+most3+"\n--------------\n추가기능\n영웅별 스텟을 보여줍니다 ex)!목처 메르시\n!목처\n!승률");
 		}
+	}
 	if((msg.split(" ")[0]=="!목처"||msg.split(" ")[0]=="!승률")&&check1>=0){
 		var hero = msg.split(" ")[1];
 		var kill = source.split(hero+"</div><div class=\"ProgressBar-description\">")[11].split("<").trim();
 		replier.reply(hero+" 목처 : "+kill);
-		}else{
-		replier.reply("잘못 입력했습니다.");
-		}
 	}
 }
