@@ -30,7 +30,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		replier.reply("오버워치");
 	}
 	if(msg.indexOf("!오버워치") >= 0){
-		check1=msg.indexOf(msg.indexOf("!오버워치"));
+		check1=msg.indexOf("!오버워치");
 		var name=msg.substr(6);
 		replier.reply(name+" 검색");
 		name=name.replace("#","-");
