@@ -52,5 +52,4 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var kill = source.split(hero+"</div><div class=\"ProgressBar-description\">")[11].split("<").trim();
 		replier.reply(hero+" 목처 : "+kill);
 	}
-	check1=null;
 }
