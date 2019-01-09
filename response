@@ -16,7 +16,9 @@ function saveFile(){
 	}
 }
 saveFile();
-                                          
+
+var check1      
+                       
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
 		replier.reply(sender+" 안녕~");
@@ -28,7 +30,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		replier.reply("오버워치");
 	}
 	if(msg.indexOf("!오버워치") >= 0){
-		var check1=msg.indexOf(msg.indexOf("!오버워치"));
+		check1=msg.indexOf(msg.indexOf("!오버워치"));
 		var name=msg.substr(6);
 		replier.reply(name+" 검색");
 		name=name.replace("#","-");
@@ -50,4 +52,5 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var kill = source.split(hero+"</div><div class=\"ProgressBar-description\">")[11].split("<").trim();
 		replier.reply(hero+" 목처 : "+kill);
 	}
+	check1=null;
 }
