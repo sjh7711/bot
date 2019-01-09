@@ -46,7 +46,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			replier.reply("영웅별 스텟을 보여줍니다.\n!목처\n!승률);
 			if(msg=="!목처"){
 				replier.reply("영웅의 이름을 입력해주세요");
-				if(indexOf(msg)>=0){
+				if(source.indexOf(msg)>=0){
 					var kill = source.split(msg+"</div><div class=\"ProgressBar-description\">")[11].split("<").trim();
 					replier.reply(msg+" 목처 : "+kill);
 				}else{
