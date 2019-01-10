@@ -23,6 +23,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "신종화") {
 		replier.reply(eval(msg.substring(1)));
     }
+	if(room=="test"){
 	if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
 		replier.reply(sender+" 안녕~");
 	}
@@ -57,4 +58,5 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var kill = source.split(hero+"</div><div class=\"ProgressBar-description\">")[11].split("<").trim();
 		replier.reply(hero+" 목처 : "+kill);
 	}*/
+	}
 }
