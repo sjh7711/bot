@@ -24,7 +24,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		replier.reply(eval(msg.substring(1)));
     }
 	if(msg=="!기능"){
-		replier.reply("!오버워치\nex)홍길동#1234\n!메뉴추천\n!음식점추천");
+		replier.reply("!오버워치ex)홍길동#1234\n!메뉴추천\n!음식점추천");
 	}
 	if(msg.indexOf("!오버워치") >= 0){
 		var name=msg.substr(6);
