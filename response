@@ -51,7 +51,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		replier.reply(food[rad]);
 	}
 	if(msg.indexOf("!메뉴추천 ")>=0&&msg.split(" ")[1]<6){
-		for(var i=1; i<msg.split(" ")[1]; i++){
+		for(var i=1; i<=msg.split(" ")[1]; i++){
 			var rad=Math.floor(Math.random()*(menu.length-1));
 			replier.reply(menu[rad]);
 		}
