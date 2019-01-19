@@ -17,20 +17,16 @@ function saveFile(){
 }
 saveFile();
 
-var check1      
-                       
+menu=['탕수육','야끼소바','규동','브리또','서브웨이','양꼬치','김밥','돈까스','냉모밀','칠리새우','짬뽕','짜장면','간짜장','오므라이스','초밥','돈부리','허니콤보','레드핫','청국장','장어덮밥','평양냉면','연어덮밥','오야꼬동','소바','라멘','삼겹살','목살','소고기','육회','갈매기살','파스타','롯데리아','맥도날드','KFC','맘스터치','뿌링클','맵스터','뿌링클HOT','자메이카통다리','불닭볶음면','라면','파닭','가츠동','피자','쌀국수','만두','카레','짜장밥','떡볶이','순대','보쌈','족발','빵','김치찌개','냉면','낙지','곱창','막창','대창','된장국','미역국','비빔면','불고기','찜닭','닭도리탕','수육','부대찌개','순두부찌개','김치볶음밥','제육덮밥','잔치국수','칼국수','우동','육개장','추어탕','삼각김밥','시리얼','토스트','샌드위치','순대국','학식','쭈꾸미','훈제오리','굶기','떡갈비','연어장','생선구이'];
+food=['마카나이','썬더치킨','그린하우스','럭키식당','봄솔레씨네','피자스쿨','우리소곱창','바이브','마루한','육반','카리스','봄봄기사식당','베트남쌀국수','YEZIHYUN','신불떡볶이','고추장불백(정문)','할머니보쌈','반지하돈부리','더더치킨','크림스치킨','오광수산','기식','자연과학관','학식','아느칸','웹버거','이삭토스트','단호박갈비찜','도토리군버섯양','서래갈매기','피자링크','수타돈까스','빨간대문','19','훈구생각','니뽕내뽕','원할머니보쌈','육회지존','역전우동','순수치킨','회기왕족발보쌈','육쌈냉면','스시해나루','스시로','맘스터치','오뚜기왕돈까스','조마루감자탕','할매순대국','김치만','독','짱구네','땡초곱창','김밥천국','춘전막국수','오떡','호식이두마리','59쌀피자','뚝배기스파게티','본가','칼리앤메리','엽떡','롯데리아','삶은고기','마왕족발','어산'];
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	if(msg.indexOf("안녕")>=0||msg.indexOf("하이")>=0||msg.indexOf("ㅎㅇ")>=0){
-		replier.reply(sender+" 안녕~");
-	}
-	if(msg=="야"){
-		replier.reply("뭐");
-	}
+	if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "test") {
+		replier.reply(eval(msg.substring(1)));
+    }
 	if(msg=="!기능"){
-		replier.reply("오버워치");
+		replier.reply("!오버워치\nex)홍길동#1234\n!메뉴추천\n!음식점추천");
 	}
 	if(msg.indexOf("!오버워치") >= 0){
-		check1=msg.indexOf("!오버워치");
 		var name=msg.substr(6);
 		replier.reply(name+" 검색");
 		name=name.replace("#","-");
@@ -44,7 +40,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
 		var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
 		var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
-		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n경쟁전 모스트 영웅\n1. "+most1+"\n2. "+most2+"\n3. "+most3+"\n--------------\n추가기능\n영웅별 스텟을 보여줍니다 ex)!목처 메르시\n!목처\n!승률");
+		replier.reply("Tier : "+tier+"\nScore : "+score+"\n--------------\n경쟁전 모스트 영웅\n1. "+most1+"\n2. "+most2+"\n3. "+most3);
 		}
+	}
+	
+	if(msg=="!메뉴추천"){
+		var rad=Math.floor(Math.random()*(menu.length-1));
+		replier.reply(menu[rad]);
+	}
+	if(msg=="!음식점추천"){
+		var rad=Math.floor(Math.random()*(food.length-1));
+		replier.reply(food[rad]);
 	}
 }
