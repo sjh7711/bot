@@ -28,8 +28,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	if(msg.indexOf("!오버워치") >= 0){
 		var name=msg.substr(6);
-		name=name.replace("#","-");
-		var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name);
+		name1=name.replace("#","-");
+		var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/"+name1);
 		if(source.indexOf("u-align-center h5")==-1){
 			replier.reply(name+"의 점수를 알 수 없습니다.");
 		}else{
