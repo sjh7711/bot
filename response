@@ -57,7 +57,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var rad=Math.floor(Math.random()*(menu.length-1));
 		replier.reply(menu[rad]);
 	}
-	if((msg.indexOf("!메뉴추천 ")||(msg.indexOf("!ㅁㄴ ")))>=0&&msg.split(" ")[1]<6){
+	if((msg.indexOf("!메뉴추천 ")>=0||msg.indexOf("!ㅁㄴ ")>=0)>&&msg.split(" ")[1]<6){
 		for(var i=1; i<=msg.split(" ")[1]; i++){
 			var rad=Math.floor(Math.random()*(menu.length-1));
 			replier.reply(menu[rad]);
@@ -67,7 +67,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var rad=Math.floor(Math.random()*(food.length-1));
 		replier.reply(food[rad]);
 	}
-	if((msg.indexOf("!음식점추천 ")||(msg.indexOf("!ㅇㅅ ")))>=0&&msg.split(" ")[1]<6){
+	if((msg.indexOf("!음식점추천 ")>=0||msg.indexOf("!ㅇㅅ ")>=0)&&msg.split(" ")[1]<6){
 		for(var i=1; i<=msg.split(" ")[1]; i++){
 			var rad=Math.floor(Math.random()*(food.length-1));
 			replier.reply(food[rad]);
