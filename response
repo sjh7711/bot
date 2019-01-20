@@ -74,7 +74,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var rad=Math.floor(Math.random()*(tempmenu.length));
 			menumul.push(tempmenu.splice(rad,1));
 		}
-		replier.reply(menumul.replace(",",", "));
+		menumul=menumul.replace(",",", ");
+		replier.reply(menumul);
 	}
 	if(msg=="!음식점추천"){
 		var rad=Math.floor(Math.random()*(food.length-1));
@@ -89,7 +90,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var rad=Math.floor(Math.random()*(tempfood.length));
 			foodmul.push(tempfood.splice(rad,1));
 		}
-		replier.reply(foodmul.replace(",",", "));
+		foodmul=foodmul.replace(",",", ");
+		replier.reply(foodmul);
 	}
 	if(msg.indexOf("!메뉴추가 ")==0){
 		addmenu.push(msg.split(" ")[1]);
