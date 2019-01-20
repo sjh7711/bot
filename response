@@ -60,7 +60,7 @@ var msgsave=[];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 전전컴 톡방"||room=="test"){
-	push.msgsave(sender+" : "+msg);
+	msgsave.push(sender+" : "+msg);
 	if(msg=="최근채팅"){
 		for(var i=msgsave.length-6;i<msgsave.length;i++){
 			var tempmsgsave=msgsave[i];
