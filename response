@@ -70,7 +70,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(msg.indexOf("!메뉴추천 ")>=0&&msg.split(" ")[1]<6){
 		do{
 			var num = msg.split(" ")[1];
-			var menumul[];
+			var menumul=[];
 			for(var i=1; i<=num; i++){
 				var rad=Math.floor(Math.random()*(menu.length-1));
 				menumul.push(menu[rad]);
@@ -96,7 +96,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(msg.indexOf("!음식점추천 ")>=0&&msg.split(" ")[1]<6){
 		do{
 			var num = msg.split(" ")[1];
-			var foodmul[]
+			var foodmul=[];
 			for(var i=1; i<=num; i++){
 				var rad=Math.floor(Math.random()*(food.length-1));
 				foodmul.push(food[rad]);
@@ -108,6 +108,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 						}
 						if(foodov==1){
 							break;
+						}
 					}
 				}
 			}
