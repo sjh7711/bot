@@ -33,8 +33,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if(msg.split(" ")[1]=="메뉴추천"){
 			replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다.");
 		}
+		if(msg.split(" ")[1]=="메뉴추가"){
+			replier.reply("추가되었으면하는 음식을 추천해주세요. ex)!메뉴추가 냉장고");
+		}
 		if(msg.split(" ")[1]=="음식점추천"){
 			replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다.");
+		}
+		if(msg.split(" ")[1]=="음식점추가"){
+			replier.reply("추가되었으면하는 음식점을 추천해주세요. ex)!음식점추가 789비어");
 		}
 		if(msg.split(" ")[1]=="오버워치"){
 			replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우는 정보를 알 수 없습니다.");
@@ -78,6 +84,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	if(msg.indexOf("!메뉴추가 ")>=0){
 		addmenu.push(msg.split(" ")[1]);
+		replier.reply(msg.split(" ")[1]+"(이)가 건의되었습니다.");
+	}
+	if(msg.indexOf("!음식점추가 ")>=0){
+		addfood.push(msg.split(" ")[1]);
 		replier.reply(msg.split(" ")[1]+"(이)가 건의되었습니다.");
 	}
 }
