@@ -30,6 +30,14 @@ var flagfood;
 var sendermenu=[];
 var senderfood=[];
 
+function clearmenu(){
+	flag[0]=0;
+	flagfood=0;
+	sendermenu=[];
+	flagmenu=undefined;
+	menuagree=0;
+}
+
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 봇제작방"||room=="test"){
 	if(flag[0]==1){
