@@ -69,7 +69,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	var menuov=0;
 	if(msg.indexOf("!메뉴추천 ")>=0&&msg.split(" ")[1]<6){
 		do{
-			var num = msg.split(" ")[1]-1;
+			var num = msg.split(" ")[1];
 			var menumul=[];
 			for(var i=0; i<num; i++){
 				var rad=Math.floor(Math.random()*(menu.length-1));
@@ -96,7 +96,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	var foodov=0;
 	if(msg.indexOf("!음식점추천 ")>=0&&msg.split(" ")[1]<6){
 		do{
-			var num = msg.split(" ")[1]-1;
+			var num = msg.split(" ")[1];
 			var foodmul=[];
 			for(var i=0; i<num; i++){
 				var rad=Math.floor(Math.random()*(food.length-1));
