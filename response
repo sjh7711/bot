@@ -133,11 +133,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var temp=msg.split(" ")[1];
 		if(menu.indexOf(temp)==-1){
 			addmenu.push(temp);
-			replier.reply(temp+"(이)가 건의되었습니다.\n4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
+			replier.reply(temp+"(이)가 건의되었습니다.");
 			if(flag[0]==1){
 				replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
 			}
 			if(flag[0]==0){
+				replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
 				flagmenu=temp;
 				flag[0]=1;
 			}
@@ -148,11 +149,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(msg.indexOf("!음식점추가 ")==0){
 		var temp=msg.split(" ")[1];
 		addfood.push(temp);
-		replier.reply(temp+"(이)가 건의되었습니다.\n4명 이상이 음식점동의를 입력하면 즉시 추가됩니다.");
+		replier.reply(temp+"(이)가 건의되었습니다.");
 		if(flag[1]==1){
 			replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
 		}
 		if(flag[1]==0){
+			replier.reply("4명 이상이 음식점동의를 입력하면 즉시 추가됩니다.");
 			flagfood=temp;
 			flag[1]=1;
 		}
