@@ -56,8 +56,17 @@ function clearmenu1(){
 	menuagree1=0;
 }
 
+var msgsave=[];
+
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 전전컴 톡방"||room=="test"){
+	push.msgsave(sender+" : "+msg);
+	if(msg=="최근채팅"){
+		for(var i=msgsave.length-6;i<msgsave.length;i++){
+			var tempmsgsave=msgsave[i];
+		}
+		replier.reply(tempmsgsave.join("\n"));
+		}
 	if(flag1[0]==1){
 		if(msg=="메뉴동의"){
 			if(sendermenu1.indexOf(sender)==-1){
