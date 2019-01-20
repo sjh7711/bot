@@ -63,7 +63,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 전전컴 톡방"||room=="test"){
 	msgsave.push(sender+" : "+msg);
 	if(msg.indexOf("!최근채팅")==0){
-		for(var i=msgsave.length-6;i<msgsave.length;i++){
+		for(var i=msgsave.length-7;i<msgsave.length-1;i++){
 			tempmsgsave.push(msgsave[i]);
 		}
 		replier.reply(tempmsgsave.join("\n"));
