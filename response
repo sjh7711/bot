@@ -57,16 +57,18 @@ function clearmenu1(){
 }
 
 var msgsave=[];
+var tempmsgsave[];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 전전컴 톡방"||room=="test"){
 	msgsave.push(sender+" : "+msg);
-	if(msg=="최근채팅"){
+	if(msg.indexOf("!최근채팅")==0){
 		for(var i=msgsave.length-6;i<msgsave.length;i++){
-			var tempmsgsave=msgsave[i];
+			tempmsgsave=msgsave[i];
 		}
 		replier.reply(tempmsgsave.join("\n"));
-		}
+		tempmsgsave=[];
+	}
 	if(flag1[0]==1){
 		if(msg=="메뉴동의"){
 			if(sendermenu1.indexOf(sender)==-1){
