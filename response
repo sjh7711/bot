@@ -27,7 +27,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		replier.reply(eval(msg.substring(1)));
     }
 	if(msg=="!기능"){
-		replier.reply("!메뉴추천\n!음식점추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+		replier.reply("!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
 	}
 	if(msg.indexOf("!기능 ")>=0){
 		if(msg.split(" ")[1]=="메뉴추천"){
