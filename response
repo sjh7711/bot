@@ -66,25 +66,57 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var rad=Math.floor(Math.random()*(menu.length-1));
 		replier.reply(menu[rad]);
 	}
+	var menuov=0;
 	if(msg.indexOf("!메뉴추천 ")>=0&&msg.split(" ")[1]<6){
-		for(var i=1; i<=msg.split(" ")[1]; i++){
-			var rad=Math.floor(Math.random()*(menu.length-1));
-			replier.reply(menu[rad]);
-		}
+		do{
+			var num = msg.split(" ")[1];
+			var menumul[];
+			for(var i=1; i<=num; i++){
+				var rad=Math.floor(Math.random()*(menu.length-1));
+				menumul.push(menu[rad]);
+				for(var i=1; i<=num; i++){
+					for(var j=1; j<=i; j++){
+						if(menumul[i]==menumul[j]){
+							menuov=1;
+							break;
+						}
+						if(menuov==1){
+							break;
+						}
+					}
+				}
+			}
+		}while(menuov==1);
 	}
 	if(msg=="!음식점추천"){
 		var rad=Math.floor(Math.random()*(food.length-1));
 		replier.reply(food[rad]);
 	}
+	var foodov=0;
 	if(msg.indexOf("!음식점추천 ")>=0&&msg.split(" ")[1]<6){
-		for(var i=1; i<=msg.split(" ")[1]; i++){
-			var rad=Math.floor(Math.random()*(food.length-1));
-			replier.reply(food[rad]);
-		}
+		do{
+			var num = msg.split(" ")[1];
+			var foodmul[]
+			for(var i=1; i<=num; i++){
+				var rad=Math.floor(Math.random()*(food.length-1));
+				foodmul.push(food[rad]);
+				for(var i=1; i<=num; i++){
+					for(var j=1; j<=i; j++){
+						if(foodmul[i]==foodmul[j]){
+							foodov=1;
+							break;
+						}
+						if(foodov==1){
+							break;
+					}
+				}
+			}
+		}while(foodov==1);	
 	}
 	if(msg.indexOf("!메뉴추가 ")>=0){
 		addmenu.push(msg.split(" ")[1]);
-		replier.reply(msg.split(" ")[1]+"(이)가 건의되었습니다.");
+		replier.reply(msg.split(" ")[1]+"(이)가 건의되었습니다.\n4명 이상이 동의를 입력하면 즉시 추가됩니다.");
+		//if(msg.indexOf("
 	}
 	if(msg.indexOf("!음식점추가 ")>=0){
 		addfood.push(msg.split(" ")[1]);
