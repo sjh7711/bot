@@ -72,7 +72,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var num = msg.split(" ")[1];
 			var menumul=[];
 			for(var i=0; i<num; i++){
-				var rad=Math.floor(Math.random()*(menu.length-1));
+				var rad=Math.floor(Math.random()*(menu.length));
 				menumul.push(menu[rad]);
 			}
 			for(var i=0; i<num; i++){
@@ -99,7 +99,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var num = msg.split(" ")[1];
 			var foodmul=[];
 			for(var i=0; i<num; i++){
-				var rad=Math.floor(Math.random()*(food.length-1));
+				var rad=Math.floor(Math.random()*(food.length));
 				foodmul.push(food[rad]);
 			}
 			for(var i=0; i<num; i++){
