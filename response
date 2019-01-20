@@ -66,27 +66,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var rad=Math.floor(Math.random()*(menu.length-1));
 		replier.reply(menu[rad]);
 	}
-	var menuov=0;
 	if(msg.indexOf("!메뉴추천 ")==0&&msg.split(" ")[1]<20){
-		do{
-			var num = msg.split(" ")[1];
-			var menumul=[];
-			for(var i=0; i<num; i++){
-				var rad=Math.floor(Math.random()*(menu.length));
-				menumul.push(menu[rad]);
-			}
-			for(var i=0; i<num; i++){
-				for(var j=0; j<i; j++){
-					if(menumul[i]==menumul[j]){
-						menuov=1;
-						break;
-					}
-					if(menuov==1){
-						break;
-					}
-				}
-			}
-		}while(menuov==1);
+		var num = msg.split(" ")[1];
+		var tempmenu=menu;
+		var menumul=[];
+		for(var i=0; i<num; i++){
+			var rad=Math.floor(Math.random()*(tempmenu.length));
+			menumul.push(tempmenu.splice(rad,1));
+		}
 		replier.reply(menumul);
 	}
 	if(msg=="!음식점추천"){
@@ -95,25 +82,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	var foodov=0;
 	if(msg.indexOf("!음식점추천 ")==0&&msg.split(" ")[1]<6){
-		do{
-			var num = msg.split(" ")[1];
-			var foodmul=[];
-			for(var i=0; i<num; i++){
-				var rad=Math.floor(Math.random()*(food.length));
-				foodmul.push(food[rad]);
-			}
-			for(var i=0; i<num; i++){
-				for(var j=0; j<i; j++){
-					if(foodmul[i]==foodmul[j]){
-						foodov=1;
-						break;
-					}
-					if(foodov==1){
-						break;
-					}
-				}
-			}
-		}while(foodov==1);	
+		var num = msg.split(" ")[1];
+		var tempfood=food;
+		var foodmul=[];
+		for(var i=0; i<num; i++){
+			var rad=Math.floor(Math.random()*(tempfood.length));
+			foodmul.push(tempfood.splice(rad,1));
+		}
 		replier.reply(foodmul);
 	}
 	if(msg.indexOf("!메뉴추가 ")==0){
