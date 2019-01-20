@@ -64,7 +64,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	msgsave.push(sender+" : "+msg);
 	if(msg.indexOf("!최근채팅")==0){
 		for(var i=msgsave.length-6;i<msgsave.length;i++){
-			tempmsgsave=msgsave[i];
+			tempmsgsave.push(msgsave[i]);
 		}
 		replier.reply(tempmsgsave.join("\n"));
 		tempmsgsave=[];
