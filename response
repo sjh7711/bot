@@ -57,7 +57,7 @@ function clearmenu1(){
 }
 
 var msgsave=[];
-var tempmsgsave[];
+var tempmsgsave=[];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 전전컴 톡방"||room=="test"){
