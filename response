@@ -31,7 +31,7 @@ var sendermenu=[];
 var senderfood=[];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	if(room=="시립대 봇제작방"){
+	if(room=="시립대 봇제작방"||room=="test"){
 	if(flag[0]==1){
 		if(msg=="메뉴동의"){
 			if(sendermenu.indexOf(sender)==-1){
