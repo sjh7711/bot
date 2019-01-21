@@ -20,24 +20,18 @@ saveFile();
 var menu=['탕수육','양장피','브리또','김치찜','오징어덮밥','참치찌개','참치','새우','서브웨이','양꼬치','국밥','야끼소바','규동','김밥','돈까스','냉모밀','칠리새우','짬뽕','짜장면','간짜장','오므라이스','초밥','돈부리','허니콤보','레드핫','청국장','장어덮밥','평양냉면','연어덮밥','오야꼬동','소바','라멘','삼겹살','목살','소고기','육회','갈매기살','파스타','롯데리아','맥도날드','KFC','맘스터치','뿌링클','맵스터','뿌링클HOT','자메이카통다리','불닭볶음면','라면','파닭','가츠동','피자','쌀국수','만두','카레','짜장밥','떡볶이','순대','보쌈','족발','빵','김치찌개','냉면','낙지','곱창','막창','대창','된장국','미역국','비빔면','불고기','찜닭','닭도리탕','수육','부대찌개','순두부찌개','김치볶음밥','제육덮밥','잔치국수','칼국수','우동','육개장','추어탕','삼각김밥','시리얼','토스트','샌드위치','순대국','학식','쭈꾸미','훈제오리','굶기','떡갈비','연어장','생선구이'];
 var food=['마카나이','썬더치킨','그린하우스','럭키식당','봄솔레씨네','피자스쿨','우리소곱창','바이브','마루한','육반','카리스','봄봄기사식당','베트남쌀국수','YEZIHYUN','신불떡볶이','고추장불백(정문)','할머니보쌈','반지하돈부리','더더치킨','크림스치킨','오광수산','기식','자연과학관','학식','아느칸','웹버거','이삭토스트','단호박갈비찜','도토리군버섯양','서래갈매기','피자링크','수타돈까스','빨간대문','19','훈구생각','니뽕내뽕','원할머니보쌈','육회지존','역전우동','순수치킨','회기왕족발보쌈','육쌈냉면','스시해나루','스시로','맘스터치','오뚜기왕돈까스','조마루감자탕','할매순대국','김치만','독','짱구네','땡초곱창','김밥천국','춘전막국수','오떡','호식이두마리','59쌀피자','뚝배기스파게티','본가','칼리앤메리','엽떡','롯데리아','삶은고기','마왕족발','어산'];
 
-var addmenu=[];
-var addfood=[];
-var flag=[0,0];
-var menuagree=0;
-var foodagree=0;
-var flagmenu;
-var flagfood;
-var sendermenu=[];
-var senderfood=[];
+//전전컴 톡방용
+var addmenu=[]; //메뉴추가건의
+var addfood=[]; //음식점추가건의
+var flag=[0,0]; //flag[0]=메뉴추가flag flag[1]=음식점추가falg
+var menuagree=0; //메뉴추가동의 인원수
+var foodagree=0; //음식점추가동의 인원수
+var flagmenu; //추가심사중인 메뉴
+var flagfood; //추가심사중인 음식점
+var sendermenu=[]; //메뉴추가에 동의한 사람
+var senderfood=[]; //음식점추가에 동의한 사람
 
-function clearmenu(){
-	flag[0]=0;
-	flagfood=0;
-	sendermenu=[];
-	flagmenu=undefined;
-	menuagree=0;
-}
-
+//봇제작방용
 var addmenu1=[];
 var addfood1=[];
 var flag1=[0,0];
@@ -47,6 +41,14 @@ var flag1menu;
 var flag1food;
 var sendermenu1=[];
 var senderfood1=[];
+
+function clearmenu(){
+	flag[0]=0;
+	flagfood=0;
+	sendermenu=[];
+	flagmenu=undefined;
+	menuagree=0;
+}
 
 function clearmenu1(){
 	flag1[0]=0;
@@ -60,7 +62,7 @@ var msgsave=[];
 var tempmsgsave=[];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	if(room=="시립대 전전컴 톡방"||room=="test"){
+	if(room=="시립대 봇제작방"||room=="test"){
 	msgsave.push(sender+" : "+msg);
 	if(msg.indexOf("!최근채팅")==0){
 		for(var i=msgsave.length-7;i<msgsave.length-1;i++){
@@ -198,7 +200,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	}
 	
-	if(room=="시립대 봇제작방"||room=="test"){
+	if(room=="시립대 전전컴 톡방"||room=="test"){
 	if(flag[0]==1){
 		if(msg=="메뉴동의"){
 			if(sendermenu.indexOf(sender)==-1){
@@ -228,9 +230,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			flag[1]=0;
 		}
 	}
-	if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "test") {
-		replier.reply(eval(msg.substring(1)));
-    }
 	if(msg=="!기능"){
 		replier.reply("!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
 	}
