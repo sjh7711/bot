@@ -61,6 +61,9 @@ function clearmenu1(){
 var msgsave=[];
 var tempmsgsave=[];
 
+var msgsave1=[];
+var tempmsgsave1=[];
+
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(room=="시립대 봇제작방"||room=="test"){
 	msgsave.push(sender+" : "+msg);
@@ -201,6 +204,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	if(room=="시립대 전전컴 톡방"||room=="test"){
+	msgsave1.push(sender+" : "+msg);
+	if(msg.indexOf("!최근채팅")==0){
+		for(var i=msgsave1.length-7;i<msgsave1.length-1;i++){
+			tempmsgsave1.push(msgsave1[i]);
+		}
+		replier.reply(tempmsgsave1.join("\n"));
+		tempmsgsave1=[];
+	}
 	if(flag[0]==1){
 		if(msg=="메뉴동의"){
 			if(sendermenu.indexOf(sender)==-1){
