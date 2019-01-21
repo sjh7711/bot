@@ -107,7 +107,7 @@ var tempmsgsave1 = [];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
-    if (room = "test") {
+    if (room == "test") {
         if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "test") {
             replier.reply(eval(msg.substring(1)));
         }
