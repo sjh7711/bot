@@ -114,7 +114,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
 
 
-    if (room == "시립대 봇제작방") {
+    if (room == "test") {
 
         //오버워치
         if (msg.indexOf("!오버워치") == 0) {
