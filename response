@@ -65,7 +65,12 @@ var msgsave1=[];
 var tempmsgsave1=[];
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	if(room=="시립대 봇제작방"||room=="test"){
+	if(room="test"){
+		if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "test") {
+		replier.reply(eval(msg.substring(1)));
+		}
+	}
+	if(room=="시립대 봇제작방"){
 	msgsave.push(sender+" : "+msg);
 	if(msg.indexOf("!최근채팅")==0){
 		for(var i=msgsave.length-7;i<msgsave.length-1;i++){
@@ -103,9 +108,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			flag1[1]=0;
 		}
 	}
-	if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "test") {
-		replier.reply(eval(msg.substring(1)));
-    }
+
 	if(msg=="!기능"){
 		replier.reply("!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
 	}
@@ -203,7 +206,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	}
 	
-	if(room=="시립대 전전컴 톡방"||room=="test"){
+	if(room=="시립대 전전컴 톡방"){
 	msgsave1.push(sender+" : "+msg);
 	if(msg.indexOf("!최근채팅")==0){
 		for(var i=msgsave1.length-7;i<msgsave1.length-1;i++){
