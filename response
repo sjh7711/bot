@@ -22,6 +22,42 @@ var menu = ['마라탕', '탕수육', '양장피', '브리또', '김치찜', '�
 //시립대주변음식점
 var restaur = ['마카나이', '썬더치킨', '그린하우스', '럭키식당', '봄솔레씨네', '피자스쿨', '우리소곱창', '바이브', '마루한', '육반', '카리스', '봄봄기사식당', '베트남쌀국수', 'YEZIHYUN', '신불떡볶이', '고추장불백(정문)', '할머니보쌈', '반지하돈부리', '더더치킨', '크림스치킨', '오광수산', '기식', '자연과학관', '학식', '아느칸', '웹버거', '이삭토스트', '단호박갈비찜', '도토리군버섯양', '서래갈매기', '피자링크', '수타돈까스', '빨간대문', '19', '훈구생각', '니뽕내뽕', '원할머니보쌈', '육회지존', '역전우동', '순수치킨', '회기왕족발보쌈', '육쌈냉면', '스시해나루', '스시로', '맘스터치', '오뚜기왕돈까스', '조마루감자탕', '할매순대국', '김치만', '독', '짱구네', '땡초곱창', '김밥천국', '춘전막국수', '오떡', '호식이두마리', '59쌀피자', '뚝배기스파게티', '본가', '칼리앤메리', '엽떡', '롯데리아', '삶은고기', '마왕족발', '어산'];
 
+function saveList(list, name) { //list : 목록들 / name : list의 이름
+    file = "storage/emulated/0/kbot/" + name + ".js";
+    str = list;
+    var filedir = new java.io.File(file);
+    try {
+        var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
+        bw.write(str.toString());
+        bw.close();
+    }
+    catch (e) {
+        return e;
+    }
+}
+
+function readList(name) {//파일불러올 이름
+    var filedir = new java.io.File("storage/emulated/0/kbot/" + name + ".js");
+    try {
+        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
+        var readStr = "";
+        var str = null;
+        while (((str = br.readLine()) != null)) {
+            readStr += str + "\n";
+        }
+        br.close();
+        return readStr.trim();
+    } catch (e) {
+        Log.e(e + '\n' + e.stack);
+        throw e;
+    }
+}
+
+//메뉴
+var menu = ['마라탕'];
+//시립대주변음식점
+var restaur = ['마카나이'];
+
 var addmenu = []; //메뉴추가건의
 var addrestaur = []; //음식점추가건의
 var flag = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
@@ -33,7 +69,7 @@ var sendermenu = []; //메뉴추가에 동의한 사람
 var senderrestaur = []; //음식점추가에 동의한 사람
 var msgelecsave = [];//채팅로그저장
 
-//메뉴추가임의초기화함수
+//메뉴추가 초기화함수
 function clear(name, num) {
     flag[num] = 0;
     this["sender" + name] = undefined;
@@ -41,10 +77,12 @@ function clear(name, num) {
     this[name + "agree"] = 0;
 }
 
+//sort에 필요한 compare
 function compare(a, b) {
     return a - b;
 }
 
+//로또
 function lotto(r) {
     var templotto = [];
     for (var i = 0; i < 30; i++) {
@@ -59,6 +97,7 @@ function lotto(r) {
     r.replier.reply(templotto.sort(compare).join(", "));
 }
 
+//오버워치
 function overWatch(r) {
     var name = r.msg.substr(6);
     name1 = name.replace("#", "-");
@@ -76,6 +115,7 @@ function overWatch(r) {
     }
 }
 
+//기능설명
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
         r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 20 와 같이 최대 20개까지 조회가능합니다.");
@@ -100,7 +140,8 @@ function func(r) {
     }
 }
 
-function recom(r, list) {
+//리스트에서 추천하기(1개 or 여러개)
+function recom(r, list) { //list : seed
     var num = r.msg.split(" ")[1];
     if (num > 0 && num < 9) {
         var templist = list.slice();
@@ -116,7 +157,8 @@ function recom(r, list) {
     }
 }
 
-function recentchat(r, name) {
+//최근채팅
+function recentchat(r, name) { //name : 변수의 부분이름
     var num = r.msg.split(" ")[1];
     if (num > 0 && num < 21) {
         var tempmsgsave = [];
@@ -133,7 +175,8 @@ function recentchat(r, name) {
     }
 }
 
-function add(r, list, name, num) {
+//리스트에 추가하기
+function add(r, list, name, num) { // list : seed / name : 변수의 부분이름 / num : flag number
     var temp = r.msg.split(" ")[1];
     if (list.indexOf(temp) == -1) {
         this["add" + name].push(temp);
@@ -151,8 +194,9 @@ function add(r, list, name, num) {
     }
 }
 
+//리스트 추가 다수 동의
 
-function agree(r, list, name, name1, num) {
+function agree(r, list, name, name1, num) { // list : seed / name : 변수의 부분이름 / name1 : list의 한글이름 / num : flag number
     if (r.msg == name1 + "동의") {
         if (this["sender" + name].indexOf(r.sender) == -1) {
             this[name + "agree"] += 1;
@@ -160,13 +204,11 @@ function agree(r, list, name, name1, num) {
             this["sender" + name].push(r.sender);
         }
     }
-    if (this[name + "agree"] >= 4) {
-        menu.push(this["flag" + name]);
-        replier.reply(name1 + "에 " + this["flag" + name] + "가 추가되었습니다.");
-        flag[num] = 0;
-        this["sender" + name] = [];
-        this["flag" + name] = undefined;
-        this[name + "agree"] = 0;
+    if (this[name + "agree"] ==4) {
+        list.push(this["flag" + name]);
+        r.replier.reply(name1 + "에 " + this["flag" + name] + "가 추가되었습니다.");
+        saveList(this[name], name);
+        clear(name, num);
     }
 }
 
@@ -212,39 +254,40 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //각 방별 기능
     //----------------------------------------------------------------------------------
     if (room == "시립대 전전컴 톡방") {
-        msgelecsave.push(sender + " : " + msg);
-        //--------------------------메뉴-------------------------------//
-        //메뉴추가
-        if (msg.indexOf("!메뉴추가 ") == 0) {
-            add(r, menu, "menu", 0);
-        }
+    msgelecsave.push(sender + " : " + msg);
+    saveList(this[msgelecsave], "전전컴채팅");
+    //--------------------------메뉴-------------------------------//
+    //메뉴추가
+    if (msg.indexOf("!메뉴추가 ") == 0) {
+        add(r, menu, "menu", 0);
+    }
 
-        //메뉴동의합의
-        if (flag[0] == 1) {
-            agree(r, menu, "menu", "메뉴", 0);
-        }
+    //메뉴동의합의
+    if (flag[0] == 1) {
+        agree(r, menu, "menu", "메뉴", 0);
+    }
 
-        //메뉴추천
-        if (msg.indexOf("!메뉴추천") == 0) {
-            recom(r, menu);
-        }
+    //메뉴추천
+    if (msg.indexOf("!메뉴추천") == 0) {
+        recom(r, menu);
+    }
 
-        //---------------------------음식점-----------------------------//
+    //---------------------------음식점-----------------------------//
 
-        //음식점추가
-        if (msg.indexOf("!음식점추가 ") == 0) {
-            add(r, restaur, "restaur", 1);
-        }
+    //음식점추가
+    if (msg.indexOf("!음식점추가 ") == 0) {
+        add(r, restaur, "restaur", 1);
+    }
 
-        //음식점동의합의
-        if (flag[0] == 1) {
-            agree(r, restaur, "restaur", "음식점", 0);
-        }
+    //음식점동의합의
+    if (flag[0] == 1) {
+        agree(r, restaur, "restaur", "음식점", 1);
+    }
 
-        //음식점추천
-        if (msg.indexOf("!음식점추천") == 0) {
-            recom(r, restaur);
-        }
-        //---------------------------------------------------------------//
+    //음식점추천
+    if (msg.indexOf("!음식점추천") == 0) {
+        recom(r, restaur);
+    }
+    //---------------------------------------------------------------//
     }
 }
