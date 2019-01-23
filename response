@@ -257,7 +257,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == "시립대 전전컴 톡방") {
         var tempchat = readList("elecchat");
         tempchat.push(sender + " : " + msg);
-        saveList(tempchat, "elecchat");
+        saveList(this[tempchat], "elecchat");
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
