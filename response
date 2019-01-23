@@ -232,7 +232,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             agree(r, restaur, "restaur", "음식점", 0);
         }
 
-        //음식점추천여러개
+        //음식점추천
         if (msg.indexOf("!음식점추천") == 0 && msg.split(" ")[1] < 5) {
             recom(r, restaur);
         }
