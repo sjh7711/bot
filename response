@@ -19,9 +19,9 @@ saveFile();
 
 //-------------------------------------------------------변수----------------------------------------------------------//
 //메뉴
-var menu = readList("menu")
+var menu = readList("menu").split(",")
 //시립대주변음식점
-var restaur = readList("restaur")
+var restaur = readList("restaur").split(",")
 
 var addmenu = []; //메뉴추가건의
 var addrestaur = []; //음식점추가건의
@@ -257,7 +257,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == "시립대 전전컴 톡방") {
         var tempchat = readList("elecchat");
         tempchat.push(sender + " : " + msg);
-        saveList(tempchat,"elecchat");
+        saveList(tempchat, "elecchat");
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
