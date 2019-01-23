@@ -207,6 +207,7 @@ function agree(r, list, name, name1, num) { // list : seed / name : 변수의 �
         list.push(this["flag" + name]);
         r.replier.reply(name1 + "에 " + this["flag" + name] + "가 추가되었습니다.");
         saveList(this[name], name);
+        //this[] -> 리스트 내용 // 그냥 이름 -> 진짜 이름그대로
         clear(name, num);
     }
 }
@@ -255,9 +256,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //각 방별 기능
     //----------------------------------------------------------------------------------
     if (room == "시립대 전전컴 톡방") {
-        var tempchat = readList("elecchat");
+        var tempchat = readList("elecchat").split(",");
         tempchat.push(sender + " : " + msg);
-        saveList(this[tempchat], "elecchat");
+        saveList(tempchat, "elecchat");
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
