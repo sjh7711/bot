@@ -78,7 +78,7 @@ function overWatch(r) {
 
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다.");
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 20 와 같이 최대 20개까지 조회가능합니다.");
     }
     if (r.msg.split(" ")[1] == "오버워치") {
         r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우는 정보를 알 수 없습니다.");
@@ -118,7 +118,7 @@ function recom(r, list) {
 
 function recentchat(r, name) {
     var num = r.msg.split(" ")[1];
-    if (num > 0 && num < 20) {
+    if (num > 0 && num < 21) {
         var tempmsgsave = [];
         for (var i = this["msg" + name + "save"].length - (num + 1) ; i < this["msg" + name + "save"].length - 1; i++) {
             tempmsgsave.push(this["msg" + name + "save"][i]);
