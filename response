@@ -17,8 +17,52 @@ function saveFile() {
 }
 saveFile();
 
-function overWatch(msg) {
-    var name = msg.substr(6);
+
+//메뉴
+var menu = ['마라탕', '탕수육', '양장피', '브리또', '김치찜', '오징어덮밥', '참치찌개', '참치', '새우', '서브웨이', '양꼬치', '국밥', '야끼소바', '규동', '김밥', '돈까스', '냉모밀', '칠리새우', '짬뽕', '짜장면', '간짜장', '오므라이스', '초밥', '돈부리', '허니콤보', '레드핫', '청국장', '장어덮밥', '평양냉면', '연어덮밥', '오야꼬동', '소바', '라멘', '삼겹살', '목살', '소고기', '육회', '갈매기살', '파스타', '롯데리아', '맥도날드', 'KFC', '맘스터치', '뿌링클', '맵스터', '뿌링클HOT', '자메이카통다리', '불닭볶음면', '라면', '파닭', '가츠동', '피자', '쌀국수', '만두', '카레', '짜장밥', '떡볶이', '순대', '보쌈', '족발', '빵', '김치찌개', '냉면', '낙지', '곱창', '막창', '대창', '된장국', '미역국', '비빔면', '불고기', '찜닭', '닭도리탕', '수육', '부대찌개', '순두부찌개', '김치볶음밥', '제육덮밥', '잔치국수', '칼국수', '우동', '육개장', '추어탕', '삼각김밥', '시리얼', '토스트', '샌드위치', '순대국', '학식', '쭈꾸미', '훈제오리', '굶기', '떡갈비', '연어장', '생선구이'];
+//시립대주변음식점
+var restaur = ['마카나이', '썬더치킨', '그린하우스', '럭키식당', '봄솔레씨네', '피자스쿨', '우리소곱창', '바이브', '마루한', '육반', '카리스', '봄봄기사식당', '베트남쌀국수', 'YEZIHYUN', '신불떡볶이', '고추장불백(정문)', '할머니보쌈', '반지하돈부리', '더더치킨', '크림스치킨', '오광수산', '기식', '자연과학관', '학식', '아느칸', '웹버거', '이삭토스트', '단호박갈비찜', '도토리군버섯양', '서래갈매기', '피자링크', '수타돈까스', '빨간대문', '19', '훈구생각', '니뽕내뽕', '원할머니보쌈', '육회지존', '역전우동', '순수치킨', '회기왕족발보쌈', '육쌈냉면', '스시해나루', '스시로', '맘스터치', '오뚜기왕돈까스', '조마루감자탕', '할매순대국', '김치만', '독', '짱구네', '땡초곱창', '김밥천국', '춘전막국수', '오떡', '호식이두마리', '59쌀피자', '뚝배기스파게티', '본가', '칼리앤메리', '엽떡', '롯데리아', '삶은고기', '마왕족발', '어산'];
+
+var addmenu = []; //메뉴추가건의
+var addrestaur = []; //음식점추가건의
+var flag = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var menuagree = 0; //메뉴추가동의 인원수
+var restauragree = 0; //음식점추가동의 인원수
+var flagmenu; //추가심사중인 메뉴
+var flagrestaur; //추가심사중인 음식점
+var sendermenu = []; //메뉴추가에 동의한 사람
+var senderrestaur = []; //음식점추가에 동의한 사람
+var msgsave = [];//채팅로그저장
+var tempmsgsave = [];//채팅담을그릇
+//메뉴추가임의초기화함수
+function clear(name, num) {
+    flag[num] = 0;
+    this["sender" + name] = undefined;
+    this["flag" + name] = undefined;
+    this[name + "agree"] = 0;
+}
+
+
+function compare(a, b) {
+    return a - b;
+}
+
+function lotto(r) {
+    var templotto = [];
+    for (var i = 0; i < 30; i++) {
+        var rad = Math.floor(1 + Math.random() * 45);
+        if (templotto.indexOf(rad) == -1) {
+            templotto.push(rad);
+        }
+        if (templotto.length == 6) {
+            break;
+        }
+    }
+    r.replier.reply(templotto.sort(compare).join(", "));
+}
+
+function overWatch(r) {
+    var name = r.msg.substr(6);
     name1 = name.replace("#", "-");
     var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/" + name1);
     if (source.indexOf("u-align-center h5") == -1) {
@@ -30,105 +74,122 @@ function overWatch(msg) {
         var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
         var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
         var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
-        replier.reply(name + "\nTier : " + tier + "\nScore : " + score + "\n--------------\n경쟁전 모스트 영웅\n1. " + most1 + "\n2. " + most2 + "\n3. " + most3);
+        r.replier.reply(name + "\nTier : " + tier + "\nScore : " + score + "\n--------------\n경쟁전 모스트 영웅\n1. " + most1 + "\n2. " + most2 + "\n3. " + most3);
     }
 }
 
-function func(msg) {
-    if (msg.split(" ")[1] == "최근채팅") {
-        replier.reply("최근채팅 6개를 출력합니다.");
+function func(r) {
+    if (r.msg.split(" ")[1] == "최근채팅") {
+        r.replier.reply("최근채팅 6개를 출력합니다.");
     }
-    if (msg.split(" ")[1] == "메뉴추천") {
-        replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다.");
+    if (r.msg.split(" ")[1] == "오버워치") {
+        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우는 정보를 알 수 없습니다.");
     }
-    if (msg.split(" ")[1] == "메뉴추가") {
-        replier.reply("추가되었으면하는 음식을 추천해주세요. ex)!메뉴추가 냉장고");
+    if (r.msg.split(" ")[1] == "로또") {
+        r.replier.reply("로또번호를 추천해줍니다.");
     }
-    if (msg.split(" ")[1] == "음식점추천") {
-        replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다.");
+    if (r.msg.split(" ")[1] == "메뉴추천") {
+        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다.");
     }
-    if (msg.split(" ")[1] == "음식점추가") {
-        replier.reply("추가되었으면하는 음식점을 추천해주세요. ex)!음식점추가 789비어");
+    if (r.msg.split(" ")[1] == "메뉴추가") {
+        r.replier.reply("추가되었으면하는 음식을 추천해주세요. ex)!메뉴추가 냉장고");
     }
-    if (msg.split(" ")[1] == "오버워치") {
-        replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우는 정보를 알 수 없습니다.");
+    if (r.msg.split(" ")[1] == "음식점추천") {
+        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "음식점추가") {
+        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. ex)!음식점추가 789비어");
     }
 }
 
-//메뉴
-var menu = ['마라탕','탕수육', '양장피', '브리또', '김치찜', '오징어덮밥', '참치찌개', '참치', '새우', '서브웨이', '양꼬치', '국밥', '야끼소바', '규동', '김밥', '돈까스', '냉모밀', '칠리새우', '짬뽕', '짜장면', '간짜장', '오므라이스', '초밥', '돈부리', '허니콤보', '레드핫', '청국장', '장어덮밥', '평양냉면', '연어덮밥', '오야꼬동', '소바', '라멘', '삼겹살', '목살', '소고기', '육회', '갈매기살', '파스타', '롯데리아', '맥도날드', 'KFC', '맘스터치', '뿌링클', '맵스터', '뿌링클HOT', '자메이카통다리', '불닭볶음면', '라면', '파닭', '가츠동', '피자', '쌀국수', '만두', '카레', '짜장밥', '떡볶이', '순대', '보쌈', '족발', '빵', '김치찌개', '냉면', '낙지', '곱창', '막창', '대창', '된장국', '미역국', '비빔면', '불고기', '찜닭', '닭도리탕', '수육', '부대찌개', '순두부찌개', '김치볶음밥', '제육덮밥', '잔치국수', '칼국수', '우동', '육개장', '추어탕', '삼각김밥', '시리얼', '토스트', '샌드위치', '순대국', '학식', '쭈꾸미', '훈제오리', '굶기', '떡갈비', '연어장', '생선구이'];
-//시립대주변음식점
-var food = ['마카나이', '썬더치킨', '그린하우스', '럭키식당', '봄솔레씨네', '피자스쿨', '우리소곱창', '바이브', '마루한', '육반', '카리스', '봄봄기사식당', '베트남쌀국수', 'YEZIHYUN', '신불떡볶이', '고추장불백(정문)', '할머니보쌈', '반지하돈부리', '더더치킨', '크림스치킨', '오광수산', '기식', '자연과학관', '학식', '아느칸', '웹버거', '이삭토스트', '단호박갈비찜', '도토리군버섯양', '서래갈매기', '피자링크', '수타돈까스', '빨간대문', '19', '훈구생각', '니뽕내뽕', '원할머니보쌈', '육회지존', '역전우동', '순수치킨', '회기왕족발보쌈', '육쌈냉면', '스시해나루', '스시로', '맘스터치', '오뚜기왕돈까스', '조마루감자탕', '할매순대국', '김치만', '독', '짱구네', '땡초곱창', '김밥천국', '춘전막국수', '오떡', '호식이두마리', '59쌀피자', '뚝배기스파게티', '본가', '칼리앤메리', '엽떡', '롯데리아', '삶은고기', '마왕족발', '어산'];
-
-//전전컴 톡방용
-var addmenu = []; //메뉴추가건의
-var addfood = []; //음식점추가건의
-var flag = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가falg
-var menuagree = 0; //메뉴추가동의 인원수
-var foodagree = 0; //음식점추가동의 인원수
-var flagmenu; //추가심사중인 메뉴
-var flagfood; //추가심사중인 음식점
-var sendermenu = []; //메뉴추가에 동의한 사람
-var senderfood = []; //음식점추가에 동의한 사람
-
-//봇제작방용
-var addmenu1 = [];
-var addfood1 = [];
-var flag1 = [0, 0];
-var menuagree1 = 0;
-var foodagree1 = 0;
-var flag1menu;
-var flag1food;
-var sendermenu1 = [];
-var senderfood1 = [];
-
-//메뉴추가임의초기화함수
-function clearmenu() {
-    flag[0] = 0;
-    flagfood = 0;
-    sendermenu = [];
-    flagmenu = undefined;
-    menuagree = 0;
+function recommul(r, list) {
+    var num = r.msg.split(" ")[1];
+    var templist = list.slice();
+    var listmul = [];
+    for (var i = 0; i < num; i++) {
+        var rad = Math.floor(Math.random() * (templist.length));
+        listmul.push(templist.splice(rad, 1));
+    }
+    r.replier.reply(listmul.join(", "));
 }
 
-function clearmenu1() {
-    flag1[0] = 0;
-    flag1food = 0;
-    sendermenu1 = [];
-    flag1menu = undefined;
-    menuagree1 = 0;
+function recom(r, list) {
+    var rad = Math.floor(Math.random() * (list.length));
+    r.replier.reply(list[rad]);
 }
 
-var msgsave = [];//채팅로그저장
-var tempmsgsave = [];//채팅담을그릇
+function add(r, list, name, num) {
+    var temp = r.msg.split(" ")[1];
+    if (list.indexOf(temp) == -1) {
+        this["add" + name].push(temp);
+        r.replier.reply(temp + "(이)가 건의되었습니다.");
+        if (flag[num] == 1) {
+            r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
+        }
+        if (flag[num] == 0) {
+            r.replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
+            this["flag" + name] = temp;
+            flag[0] = 1;
+        }
+    } else {
+        r.replier.reply(temp + "는 이미있는 메뉴입니다.");
+    }
+}
 
-var msgsave1 = [];
-var tempmsgsave1 = [];
+
+function agree(r, list, name, name1, num) {
+    if (r.msg == name1 + "동의") {
+        if (this["sender" + name].indexOf(r.sender) == -1) {
+            this[name + "agree"] += 1;
+            r.replier.reply(this[name + "agree"] + "/4");
+            this["sender" + name].push(r.sender);
+        }
+    }
+    if (this[name + "agree"] >= 4) {
+        menu.push(this["flag" + name]);
+        replier.reply(name1 + "에 " + this["flag" + name] + "가 추가되었습니다.");
+        flag[num] = 0;
+        this["sender" + name] = [];
+        this["flag" + name] = undefined;
+        this[name + "agree"] = 0;
+    }
+}
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
-    if (room == "test") {
-        if (msg.indexOf(">") == 0 && isGroupChat == false && sender == "test") {
-            replier.reply(eval(msg.substring(1)));
-        }
+    if (msg.indexOf("시발") > 0 || msg.indexOf("씨발") > 0 || msg.indexOf("개새") > 0 || msg.indexOf("병신") > 0 || msg.indexOf("좆") > 0) {
+        replier.reply("욕은 안좋아");
     }
 
+    //기능
+    if (msg == "!기능") {
+        replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    }
 
-    if (room == "test") {
+    //기능설명
+    if (msg.indexOf("!기능 ") == 0) {
+        func(r);
+    }
 
-        //오버워치
-        if (msg.indexOf("!오버워치") == 0) {
-            overWatch(msg);
-        }
+    //로또
+    if (msg.indexOf("!로또") == 0) {
+        lotto(r);
+    }
 
-        //기능설명
-        if (msg == "!기능") {
-            replier.reply("!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-        }
-        if (msg.indexOf("!기능 ") == 0) {
-            func(msg);
-        }
+    //오버워치
+    if (msg.indexOf("!오버워치") == 0) {
+        overWatch(r);
+    }
 
+    //인자
+    r = { replier: replier, msg: msg, sender: sender, room: room };
+
+    //eval
+    if (msg.indexOf(">") == 0) {
+        replier.reply(eval(msg.substring(1)));
+    }
+
+    if (room == "시립대 전전컴 톡방") {
         //최근채팅
         msgsave.push(sender + " : " + msg);
         if (msg.indexOf("!최근채팅") == 0) {
@@ -139,170 +200,50 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             tempmsgsave = [];
         }
 
-        //메뉴동의합의
-        if (flag1[0] == 1) {
-            if (msg == "메뉴동의") {
-                if (sendermenu1.indexOf(sender) == -1) {
-                    menuagree1 = menuagree1 + 1;
-                    replier.reply(menuagree1 + "/2");
-                    sendermenu1.push(sender);
-                }
-            }
-            if (menuagree1 >= 2) {
-                menu.push(flag1menu);
-                replier.reply("메뉴에 " + flag1menu + "가 추가되었습니다.");
-                flag1[0] = 0;
-                flag1food = 0;
-                sendermenu1 = [];
-                flag1menu = undefined;
-                menuagree1 = 0;
-            }
-        }
+        //--------------------------메뉴-------------------------------//
 
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
-            var temp = msg.split(" ")[1];
-            if (menu.indexOf(temp) == -1) {
-                addmenu1.push(temp);
-                replier.reply(temp + "(이)가 건의되었습니다.");
-                if (flag1[0] == 1) {
-                    replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
-                }
-                if (flag1[0] == 0) {
-                    replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
-                    flag1menu = temp;
-                    flag1[0] = 1;
-                }
-            } else {
-                replier.reply(temp + "는 이미있는 메뉴입니다.");
-            }
+            add(r, menu, "menu", 0);
+        }
+
+        //메뉴동의합의
+        if (flag[0] == 1) {
+            agree(r, menu, "menu", "메뉴", 0);
         }
 
         //메뉴추천단순
         if (msg == "!메뉴추천") {
-            var rad = Math.floor(Math.random() * (menu.length - 1));
-            replier.reply(menu[rad]);
+            recom(r, menu);
         }
 
         //메뉴추천여러개
-        if (msg.indexOf("!메뉴추천 ") == 0 && msg.split(" ")[1] < 20) {
-            var num = msg.split(" ")[1];
-            var tempmenu = menu.slice();
-            var menumul = [];
-            for (var i = 0; i < num; i++) {
-                var rad = Math.floor(Math.random() * (tempmenu.length));
-                menumul.push(tempmenu.splice(rad, 1));
-            }
-            replier.reply(menumul.join(", "));
+        if (msg.indexOf("!메뉴추천 ") == 0 && msg.split(" ")[1] < 9) {
+            recommul(r, menu);
         }
 
+        //---------------------------음식점-----------------------------//
 
+        //음식점추가
+        if (msg.indexOf("!음식점추가 ") == 0) {
+            add(r, restaur, "restaur", 1);
+        }
+
+        //음식점동의합의
+        if (flag[0] == 1) {
+            agree(r, restaur, "restaur", "음식점", 0);
+        }
 
         //음식점추천단순
         if (msg == "!음식점추천") {
-            var rad = Math.floor(Math.random() * (food.length - 1));
-            replier.reply(food[rad]);
+            recom(r, restaur);
         }
 
         //음식점추천여러개
-        var foodov = 0;
-        if (msg.indexOf("!음식점추천 ") == 0 && msg.split(" ")[1] < 6) {
-            var num = msg.split(" ")[1];
-            var tempfood = food.slice();
-            var foodmul = [];
-            for (var i = 0; i < num; i++) {
-                var rad = Math.floor(Math.random() * (tempfood.length));
-                foodmul.push(tempfood.splice(rad, 1));
-            }
-            replier.reply(foodmul.join(", "));
+        var restaurov = 0;
+        if (msg.indexOf("!음식점추천 ") == 0 && msg.split(" ")[1] < 5) {
+            recommul(r, restaur);
         }
-    }
-
-    if (room == "시립대 전전컴 톡방") {
-
-        if (msg == "!기능") {
-            replier.reply("!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-        }
-        if (msg.indexOf("!기능 ") == 0) {
-            func(msg);
-        }
-        if (msg.indexOf("!오버워치") == 0) {
-            overWatch(msg);
-        }
-
-        msgsave1.push(sender + " : " + msg);
-        if (msg.indexOf("!최근채팅") == 0) {
-            for (var i = msgsave1.length - 7; i < msgsave1.length - 1; i++) {
-                tempmsgsave1.push(msgsave1[i]);
-            }
-            replier.reply(tempmsgsave1.join("\n"));
-            tempmsgsave1 = [];
-        }
-
-        if (flag[0] == 1) {
-            if (msg == "메뉴동의") {
-                if (sendermenu.indexOf(sender) == -1) {
-                    menuagree = menuagree + 1;
-                    replier.reply(menuagree + "/4");
-                    sendermenu.push(sender);
-                }
-            }
-            if (menuagree >= 4) {
-                menu.push(flagmenu);
-                replier.reply("메뉴에 " + flagmenu + "가 추가되었습니다.");
-                flag[0] = 0;
-                flagfood = 0;
-                sendermenu = [];
-                flagmenu = undefined;
-                menuagree = 0;
-            }
-        }
-
-        if (msg == "!메뉴추천") {
-            var rad = Math.floor(Math.random() * (menu.length - 1));
-            replier.reply(menu[rad]);
-        }
-        if (msg.indexOf("!메뉴추천 ") == 0 && msg.split(" ")[1] < 20) {
-            var num = msg.split(" ")[1];
-            var tempmenu = menu.slice();
-            var menumul = [];
-            for (var i = 0; i < num; i++) {
-                var rad = Math.floor(Math.random() * (tempmenu.length));
-                menumul.push(tempmenu.splice(rad, 1));
-            }
-            replier.reply(menumul.join(", "));
-        }
-        if (msg == "!음식점추천") {
-            var rad = Math.floor(Math.random() * (food.length - 1));
-            replier.reply(food[rad]);
-        }
-        var foodov = 0;
-        if (msg.indexOf("!음식점추천 ") == 0 && msg.split(" ")[1] < 6) {
-            var num = msg.split(" ")[1];
-            var tempfood = food.slice();
-            var foodmul = [];
-            for (var i = 0; i < num; i++) {
-                var rad = Math.floor(Math.random() * (tempfood.length));
-                foodmul.push(tempfood.splice(rad, 1));
-            }
-            replier.reply(foodmul.join(", "));
-        }
-        if (msg.indexOf("!메뉴추가 ") == 0) {
-            var temp = msg.split(" ")[1];
-            if (menu.indexOf(temp) == -1) {
-                addmenu.push(temp);
-                replier.reply(temp + "(이)가 건의되었습니다.");
-                if (flag[0] == 1) {
-                    replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
-                }
-                if (flag[0] == 0) {
-                    replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
-                    flagmenu = temp;
-                    flag[0] = 1;
-                }
-            } else {
-                replier.reply(temp + "는 이미있는 메뉴입니다.");
-            }
-        }
+        //---------------------------------------------------------------//
     }
 }
