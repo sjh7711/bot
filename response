@@ -104,7 +104,7 @@ function func(r) {
 
 function recom(r, list) {
     var num = r.msg.split(" ")[1];
-    if (num > 0) {
+    if (num > 0 && num < 9) {
         var templist = list.slice();
         var listmul = [];
         for (var i = 0; i < num; i++) {
@@ -216,7 +216,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         //메뉴추천
-        if (msg.indexOf("!메뉴추천") == 0 && msg.split(" ")[1] < 9) {
+        if (msg.indexOf("!메뉴추천") == 0) {
             recom(r, menu);
         }
 
@@ -233,7 +233,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         //음식점추천
-        if (msg.indexOf("!음식점추천") == 0 && msg.split(" ")[1] < 5) {
+        if (msg.indexOf("!음식점추천") == 0) {
             recom(r, restaur);
         }
         //---------------------------------------------------------------//
