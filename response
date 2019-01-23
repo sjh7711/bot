@@ -209,7 +209,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //----------------------------------------------------------------------------------
     if (room == "시립대 전전컴 톡방") {
         //최근채팅
-        msgsave.push(sender + " : " + msg);
+        msgelecsave.push(sender + " : " + msg);
         if (msg.indexOf("!최근채팅") == 0) {
             recentcaht(r, "elec");
         }
