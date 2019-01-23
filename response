@@ -106,6 +106,13 @@ function readList(name) {//파일불러올 이름
 
 //------------------------------------------------------기능함수---------------------------------------------------------//
 
+//채팅저장
+function msgsave(r) {
+    var tempchat = readList(r.room).split(",");
+    tempchat.push(r.sender + " : " + r.msg);
+    saveList(this[tempchat], room);
+}
+
 //로또
 function lotto(r) {
     var templotto = [];
@@ -256,9 +263,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //각 방별 기능
     //----------------------------------------------------------------------------------
     if (room == "시립대 전전컴 톡방") {
-        var tempchat = readList("elecchat").split(",");
-        tempchat.push(sender + " : " + msg);
-        saveList(tempchat, "elecchat");
+
+        msgsave(r);
+
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
