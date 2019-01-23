@@ -102,20 +102,21 @@ function func(r) {
     }
 }
 
-function recommul(r, list) {
-    var num = r.msg.split(" ")[1];
-    var templist = list.slice();
-    var listmul = [];
-    for (var i = 0; i < num; i++) {
-        var rad = Math.floor(Math.random() * (templist.length));
-        listmul.push(templist.splice(rad, 1));
-    }
-    r.replier.reply(listmul.join(", "));
-}
-
 function recom(r, list) {
-    var rad = Math.floor(Math.random() * (list.length));
-    r.replier.reply(list[rad]);
+    var num = r.msg.split(" ")[1];
+    if (num > 0) {
+        var templist = list.slice();
+        var listmul = [];
+        for (var i = 0; i < num; i++) {
+            var rad = Math.floor(Math.random() * (templist.length));
+            listmul.push(templist.splice(rad, 1));
+        }
+        r.replier.reply(listmul.join(", "));
+    } else {
+        var rad = Math.floor(Math.random() * (list.length));
+        r.replier.reply(list[rad]);
+    }
+
 }
 
 function add(r, list, name, num) {
@@ -222,7 +223,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         //메뉴추천여러개
         if (msg.indexOf("!메뉴추천 ") == 0 && msg.split(" ")[1] < 9) {
-            recommul(r, menu);
+            recom(r, menu);
         }
 
         //---------------------------음식점-----------------------------//
@@ -245,7 +246,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //음식점추천여러개
         var restaurov = 0;
         if (msg.indexOf("!음식점추천 ") == 0 && msg.split(" ")[1] < 5) {
-            recommul(r, restaur);
+            recom(r, restaur);
         }
         //---------------------------------------------------------------//
     }
