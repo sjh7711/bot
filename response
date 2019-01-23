@@ -189,6 +189,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         replier.reply(eval(msg.substring(1)));
     }
 
+
+    //각 방별 기능
+    //----------------------------------------------------------------------------------
     if (room == "시립대 전전컴 톡방") {
         //최근채팅
         msgsave.push(sender + " : " + msg);
