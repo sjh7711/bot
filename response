@@ -120,18 +120,16 @@ function recentchat(r, name) {
     var num = r.msg.split(" ")[1];
     if (num > 0 && num < 20) {
         for (var i = this["msg" + name + "save"].length - (num + 1) ; i < this["msg" + name + "save"].length - 1; i++) {
-            var tempmsgsave;
+            var tempmsgsave = [];
             tempmsgsave.push(this["msg" + name + "save"][i]);
         }
         r.replier.reply(tempmsgsave.join("\n"));
-        tempmsgsave = [];
     } else {
-        var tempmsgsave;
+        var tempmsgsave = [];
         for (var i = this["msg" + name + "save"].length - 7; i < this["msg" + name + "save"].length - 1; i++) {
             tempmsgsave.push(this["msg" + name + "save"][i]);
         }
-        replier.reply(tempmsgsave.join("\n"));
-        tempmsgsave = [];
+        r.replier.reply(tempmsgsave.join("\n"));
     }
 }
 
