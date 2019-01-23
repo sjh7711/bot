@@ -17,7 +17,6 @@ function saveFile() {
 }
 saveFile();
 
-
 //메뉴
 var menu = ['마라탕', '탕수육', '양장피', '브리또', '김치찜', '오징어덮밥', '참치찌개', '참치', '새우', '서브웨이', '양꼬치', '국밥', '야끼소바', '규동', '김밥', '돈까스', '냉모밀', '칠리새우', '짬뽕', '짜장면', '간짜장', '오므라이스', '초밥', '돈부리', '허니콤보', '레드핫', '청국장', '장어덮밥', '평양냉면', '연어덮밥', '오야꼬동', '소바', '라멘', '삼겹살', '목살', '소고기', '육회', '갈매기살', '파스타', '롯데리아', '맥도날드', 'KFC', '맘스터치', '뿌링클', '맵스터', '뿌링클HOT', '자메이카통다리', '불닭볶음면', '라면', '파닭', '가츠동', '피자', '쌀국수', '만두', '카레', '짜장밥', '떡볶이', '순대', '보쌈', '족발', '빵', '김치찌개', '냉면', '낙지', '곱창', '막창', '대창', '된장국', '미역국', '비빔면', '불고기', '찜닭', '닭도리탕', '수육', '부대찌개', '순두부찌개', '김치볶음밥', '제육덮밥', '잔치국수', '칼국수', '우동', '육개장', '추어탕', '삼각김밥', '시리얼', '토스트', '샌드위치', '순대국', '학식', '쭈꾸미', '훈제오리', '굶기', '떡갈비', '연어장', '생선구이'];
 //시립대주변음식점
@@ -32,8 +31,8 @@ var flagmenu; //추가심사중인 메뉴
 var flagrestaur; //추가심사중인 음식점
 var sendermenu = []; //메뉴추가에 동의한 사람
 var senderrestaur = []; //음식점추가에 동의한 사람
-var msgsave = [];//채팅로그저장
-var tempmsgsave = [];//채팅담을그릇
+var msgelecsave = [];//채팅로그저장
+
 //메뉴추가임의초기화함수
 function clear(name, num) {
     flag[num] = 0;
@@ -41,7 +40,6 @@ function clear(name, num) {
     this["flag" + name] = undefined;
     this[name + "agree"] = 0;
 }
-
 
 function compare(a, b) {
     return a - b;
@@ -118,6 +116,25 @@ function recom(r, list) {
     }
 }
 
+function recentchat(r, name) {
+    var num = r.msg.split(" ")[1];
+    if (num > 0 && num < 20) {
+        for (var i = this["msg" + name + "save"].length - (num + 1) ; i < this["msg" + name + "save"].length - 1; i++) {
+            var tempmsgsave;
+            tempmsgsave.push(this["msg" + name + "save"][i]);
+        }
+        r.replier.reply(tempmsgsave.join("\n"));
+        tempmsgsave = [];
+    } else {
+        var tempmsgsave;
+        for (var i = this["msg" + name + "save"].length - 7; i < this["msg" + name + "save"].length - 1; i++) {
+            tempmsgsave.push(this["msg" + name + "save"][i]);
+        }
+        replier.reply(tempmsgsave.join("\n"));
+        tempmsgsave = [];
+    }
+}
+
 function add(r, list, name, num) {
     var temp = r.msg.split(" ")[1];
     if (list.indexOf(temp) == -1) {
@@ -157,6 +174,9 @@ function agree(r, list, name, name1, num) {
 
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
+    //인자
+    r = { replier: replier, msg: msg, sender: sender, room: room };
+
     if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
         replier.reply("욕은 안좋아");
     }
@@ -181,9 +201,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         overWatch(r);
     }
 
-    //인자
-    r = { replier: replier, msg: msg, sender: sender, room: room };
-
     //eval
     if (msg.indexOf(">") == 0) {
         replier.reply(eval(msg.substring(1)));
@@ -196,11 +213,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //최근채팅
         msgsave.push(sender + " : " + msg);
         if (msg.indexOf("!최근채팅") == 0) {
-            for (var i = msgsave.length - 7; i < msgsave.length - 1; i++) {
-                tempmsgsave.push(msgsave[i]);
-            }
-            replier.reply(tempmsgsave.join("\n"));
-            tempmsgsave = [];
+            recentcaht(r, "elec");
         }
 
         //--------------------------메뉴-------------------------------//
