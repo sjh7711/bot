@@ -256,7 +256,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
     //각 방별 기능
     //----------------------------------------------------------------------------------
-    if (room == "시립대 봇제작방") {
+    if (room == "시립대 봇제작방" || room == "toast") {
 
         msgsave(r);
 
