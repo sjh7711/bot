@@ -1,3 +1,5 @@
+//-----------------------------------------------------------기본함수------------------------------------------------//
+//파일입출력
 function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
     str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response");
@@ -15,6 +17,8 @@ function saveFile() {//github에서 코드불러오기
         return e;
     }
 }
+
+//List 저장하기
 function saveList(list, name) { //list : 목록들 / name : list의 이름
     file = "storage/emulated/0/kbot/" + name + ".js";
     str = list;
@@ -28,6 +32,265 @@ function saveList(list, name) { //list : 목록들 / name : list의 이름
         return e;
     }
 }
-var menu = ['마라탕', '탕수육', '양장피', '브리또', '김치찜', '오징어덮밥', '참치찌개', '참치', '새우', '서브웨이', '양꼬치', '국밥', '야끼소바', '규동', '김밥', '돈까스', '냉모밀', '칠리새우', '짬뽕', '짜장면', '간짜장', '오므라이스', '초밥', '돈부리', '허니콤보', '레드핫', '청국장', '장어덮밥', '평양냉면', '연어덮밥', '오야꼬동', '소바', '라멘', '삼겹살', '목살', '소고기', '육회', '갈매기살', '파스타', '롯데리아', '맥도날드', 'KFC', '맘스터치', '뿌링클', '맵스터', '뿌링클HOT', '자메이카통다리', '불닭볶음면', '라면', '파닭', '가츠동', '피자', '쌀국수', '만두', '카레', '짜장밥', '떡볶이', '순대', '보쌈', '족발', '빵', '김치찌개', '냉면', '낙지', '곱창', '막창', '대창', '된장국', '미역국', '비빔면', '불고기', '찜닭', '닭도리탕', '수육', '부대찌개', '순두부찌개', '김치볶음밥', '제육덮밥', '잔치국수', '칼국수', '우동', '육개장', '추어탕', '삼각김밥', '시리얼', '토스트', '샌드위치', '순대국', '학식', '쭈꾸미', '훈제오리', '굶기', '떡갈비', '연어장', '생선구이'];
-//시립대주변음식점
-var restaur = ['마카나이', '썬더치킨', '그린하우스', '럭키식당', '봄솔레씨네', '피자스쿨', '우리소곱창', '바이브', '마루한', '육반', '카리스', '봄봄기사식당', '베트남쌀국수', 'YEZIHYUN', '신불떡볶이', '고추장불백(정
+
+//List 불러오기
+function readList(name) {//파일불러올 이름
+    var filedir = new java.io.File("storage/emulated/0/kbot/" + name + ".js");
+    try {
+        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
+        var readStr = "";
+        var str = null;
+        while (((str = br.readLine()) != null)) {
+            readStr += str + "\n";
+        }
+        br.close();
+        return readStr.trim();
+    } catch (e) {
+        Log.e(e + '\n' + e.stack);
+        throw e;
+    }
+}
+
+//sort에 필요한 compare
+function compare(a, b) {
+    return a - b;
+}
+
+//기능설명
+function func(r) {
+    if (r.msg.split(" ")[1] == "최근채팅") {
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 20 와 같이 최대 20개까지 조회가능합니다.");
+    }
+    if (r.msg.split(" ")[1] == "오버워치") {
+        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
+    }
+    if (r.msg.split(" ")[1] == "로또") {
+        r.replier.reply("로또번호를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "메뉴추천") {
+        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "메뉴추가") {
+        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 합의가 있으면 바로 추가 될 수 있습니다. ex)!메뉴추가 냉장고");
+    }
+    if (r.msg.split(" ")[1] == "음식점추천") {
+        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "음식점추가") {
+        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
+    }
+}
+//-------------------------------------------------------변수----------------------------------------------------------//
+var menu = readList("menu").split(",")//메뉴
+var restaur = readList("restaur").split(",")//시립대주변음식점
+
+var addmenu = []; //메뉴추가건의
+var addrestaur = []; //음식점추가건의
+var flag = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var menuagree = 0; //메뉴추가동의 인원수
+var restauragree = 0; //음식점추가동의 인원수
+var flagmenu; //추가심사중인 메뉴
+var flagrestaur; //추가심사중인 음식점
+var sendermenu = []; //메뉴추가에 동의한 사람
+var senderrestaur = []; //음식점추가에 동의한 사람
+//------------------------------------------------------기능함수---------------------------------------------------------//
+//메뉴추가 초기화함수
+function clear(name, num) {
+    flag[num] = 0;
+    this["sender" + name] = undefined;
+    this["flag" + name] = undefined;
+    this[name + "agree"] = 0;
+}
+
+//로또
+function lotto(r) {
+    var templotto = []; //로또번호 6개가 담길 array
+    for (var i = 0; i < 30; i++) { //30회정도 하면 되지 않을까
+        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
+        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
+            templotto.push(rad);
+        }
+        if (templotto.length == 6) {//6개면 for 탈출
+            break;
+        }
+    }
+    r.replier.reply(templotto.sort(compare).join(", "));
+}
+
+//오버워치
+function overWatch(r) {
+    var name = r.msg.substr(6);//배틀태그가 담기는 공간
+    name1 = name.replace("#", "-");
+    var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/" + name1);
+    if (source.indexOf("u-align-center h5") == -1) {
+        replier.reply(name + "의 점수를 알 수 없습니다.");
+    } else {
+        var score = source.split("u-align-center h5\">")[1].split("<")[0].trim();
+        var tier = source.split("rank-icons/rank-")[1].split("Tier.")[0];
+        var most = source.split("u-max-width-container career-section")[3];
+        var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
+        var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
+        var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
+        r.replier.reply(name + "\nTier : " + tier + "\nScore : " + score + "\n--------------\n경쟁전 모스트 영웅\n1. " + most1 + "\n2. " + most2 + "\n3. " + most3);
+    }
+}
+
+//리스트에서 추천하기(1개 or 여러개)
+function recom(r, list) { //list : seed
+    var num = r.msg.split(" ")[1]; //num : 추천받고 싶은개수
+    if (num == undefined) {
+        var rad = Math.floor(Math.random() * (list.length));
+        r.replier.reply(list[rad]);
+    }
+    if (0 < num < 9) {//추천할 메뉴가 1개 or 9개이상일때(1개만 return)
+        var templist = list.slice(); //list의 복사본을 만든다.
+        var listmul = []; //listmul : 랜덤으로 뽑힐 메뉴들이 담기는 공간
+        for (var i = 0; i < num; i++) {
+            var rad = Math.floor(Math.random() * (templist.length));//rad : 뽑힌 메뉴
+            listmul.push(templist.splice(rad, 1));//rad 번째 메뉴가 뽑혀서 listmul에 담김
+        }
+        r.replier.reply(listmul.join(", "));
+    }
+}
+
+//채팅저장
+function msgsave(r) {
+    var tempchat = readList(r.room + "채팅").split(",");//tempchat : 파일을 불러와서 새 채팅을 추가로 저장할 변수
+    tempchat.push(r.sender + " : " + r.msg);
+    saveList(tempchat, r.room + "채팅");
+}
+
+//최근채팅
+function recentchat(r) { //name : 변수의 부분이름
+    var tempchat = readList(r.room + "채팅").split(",");
+    var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
+    if (0 < num < 17) {
+        var tempmsgsave = [];//뽑은 채팅을 담을 공간
+        for (var i = tempchat.length - (num + 1) ; i < tempchat.length - 1; i++) {
+            tempmsgsave.push(tempchat[i]);
+        }
+        r.replier.reply(tempmsgsave.join("\n"));
+    } else {
+        var tempmsgsave = [];
+        for (var i = temp.length - 7; i < tempchat.length - 1; i++) {
+            tempmsgsave.push(tempchat[i]);//뽑은 채팅을 담을 공간
+        }
+        r.replier.reply(tempmsgsave.join("\n"));
+    }
+}
+
+//리스트에 추가하기
+function add(r, list, name, num) { // list : seed / name : 변수의 부분이름 / num : flag number
+    var temp = r.msg.split(" ")[1];
+    if (list.indexOf(temp) == -1) {
+        this["add" + name].push(temp);
+        r.replier.reply(temp + "(이)가 건의되었습니다.");
+        if (flag[num] == 1) {
+            r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
+        }
+        if (flag[num] == 0) {
+            r.replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
+            this["flag" + name] = temp;
+            flag[0] = 1;
+        }
+    } else {
+        r.replier.reply(temp + "는 이미있는 메뉴입니다.");
+    }
+}
+
+//리스트 추가 다수 동의
+function agree(r, list, name, name1, num) { // list : seed / name : 변수의 부분이름 / name1 : list의 한글이름 / num : flag number
+    if (r.msg == name1 + "동의") {
+        if (this["sender" + name].indexOf(r.sender) == -1) {
+            this[name + "agree"] += 1;
+            r.replier.reply(this[name + "agree"] + "/4");
+            this["sender" + name].push(r.sender);
+        }
+    }
+    if (this[name + "agree"] == 1) {
+        list.push(this["flag" + name]);
+        r.replier.reply(name1 + "에 " + this["flag" + name] + "가 추가되었습니다.");
+        saveList(list, name);
+        clear(name, num);
+    }
+}
+//--------------------------------------------------------------------소스코드-------------------------------------------------//
+function response(room, msg, sender, isGroupChat, replier, imageDB) {
+
+    //인자
+    r = { replier: replier, msg: msg, sender: sender, room: room };
+
+    if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
+        replier.reply("욕은 안좋아");
+    }
+
+    //기능
+    if (msg == "!기능") {
+        replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    }
+
+    //기능설명
+    if (msg.indexOf("!기능 ") == 0) {
+        func(r);
+    }
+
+    //로또
+    if (msg.indexOf("!로또") == 0) {
+        lotto(r);
+    }
+
+    //오버워치
+    if (msg.indexOf("!오버워치") == 0) {
+        overWatch(r);
+    }
+
+    //eval
+    if (msg.indexOf(">") == 0) {
+        replier.reply(eval(msg.substring(1)));
+    }
+
+    //최근채팅
+    if (msg.indexOf("!최근채팅") == 0) {
+        recentcaht(r);
+    }
+
+    //각 방별 기능
+    //----------------------------------------------------------------------------------
+    if (room == "시립대 봇제작방") {
+
+        msgsave(r);
+
+        //--------------------------메뉴-------------------------------//
+        //메뉴추가
+        if (msg.indexOf("!메뉴추가 ") == 0) {
+            add(r, menu, "menu", 0);
+        }
+
+        //메뉴동의합의
+        if (flag[0] == 1) {
+            agree(r, menu, "menu", "메뉴", 0);
+        }
+
+        //메뉴추천
+        if (msg.indexOf("!메뉴추천") == 0) {
+            recom(r, menu);
+        }
+        //---------------------------음식점-----------------------------//
+
+        //음식점추가
+        if (msg.indexOf("!음식점추가 ") == 0) {
+            add(r, restaur, "restaur", 1);
+        }
+
+        //음식점동의합의
+        if (flag[0] == 1) {
+            agree(r, restaur, "restaur", "음식점", 1);
+        }
+
+        //음식점추천
+        if (msg.indexOf("!음식점추천") == 0) {
+            recom(r, restaur);
+        }
+        //---------------------------------------------------------------//
+    }
+}
