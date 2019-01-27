@@ -93,6 +93,7 @@ var flagmenu; //추가심사중인 메뉴
 var flagrestaur; //추가심사중인 음식점
 var sendermenu = []; //메뉴추가에 동의한 사람
 var senderrestaur = []; //음식점추가에 동의한 사람
+var savechat = [];
 //------------------------------------------------------기능함수---------------------------------------------------------//
 //메뉴추가 초기화함수
 function clear(name, num) {
@@ -155,14 +156,17 @@ function recom(r, list) { //list : seed
 
 //채팅저장
 function msgsave(r) {
-    var tempchat = readList(r.room + "채팅").split(",");//tempchat : 파일을 불러와서 새 채팅을 추가로 저장할 변수
-    tempchat.push(r.sender + " : " + r.msg);
-    saveList(tempchat, r.room + "채팅");
+    var sdchat = [];
+    sdchat = readList(r.room + "채팅").split(",");//tempchat : 파일을 불러와서 새 채팅을 추가로 저장할 변수
+    savechat.push(r.sender + " : " + r.msg);
+    sdchat.concat(savechat);
+    saveList(sdchat, r.room + "채팅");
 }
 
 //최근채팅
 function recentchat(r) { //name : 변수의 부분이름
-    var tempchat = readList(r.room + "채팅").split(",");
+    var tempchat = [];
+    tempchat = readList(r.room + "채팅").split(",");
     var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
     if (0 < num < 17) {
         var tempmsgsave = [];//뽑은 채팅을 담을 공간
