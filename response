@@ -1,61 +1,61 @@
 //-----------------------------------------------------------기본함수------------------------------------------------//
 //절전모드 관리
-wake=(function() { 
-   var PM=android.os.PowerManager;
-   var pm =Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
-   var wl= pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK|PM.ACQUIRE_CAUSES_WAKEUP |PM.ON_AFTER_RELEASE,"FAIL");
+wake = (function () {
+    var PM = android.os.PowerManager;
+    var pm = Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
+    var wl = pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK | PM.ACQUIRE_CAUSES_WAKEUP | PM.ON_AFTER_RELEASE, "FAIL");
     return {
-        on :function(){
-            if(!wl.isHeld()){
+        on: function () {
+            if (!wl.isHeld()) {
                 wl.acquire();
                 return "wake on done";
-            }else return "not changed";
+            } else return "not changed";
         },
-        off:function(){
-            if(wl.isHeld()){
+        off: function () {
+            if (wl.isHeld()) {
                 wl.release();
                 return "wake off done";
-            }else return "not changed";
+            } else return "not changed";
         },
-        toString: function(){
+        toString: function () {
             return wl.toString();
         }
     }
 })();
 
 //한글받침 관리
-String.prototype.받침=function(){
-    var lastCharCode=this.toString().charCodeAt(this.toString().length-1);
-    if(lastCharCode>="가".charCodeAt(0) && lastCharCode<="힣".charCodeAt(0)){
-        if((lastCharCode-"가".charCodeAt(0))%28==0) return false;
+String.prototype.받침 = function () {
+    var lastCharCode = this.toString().charCodeAt(this.toString().length - 1);
+    if (lastCharCode >= "가".charCodeAt(0) && lastCharCode <= "힣".charCodeAt(0)) {
+        if ((lastCharCode - "가".charCodeAt(0)) % 28 == 0) return false;
         else return true;
-    }else return false;
-   
+    } else return false;
+
 }
-String.prototype.은는=function(){
-    return this.toString().받침() ? this.toString()+"은" : this.toString()+"는"; 
+String.prototype.은는 = function () {
+    return this.toString().받침() ? this.toString() + "은" : this.toString() + "는";
 }
-String.prototype.이가=function(){
-    return this.toString().받침() ? this.toString()+"이" : this.toString()+"가"; 
+String.prototype.이가 = function () {
+    return this.toString().받침() ? this.toString() + "이" : this.toString() + "가";
 }
-String.prototype.과와=function(){
-    return this.toString().받침() ? this.toString()+"과" : this.toString()+"와"; 
+String.prototype.과와 = function () {
+    return this.toString().받침() ? this.toString() + "과" : this.toString() + "와";
 }
-String.prototype.을를=function(){
-    return this.toString().받침() ? this.toString()+"을" : this.toString()+"를"; 
+String.prototype.을를 = function () {
+    return this.toString().받침() ? this.toString() + "을" : this.toString() + "를";
 }
-String.prototype.조사=function(받침있음, 받침없음){
-    return this.toString().받침() ? this.toString()+받침있음 : this.toString()+받침없음;
+String.prototype.조사 = function (받침있음, 받침없음) {
+    return this.toString().받침() ? this.toString() + 받침있음 : this.toString() + 받침없음;
 }
 
 //한글인코딩
-String.prototype.encoding=function(){
-    var res=this.toString();
+String.prototype.encoding = function () {
+    var res = this.toString();
     var tmp;
-    while(tmp=/\\u[\da-fA-F]{4}/.exec(res)){
-        res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substring(2),16)));
+    while (tmp = /\\u[\da-fA-F]{4}/.exec(res)) {
+        res = res.replace(tmp[0], String.fromCharCode(parseInt(tmp[0].substring(2), 16)));
     }
-   
+
     return res;
 }
 
@@ -63,7 +63,7 @@ String.prototype.encoding=function(){
 function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
     //https://raw.githubusercontent.com/sjh7711/bot/05f942ca2d2e1705281f203bf42cc885dd4b758b/response;
-    conn=new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/master/response").openConnection();
+    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/master/response").openConnection();
     br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
     str = "";
     tmp = null;
@@ -220,7 +220,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
             this["flag" + r.room][num] = 1;
         }
     } else {
-        r.replier.reply(temp + "(은)는 이미있는 "+name1+"입니다.");
+        r.replier.reply(temp + "(은)는 이미있는 " + name1 + "입니다.");
     }
 }
 
@@ -385,7 +385,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //채팅저장
         if (msg.indexOf("!") == 0 || msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
-            D.insert('cele', { name: sender, msg: msg });
+            D.insert('cbot', { name: sender, msg: msg });
         }
 
         //최근채팅
@@ -420,7 +420,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //---------------------------------------------------------------//
     }
     //------------------------자생방-----------------------------------
-    if (room == "ja") {
+    if (room == 'ja') {
 
         //채팅저장
         if (msg.indexOf("!") == 0 || msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
