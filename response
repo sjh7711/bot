@@ -73,7 +73,7 @@ function saveFile() {//github에서 코드불러오기
     var filedir = new java.io.File(file);
     try {
         var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-        bw.write(str4.toString());
+        bw.write(str.toString());
         bw.close();
     }
     catch (e) {
