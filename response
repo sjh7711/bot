@@ -112,7 +112,7 @@ function func(r) {
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctoast:개인방채팅/
+//menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctoast:개인방채팅/cja:자생방채팅
 var T = require("ThreadManager.js");
 
 //봇제작방용 변수
@@ -205,7 +205,7 @@ function recom(r, name) { //name : 리스트 이름
 }
 
 //리스트에 추가하기
-function add(r, name, num) { // name : DB 이름 / num : flag number
+function add(r, name, name1, num) { // name : DB 이름 / num : flag number
     var temp = r.msg.split(" ")[1];
     var list = D.selectForArray(name);
     if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
@@ -220,7 +220,7 @@ function add(r, name, num) { // name : DB 이름 / num : flag number
             this["flag" + r.room][num] = 1;
         }
     } else {
-        r.replier.reply(temp + "(은)는 이미있는 메뉴입니다.");
+        r.replier.reply(temp + "(은)는 이미있는 "+name1+"입니다.");
     }
 }
 
@@ -323,7 +323,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
-            add(r, "menu", 0);
+            add(r, "menu", "메뉴", 0);
         }
 
         //메뉴동의합의
@@ -333,7 +333,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //---------------------------음식점-----------------------------//
         //음식점추가
         if (msg.indexOf("!음식점추가 ") == 0) {
-            add(r, "res", 1);
+            add(r, "res", "음식점", 1);
         }
 
         //음식점동의합의
@@ -359,7 +359,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
-            add(r, "menu", 0);
+            add(r, "menu", "메뉴", 0);
         }
 
         //메뉴동의합의
@@ -369,7 +369,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //---------------------------음식점-----------------------------//
         //음식점추가
         if (msg.indexOf("!음식점추가 ") == 0) {
-            add(r, "res", 1);
+            add(r, "res", "음식점", 1);
         }
 
         //음식점동의합의
@@ -400,7 +400,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
-            add(r, "menu", 0);
+            add(r, "menu", "메뉴", 0);
         }
 
         //메뉴동의합의
@@ -410,7 +410,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //---------------------------음식점-----------------------------//
         //음식점추가
         if (msg.indexOf("!음식점추가 ") == 0) {
-            add(r, "res", 1);
+            add(r, "res", "음식점", 1);
         }
 
         //음식점동의합의
@@ -435,7 +435,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
-            add(r, "menu", 0);
+            add(r, "menu", "메뉴", 0);
         }
 
         //메뉴동의합의
@@ -445,7 +445,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //---------------------------음식점-----------------------------//
         //음식점추가
         if (msg.indexOf("!음식점추가 ") == 0) {
-            add(r, "res", 1);
+            add(r, "res", "음식점", 1);
         }
 
         //음식점동의합의
