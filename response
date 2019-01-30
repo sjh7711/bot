@@ -1,61 +1,60 @@
 //-----------------------------------------------------------기본함수------------------------------------------------//
 //절전모드 관리
-wake=(function() { 
-   var PM=android.os.PowerManager;
-   var pm =Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
-   var wl= pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK|PM.ACQUIRE_CAUSES_WAKEUP |PM.ON_AFTER_RELEASE,"FAIL");
+wake = (function () {
+    var PM = android.os.PowerManager;
+    var pm = Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
+    var wl = pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK | PM.ACQUIRE_CAUSES_WAKEUP | PM.ON_AFTER_RELEASE, "FAIL");
     return {
-        on :function(){
-            if(!wl.isHeld()){
+        on: function () {
+            if (!wl.isHeld()) {
                 wl.acquire();
                 return "wake on done";
-            }else return "not changed";
+            } else return "not changed";
         },
-        off:function(){
-            if(wl.isHeld()){
+        off: function () {
+            if (wl.isHeld()) {
                 wl.release();
                 return "wake off done";
-            }else return "not changed";
+            } else return "not changed";
         },
-        toString: function(){
+        toString: function () {
             return wl.toString();
         }
     }
 })();
 
 //한글받침 관리
-String.prototype.받침=function(){
-    var lastCharCode=this.toString().charCodeAt(this.toString().length-1);
-    if(lastCharCode>="가".charCodeAt(0) && lastCharCode<="힣".charCodeAt(0)){
-        if((lastCharCode-"가".charCodeAt(0))%28==0) return false;
+String.prototype.받침 = function () {
+    var lastCharCode = this.toString().charCodeAt(this.toString().length - 1);
+    if (lastCharCode >= "가".charCodeAt(0) && lastCharCode <= "힣".charCodeAt(0)) {
+        if ((lastCharCode - "가".charCodeAt(0)) % 28 == 0) return false;
         else return true;
-    }else return false;
-   
+    } else return false;
+
 }
-String.prototype.은는=function(){
-    return this.toString().받침() ? this.toString()+"은" : this.toString()+"는"; 
+String.prototype.은는 = function () {
+    return this.toString().받침() ? this.toString() + "은" : this.toString() + "는";
 }
-String.prototype.이가=function(){
-    return this.toString().받침() ? this.toString()+"이" : this.toString()+"가"; 
+String.prototype.이가 = function () {
+    return this.toString().받침() ? this.toString() + "이" : this.toString() + "가";
 }
-String.prototype.과와=function(){
-    return this.toString().받침() ? this.toString()+"과" : this.toString()+"와"; 
+String.prototype.과와 = function () {
+    return this.toString().받침() ? this.toString() + "과" : this.toString() + "와";
 }
-String.prototype.을를=function(){
-    return this.toString().받침() ? this.toString()+"을" : this.toString()+"를"; 
+String.prototype.을를 = function () {
+    return this.toString().받침() ? this.toString() + "을" : this.toString() + "를";
 }
-String.prototype.조사=function(받침있음, 받침없음){
-    return this.toString().받침() ? this.toString()+받침있음 : this.toString()+받침없음;
+String.prototype.조사 = function (받침있음, 받침없음) {
+    return this.toString().받침() ? this.toString() + 받침있음 : this.toString() + 받침없음;
 }
 
 //한글인코딩
-String.prototype.encoding=function(){
-    var res=this.toString();
+String.prototype.encoding = function () {
+    var res = this.toString();
     var tmp;
-    while(tmp=/\\u[\da-fA-F]{4}/.exec(res)){
-        res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substring(2),16)));
+    while (tmp = /\\u[\da-fA-F]{4}/.exec(res)) {
+        res = res.replace(tmp[0], String.fromCharCode(parseInt(tmp[0].substring(2), 16)));
     }
-   
     return res;
 }
 
@@ -63,7 +62,7 @@ String.prototype.encoding=function(){
 function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
     //https://raw.githubusercontent.com/sjh7711/bot/05f942ca2d2e1705281f203bf42cc885dd4b758b/response;
-    conn=new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/master/response").openConnection();
+    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/master/response").openConnection();
     br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
     str = "";
     tmp = null;
@@ -150,6 +149,12 @@ var flagmenuja; //추가심사중인 메뉴
 var flagresja; //추가심사중인 음식점
 var sendermenuja = []; //메뉴추가에 동의한 사람
 var senderresja = []; //음식점추가에 동의한 사람
+
+//오버워치용 변수
+var flagover = [0]; //flag[0]=메뉴추가flag
+var menuagreeover = 0; //메뉴추가동의 인원수
+var flagmenuover; //추가심사중인 메뉴
+var sendermenuover = []; //메뉴추가에 동의한 사람
 //------------------------------------------------------기능함수---------------------------------------------------------//
 
 //로또
@@ -220,7 +225,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
             this["flag" + r.room][num] = 1;
         }
     } else {
-        r.replier.reply(temp + "(은)는 이미있는 "+name1+"입니다.");
+        r.replier.reply(temp + "(은)는 이미있는 " + name1 + "입니다.");
     }
 }
 
@@ -301,17 +306,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (msg.indexOf("!메뉴추천") == 0) {
         recom(r, "menu");
     }
-
-    //음식점추천
-    if (msg.indexOf("!음식점추천") == 0) {
-        recom(r, "res");
-    }
     //각 방별 기능
-    //-----------------------------------------------전전컴톡방--------------------------------------
+    //-------------------------------------------------------전전컴톡방-----------------------------------------------------
     if (room == "ele") {
 
         //채팅저장
-        if (msg.indexOf("!") == 0 || msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
             D.insert('cele', { name: sender, msg: msg });
         }
@@ -339,6 +339,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //음식점동의합의
         if (this["flag" + room][0] == 1) {
             agree(r, "res", "음식점", 1);
+        }
+
+        //음식점추천
+        if (msg.indexOf("!음식점추천") == 0) {
+            recom(r, "res");
         }
         //---------------------------------------------------------------//
     }
@@ -376,16 +381,19 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (this["flag" + room][0] == 1) {
             agree(r, "res", "음식점", 1);
         }
+
+        //음식점추천
+        if (msg.indexOf("!음식점추천") == 0) {
+            recom(r, "res");
+        }
         //---------------------------------------------------------------//
     }
     //-----------------------------------------시립대 봇제작방-----------------------------------------------------
 
     if (room == "bot") {
-
-        //채팅저장
-        if (msg.indexOf("!") == 0 || msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
-            D.insert('cele', { name: sender, msg: msg });
+            D.insert('cbot', { name: sender, msg: msg });
         }
 
         //최근채팅
@@ -417,13 +425,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (this["flag" + room][0] == 1) {
             agree(r, "res", "음식점", 1);
         }
+
+        //음식점추천
+        if (msg.indexOf("!음식점추천") == 0) {
+            recom(r, "res");
+        }
         //---------------------------------------------------------------//
     }
-    //------------------------자생방-----------------------------------
-    if (room == "ja") {
+    //---------------------------------------------------------자생방-----------------------------------------
+    if (room == 'ja') {
 
         //채팅저장
-        if (msg.indexOf("!") == 0 || msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
             D.insert('cja', { name: sender, msg: msg });
         }
@@ -451,6 +464,42 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //음식점동의합의
         if (this["flag" + room][0] == 1) {
             agree(r, "res", "음식점", 1);
+        }
+
+        //음식점추천
+        if (msg.indexOf("!음식점추천") == 0) {
+            recom(r, "res");
+        }
+    }
+    //-----------------------------------------------------오버워치-----------------------------------------
+    if (room == 'over') {
+
+        //채팅저장
+        D.insert('cover', { name: sender, msg: msg });
+
+        //최근채팅
+        if (msg.indexOf("!최근채팅") == 0) {
+            recentchat(r, 'cover');
+        }
+        //--------------------------메뉴-------------------------------//
+        //메뉴추가
+        if (msg.indexOf("!메뉴추가 ") == 0) {
+            add(r, "menu", "메뉴", 0);
+        }
+
+        //메뉴동의합의
+        if (this["flag" + room][0] == 1) {
+            agree(r, "menu", "메뉴", 0);
+        }
+    }
+    //-------------------------------------------------------공익----------------------------------------------------
+    if (room == 'agent') {
+        //채팅저장
+        D.insert('cagent', { name: sender, msg: msg });
+
+        //최근채팅
+        if (msg.indexOf("!최근채팅") == 0) {
+            recentchat(r, 'cagent');
         }
     }
 }
