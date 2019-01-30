@@ -1,12 +1,69 @@
 //-----------------------------------------------------------기본함수------------------------------------------------//
+//절전모드 관리
+wake=(function() { 
+   const PM=android.os.PowerManager;
+   const pm =Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
+   const wl= pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK|PM.ACQUIRE_CAUSES_WAKEUP |PM.ON_AFTER_RELEASE,"FAIL");
+    return {
+        on :function(){
+            if(!wl.isHeld()){
+                wl.acquire();
+                return "wake on done";
+            }else return "not changed";
+        },
+        off:function(){
+            if(wl.isHeld()){
+                wl.release();
+                return "wake off done";
+            }else return "not changed";
+        },
+        toString: function(){
+            return wl.toString();
+        }
+    }
+})();
+
+//한글받침 관리
+String.prototype.받침=function(){
+    var lastCharCode=this.toString().charCodeAt(this.toString().length-1);
+    if(lastCharCode>="가".charCodeAt(0) && lastCharCode<="힣".charCodeAt(0)){
+        if((lastCharCode-"가".charCodeAt(0))%28==0) return false;
+        else return true;
+    }else return false;
+   
+}
+String.prototype.은는=function(){
+    return this.toString().받침() ? this.toString()+"은" : this.toString()+"는"; 
+}
+String.prototype.이가=function(){
+    return this.toString().받침() ? this.toString()+"이" : this.toString()+"가"; 
+}
+String.prototype.과와=function(){
+    return this.toString().받침() ? this.toString()+"과" : this.toString()+"와"; 
+}
+String.prototype.을를=function(){
+    return this.toString().받침() ? this.toString()+"을" : this.toString()+"를"; 
+}
+String.prototype.조사=function(받침있음, 받침없음){
+    return this.toString().받침() ? this.toString()+받침있음 : this.toString()+받침없음;
+}
+
+//한글인코딩
+String.prototype.encoding=function(){
+    var res=this.toString();
+    var tmp;
+    while(tmp=/\\u[\da-fA-F]{4}/.exec(res)){
+        res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substring(2),16)));
+    }
+   
+    return res;
+}
+
 //파일입출력
 function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
-    str = Utils.getWebText("https://github.com/sjh7711/bot/blob/master/response");
-    str1 = str.split("<table class=\"highlight tab-size js-file-line-container\" data-tab-size=\"8\">")[1];
-    str2 = str1.split("<details class=\"details-reset details-overlay BlobToolbar")[0];
-    str3 = str2.replace(/(<([^>]+)>)/g, "").trim();
-    str4 = str3.replace(/&nbsp;/g, "\t").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
+    link ="https://raw.githubusercontent.com/sjh7711/bot/master/response"
+    str = org.jsoup.Jsoup.connect(a).get();
     var filedir = new java.io.File(file);
     try {
         var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
@@ -15,39 +72,6 @@ function saveFile() {//github에서 코드불러오기
     }
     catch (e) {
         return e;
-    }
-}
-
-//List 저장하기
-function saveList(list, name) { //list : 목록들 / name : list의 이름
-    file = "storage/emulated/0/kbot/" + name + ".js";
-    str = list;
-    var filedir = new java.io.File(file);
-    try {
-        var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-        bw.write(str.toString());
-        bw.close();
-    }
-    catch (e) {
-        return e;
-    }
-}
-
-//List 불러오기
-function readList(name) {//파일불러올 이름
-    var filedir = new java.io.File("storage/emulated/0/kbot/" + name + ".js");
-    try {
-        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
-        var readStr = "";
-        var str = null;
-        while (((str = br.readLine()) != null)) {
-            readStr += str + "\n";
-        }
-        br.close();
-        return readStr.trim();
-    } catch (e) {
-        Log.e(e + '\n' + e.stack);
-        throw e;
     }
 }
 
@@ -81,27 +105,36 @@ function func(r) {
     }
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
-var menu = readList("menu").split(",")//메뉴
-var restaur = readList("restaur").split(",")//시립대주변음식점
+D = require("DBManager.js")("D")
+//menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctoast:개인방채팅/
 
-var addmenu = []; //메뉴추가건의
-var addrestaur = []; //음식점추가건의
-var flag = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
-var menuagree = 0; //메뉴추가동의 인원수
-var restauragree = 0; //음식점추가동의 인원수
-var flagmenu; //추가심사중인 메뉴
-var flagrestaur; //추가심사중인 음식점
-var sendermenu = []; //메뉴추가에 동의한 사람
-var senderrestaur = []; //음식점추가에 동의한 사람
-var savechat = [];
+//봇제작방용 변수
+var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var menuagreebot = 0; //메뉴추가동의 인원수
+var restauragreebot = 0; //음식점추가동의 인원수
+var flagmenubot; //추가심사중인 메뉴
+var flagrestaurbot; //추가심사중인 음식점
+var sendermenubot = []; //메뉴추가에 동의한 사람
+var senderrestaurbot = []; //음식점추가에 동의한 사람
+
+//전전컴톡방용 변수
+var flagele = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var menuagreeele = 0; //메뉴추가동의 인원수
+var restauragreeele = 0; //음식점추가동의 인원수
+var flagmenuele; //추가심사중인 메뉴
+var flagrestaurele; //추가심사중인 음식점
+var sendermenuele = []; //메뉴추가에 동의한 사람
+var senderrestaurele = []; //음식점추가에 동의한 사람
+
+//개인방용 변수
+var flagtoast = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var menuagreetoast = 0; //메뉴추가동의 인원수
+var restauragreetoast = 0; //음식점추가동의 인원수
+var flagmenutoast; //추가심사중인 메뉴
+var flagrestaurtoast; //추가심사중인 음식점
+var sendermenutoast = []; //메뉴추가에 동의한 사람
+var senderrestaurtoast = []; //음식점추가에 동의한 사람
 //------------------------------------------------------기능함수---------------------------------------------------------//
-//메뉴추가 초기화함수
-function clear(name, num) {
-    flag[num] = 0;
-    this["sender" + name] = undefined;
-    this["flag" + name] = undefined;
-    this[name + "agree"] = 0;
-}
 
 //로또
 function lotto(r) {
@@ -137,90 +170,90 @@ function overWatch(r) {
 }
 
 //리스트에서 추천하기(1개 or 여러개)
-function recom(r, list) { //list : seed
+function recom(r, name) { //name : 리스트 이름
     var num = r.msg.split(" ")[1]; //num : 추천받고 싶은개수
+    var list = D.selectForArray(name);
     if (num == undefined) {
-        var rad = Math.floor(Math.random() * (list.length));
+        var rad = Math.floor(Math.random() * list.length);
         r.replier.reply(list[rad]);
     }
-    if (0 < num < 9) {//추천할 메뉴가 1개 or 9개이상일때(1개만 return)
+    if (0 < num && num < 9) {//추천할 메뉴가 1개 or 9개이상일때(1개만 return)
         var templist = list.slice(); //list의 복사본을 만든다.
         var listmul = []; //listmul : 랜덤으로 뽑힐 메뉴들이 담기는 공간
         for (var i = 0; i < num; i++) {
-            var rad = Math.floor(Math.random() * (templist.length));//rad : 뽑힌 메뉴
+            var rad = Math.floor(Math.random() * templist.length);//rad : 뽑힌 메뉴
             listmul.push(templist.splice(rad, 1));//rad 번째 메뉴가 뽑혀서 listmul에 담김
         }
         r.replier.reply(listmul.join(", "));
     }
 }
 
-//채팅저장
-function msgsave(r) {
-    var sdchat = [];
-    sdchat = readList(r.room + "채팅").split(",");//tempchat : 파일을 불러와서 새 채팅을 추가로 저장할 변수
-    savechat.push(r.sender + " : " + r.msg);
-    sdchat.concat(savechat);
-    saveList(sdchat, r.room + "채팅");
-}
-
-//최근채팅
-function recentchat(r) { //name : 변수의 부분이름
-    var tempchat = [];
-    tempchat = readList(r.room + "채팅").split(",");
-    var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
-    if (0 < num < 17) {
-        var tempmsgsave = [];//뽑은 채팅을 담을 공간
-        for (var i = tempchat.length - (num + 1) ; i < tempchat.length - 1; i++) {
-            tempmsgsave.push(tempchat[i]);
-        }
-        r.replier.reply(tempmsgsave.join("\n"));
-    } else {
-        var tempmsgsave = [];
-        for (var i = temp.length - 7; i < tempchat.length - 1; i++) {
-            tempmsgsave.push(tempchat[i]);//뽑은 채팅을 담을 공간
-        }
-        r.replier.reply(tempmsgsave.join("\n"));
-    }
-}
-
 //리스트에 추가하기
-function add(r, list, name, num) { // list : seed / name : 변수의 부분이름 / num : flag number
+function add(r, name, num) { // name : DB 이름 / num : flag number
     var temp = r.msg.split(" ")[1];
-    if (list.indexOf(temp) == -1) {
-        this["add" + name].push(temp);
+    var list = D.selectForArray(name);
+    if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
+        D.insert('recom' + name, { name: temp })
         r.replier.reply(temp + "(이)가 건의되었습니다.");
-        if (flag[num] == 1) {
+        if (this["flag" + r.room][num] == 1) {
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
-        if (flag[num] == 0) {
+        if (this["flag" + r.room][num] == 0) {
             r.replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
-            this["flag" + name] = temp;
-            flag[0] = 1;
+            this["flag" + name + r.room] = temp;
+            this["flag" + r.room][num] = 1;
         }
     } else {
-        r.replier.reply(temp + "는 이미있는 메뉴입니다.");
+        r.replier.reply(temp + "(은)는 이미있는 메뉴입니다.");
     }
 }
 
 //리스트 추가 다수 동의
-function agree(r, list, name, name1, num) { // list : seed / name : 변수의 부분이름 / name1 : list의 한글이름 / num : flag number
+function agree(r, name, name1, num) { // list : seed / name : DB 이름("menu", "res"...) / name1 : list의 한글이름("메뉴", "음식점"..) / num : flag number
+    list = D.selectForArray(name);
     if (r.msg == name1 + "동의") {
-        if (this["sender" + name].indexOf(r.sender) == -1) {
-            this[name + "agree"] += 1;
-            r.replier.reply(this[name + "agree"] + "/4");
-            this["sender" + name].push(r.sender);
+        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
+            this[name + "agree" + r.room] += 1;
+            r.replier.reply(this[name + "agree" + r.room] + "/4");
+            this["sender" + name + r.room].push(r.sender);
         }
     }
-    if (this[name + "agree"] == 1) {
-        list.push(this["flag" + name]);
-        r.replier.reply(name1 + "에 " + this["flag" + name] + "가 추가되었습니다.");
-        saveList(list, name);
-        clear(name, num);
+    if (this[name + "agree" + r.room] == 4) {
+        var temp = this["flag" + name + r.room];
+        D.insert(name, { name: temp });
+        r.replier.reply(name1 + "에 " + this["flag" + name + r.room] + "(이)가 추가되었습니다.");
+        clear(r, name, num);
+    }
+}
+
+//메뉴추가 초기화함수
+function clear(r, name, num) {
+    this["flag" + r.room][num] = 0;
+    this["sender" + name + r.room] = undefined;
+    this["flag" + name + r.room] = undefined;
+    this[name + "agree" + r.room] = 0;
+}
+
+//최근채팅
+function recentchat(r, name) { //name : DB이름
+    var tempchat = D.selectForArray(name);
+    var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
+    if (0 < num && num < 17) {
+        var temp = [];//뽑은 채팅을 담을 공간
+        for (var i = tempchat.length - num - 1 ; i < tempchat.length - 1; i++) {
+            temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
+        }
+        r.replier.reply(temp.join("\n"));
+    } else {
+        var temp = [];//뽑은 채팅을 담을 공간
+        for (var i = tempchat.length - 7; i < tempchat.length - 1; i++) {
+            temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
+        }
+        r.replier.reply(temp.join("\n"));
     }
 }
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-
     //인자
     r = { replier: replier, msg: msg, sender: sender, room: room };
 
@@ -248,52 +281,119 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         overWatch(r);
     }
 
-    //eval
-    if (msg.indexOf(">") == 0) {
-        replier.reply(eval(msg.substring(1)));
+    //메뉴추천
+    if (msg.indexOf("!메뉴추천") == 0) {
+        recom(r, "menu");
     }
 
-    //최근채팅
-    if (msg.indexOf("!최근채팅") == 0) {
-        recentcaht(r);
+    //음식점추천
+    if (msg.indexOf("!음식점추천") == 0) {
+        recom(r, "res");
     }
-
     //각 방별 기능
-    //----------------------------------------------------------------------------------
-    if (room == "시립대 봇제작방" || room == "toast") {
+    //-----------------------------------------------전전컴톡방--------------------------------------
+    if (room == "ele") {
 
-        msgsave(r);
+        //채팅저장
+        D.insert('cele', { name: sender, msg: msg });
 
+        //최근채팅
+        if (msg.indexOf("!최근채팅") == 0) {
+            recentchat(r, 'cele');
+        }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
         if (msg.indexOf("!메뉴추가 ") == 0) {
-            add(r, menu, "menu", 0);
+            add(r, "menu", 0);
         }
 
         //메뉴동의합의
-        if (flag[0] == 1) {
-            agree(r, menu, "menu", "메뉴", 0);
-        }
-
-        //메뉴추천
-        if (msg.indexOf("!메뉴추천") == 0) {
-            recom(r, menu);
+        if (this["flag" + r.room][0] == 1) {
+            agree(r, "menu", "메뉴", 0);
         }
         //---------------------------음식점-----------------------------//
-
         //음식점추가
         if (msg.indexOf("!음식점추가 ") == 0) {
-            add(r, restaur, "restaur", 1);
+            add(r, "res", 1);
         }
 
         //음식점동의합의
-        if (flag[0] == 1) {
-            agree(r, restaur, "restaur", "음식점", 1);
+        if (this["flag" + r.room][0] == 1) {
+            agree(r, "res", "음식점", 1);
+        }
+        //---------------------------------------------------------------//
+    }
+    //-----------------------------------------------------개인채팅방----------------------------------------------
+    if (room == "toast") {
+        //채팅저장
+        D.insert('ctoast', { name: sender, msg: msg });
+
+        //최근채팅
+        if (msg.indexOf("!최근채팅") == 0) {
+            recentchat(r, 'ctoast');
         }
 
-        //음식점추천
-        if (msg.indexOf("!음식점추천") == 0) {
-            recom(r, restaur);
+        //eval
+        if (msg.indexOf(">") == 0) {
+            replier.reply(eval(msg.substring(1)));
+        }
+        //--------------------------메뉴-------------------------------//
+        //메뉴추가
+        if (msg.indexOf("!메뉴추가 ") == 0) {
+            add(r, "menu", 0);
+        }
+
+        //메뉴동의합의
+        if (this["flag" + r.room][0] == 1) {
+            agree(r, "menu", "메뉴", 0);
+        }
+        //---------------------------음식점-----------------------------//
+        //음식점추가
+        if (msg.indexOf("!음식점추가 ") == 0) {
+            add(r, "res", 1);
+        }
+
+        //음식점동의합의
+        if (this["flag" + r.room][0] == 1) {
+            agree(r, "res", "음식점", 1);
+        }
+        //---------------------------------------------------------------//
+    }
+    //-----------------------------------------시립대 봇제작방-----------------------------------------------------
+
+    if (room == "bot") {
+
+        //채팅저장
+        D.insert('cbot', { name: sender, msg: msg });
+
+        //최근채팅
+        if (msg.indexOf("!최근채팅") == 0) {
+            recentchat(r, 'cbot');
+        }
+
+        //eval
+        if (msg.indexOf(">") == 0) {
+            replier.reply(eval(msg.substring(1)));
+        }
+        //--------------------------메뉴-------------------------------//
+        //메뉴추가
+        if (msg.indexOf("!메뉴추가 ") == 0) {
+            add(r, "menu", 0);
+        }
+
+        //메뉴동의합의
+        if (this["flag" + r.room][0] == 1) {
+            agree(r, "menu", "메뉴", 0);
+        }
+        //---------------------------음식점-----------------------------//
+        //음식점추가
+        if (msg.indexOf("!음식점추가 ") == 0) {
+            add(r, "res", 1);
+        }
+
+        //음식점동의합의
+        if (this["flag" + r.room][0] == 1) {
+            agree(r, "res", "음식점", 1);
         }
         //---------------------------------------------------------------//
     }
