@@ -1,114 +1,3 @@
-//-----------------------------------------------------------기본함수------------------------------------------------//
-//절전모드 관리
-wake = (function () {
-    var PM = android.os.PowerManager;
-    var pm = Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
-    var wl = pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK | PM.ACQUIRE_CAUSES_WAKEUP | PM.ON_AFTER_RELEASE, "FAIL");
-    return {
-        on: function () {
-            if (!wl.isHeld()) {
-                wl.acquire();
-                return "wake on done";
-            } else return "not changed";
-        },
-        off: function () {
-            if (wl.isHeld()) {
-                wl.release();
-                return "wake off done";
-            } else return "not changed";
-        },
-        toString: function () {
-            return wl.toString();
-        }
-    }
-})();
-
-//한글받침 관리
-String.prototype.받침 = function () {
-    var lastCharCode = this.toString().charCodeAt(this.toString().length - 1);
-    if (lastCharCode >= "가".charCodeAt(0) && lastCharCode <= "힣".charCodeAt(0)) {
-        if ((lastCharCode - "가".charCodeAt(0)) % 28 == 0) return false;
-        else return true;
-    } else return false;
-
-}
-String.prototype.은는 = function () {
-    return this.toString().받침() ? this.toString() + "은" : this.toString() + "는";
-}
-String.prototype.이가 = function () {
-    return this.toString().받침() ? this.toString() + "이" : this.toString() + "가";
-}
-String.prototype.과와 = function () {
-    return this.toString().받침() ? this.toString() + "과" : this.toString() + "와";
-}
-String.prototype.을를 = function () {
-    return this.toString().받침() ? this.toString() + "을" : this.toString() + "를";
-}
-String.prototype.조사 = function (받침있음, 받침없음) {
-    return this.toString().받침() ? this.toString() + 받침있음 : this.toString() + 받침없음;
-}
-
-//한글인코딩
-String.prototype.encoding = function () {
-    var res = this.toString();
-    var tmp;
-    while (tmp = /\\u[\da-fA-F]{4}/.exec(res)) {
-        res = res.replace(tmp[0], String.fromCharCode(parseInt(tmp[0].substring(2), 16)));
-    }
-    return res;
-}
-
-//파일입출력
-function saveFile() {//github에서 코드불러오기
-    file = "storage/emulated/0/kbot/response.js";
-    //https://raw.githubusercontent.com/sjh7711/bot/05f942ca2d2e1705281f203bf42cc885dd4b758b/response;
-    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/master/response").openConnection();
-    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
-    str = "";
-    tmp = null;
-    while ((tmp = br.readLine()) != null) {
-        str += tmp + "\n";
-    }
-    var filedir = new java.io.File(file);
-    try {
-        var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-        bw.write(str.toString());
-        bw.close();
-    }
-    catch (e) {
-        return e;
-    }
-}
-
-//sort에 필요한 compare
-function compare(a, b) {
-    return a - b;
-}
-
-//기능설명
-function func(r) {
-    if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이하면 16개를 불러오고 최대 16개까지 조회가능합니다.");
-    }
-    if (r.msg.split(" ")[1] == "오버워치") {
-        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
-    }
-    if (r.msg.split(" ")[1] == "로또") {
-        r.replier.reply("로또번호를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "메뉴추천") {
-        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "메뉴추가") {
-        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!메뉴추가 냉장고");
-    }
-    if (r.msg.split(" ")[1] == "음식점추천") {
-        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "음식점추가") {
-        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
-    }
-}
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
 //menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctoast:개인방채팅/cja:자생방채팅/cover:오버워치채팅
@@ -165,7 +54,6 @@ var menuagreeover = 0; //메뉴추가동의 인원수
 var flagmenuover; //추가심사중인 메뉴
 var sendermenuover = []; //메뉴추가에 동의한 사람
 //------------------------------------------------------기능함수---------------------------------------------------------//
-
 //로또
 function lotto(r) {
     var templotto = []; //로또번호 6개가 담길 array
@@ -288,28 +176,31 @@ function getTimeWeather(url) {
     const rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
     const data = rawData.select(".hourly-table").select(".overview-hourly");
     const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
-        var r = /^(\d+)오(.)$/.exec(v);
-    return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
-}
+    	var r = /^(\d+)오(.)$/.exec(v);
+    	return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;}
     );
     const weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
     const tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     const stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     const windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
-var res = "";
-for (var i in timeData) {
-    res += String(timeData[i]).extension("0", 2) + "시 ";
-    res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
-    res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-    res += windData[i] + "\n";
-}
+	var res = "";
+	for (var i in timeData) {
+    	res += String(timeData[i]).extension("0", 2) + "시 ";
+    	res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
+    	res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
+    	res += windData[i] + "\n";
+	}
     const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-return {res: res, next: next};
+	return {res: res, next: next};
 }
+
+
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //인자
     r = { replier: replier, msg: msg, sender: sender, room: room };
+    
+    
     //각 방별 기능
     //-------------------------------------------------------전전컴톡방-----------------------------------------------------
     if (room == "ele") {
@@ -354,6 +245,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------------------------------------------//
     }
+    
+    
     //-----------------------------------------------------개인채팅방----------------------------------------------
     if (room == "toast") {
         //기능
@@ -399,6 +292,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------------------------------------------//
     }
+    
+    
     //-----------------------------------------시립대 봇제작방-----------------------------------------------------
 
     if (room == "bot") {
@@ -447,6 +342,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------------------------------------------//
     }
+    
+    
     //---------------------------------------------------------자생방-----------------------------------------
     if (room == 'ja') {
     	//기능
@@ -489,6 +386,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             recom(r, "res");
         }
     }
+    
+    
     //-----------------------------------------------------오버워치-----------------------------------------
     if (room == 'over') {
     	//기능
@@ -513,6 +412,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             agree(r, "menu", "메뉴", 0);
         }
     }
+    
+    
     //-------------------------------------------------------공익----------------------------------------------------
     if (room == 'agent') {
     	//기능
@@ -527,6 +428,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             recentchat(r, 'cagent');
         }
     }
+    
+    
     //---------------------------------------------------개인챗----------------------------
     if (room == 'dajin'){
         //기능
@@ -534,6 +437,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	    replier.reply("!로또\n!메뉴추천\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
     	}
     }
+    
+    
     //-------------------------------------------------------모든방 공용---------------------------------------------
     if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
         replier.reply("욕은 안좋아");
@@ -555,4 +460,125 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         recom(r, "menu");
     }
     
+}
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------기본 함수--------------------------------------------------
+//절전모드 관리
+wake = (function () {
+    var PM = android.os.PowerManager;
+    var pm = Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
+    var wl = pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK | PM.ACQUIRE_CAUSES_WAKEUP | PM.ON_AFTER_RELEASE, "FAIL");
+    return {
+        on: function () {
+            if (!wl.isHeld()) {
+                wl.acquire();
+                return "wake on done";
+            } else return "not changed";
+        },
+        off: function () {
+            if (wl.isHeld()) {
+                wl.release();
+                return "wake off done";
+            } else return "not changed";
+        },
+        toString: function () {
+            return wl.toString();
+        }
+    }
+})();
+
+//한글받침 관리
+String.prototype.받침 = function () {
+    var lastCharCode = this.toString().charCodeAt(this.toString().length - 1);
+    if (lastCharCode >= "가".charCodeAt(0) && lastCharCode <= "힣".charCodeAt(0)) {
+        if ((lastCharCode - "가".charCodeAt(0)) % 28 == 0) return false;
+        else return true;
+    } else return false;
+
+}
+String.prototype.은는 = function () {
+    return this.toString().받침() ? this.toString() + "은" : this.toString() + "는";
+}
+String.prototype.이가 = function () {
+    return this.toString().받침() ? this.toString() + "이" : this.toString() + "가";
+}
+String.prototype.과와 = function () {
+    return this.toString().받침() ? this.toString() + "과" : this.toString() + "와";
+}
+String.prototype.을를 = function () {
+    return this.toString().받침() ? this.toString() + "을" : this.toString() + "를";
+}
+String.prototype.조사 = function (받침있음, 받침없음) {
+    return this.toString().받침() ? this.toString() + 받침있음 : this.toString() + 받침없음;
+}
+
+//한글인코딩
+String.prototype.encoding = function () {
+    var res = this.toString();
+    var tmp;
+    while (tmp = /\\u[\da-fA-F]{4}/.exec(res)) {
+        res = res.replace(tmp[0], String.fromCharCode(parseInt(tmp[0].substring(2), 16)));
+    }
+    return res;
+}
+
+//파일입출력
+function saveFile() {//github에서 코드불러오기
+    file = "storage/emulated/0/kbot/response.js";
+    //https://raw.githubusercontent.com/sjh7711/bot/05f942ca2d2e1705281f203bf42cc885dd4b758b/response;
+    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/master/response").openConnection();
+    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
+    str = "";
+    tmp = null;
+    while ((tmp = br.readLine()) != null) {
+        str += tmp + "\n";
+    }
+    var filedir = new java.io.File(file);
+    try {
+        var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
+        bw.write(str.toString());
+        bw.close();
+    }
+    catch (e) {
+        return e;
+    }
+}
+
+//sort에 필요한 compare
+function compare(a, b) {
+    return a - b;
+}
+
+//기능설명
+function func(r) {
+    if (r.msg.split(" ")[1] == "최근채팅") {
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이하면 16개를 불러오고 최대 16개까지 조회가능합니다.");
+    }
+    if (r.msg.split(" ")[1] == "오버워치") {
+        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
+    }
+    if (r.msg.split(" ")[1] == "로또") {
+        r.replier.reply("로또번호를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "메뉴추천") {
+        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "메뉴추가") {
+        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!메뉴추가 냉장고");
+    }
+    if (r.msg.split(" ")[1] == "음식점추천") {
+        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "음식점추가") {
+        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
+    }
 }
