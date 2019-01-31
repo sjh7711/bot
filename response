@@ -1,6 +1,6 @@
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctoast:개인방채팅/cja:자생방채팅/cover:오버워치채팅
+//menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅
 var T = require("ThreadManager.js");
 
 //봇제작방용 변수
@@ -22,13 +22,13 @@ var sendermenuele = [];
 var senderresele = [];
 
 //개인방용 변수
-var flagtoast = [0, 0];
-var menuagreetoast = 0; 
-var resagreetoast = 0; 
-var flagmenutoast; 
-var flagrestoast;
-var sendermenutoast = []; 
-var senderrestoast = []; 
+var flagtest = [0, 0];
+var menuagreetest = 0; 
+var resagreetest = 0; 
+var flagmenutest; 
+var flagrestest;
+var sendermenutest = []; 
+var senderrestest = []; 
 
 //자생방용 변수
 var flagja = [0, 0]; 
@@ -248,17 +248,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     
     
     //-----------------------------------------------------개인채팅방----------------------------------------------
-    if (room == "toast" && isGroupChat == false) {
+    if (room == "test") {
         //기능
     	if (msg == "!기능") {
     	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
     	}
         //채팅저장
-        D.insert('ctoast', { name: sender, msg: msg });
+        D.insert('ctest', { name: sender, msg: msg });
 
         //최근채팅
         if (msg.indexOf("!최근채팅") == 0) {
-            recentchat(r, 'ctoast');
+            recentchat(r, 'ctest');
         }
 
         //eval
