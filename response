@@ -528,7 +528,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
     }
     //---------------------------------------------------개인챗----------------------------
-    if (room == "dajin'){
+    if (room == 'dajin'){
         //기능
     	if (msg == "!기능") {
     	    replier.reply("!로또\n!메뉴추천\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
