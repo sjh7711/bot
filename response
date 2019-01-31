@@ -206,17 +206,11 @@ function agent(){
     .method(org.jsoup.Connection.Method.POST)
     .execute().cookies()
 
-    conn=new java.net.URL("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").openConnection();
-    conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-    conn.setRequestProperty(cookie2);
-    conn.setRequestProperty(cookie1);
-    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
-    str = "";
-    tmp = null;
-    while ((tmp = br.readLine()) != null) {
-        str += tmp + "\n";
-    }
-    return str;
+    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+	.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+	.cookies(cookie2).cookies(cookie1).get();
+	
+	return doc
 }
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
