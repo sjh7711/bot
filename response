@@ -13,56 +13,56 @@ var sendermenubot = []; //메뉴추가에 동의한 사람
 var senderresbot = []; //음식점추가에 동의한 사람
 
 //전전컴톡방용 변수
-var flagele = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
-var menuagreeele = 0; //메뉴추가동의 인원수
-var resagreeele = 0; //음식점추가동의 인원수
-var flagmenuele; //추가심사중인 메뉴
-var flagresele; //추가심사중인 음식점
-var sendermenuele = []; //메뉴추가에 동의한 사람
-var senderresele = []; //음식점추가에 동의한 사람
+var flagele = [0, 0]; 
+var menuagreeele = 0;
+var resagreeele = 0;
+var flagmenuele; 
+var flagresele; 
+var sendermenuele = [];
+var senderresele = [];
 
 //개인방용 변수
-var flagtoast = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
-var menuagreetoast = 0; //메뉴추가동의 인원수
-var resagreetoast = 0; //음식점추가동의 인원수
-var flagmenutoast; //추가심사중인 메뉴
-var flagrestoast; //추가심사중인 음식점
-var sendermenutoast = []; //메뉴추가에 동의한 사람
-var senderrestoast = []; //음식점추가에 동의한 사람
+var flagtoast = [0, 0];
+var menuagreetoast = 0; 
+var resagreetoast = 0; 
+var flagmenutoast; 
+var flagrestoast;
+var sendermenutoast = []; 
+var senderrestoast = []; 
 
 //자생방용 변수
-var flagja = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
-var menuagreeja = 0; //메뉴추가동의 인원수
-var resagreeja = 0; //음식점추가동의 인원수
-var flagmenuja; //추가심사중인 메뉴
-var flagresja; //추가심사중인 음식점
-var sendermenuja = []; //메뉴추가에 동의한 사람
-var senderresja = []; //음식점추가에 동의한 사람
+var flagja = [0, 0]; 
+var menuagreeja = 0; 
+var resagreeja = 0; 
+var flagmenuja; 
+var flagresja;
+var sendermenuja = []; 
+var senderresja = []; 
 
 //봇제작방용 변수
-var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
-var menuagreebot = 0; //메뉴추가동의 인원수
-var resagreebot = 0; //음식점추가동의 인원수
-var flagmenubot; //추가심사중인 메뉴
-var flagresbot; //추가심사중인 음식점
-var sendermenubot = []; //메뉴추가에 동의한 사람
-var senderresbot = []; //음식점추가에 동의한 사람
+var flagbot = [0, 0]; 
+var menuagreebot = 0; 
+var resagreebot = 0; 
+var flagmenubot; 
+var flagresbot;
+var sendermenubot = []; 
+var senderresbot = []; 
 
 //오버워치용 변수
-var flagover = [0]; //flag[0]=메뉴추가flag
-var menuagreeover = 0; //메뉴추가동의 인원수
-var flagmenuover; //추가심사중인 메뉴
-var sendermenuover = []; //메뉴추가에 동의한 사람
+var flagover = [0];
+var menuagreeover = 0; 
+var flagmenuover; 
+var sendermenuover = []; 
 //------------------------------------------------------기능함수---------------------------------------------------------//
 //로또
 function lotto(r) {
-    var templotto = []; //로또번호 6개가 담길 array
-    for (var i = 0; i < 30; i++) { //30회정도 하면 되지 않을까
+    var templotto = []; //로또번호 담길곳
+    for (var i = 0; i < 100; i++) {
         var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
         if (templotto.indexOf(rad) == -1) {//중복이면 거른다
             templotto.push(rad);
         }
-        if (templotto.length == 6) {//6개면 for 탈출
+        if (templotto.length == 6) {//6개까지
             break;
         }
     }
@@ -88,14 +88,14 @@ function overWatch(r) {
 }
 
 //리스트에서 추천하기(1개 or 여러개)
-function recom(r, name) { //name : 리스트 이름
+function recom(r, name) { //name : DB이름
     var num = r.msg.split(" ")[1]; //num : 추천받고 싶은개수
     var list = D.selectForArray(name);
-    if (num == undefined) {
+    if (num == undefined) {//1개만 추천
         var rad = Math.floor(Math.random() * list.length);
         r.replier.reply(list[rad]);
     }
-    if (0 < num && num < 9) {//추천할 메뉴가 1개 or 9개이상일때(1개만 return)
+    if (0 < num && num < 9) {//추천할 메뉴가 1개  ~ 8개이하일때
         var templist = list.slice(); //list의 복사본을 만든다.
         var listmul = []; //listmul : 랜덤으로 뽑힐 메뉴들이 담기는 공간
         for (var i = 0; i < num; i++) {
@@ -127,7 +127,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
 }
 
 //리스트 추가 다수 동의
-function agree(r, name, name1, num) { // list : seed / name : DB 이름("menu", "res"...) / name1 : list의 한글이름("메뉴", "음식점"..) / num : flag number
+function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "음식점"..) / num : flag number
     list = D.selectForArray(name);
     if (r.msg == name1 + "동의") {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
