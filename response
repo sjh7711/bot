@@ -54,6 +54,10 @@ var menuagreeover = 0;
 var flagmenuover; 
 var sendermenuover = []; 
 //------------------------------------------------------기능함수---------------------------------------------------------//
+function agent(r) {
+    
+}
+
 //로또
 function lotto(r) {
     var templotto = []; //로또번호 담길곳
@@ -262,7 +266,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         //eval
-        if (msg.indexOf("]") == 0) {
+        if (msg.indexOf(">") == 0) {
             replier.reply(eval(msg.substring(1)));
         }
         //--------------------------메뉴-------------------------------//
@@ -297,6 +301,31 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //-----------------------------------------시립대 봇제작방-----------------------------------------------------
 
     if (room == "bot") {
+    	if (msg == "!agent") {
+    	link = "http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html"
+
+    res = org.jsoup.Jsoup.connect(link)
+    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+    .method(org.jsoup.Connection.Method.GET)
+    .execute();
+
+    first_cookie = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+    .method(org.jsoup.Connection.Method.GET)
+    .execute().cookies()
+
+    res2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(first_cookie)
+    .data("url", "http://www.knfb1377.or.kr%2Fhtml%2Fmain.html")
+    .data("mb_id", "tyfb1377").data("mb_password", "1q2w3e4r").data("x", "15").data("y", "36")
+    .method(org.jsoup.Connection.Method.POST)
+    .execute()
+
+    cookie2 = res2.cookie()
+
+    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+    .cookies(cookie2).get();
+    }
         //기능
     	if (msg == "!기능") {
     	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
@@ -312,7 +341,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         //eval
-        if (msg.indexOf("]") == 0) {
+        if (msg.indexOf(">") == 0) {
             replier.reply(eval(msg.substring(1)));
         }
         //--------------------------메뉴-------------------------------//
