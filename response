@@ -150,6 +150,15 @@ var flagresja; //추가심사중인 음식점
 var sendermenuja = []; //메뉴추가에 동의한 사람
 var senderresja = []; //음식점추가에 동의한 사람
 
+//봇제작방용 변수
+var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var menuagreebot = 0; //메뉴추가동의 인원수
+var resagreebot = 0; //음식점추가동의 인원수
+var flagmenubot; //추가심사중인 메뉴
+var flagresbot; //추가심사중인 음식점
+var sendermenubot = []; //메뉴추가에 동의한 사람
+var senderresbot = []; //음식점추가에 동의한 사람
+
 //오버워치용 변수
 var flagover = [0]; //flag[0]=메뉴추가flag
 var menuagreeover = 0; //메뉴추가동의 인원수
@@ -304,6 +313,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //각 방별 기능
     //-------------------------------------------------------전전컴톡방-----------------------------------------------------
     if (room == "ele") {
+    	//기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
         //채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
@@ -343,6 +356,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
     //-----------------------------------------------------개인채팅방----------------------------------------------
     if (room == "toast") {
+        //기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
         //채팅저장
         D.insert('ctoast', { name: sender, msg: msg });
 
@@ -385,6 +402,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //-----------------------------------------시립대 봇제작방-----------------------------------------------------
 
     if (room == "bot") {
+        //기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
             D.insert('cbot', { name: sender, msg: msg });
@@ -428,7 +449,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
     //---------------------------------------------------------자생방-----------------------------------------
     if (room == 'ja') {
-
+    	//기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
         //채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
@@ -467,7 +491,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
     //-----------------------------------------------------오버워치-----------------------------------------
     if (room == 'over') {
-
+    	//기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
         //채팅저장
         D.insert('cover', { name: sender, msg: msg });
 
@@ -488,6 +515,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
     //-------------------------------------------------------공익----------------------------------------------------
     if (room == 'agent') {
+    	//기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
         //채팅저장
         D.insert('cagent', { name: sender, msg: msg });
 
@@ -496,64 +527,32 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             recentchat(r, 'cagent');
         }
     }
-    
-        if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
+    //---------------------------------------------------개인챗----------------------------
+    if (room == "dajin'){
+        //기능
+    	if (msg == "!기능") {
+    	    replier.reply("!로또\n!메뉴추천\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+    	}
+    }
+    //-------------------------------------------------------모든방 공용---------------------------------------------
+    if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
         replier.reply("욕은 안좋아");
     }
-
-    //기능
-    if (msg == "!기능") {
-        replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    }
-
     //기능설명
     if (msg.indexOf("!기능 ") == 0) {
         func(r);
     }
-
     //로또
     if (msg.indexOf("!로또") == 0) {
         lotto(r);
     }
-
     //오버워치
     if (msg.indexOf("!오버워치") == 0) {
         overWatch(r);
     }
-
     //메뉴추천
     if (msg.indexOf("!메뉴추천") == 0) {
         recom(r, "menu");
     }
-        //-------------------------------------------------------개인채팅----------------------------------------------------
-    if (room == 'dajin') {
-        if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
-        	replier.reply("욕은 안좋아");
-    	}
-
-    	//기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
-
-    	//기능설명
-    	if (msg.indexOf("!기능 ") == 0) {
-    	    func(r);
-    	}
-
-    	//로또
-    	if (msg.indexOf("!로또") == 0) {
-   	     lotto(r);
-    	}
-
-    	//오버워치
-    	if (msg.indexOf("!오버워치") == 0) {
-    	    overWatch(r);
-    	}
-
-    	//메뉴추천
-    	if (msg.indexOf("!메뉴추천") == 0) {
-    	    recom(r, "menu");
-    	}
-    }
+    
 }
