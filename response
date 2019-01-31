@@ -176,25 +176,48 @@ function getTimeWeather(url) {
     const rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
     const data = rawData.select(".hourly-table").select(".overview-hourly");
     const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
-    	var r = /^(\d+)오(.)$/.exec(v);
-    	return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;}
+        var r = /^(\d+)오(.)$/.exec(v);
+    return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;}
     );
     const weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
     const tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     const stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     const windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
-	var res = "";
-	for (var i in timeData) {
-    	res += String(timeData[i]).extension("0", 2) + "시 ";
-    	res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
-    	res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-    	res += windData[i] + "\n";
-	}
+var res = "";
+for (var i in timeData) {
+    res += String(timeData[i]).extension("0", 2) + "시 ";
+    res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
+    res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
+    res += windData[i] + "\n";
+}
     const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-	return {res: res, next: next};
+return {res: res, next: next};
 }
 
+function agent(){
+    cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+    .method(org.jsoup.Connection.Method.GET)
+    .execute().cookies()
 
+    cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+    .data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html")
+    .data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+    .method(org.jsoup.Connection.Method.POST)
+    .execute().cookies()
+
+    conn=new java.net.URL("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").openConnection();
+    conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+    conn.setRequestProperty(cookie2);
+    conn.setRequestProperty(cookie1);
+    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
+    str = "";
+    tmp = null;
+    while ((tmp = br.readLine()) != null) {
+        str += tmp + "\n";
+    }
+    return str;
+}
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //인자
@@ -204,10 +227,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //각 방별 기능
     //-------------------------------------------------------전전컴톡방-----------------------------------------------------
     if (room == "ele") {
-    	//기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        //기능
+        if (msg == "!기능") {
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
         //채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
@@ -250,9 +273,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //-----------------------------------------------------개인채팅방----------------------------------------------
     if (room == "test") {
         //기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        if (msg == "!기능") {
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
         //채팅저장
         D.insert('ctest', { name: sender, msg: msg });
 
@@ -263,7 +286,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         //eval
         if (msg.indexOf("]") == 0) {
-            replier.reply(eval(msg.substring(1)));
+            try{
+                replier.reply(eval(msg.substring(1)));
+            }catch(e){
+                replier.reply(e + "\n" + e.stack);
+            }
+            
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
@@ -298,9 +326,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
     if (room == "bot") {
         //기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        if (msg == "!기능") {
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
             D.insert('cbot', { name: sender, msg: msg });
@@ -312,8 +340,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         //eval
-        if (msg.indexOf(">") == 0) {
-            replier.reply(eval(msg.substring(1)));
+        if (msg.indexOf("]") == 0) {
+            try{
+                replier.reply(eval(msg.substring(1)));
+            }catch(e){
+                replier.reply(e + "\n" + e.stack);
+            }
+            
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
@@ -346,10 +379,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     
     //---------------------------------------------------------자생방-----------------------------------------
     if (room == 'ja') {
-    	//기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        //기능
+        if (msg == "!기능") {
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
         //채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
@@ -390,10 +423,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     
     //-----------------------------------------------------오버워치-----------------------------------------
     if (room == 'over') {
-    	//기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        //기능
+        if (msg == "!기능") {
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
         //채팅저장
         D.insert('cover', { name: sender, msg: msg });
 
@@ -416,10 +449,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     
     //-------------------------------------------------------공익----------------------------------------------------
     if (room == 'agent') {
-    	//기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        //기능
+        if (msg == "!기능") {
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
         //채팅저장
         D.insert('cagent', { name: sender, msg: msg });
 
@@ -433,9 +466,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //---------------------------------------------------개인챗----------------------------
     if (room == 'dajin' && isGroupChat == false){
         //기능
-    	if (msg == "!기능") {
-    	    replier.reply("!로또\n!메뉴추천\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
-    	}
+        if (msg == "!기능") {
+            replier.reply("!로또\n!메뉴추천\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+        }
     }
     
     
@@ -460,7 +493,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         recom(r, "menu");
     }
     if(msg.indexOf("/기능") == 0) {
-    	replier.reply("!기능으로 작동합니다");
+        replier.reply("!기능으로 작동합니다");
     }
     
 }
