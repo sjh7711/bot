@@ -285,7 +285,7 @@ return {res: res, next: next};
 //.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
 var cookie1
 var cookie2
-function notice(){
+function notice(r){
 	if(cookie1==undefined||cookie2==undefined){
 		cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 		.method(org.jsoup.Connection.Method.GET).execute().cookies();
@@ -337,7 +337,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg.indexOf("!공지") == 0) {
-        	notice();
+        	notice(r);
         }
         
         //--------------------------메뉴-------------------------------//
@@ -438,7 +438,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             recentchat(r, 'cagent');
         }
         if (msg.indexOf("!공지") == 0) {
-        	notice();
+        	notice(r);
         }
     }
    
