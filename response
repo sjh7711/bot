@@ -457,10 +457,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg.indexOf("!최근채팅") == 0) {
             recentchat(r, 'cagent');
         }
-        
-        if (
-        
-        
     }
     
     
