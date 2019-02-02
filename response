@@ -354,6 +354,7 @@ function noticecheck(){
 			Api.replyRoom("test",newnotice);
 			var firstnum = newnotice.split(" ")[0];//새공지의 번호
 			var newtext = newnotice.split(firstnum+" ")[1];//새공지의 텍스트
+			D.delete('notice');
 			D.insert('notice', { number: firstnum, msg: newtext });
 		}
 	}catch(e){
@@ -647,5 +648,4 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if(msg.indexOf("/기능") == 0) {
         replier.reply("!기능으로 작동합니다");
     }
-    
 }
