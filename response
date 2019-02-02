@@ -26,15 +26,8 @@ function reload() {
     T.interrupt();
     var Timer = new Date();
     Api.replyRoom('test', "마무리 작업 시작");
-    chatLoggingUpdate();
-    if (UI.thread != undefined) {
-        UI.thread.interrupt();
-    }
-    logBotState("end");
     Api.replyRoom('test', "reloading 시작");
-    wake.on();
     Api.reload();
-    wake.off();
     var time = (new Date() - Timer) / 1000;
     Api.replyRoom('test', "reloading 완료 / " + time + "s");
 }
