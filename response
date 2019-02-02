@@ -194,24 +194,17 @@ for (var i in timeData) {
 return {res: res, next: next};
 }
 
-function agent(){
-	link = "http:\/\/www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html"
-    cookie1 = org.jsoup.Jsoup.connect(link)
-    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*\/*;q=0.8")
-    .method(org.jsoup.Connection.Method.GET)
-    .execute().cookies()
+//.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
+//.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
+function notice(){
+    cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+    .method(org.jsoup.Connection.Method.GET).execute().cookies()
 
-    cookie2 = org.jsoup.Jsoup.connect(link).cookies(cookie1)
-    .data("url","http:\/\/www.knfb1377.or.kr%2Fhtml%2Fmain.html")
+    cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
     .data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-    .method(org.jsoup.Connection.Method.POST)
-    .execute().cookies()
+    .method(org.jsoup.Connection.Method.POST).execute().cookies()
 
-    doc = org.jsoup.Jsoup.connect("http:\/\/www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-	.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,\*/*;q=0.8")
-	.cookies(cookie2).cookies(cookie1).get();
-	
-	return doc
+    return doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").cookies(cookie2).cookies(cookie1).get();
 }
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
