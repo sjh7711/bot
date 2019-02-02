@@ -27,7 +27,6 @@ String.prototype.받침 = function () {
         if ((lastCharCode - "가".charCodeAt(0)) % 28 == 0) return false;
         else return true;
     } else return false;
-
 }
 String.prototype.은는 = function () {
     return this.toString().받침() ? this.toString() + "은" : this.toString() + "는";
