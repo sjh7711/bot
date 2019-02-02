@@ -24,8 +24,6 @@ function saveFile(checksum) {//github에서 코드불러오기
 function reload() {
     T.interrupt();
     var Timer = new Date();
-    Api.replyRoom('test', "마무리 작업 시작");
-    Api.replyRoom('test', "reloading 시작");
     Api.reload();
     var time = (new Date() - Timer) / 1000;
     Api.replyRoom('test', "reloading 완료 / " + time + "s");
@@ -94,6 +92,13 @@ function func(r) {
     if (r.msg.split(" ")[1] == "음식점추가") {
         r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
     }
+    if (r.msg.split(" ")[1] == "예정기능") {
+        r.replier.reply("앞으로 만들어볼 기능들입니다. 하는건 내맘");
+    }
+    if (r.msg.split(" ")[1] == "공지") {
+        r.replier.reply("공지 1페이지(15개를 띄워줍니다)");
+    }
+    
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
@@ -357,10 +362,10 @@ function noticecheck(){
     		.cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice().replace(/ 관리자/g,"");
 		}
 		
-		var checknum = doc.split(" ")[0];
+		var checknum = doc.split(" ")[0];//제일 최근공지가 뭔지 확인
 		
-		if(checknum!=D.selectForArray('notice', 'number')[0]){
-			var secondnum = checknum-1;//두번째 공지 번호
+		if(checknum!=D.selectForArray('notice', 'number')[0]){//저장된 공지의 번호
+			var secondnum = checknum-1;//두번째 공지 번호(split을위해)
 			var newnotice = doc.split(secondnum)[0];//새공지
 			Api.replyRoom("test",newnotice);
 			var firstnum = newnotice.split(" ")[0];//새공지의 번호
@@ -387,7 +392,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == "test") {
         //기능
         if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
         }
         //채팅저장
         D.insert('ctest', { name: sender, msg: msg });
@@ -395,6 +400,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //최근채팅
         if (msg.indexOf("!최근채팅") == 0) {
             recentchat(r, 'ctest');
+        }
+        
+        //할일
+        if (msg.indexOf("!예정기능") == 0) {
+            D.selectForArray('willdo').join("\n");
         }
 
         //eval
@@ -447,7 +457,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == "bot") {
         //기능
         if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
         }
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
@@ -466,7 +476,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }catch(e){
                 replier.reply(e + "\n" + e.stack);
             }
-            
+        }
+        
+        //할일
+        if (msg.indexOf("!예정기능") == 0) {
+            D.selectForArray('willdo').join("\n");
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
@@ -501,7 +515,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == 'agent') {
         //기능
         if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+            replier.reply("!공지\n!로또\n!최근채팅\n!메뉴추천\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
         }
         //채팅저장
         D.insert('cagent', { name: sender, msg: msg });
@@ -519,7 +533,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == "ele") {
         //기능
         if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
+            replier.reply("!로또\n!최근채팅\n!메뉴추천\n!메뉴추가\n!음식점추천\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.");
         }
         //채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
@@ -530,6 +544,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //최근채팅
         if (msg.indexOf("!최근채팅") == 0) {
             recentchat(r, 'cele');
+        }
+        
+        //할일
+        if (msg.indexOf("!예정기능") == 0) {
+            D.selectForArray('willdo').join("\n");
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
@@ -637,9 +656,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
     
     //-------------------------------------------------------모든방 공용---------------------------------------------
-    if (msg.indexOf("시발") >= 0 || msg.indexOf("씨발") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
-        replier.reply("욕은 안좋아");
-    }
+    
     //기능설명
     if (msg.indexOf("!기능 ") == 0) {
         func(r);
@@ -658,5 +675,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     }
     if(msg.indexOf("/기능") == 0) {
         replier.reply("!기능으로 작동합니다");
+    }
+    if(msg.indexOf("/학식") == 0) {
+        replier.reply(sender+"님 학식 드시나요?");
+    }
+    if (msg.indexOf("시발") >= 0 ||msg.indexOf("ㅅㅂ") >= 0 ||msg.indexOf("tq") >= 0 ||msg.indexOf("쓰발") >= 0 ||msg.indexOf("ㅆㅂ") >= 0 || msg.indexOf("존나") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
+        replier.reply("욕은 안좋아");
     }
 }
