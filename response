@@ -404,7 +404,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         //할일
         if (msg.indexOf("!예정기능") == 0) {
-            D.selectForArray('willdo').join("\n");
+            replier.reply(D.selectForArray('willdo').join("\n"));
         }
 
         //eval
@@ -480,7 +480,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         //할일
         if (msg.indexOf("!예정기능") == 0) {
-            D.selectForArray('willdo').join("\n");
+            replier.reply(D.selectForArray('willdo').join("\n"));
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
@@ -548,7 +548,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         //할일
         if (msg.indexOf("!예정기능") == 0) {
-            D.selectForArray('willdo').join("\n");
+            replier.reply(D.selectForArray('willdo').join("\n"));
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
