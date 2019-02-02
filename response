@@ -20,6 +20,26 @@ function saveFile() {//github에서 코드불러오기
         return e;
     }
 }
+
+//reload
+function reload() {
+    T.interrupt();
+    var Timer = new Date();
+    Api.replyRoom(adminName, "마무리 작업 시작");
+    chatLoggingUpdate();
+    if (UI.thread != undefined) {
+        UI.thread.interrupt();
+    }
+    logBotState("end");
+    Api.replyRoom(adminName, "reloading 시작");
+    wake.on();
+    Api.reload();
+    wake.off();
+    var time = (new Date() - Timer) / 1000;
+    Api.replyRoom(adminName, "reloading 완료 / " + time + "s");
+}
+
+
 //한글받침 관리
 String.prototype.받침 = function () {
     var lastCharCode = this.toString().charCodeAt(this.toString().length - 1);
