@@ -204,7 +204,15 @@ function notice(){
     .data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
     .method(org.jsoup.Connection.Method.POST).execute().cookies()
 
-    return doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").cookies(cookie2).cookies(cookie1).get();
+    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    .cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice();
+
+    var fnum = doc.split(" ")[0]-1
+    for(i=0;i<14;i++){
+    	doc=doc.replace(fnum, "\n"+fnum);
+    	fnum--;
+    }
+    doc=doc.replace(/ 관리자/g,"");
 }
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -448,6 +456,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg.indexOf("!최근채팅") == 0) {
             recentchat(r, 'cagent');
         }
+        
+        if (
+        
+        
     }
     
     
