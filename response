@@ -25,18 +25,18 @@ function saveFile() {//github에서 코드불러오기
 function reload() {
     T.interrupt();
     var Timer = new Date();
-    Api.replyRoom(adminName, "마무리 작업 시작");
+    Api.replyRoom('test', "마무리 작업 시작");
     chatLoggingUpdate();
     if (UI.thread != undefined) {
         UI.thread.interrupt();
     }
     logBotState("end");
-    Api.replyRoom(adminName, "reloading 시작");
+    Api.replyRoom('test', "reloading 시작");
     wake.on();
     Api.reload();
     wake.off();
     var time = (new Date() - Timer) / 1000;
-    Api.replyRoom(adminName, "reloading 완료 / " + time + "s");
+    Api.replyRoom('test', "reloading 완료 / " + time + "s");
 }
 
 
