@@ -305,13 +305,11 @@ function notice(){
     }
     doc=doc.replace(/ 관리자/g,"");
     
-    return doc;
+    r.replier.reply(doc);
 }
 //--------------------------------------------------------------------소스코드-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	//마지막수정|2019.02.23 02:58
     r = { replier: replier, msg: msg, sender: sender, room: room };
-    
     
     //각 방별 기능
 	//-----------------------------------------------------개인채팅방----------------------------------------------
