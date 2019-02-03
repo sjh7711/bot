@@ -246,7 +246,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
-                notice(r);
+                noticecheck(r);
             }
         }
 
