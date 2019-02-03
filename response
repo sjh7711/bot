@@ -41,12 +41,12 @@ function time() {
 	var day = dayNames[today.getDay()];
 	
 	var year   = today.getFullYear(),
-	var month  = today.getMonth() + 1,
-	var date   = today.getDate(),
-	var hour   = today.getHours(),
-	var minute = today.getMinutes(),
-	var second = today.getSeconds();
-	var ampm   = hour >= 12 ? 'PM' : 'AM';
+	month  = today.getMonth() + 1,
+	date   = today.getDate(),
+	hour   = today.getHours(),
+	minute = today.getMinutes(),
+	second = today.getSeconds();
+	ampm   = hour >= 12 ? 'PM' : 'AM';
 	
 	hour = hour % 12;
 	hour = hour ? hour : 12;
