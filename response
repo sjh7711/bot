@@ -238,6 +238,7 @@ function getTimeWeather(r, url) {
 //.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
 var cookie1;
 var cookie2;
+var doc;
 
 function notice(r){
 	if(cookie1==undefined||cookie2==undefined){
