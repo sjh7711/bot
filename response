@@ -261,13 +261,13 @@ function notice(r){
 		.method(org.jsoup.Connection.Method.POST).execute().cookies();
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    	.cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice();
+    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
 	}
     
     var text = "";
     
     for(i=0;i<doc.select("tr.num").size();i++) {
-	text += doc.select("tr.num").toArray()[i].select("td.num").toArray()[0].text()+" "+doc.select("tr.num").toArray()[i].select("td.date").text() + " "+doc.select("tr.num").toArray()[i].select("td.title").text()+"\n"
+	text += doc.select("tr.num").get(i).select("td.num").get(0).text()+" "+doc.select("tr.num").get(i).select("td.date").text() + " "+doc.select("tr.num").get(i).select("td.title").get(0).text()+"\n"
 	}
 	
     r.replier.reply(text);
@@ -297,7 +297,7 @@ function noticecheck(){
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
 		
 			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    		.cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice().replace(/ 관리자/g,"");
+    		.cookies(cookie2).cookies(cookie1).get().select('tbody');
 		}
 		
 		var checknum = doc.split(" ")[0];//제일 최근공지가 뭔지 확인
