@@ -246,7 +246,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
-                noticecheck(r);
+                notice(r);
             }
         }
 
@@ -384,7 +384,18 @@ var cookie1;
 var cookie2;
 var doc;
 //공지체크기
-function noticecheck(r){
+function notice(r) {
+	var count = r.msg.split(" ")[1];
+	var text = [];
+	var dbnum = D.selectForArray('notice', "count(*)")-1;//db개수 - 1
+    for(i=dbnum-count;i<=dbnum;i++){
+    	text.push(D.selectForArray('notice')[i];
+    }
+    text.join("\n\n");
+    Api.replyRoom(r.room, text);
+}
+
+function noticecheck(){
 	try{
 		if(cookie1==undefined||cookie2==undefined){
 			cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
@@ -421,15 +432,6 @@ function noticecheck(r){
 			Api.replyRoom("agent","새공지! "+newnotice);
 			D.insert('notice', { num: firstnum, date: date, msg: newnotice });
 		}
-		if(r.msg=="!공지 "){
-			var count = r.msg.split(" ")[1];
-			var text = [];
-    		for(i=dbnum-count;i<=dbnum;i++){
-    			text.push(D.selectForArray[i]);
-    		}
-    		text.join("\n\n");
-    		Api.replyRoom(r.room, text);
-    	}
 	}catch(e){
 		Log.e(e+"\n"+e.stack+'\n');
 	}
