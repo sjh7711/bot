@@ -122,6 +122,9 @@ function func(r) {
     if (r.msg.split(" ")[1] == "공지") {
         r.replier.reply("공지 1페이지(15개)를 띄워줍니다");
     }
+    if (r.msg.split(" ")[1] == "날씨") {
+        r.replier.reply("무전동 날씨를 보여줍니다");
+    }
     
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
@@ -306,23 +309,23 @@ function getTimeWeather(url) {
     const data = rawData.select(".hourly-table").select(".overview-hourly");
     const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
         var r = /^(\d+)오(.)$/.exec(v);
-    return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;}
+        return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
+    }
     );
     const weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
     const tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     const stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     const windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
-var res = "";
-for (var i in timeData) {
-    res += String(timeData[i]).extension("0", 2) + "시 ";
-    res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
-    res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-    res += windData[i] + "\n";
-}
+    var res = "";
+    for (var i in timeData) {
+        res += String(timeData[i]).extension("0", 2) + "시 ";
+        res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
+        res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
+        res += windData[i] + "\n";
+    }
     const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-return {res: res, next: next};
+    return {res: res, next: next};
 }
-
 //홈페이지 파밍
 //.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
 //.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
@@ -435,6 +438,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             recentchat(r, 'ctest');
         }
         
+        if (msg.indexOf("!날씨") == 0||msg.indexOf("!ㄴㅆ") == 0) {
+            getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/weather-forecast/1873980')
+        }
+        
         //할일
         if (msg.indexOf("!예정기능") == 0||msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
             replier.reply(D.selectForArray('willdo').join("\n"));
@@ -449,12 +456,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!기능") {
             replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
         }
-        
 
-        
         //--------------------------메뉴-------------------------------//
         //메뉴추가
-        if (msg.indexOf("!메뉴추가 ") == 0) {
+        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
             add(r, "menu", "메뉴", 0);
         }
 
@@ -464,7 +469,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------음식점-----------------------------//
         //음식점추가
-        if (msg.indexOf("!음식점추가 ") == 0) {
+        if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
             add(r, "res", "음식점", 1);
         }
 
@@ -514,7 +519,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
        
         //--------------------------메뉴-------------------------------//
         //메뉴추가
-        if (msg.indexOf("!메뉴추가 ") == 0) {
+        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
             add(r, "menu", "메뉴", 0);
         }
 
@@ -524,7 +529,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------음식점-----------------------------//
         //음식점추가
-        if (msg.indexOf("!음식점추가 ") == 0) {
+        if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
             add(r, "res", "음식점", 1);
         }
 
@@ -545,12 +550,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     if (room == 'agent') {
         //기능
         if (msg == "!기능") {
-            replier.reply("!공지\n!로또\n!최근채팅\n!메뉴\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+            replier.reply("!공지\n!로또\n!최근채팅\n!메뉴\n!오버워치\n!날씨\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
         }
         //채팅저장
         D.insert('cagent', { name: sender, msg: msg });
 
-        //최근채팅
+		//날씨
+        if (msg.indexOf("!날씨") == 0||msg.indexOf("!ㄴㅆ") == 0) {
+            getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/weather-forecast/1873980')
+        }
         //최근채팅
         if (msg.indexOf("!최근채팅") == 0||msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
             recentchat(r, 'ctest');
@@ -585,7 +593,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
-        if (msg.indexOf("!메뉴추가 ") == 0) {
+        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
             add(r, "menu", "메뉴", 0);
         }
 
@@ -595,7 +603,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------음식점-----------------------------//
         //음식점추가
-        if (msg.indexOf("!음식점추가 ") == 0) {
+        if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
             add(r, "res", "음식점", 1);
         }
 
@@ -629,7 +637,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
-        if (msg.indexOf("!메뉴추가 ") == 0) {
+        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
             add(r, "menu", "메뉴", 0);
         }
 
@@ -639,7 +647,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //---------------------------음식점-----------------------------//
         //음식점추가
-        if (msg.indexOf("!음식점추가 ") == 0) {
+        if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
             add(r, "res", "음식점", 1);
         }
 
@@ -670,7 +678,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         //--------------------------메뉴-------------------------------//
         //메뉴추가
-        if (msg.indexOf("!메뉴추가 ") == 0) {
+        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
             add(r, "menu", "메뉴", 0);
         }
 
