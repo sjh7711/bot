@@ -264,7 +264,7 @@ function notice(r){
     	.cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice();
 	}
     
-    text = "";
+    var text = "";
     
     for(i=0;i<doc.select("tr.num").size();i++) {
 	text += doc.select("tr.num").toArray()[i].select("td.num").toArray()[0].text()+" "+doc.select("tr.num").toArray()[i].select("td.date").text() + " "+doc.select("tr.num").toArray()[i].select("td.title").text()+"\n"
