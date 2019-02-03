@@ -16,7 +16,7 @@ function saveFile() {//github에서 코드불러오기
         bw.close();
     }
     catch (e) {
-        return e;
+        Api.replier('test',e + "\n" + e.stack);
     }
 }
 function reload() {
@@ -208,18 +208,15 @@ function recentchat(r) { //name : DB이름
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-        r = { replier: replier, msg: msg, sender: sender, room: room };
-
+    try {
         //eval
         if (room == 'test' || room == 'bot') {
             if (msg.indexOf("]") == 0) {
-                try {
-                    replier.reply(eval(msg.substring(1)));
-                } catch (e) {
-                    replier.reply(e + "\n" + e.stack);
-                }
+                replier.reply(eval(msg.substring(1)));
             }
         }
+
+        r = { replier: replier, msg: msg, sender: sender, room: room };
 
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
@@ -247,8 +244,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         //최근채팅저장
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
-			if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
-			} else {
+            if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+            } else {
                 D.insert('c' + room, { name: sender, msg: msg });
             }
         }
@@ -353,9 +350,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 replier.reply("!로또\n!최근채팅\n!메뉴\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
+    } catch (e) {
+        Api.replier('test', e + "\n" + e.stack);
+    }
 }
-
-
 
 
 
