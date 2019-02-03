@@ -432,7 +432,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
     //최근채팅
     if (msg.indexOf("!최근채팅") == 0||msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'over' || room == 'ja' || room == 'agent' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele' )
         {
             recentchat(r, 'c'+room);
         }
@@ -524,7 +524,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     
     //메뉴추천
     if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
-        recom(r, "menu");
+		recom(r, "menu");
     }
     
     if(msg.indexOf("/기능") == 0) {
