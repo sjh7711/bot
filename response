@@ -395,7 +395,7 @@ function noticecheck(){
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
 		}
 	
-    	var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    	doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
     	.cookies(cookie2).cookies(cookie1).get().select('tbody');
     
     	if(doc==undefined){
@@ -406,7 +406,7 @@ function noticecheck(){
 			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
 		
-			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+			doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
     		.cookies(cookie2).cookies(cookie1).get().select('tbody');
 		}
 		
