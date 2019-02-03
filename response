@@ -127,7 +127,6 @@ function func(r) {
     if (r.msg.split(" ")[1] == "날씨") {
         r.replier.reply("무전동 날씨를 보여줍니다");
     }
-    
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
@@ -307,17 +306,17 @@ function recentchat(r) { //name : DB이름
 
 //날씨
 function getTimeWeather(url) {
-    var rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
-    var data = rawData.select(".hourly-table").select(".overview-hourly");
-    var timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
+    const rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
+    const data = rawData.select(".hourly-table").select(".overview-hourly");
+    const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
         var r = /^(\d+)오(.)$/.exec(v);
         return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
     }
     );
-    var weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
-    var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
+    const weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
+    const tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
+    const stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
+    const windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
     var res = "";
     for (var i in timeData) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
@@ -325,7 +324,7 @@ function getTimeWeather(url) {
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
         res += windData[i] + "\n";
     }
-    var next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
+    const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
     return {res: res, next: next};
 }
 
@@ -447,7 +446,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
             if (room == 'test' || room == 'agent' || room == 'bot') {
-                getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980')
+                getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980');
             }
         }
 
