@@ -1,4 +1,3 @@
-//-----------------------------------------------기본 함수--------------------------------------------------
 //파일입출력
 function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
@@ -20,113 +19,15 @@ function saveFile() {//github에서 코드불러오기
         return e;
     }
 }
-
-//reload
 function reload() {
+	var Timer = new Date();
     T.interrupt();
     saveFile();
-    var Timer = new Date();
+    var time = (new Date() - Timer) / 1000;
+    Api.replyRoom('test', "파일저장 완료 / " + time + "s");
 	Api.reload();
     var time = (new Date() - Timer) / 1000;
 	Api.replyRoom('test', "reloading 완료 / " + time + "s");
-}
-
-//time
-function time() {
-	var today = new Date();
-	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
-	var day = dayNames[today.getDay()];
-	
-	var year   = today.getFullYear(),
-	month  = today.getMonth() + 1,
-	date   = today.getDate(),
-	hour   = today.getHours(),
-	minute = today.getMinutes(),
-	second = today.getSeconds();
-	ampm   = hour >= 12 ? 'PM' : 'AM';
-	
-	hour = hour % 12;
-	hour = hour ? hour : 12;
-	
-	minute = minute < 10 ? '0' + minute : minute;
-	second = second < 10 ? '0' + second : second;
-	
-	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
-	
-	return now
-}
-
-//한글받침 관리
-String.prototype.받침 = function () {
-    var lastCharCode = this.toString().charCodeAt(this.toString().length - 1);
-    if (lastCharCode >= "가".charCodeAt(0) && lastCharCode <= "힣".charCodeAt(0)) {
-        if ((lastCharCode - "가".charCodeAt(0)) % 28 == 0) return false;
-        else return true;
-    } else return false;
-}
-String.prototype.은는 = function () {
-    return this.toString().받침() ? this.toString() + "은" : this.toString() + "는";
-}
-String.prototype.이가 = function () {
-    return this.toString().받침() ? this.toString() + "이" : this.toString() + "가";
-}
-String.prototype.과와 = function () {
-    return this.toString().받침() ? this.toString() + "과" : this.toString() + "와";
-}
-String.prototype.을를 = function () {
-    return this.toString().받침() ? this.toString() + "을" : this.toString() + "를";
-}
-String.prototype.조사 = function (받침있음, 받침없음) {
-    return this.toString().받침() ? this.toString() + 받침있음 : this.toString() + 받침없음;
-}
-
-//한글인코딩
-String.prototype.encoding = function () {
-    var res = this.toString();
-    var tmp;
-    while (tmp = /\\u[\da-fA-F]{4}/.exec(res)) {
-        res = res.replace(tmp[0], String.fromCharCode(parseInt(tmp[0].substring(2), 16)));
-    }
-    return res;
-}
-
-//sort에 필요한 compare
-function compare(a, b) {
-    return a - b;
-}
-
-//기능설명
-function func(r) {
-    if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이하면 16개를 불러오고 최대 16개까지 조회가능합니다.");
-    }
-    if (r.msg.split(" ")[1] == "오버워치") {
-        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
-    }
-    if (r.msg.split(" ")[1] == "로또") {
-        r.replier.reply("로또번호를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "메뉴추천") {
-        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "메뉴추가") {
-        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!메뉴추가 냉장고");
-    }
-    if (r.msg.split(" ")[1] == "음식점추천") {
-        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "음식점추가") {
-        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
-    }
-    if (r.msg.split(" ")[1] == "예정기능") {
-        r.replier.reply("앞으로 만들어볼 기능들입니다. 하는건 내맘");
-    }
-    if (r.msg.split(" ")[1] == "공지") {
-        r.replier.reply("공지 1페이지(15개)를 띄워줍니다");
-    }
-    if (r.msg.split(" ")[1] == "날씨") {
-        r.replier.reply("무전동 날씨를 보여줍니다");
-    }
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
@@ -568,4 +469,189 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     catch (e) {
         replier.reply(e + "\n" + e.stack);
     }
+}
+//-------------------------------------------------------------변경안할 함수------------------------------------------------------
+//time
+function time() {
+	var today = new Date();
+	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
+	var day = dayNames[today.getDay()];
+	
+	var year   = today.getFullYear(),
+	month  = today.getMonth() + 1,
+	date   = today.getDate(),
+	hour   = today.getHours(),
+	minute = today.getMinutes(),
+	second = today.getSeconds();
+	ampm   = hour >= 12 ? 'PM' : 'AM';
+	
+	hour = hour % 12;
+	hour = hour ? hour : 12;
+	
+	minute = minute < 10 ? '0' + minute : minute;
+	second = second < 10 ? '0' + second : second;
+	
+	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
+	
+	return now
+}
+//sort에 필요한 compare
+function compare(a, b) {
+    return a - b;
+}
+//기능설명
+function func(r) {
+    if (r.msg.split(" ")[1] == "최근채팅") {
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이하면 16개를 불러오고 최대 16개까지 조회가능합니다.");
+    }
+    if (r.msg.split(" ")[1] == "오버워치") {
+        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
+    }
+    if (r.msg.split(" ")[1] == "로또") {
+        r.replier.reply("로또번호를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "메뉴추천") {
+        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "메뉴추가") {
+        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!메뉴추가 냉장고");
+    }
+    if (r.msg.split(" ")[1] == "음식점추천") {
+        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+    }
+    if (r.msg.split(" ")[1] == "음식점추가") {
+        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
+    }
+    if (r.msg.split(" ")[1] == "예정기능") {
+        r.replier.reply("앞으로 만들어볼 기능들입니다. 하는건 내맘");
+    }
+    if (r.msg.split(" ")[1] == "공지") {
+        r.replier.reply("공지 1페이지(15개)를 띄워줍니다");
+    }
+    if (r.msg.split(" ")[1] == "날씨") {
+        r.replier.reply("무전동 날씨를 보여줍니다");
+    }
+}
+
+String.prototype.rmspace=function(){
+	return this.toString().replace(/^\s*/,"").replace(/\s*$/,"");
+}
+String.prototype.rmtag=function(){
+	return this.toString().replace(/<[^>]+>/g,"");
+}
+String.prototype.replaceAmp=function(){
+	var res=this.toString();
+	var tmp;
+	while(tmp=/&#x....;/.exec(res)){
+		res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substr(3,4),16)));
+	}
+	while(tmp=/&#..;/.exec(res)){
+		res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substr(2,2))));
+	}
+	return res.replace(/&nbsp;/g,"\t").replace(/&gt;/g,">").replace(/&lt;/g,"<").replace(/&quot;/g,'"').replace(/&amp;/g,"&");
+}
+String.prototype.replaceAmp2=function(){
+	var res=this.toString();
+	var tmp;
+	while(tmp=/&#x....;/.exec(res)){
+		res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substr(3,4),16)));
+	}
+	return res.replace(/&nbsp;/g,"\t").replace(/&gt;/g,">").replace(/&lt;/g,"<").replace(/&quot;/g,'"').replace(/&amp;/g,"&").replace(/<br>/g,"\n");
+}
+String.prototype.indexOfs=function(){  
+	var res = -1;
+	for (var i = 0; i < arguments.length; i++) {
+		var tmp=this.toString().indexOf(arguments[i]);
+		if(tmp==-1) continue;
+		else if(res==-1) res=tmp;
+		else if(tmp<res) res=this.toString().indexOf(arguments[i]);
+	}
+	return res;
+}
+String.prototype.includess=function(){
+	for (var i = 0; i < arguments.length; i++) {
+		if(this.toString().includes(arguments[i])) return true;
+	}
+	return false;
+}
+String.prototype.replaces=function(target){
+	var res=this.toString();
+	for (var i = 1; i < arguments.length; i++) {
+		res=res.replace(arguments[i],target);
+	}
+	return res;
+}
+String.prototype.encoding=function(){
+   return this.replace(/\\u([\da-fA-F]{4})/g,(m,p1)=>String.fromCharCode(parseInt(p1,16)));
+}
+String.prototype.URLEncode=function(){
+	 return java.net.URLEncoder.encode(this.toString(),"UTF-8");
+}
+String.prototype.XMLEncode=function(){
+	var res=""
+	for(var i=0;i<this.toString().length;i++){
+		res+="&#x"+java.lang.String.format("%04x",java.lang.Integer(this.toString().charCodeAt(i)))+";";
+	}
+	return res;
+}
+String.prototype.qtmark=function(){
+	return this.toString().replace(/'/g,"''");
+}
+String.prototype.cut=function (line) {
+    var str = this.toString();
+    str = str.split("\n");
+    //str[line - 1] += Array(500).join(String.fromCharCode(8237));
+    str[line - 1] += String.fromCharCode(8237).repeat(500);
+    str = str.join("\n");
+    return str;
+}
+String.prototype.받침=function(){
+	var lastCharCode=this.toString().charCodeAt(this.toString().length-1);
+	if(lastCharCode>="가".charCodeAt(0) && lastCharCode<="힣".charCodeAt(0)){
+		if((lastCharCode-"가".charCodeAt(0))%28==0) return false;
+		else return true;
+	}else return false;
+	
+}
+String.prototype.은는=function(){
+	return this.toString().받침() ? this.toString()+"은" : this.toString()+"는"; 
+}
+String.prototype.이가=function(){
+	return this.toString().받침() ? this.toString()+"이" : this.toString()+"가"; 
+}
+String.prototype.과와=function(){
+	return this.toString().받침() ? this.toString()+"과" : this.toString()+"와"; 
+}
+String.prototype.을를=function(){
+	return this.toString().받침() ? this.toString()+"을" : this.toString()+"를"; 
+}
+String.prototype.조사=function(받침있음, 받침없음){
+	return this.toString().받침() ? this.toString()+받침있음 : this.toString()+받침없음;
+}
+String.getRandomLowerCase=function(len){
+	len = len||1;
+	if(len<0) return false;
+	var res="";
+	for(var i=0;i<len;i++) res+=String.fromCharCode(97+Math.floor(Math.random()*26));
+	return res;
+}
+String.format=function(str,arg){
+	if(str.charAt(str.length-1).toLowerCase()=='d') return String(new java.lang.String.format(str,new java.lang.Integer(arg)));
+	return String(new java.lang.String.format(str,arg));	
+}
+String.prototype.extension=function(char,length){
+	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
+	return char.repeat(addLength)+this.toString();
+}
+String.prototype.extensionRight=function(char,length){
+	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
+	return this.toString()+char.repeat(addLength);
+}
+Date.prototype.toDateString=function(sep){
+	sep = (sep==undefined) ? '-' : sep;
+	return String(this.getFullYear()).extension("0",4)+sep+String(this.getMonth()+1).extension("0",2)+sep+String(this.getDate()).extension("0",2);
+}
+Date.prototype.toTimeString=function(sep){
+	sep = (sep==undefined) ? ':' : sep;
+		return String(this.getHours()).extension("0",2)+sep+String(this.getMinutes()).extension("0",2)+sep+String(this.getSeconds()).extension("0",2);
 }
