@@ -110,16 +110,20 @@ function overWatch(r) {
     var name = r.msg.substr(6);//배틀태그가 담기는 공간
     name1 = name.replace("#", "-");
     var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/" + name1);
-    if (source.indexOf("u-align-center h5") == -1) {
-        replier.reply(name + "의 점수를 알 수 없습니다.");
-    } else {
-        var score = source.split("u-align-center h5\">")[1].split("<")[0].trim();
-        var tier = source.split("rank-icons/rank-")[1].split("Tier.")[0];
-        var most = source.split("u-max-width-container career-section")[3];
-        var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
-        var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
-        var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
-        r.replier.reply(name + "\nTier : " + tier + "\nScore : " + score + "\n--------------\n경쟁전 모스트 영웅\n1. " + most1 + "\n2. " + most2 + "\n3. " + most3);
+    if (source == undefined) {
+    	replier.reply("정보를 찾을 수 없습니다.")
+    }else{
+        if (source.indexOf("u-align-center h5") == -1) {
+        	replier.reply(name + "의 점수를 알 수 없습니다.");
+		} else {
+       		var score = source.split("u-align-center h5\">")[1].split("<")[0].trim();
+        	var tier = source.split("rank-icons/rank-")[1].split("Tier.")[0];
+        	var most = source.split("u-max-width-container career-section")[3];
+        	var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
+        	var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
+        	var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
+        	r.replier.reply(name + "\nTier : " + tier + "\nScore : " + score + "\n--------------\n경쟁전 모스트 영웅\n1. " + most1 + "\n2. " + most2 + "\n3. " + most3);
+        }
     }
 }
 
