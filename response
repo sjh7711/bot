@@ -208,7 +208,7 @@ function recentchat(r) { //name : DB이름
 const weatherSet = ({1:"맑음ㅤㅤ", 2:"구름약간", 3:"구름조금", 4:"구름보통", 5:"구름다수", 6:"구름많음", 7:"흐림ㅤㅤ", 8:"흐림ㅤㅤ", 11:"안개ㅤㅤ", 12:"비ㅤㅤㅤ", 13:"비ㅤㅤㅤ", 14:"비ㅤㅤㅤ", 15:"번개ㅤㅤ", 16:"번개ㅤㅤ", 17:"번개ㅤㅤ", 18:"비ㅤㅤㅤ", 19:"눈ㅤㅤㅤ", 20:"눈ㅤㅤㅤ", 21:"눈ㅤㅤㅤ", 22:"눈ㅤㅤㅤ", 23:"눈ㅤㅤㅤ", 24:"우박ㅤㅤ", 25:"25ㅤㅤ", 26:"26ㅤㅤ", 29:"진눈깨비", 30:"폭염ㅤㅤ", 31:"한파ㅤㅤ", 32:"바람ㅤㅤ", 33:"맑음ㅤㅤ", 34:"구름약간", 35:"구름조금", 36:"구름보통", 37:"구름다수", 38:"구름많음", 39:"비ㅤㅤㅤ", 40:"비ㅤㅤㅤ", 41:"번개ㅤㅤ", 42:"번개ㅤㅤ", 43:"눈ㅤㅤㅤ", 44:"눈ㅤㅤㅤ"});
 
 //날씨
-function getTimeWeather(url) {
+function getTimeWeather(r, url) {
     const rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
     const data = rawData.select(".hourly-table").select(".overview-hourly");
     const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
@@ -228,7 +228,7 @@ function getTimeWeather(url) {
         res += windData[i] + "\n";
     }
     const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-    return {res: res, next: next};
+    r.replier.reply("충청남도 아산시\n오늘의 8시간 날씨\n시간 ㅤ날씨ㅤ온도(체감) 바람\n"+res+"\n"+next);
 }
 
 //홈페이지 파밍
@@ -349,7 +349,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
             if (room == 'test' || room == 'agent' || room == 'bot') {
-                getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980');
+                getTimeWeather(r, 'https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980');
             }
         }
 
@@ -472,6 +472,19 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         replier.reply(e + "\n" + e.stack);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-------------------------------------------------------------변경안할 함수------------------------------------------------------
 //time
 function time() {
