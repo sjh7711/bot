@@ -29,6 +29,30 @@ function reload() {
     Api.replyRoom('test', "reloading 완료 / " + time + "s");
 }
 
+//time
+function time() {
+	var today = new Date();
+	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
+	var day = dayNames[today.getDay()];
+	
+	var year   = today.getFullYear(),
+    var month  = today.getMonth() + 1,
+    var date   = today.getDate(),
+	var hour   = today.getHours(),
+	var minute = today.getMinutes(),
+	var second = today.getSeconds();
+	var ampm   = hour >= 12 ? 'PM' : 'AM';
+	
+	hour = hour % 12;
+	hour = hour ? hour : 12;
+	
+	minute = minute < 10 ? '0' + minute : minute;
+	second = second < 10 ? '0' + second : second;
+	
+	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
+	
+	return now
+}
 
 //한글받침 관리
 String.prototype.받침 = function () {
@@ -336,6 +360,7 @@ function notice(r){
     r.replier.reply(doc);
 }
 
+//공지체크기
 function noticecheck(){
 	try{
 		if(cookie1==undefined||cookie2==undefined){
@@ -363,6 +388,7 @@ function noticecheck(){
 		}
 		
 		var checknum = doc.split(" ")[0];//제일 최근공지가 뭔지 확인
+		D.insert("statecheck",{time:time(),firstnum:checknum})
 		
 		if(checknum!=D.selectForArray('notice', 'number')[0]){//저장된 공지의 번호
 			var secondnum = checknum-1;//두번째 공지 번호(split을위해)
