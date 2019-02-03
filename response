@@ -453,6 +453,7 @@ function noticecheck(){
 		if(firstnum!=D.selectForArray('notice', 'num')[0][0]){//저장된 공지의 번호
 			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
 			Api.replyRoom("test","새공지! "+newnotice);
+			Api.replyRoom("agent","새공지! "+newnotice);
 			D.update('notice', { num: firstnum, msg: newnotice });
 		}
 	}catch(e){
