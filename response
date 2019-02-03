@@ -405,6 +405,10 @@ function notice(r){
     	for(i=0;i<count;i++){
     		text.push(temptext[i]);
     	}
+    }else{
+    	for(i=0;i<5;i++){
+    		text.push(temptext[i]);
+    	}
     }
     r.replier.reply(text.join("\n\n"));
 }
