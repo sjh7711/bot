@@ -2,8 +2,8 @@
 //파일입출력
 function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
-    link = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href");
-    conn = new java.net.URL(link).openConnection();
+    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
+    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response").openConnection();
     br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
     str = "";
     tmp = null;
@@ -288,7 +288,7 @@ function clear(r, name, num) {
 
 //최근채팅
 function recentchat(r, name) { //name : DB이름
-    var tempchat = D.selectForArray(name);
+    var tempchat = D.selectForArray('c'+name);
     var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
     if (0 < num && num < 17) {
         var temp = [];//뽑은 채팅을 담을 공간
