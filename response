@@ -1,8 +1,9 @@
 //-----------------------------------------------기본 함수--------------------------------------------------
 //파일입출력
-function saveFile(checksum) {//github에서 코드불러오기
+function saveFile() {//github에서 코드불러오기
     file = "storage/emulated/0/kbot/response.js";
-    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response").openConnection();
+    link = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href");
+    conn = new java.net.URL(link).openConnection();
     br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
     str = "";
     tmp = null;
