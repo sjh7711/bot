@@ -441,7 +441,7 @@ function notice(r) {
 	var text = [];
 	var dbnum = D.selectForArray('notice', "count(*)");//db개수
     for(i=dbnum-count;i<dbnum;i++){
-    	text.push("번호 : "+D.selectForArray('notice', 'num')[i]+"날짜 : "+D.selectForArray('notice', 'date')[i]+"\n+D.selectForArray('notice', 'msg')[i]);
+    	text.push("번호 : "+D.selectForArray('notice', 'num')[i]+"날짜 : "+D.selectForArray('notice', 'date')[i]+"\n"+D.selectForArray('notice', 'msg')[i]);
     }
     text.join("\n");
     Api.replyRoom(r.room, text);
