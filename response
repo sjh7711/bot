@@ -36,6 +36,8 @@ var D = require("DBManager.js")("D");
 var T = require("ThreadManager.js");
 //T.getThreadList()
 
+var es=String.fromCharCode(8237).repeat(500);
+
 
 //봇제작방용 변수
 var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
@@ -228,7 +230,7 @@ function getTimeWeather(r, url) {
         res += windData[i] + "\n";
     }
     const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-    r.replier.reply("경상남도 통영시 무전동\n오늘의 8시간 날씨\n시간 ㅤ날씨ㅤ온도(체감) 바람\n"+res+next);
+    r.replier.reply("경상남도 통영시 무전동\n오늘의 8시간 날씨\n시간 ㅤ날씨ㅤ온도(체감) 바람\n"+res);
 }
 
 //홈페이지 파밍
