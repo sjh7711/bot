@@ -312,7 +312,7 @@ function noticecheck(){
 T.register("noticeCheck",()=>{
 	while(true){
 		java.lang.Thread.sleep(3*30*1000);
-		noticecheck;
+		noticecheck();
 	}
 }).start();
 //--------------------------------------------------------------------Response-------------------------------------------------//
