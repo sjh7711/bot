@@ -207,123 +207,14 @@ function recentchat(r) { //name : DB이름
     }
 }
 
-const weatherSet = ({1:"맑음ㅤㅤ", 2:"구름약간", 3:"구름조금", 4:"구름보통", 5:"구름다수", 6:"구름많음", 7:"흐림ㅤㅤ", 8:"흐림ㅤㅤ", 11:"안개ㅤㅤ", 12:"비ㅤㅤㅤ", 13:"비ㅤㅤㅤ", 14:"비ㅤㅤㅤ", 15:"번개ㅤㅤ", 16:"번개ㅤㅤ", 17:"번개ㅤㅤ", 18:"비ㅤㅤㅤ", 19:"눈ㅤㅤㅤ", 20:"눈ㅤㅤㅤ", 21:"눈ㅤㅤㅤ", 22:"눈ㅤㅤㅤ", 23:"눈ㅤㅤㅤ", 24:"우박ㅤㅤ", 25:"25ㅤㅤ", 26:"26ㅤㅤ", 29:"진눈깨비", 30:"폭염ㅤㅤ", 31:"한파ㅤㅤ", 32:"바람ㅤㅤ", 33:"맑음ㅤㅤ", 34:"구름약간", 35:"구름조금", 36:"구름보통", 37:"구름다수", 38:"구름많음", 39:"비ㅤㅤㅤ", 40:"비ㅤㅤㅤ", 41:"번개ㅤㅤ", 42:"번개ㅤㅤ", 43:"눈ㅤㅤㅤ", 44:"눈ㅤㅤㅤ"});
-
-//날씨
-function getTimeWeather(r, url) {
-    const rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
-    const data = rawData.select(".hourly-table").select(".overview-hourly");
-    const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
-        var r = /^(\d+)오(.)$/.exec(v);
-        return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
-    }
-    );
-    const weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
-    const tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    const stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    const windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
-    var res = "";
-    for (var i in timeData) {
-        res += String(timeData[i]).extension("0", 2) + "시 ";
-        res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
-        res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        res += windData[i] + "\n";
-    }
-    const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-    r.replier.reply("경상남도 통영시 무전동\n오늘의 8시간 날씨\n시간 ㅤ날씨ㅤ온도(체감) 바람\n"+res);
-}
-
-//홈페이지 파밍
-//.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
-//.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
-var cookie1;
-var cookie2;
-var doc;
-
-function notice(r){
-	if(cookie1==undefined||cookie2==undefined){
-		cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
-		.method(org.jsoup.Connection.Method.GET).execute().cookies();
-
-		cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
-		.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-		.method(org.jsoup.Connection.Method.POST).execute().cookies();
-	}
-	
-    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    .cookies(cookie2).cookies(cookie1).get().select('tbody');
-    
-    if(doc==undefined){
-    	cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
-		.method(org.jsoup.Connection.Method.GET).execute().cookies();
-
-		cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
-		.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-		.method(org.jsoup.Connection.Method.POST).execute().cookies();
-		
-		doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
-	}
-    
-    var text = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText()).join("\n\n");
-	
-    r.replier.reply(text);
-}
-
-//공지체크기
-function noticecheck(){
-	try{
-		if(cookie1==undefined||cookie2==undefined){
-			cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
-			.method(org.jsoup.Connection.Method.GET).execute().cookies();
-
-			cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
-			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-			.method(org.jsoup.Connection.Method.POST).execute().cookies();
-		}
-	
-    	var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
-    
-    	if(doc==undefined){
-    		cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
-			.method(org.jsoup.Connection.Method.GET).execute().cookies();
-
-			cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
-			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-			.method(org.jsoup.Connection.Method.POST).execute().cookies();
-		
-			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    		.cookies(cookie2).cookies(cookie1).get().select('tbody');
-		}
-		
-		var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
-		Api.replyRoom('test', time()+" | 공지번호 :  "+firstnum);
-		
-		if(firstnum!=D.selectForArray('notice', 'number')[0][0]){//저장된 공지의 번호
-			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
-			Api.replyRoom("test","새공지! "+newnotice);
-			Api.replyRoom("agent","새공지! "+newnotice);
-			D.update('notice', { number: firstnum, msg: newnotice });
-		}
-	}catch(e){
-		Log.e(e+"\n"+e.stack+'\n');
-	}
-};
-T.register("noticeCheck",()=>{
-	while(true){
-		java.lang.Thread.sleep(3*30*1000);
-		noticecheck();
-	}
-}).start();
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
     try {
         r = { replier: replier, msg: msg, sender: sender, room: room };
 
         //eval
-        if (msg.indexOf("]") == 0) {
-            if (room == 'test' || room == 'bot') {
+        if (room == 'test' || room == 'bot') {
+            if (msg.indexOf("]") == 0) {
                 try {
                     replier.reply(eval(msg.substring(1)));
                 } catch (e) {
@@ -332,66 +223,66 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
-            if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+            if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
             }
         }
 
-        if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
-            if (room == 'test' || room == 'bot' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ele') {
+            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
                 replier.reply(D.selectForArray('willdo').join("\n"));
             }
         }
 
-        if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
-            if (room == 'test' || room == 'agent' || room == 'bot') {
+        if (room == 'test' || room == 'agent' || room == 'bot') {
+            if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
                 getTimeWeather(r, 'https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980');
             }
         }
 
-        if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
-            if (room == 'test' || room == 'agent' || room == 'bot') {
+        if (room == 'test' || room == 'agent' || room == 'bot') {
+            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
                 notice(r);
             }
         }
 
         //최근채팅저장
-        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
-        } else {
-            if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+			if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+			} else {
                 D.insert('c' + room, { name: sender, msg: msg });
             }
         }
 
-        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
-            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
                 add(r, "menu", "메뉴", 0);
             }
         }
 
         //메뉴동의합의
-        if (this["flag" + room][0] == 1) {
-            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (this["flag" + room][0] == 1) {
                 agree(r, "menu", "메뉴", 0);
             }
         }
 
-        if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
-            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
                 add(r, "res", "음식점", 1);
             }
         }
 
         //음식점동의합의
-        if (this["flag" + room][0] == 1) {
-            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (this["flag" + room][0] == 1) {
                 agree(r, "res", "음식점", 1);
             }
         }
 
-        if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
-            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
                 recom(r, "res");
             }
         }
@@ -483,6 +374,117 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 
 //-------------------------------------------------------------변경안할 함수------------------------------------------------------
+//홈페이지 파밍
+//.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
+//.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
+var cookie1;
+var cookie2;
+var doc;
+
+function notice(r){
+	if(cookie1==undefined||cookie2==undefined){
+		cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+		.method(org.jsoup.Connection.Method.GET).execute().cookies();
+
+		cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+		.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+		.method(org.jsoup.Connection.Method.POST).execute().cookies();
+	}
+	
+    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    .cookies(cookie2).cookies(cookie1).get().select('tbody');
+    
+    if(doc==undefined){
+    	cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+		.method(org.jsoup.Connection.Method.GET).execute().cookies();
+
+		cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+		.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+		.method(org.jsoup.Connection.Method.POST).execute().cookies();
+		
+		doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
+	}
+    
+    var text = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText()).join("\n\n");
+	
+    r.replier.reply(text);
+}
+
+//공지체크기
+function noticecheck(){
+	try{
+		if(cookie1==undefined||cookie2==undefined){
+			cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+			.method(org.jsoup.Connection.Method.GET).execute().cookies();
+
+			cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+			.method(org.jsoup.Connection.Method.POST).execute().cookies();
+		}
+	
+    	var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
+    
+    	if(doc==undefined){
+    		cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+			.method(org.jsoup.Connection.Method.GET).execute().cookies();
+
+			cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+			.method(org.jsoup.Connection.Method.POST).execute().cookies();
+		
+			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+    		.cookies(cookie2).cookies(cookie1).get().select('tbody');
+		}
+		
+		var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
+		Api.replyRoom('test', time()+" | 공지번호 :  "+firstnum);
+		
+		if(firstnum!=D.selectForArray('notice', 'number')[0][0]){//저장된 공지의 번호
+			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
+			Api.replyRoom("test","새공지! "+newnotice);
+			Api.replyRoom("agent","새공지! "+newnotice);
+			D.update('notice', { number: firstnum, msg: newnotice });
+		}
+	}catch(e){
+		Log.e(e+"\n"+e.stack+'\n');
+	}
+};
+T.register("noticeCheck",()=>{
+	while(true){
+		java.lang.Thread.sleep(3*30*1000);
+		noticecheck();
+	}
+}).start();
+
+const weatherSet = ({1:"맑음ㅤㅤ", 2:"구름약간", 3:"구름조금", 4:"구름보통", 5:"구름다수", 6:"구름많음", 7:"흐림ㅤㅤ", 8:"흐림ㅤㅤ", 11:"안개ㅤㅤ", 12:"비ㅤㅤㅤ", 13:"비ㅤㅤㅤ", 14:"비ㅤㅤㅤ", 15:"번개ㅤㅤ", 16:"번개ㅤㅤ", 17:"번개ㅤㅤ", 18:"비ㅤㅤㅤ", 19:"눈ㅤㅤㅤ", 20:"눈ㅤㅤㅤ", 21:"눈ㅤㅤㅤ", 22:"눈ㅤㅤㅤ", 23:"눈ㅤㅤㅤ", 24:"우박ㅤㅤ", 25:"25ㅤㅤ", 26:"26ㅤㅤ", 29:"진눈깨비", 30:"폭염ㅤㅤ", 31:"한파ㅤㅤ", 32:"바람ㅤㅤ", 33:"맑음ㅤㅤ", 34:"구름약간", 35:"구름조금", 36:"구름보통", 37:"구름다수", 38:"구름많음", 39:"비ㅤㅤㅤ", 40:"비ㅤㅤㅤ", 41:"번개ㅤㅤ", 42:"번개ㅤㅤ", 43:"눈ㅤㅤㅤ", 44:"눈ㅤㅤㅤ"});
+
+//날씨
+function getTimeWeather(r, url) {
+    const rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
+    const data = rawData.select(".hourly-table").select(".overview-hourly");
+    const timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
+        var r = /^(\d+)오(.)$/.exec(v);
+        return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
+    }
+    );
+    const weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
+    const tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
+    const stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
+    const windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
+    var res = "";
+    for (var i in timeData) {
+        res += String(timeData[i]).extension("0", 2) + "시 ";
+        res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
+        res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
+        res += windData[i] + "\n";
+    }
+    const next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
+    r.replier.reply("경상남도 통영시 무전동\n오늘의 8시간 날씨\n시간 ㅤ날씨ㅤ온도(체감) 바람\n"+res);
+}
+
+
 //time
 function time() {
 	var today = new Date();
