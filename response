@@ -433,14 +433,21 @@ T.register("noticeCheck",()=>{
 }).start();
 
 function notice(r) {
+	var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
+	var dbnum = D.selectForArray('notice', "count(*)")-1;
+	if(firstnum!=D.selectForArray('notice', 'num')[dbnum][0]){
+		var newnotice = doc.select("tr.num").get(0).select("td.title>a").first().ownText();
+		var date = doc.select("tr.num").get(0).select("td.date").get(0).text();
+		D.insert('notice', { num: firstnum, date: date, msg: newnotice });
+	}
 	var count;
 	count = r.msg.split(" ")[1];
 	if(count==undefined){
 		count=5;
 	}
 	var text = [];
-	var dbnum = D.selectForArray('notice', "count(*)");//db개수
-    for(i=dbnum-1;i>dbnum-count-1;i--){
+	var dbnum = D.selectForArray('notice', "count(*)")-1;//db개수-1
+    for(i=dbnum;i>dbnum-count;i--){
     	text.push("번호 : "+D.selectForArray('notice', 'num')[i]+"    날짜 : "+D.selectForArray('notice', 'date')[i]+"\n"+D.selectForArray('notice', 'msg')[i]);
     }
     text.join("\n\n");
