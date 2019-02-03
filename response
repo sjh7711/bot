@@ -24,12 +24,7 @@ function saveFile(checksum) {//github에서 코드불러오기
 function reload() {
     T.interrupt();
     var Timer = new Date();
-    try {
-    	Api.reload();
-    }
-    catch (e) {
-    	replier.reply(e + "\n" + e.stack);
-    }
+	Api.reload();
     var time = (new Date() - Timer) / 1000;
     Api.replyRoom('test', "reloading 완료 / " + time + "s");
 }
@@ -692,11 +687,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         func(r);
     }
     //로또
-    if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0)) {
+    if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
         lotto(r);
     }
     //오버워치
-    if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0)) {
+    if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
         overWatch(r);
     }
     //메뉴추천
