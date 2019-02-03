@@ -400,12 +400,13 @@ function notice(r){
     
     var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
     var text = [];
-    for(i=0;i<temptext.length;i++){
-    	text.push(temptext[i]);
+    var count = r.msg.split(" ")[1];
+    if(0<count&&count<16){
+    	for(i=0;i<count;i++){
+    		text.push(temptext[i]);
+    	}
     }
-    text.join("\n\n");
-	
-    r.replier.reply(text);
+    r.replier.reply(text.join("\n\n"));
 }
 
 //공지체크기
