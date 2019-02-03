@@ -447,7 +447,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
             if (room == 'test' || room == 'agent') {
-                getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/daily-weather-forecast/1873980')
+                getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980')
             }
         }
 
