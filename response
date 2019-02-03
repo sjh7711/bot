@@ -440,7 +440,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
     //할일
     if (msg.indexOf("!예정기능") == 0||msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
-        if (room == 'test' || room == 'bot' || room='ele'){
+        if (room == 'test' || room == 'bot' || room=='ele'){
             replier.reply(D.selectForArray('willdo').join("\n"));
         }
     }
@@ -461,7 +461,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     //최근채팅
     if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
     } else {
-        if (room == 'test' || room =='bot' || room == 'over' || room == 'ja' || room == 'agent' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele' )
         {
             D.insert('c'+room, { name: sender, msg: msg });
         }
@@ -469,7 +469,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
     //메뉴추가
     if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
         {
             add(r, "menu", "메뉴", 0);
         }
@@ -477,7 +477,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
     //메뉴동의합의
     if (this["flag" + room][0] == 1) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
         {
             agree(r, "menu", "메뉴", 0);
         }
@@ -485,7 +485,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     
     //음식점추가
     if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
         {
             add(r, "res", "음식점", 1);
         }
@@ -493,7 +493,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
     //음식점동의합의
     if (this["flag" + room][0] == 1) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
         {
             agree(r, "res", "음식점", 1);
         }
@@ -501,7 +501,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
     //음식점추천
     if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room = 'ele' )
+        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
         {
             recom(r, "res");
         }
@@ -546,7 +546,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             replier.reply("!로또\n!최근채팅\n!날씨\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
         }
     }
-
     //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
     if (room == "bot") {
         //기능
