@@ -418,7 +418,7 @@ function noticecheck(){
 			var newnotice = doc.select("tr.num").get(0).select("td.title>a").first().ownText();
 			var date = doc.select("tr.num").get(0).select("td.date").get(0).text();
 			Api.replyRoom("test","새공지! "+newnotice);
-			Api.replyRoom("agent","새공지! "+newnotice);
+			//Api.replyRoom("agent","새공지! "+newnotice);
 			D.insert('notice', { num: firstnum, date: date, msg: newnotice });
 		}
 	}catch(e){
@@ -433,13 +433,17 @@ T.register("noticeCheck",()=>{
 }).start();
 
 function notice(r) {
-	var count = r.msg.split(" ")[1];
+	var count;
+	count = r.msg.split(" ")[1];
+	if(count==undefined){
+		count=5;
+	}
 	var text = [];
-	var dbnum = D.selectForArray('notice', "count(*)")-1;//db개수 - 1
-    for(i=dbnum-count;i<=dbnum;i++){
-    	text.push(D.selectForArray('notice')[i];
+	var dbnum = D.selectForArray('notice', "count(*)");//db개수
+    for(i=dbnum-count;i<dbnum;i++){
+    	text.push("번호 : "+D.selectForArray('notice', 'num')[i]+"날짜 : "+D.selectForArray('notice', 'date')[i]+"\n+D.selectForArray('notice', 'msg')[i]);
     }
-    text.join("\n\n");
+    text.join("\n");
     Api.replyRoom(r.room, text);
 }
 
