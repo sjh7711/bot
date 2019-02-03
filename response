@@ -287,8 +287,8 @@ function clear(r, name, num) {
 }
 
 //최근채팅
-function recentchat(r, name) { //name : DB이름
-    var tempchat = D.selectForArray('c'+name);
+function recentchat(r) { //name : DB이름
+    var tempchat = D.selectForArray('c'+r.room);
     var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
     if (0 < num && num < 17) {
         var temp = [];//뽑은 채팅을 담을 공간
@@ -435,7 +435,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
             if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
-                recentchat(r, 'c' + room);
+                recentchat(r);
             }
         }
 
@@ -457,7 +457,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        //최근채팅
+        //최근채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
             if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
