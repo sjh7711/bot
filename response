@@ -542,7 +542,7 @@ function func(r) {
         r.replier.reply("앞으로 만들어볼 기능들입니다. 하는건 내맘");
     }
     if (r.msg.split(" ")[1] == "공지") {
-        r.replier.reply("공지 1페이지(15개)를 띄워줍니다");
+        r.replier.reply("최근 5개의 공지를 띄워줍니다. !공지 15 와 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다.");
     }
     if (r.msg.split(" ")[1] == "날씨") {
         r.replier.reply("무전동 날씨를 보여줍니다");
