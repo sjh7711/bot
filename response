@@ -261,16 +261,16 @@ function notice(r){
 		.method(org.jsoup.Connection.Method.POST).execute().cookies();
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    	.cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice().replace(/ 관리자/g,"");
+    	.cookies(cookie2).cookies(cookie1).get().select('tbody').text().slice();
 	}
     
-    var secnum = doc.split(" ")[0] - 1
+    text = "";
     
-    for(var i=0;i<14;i++){
-    	doc=doc.replace(secnum, "\n"+secnum);
-    	secnum--;
-    }
-    r.replier.reply(doc);
+    for(i=0;i<doc.select("tr.num").size();i++) {
+	text += doc.select("tr.num").toArray()[i].select("td.num").toArray()[0].text()+" "+doc.select("tr.num").toArray()[i].select("td.date").text() + " "+doc.select("tr.num").toArray()[i].select("td.title").text()+"\n"
+	}
+	
+    r.replier.reply(text);
 }
 
 //공지체크기
@@ -304,11 +304,9 @@ function noticecheck(){
 		Api.replyRoom('test', time()+" | 공지번호 :  "+checknum);
 		
 		if(checknum!=D.selectForArray('notice', 'number')[0]){//저장된 공지의 번호
-			var secondnum = checknum-1;//두번째 공지 번호(split을위해)
-			var newnotice = doc.split(secondnum)[0];//새공지
+			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
+			var firstnum = doc.select("tr.num").get(0).select("td.num").get(0)text();‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭‭
 			Api.replyRoom("test","새공지! "+newnotice);
-			var firstnum = newnotice.split(" ")[0];//새공지의 번호
-			var newtext = newnotice.split(firstnum+" ")[1];//새공지의 텍스트
 			D.update('notice', { number: firstnum, msg: newtext });
 		}
 	}catch(e){
