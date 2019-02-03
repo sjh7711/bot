@@ -24,6 +24,7 @@ function saveFile() {//github에서 코드불러오기
 //reload
 function reload() {
     T.interrupt();
+    saveFile();
     var Timer = new Date();
 	Api.reload();
     var time = (new Date() - Timer) / 1000;
