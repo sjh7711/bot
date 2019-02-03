@@ -300,7 +300,7 @@ function noticecheck(){
 		var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
 		Api.replyRoom('test', time()+" | 공지번호 :  "+firstnum);
 		
-		if(firstnum!=D.selectForArray('notice', 'number')[0]){//저장된 공지의 번호
+		if(firstnum!=D.selectForArray('notice', 'number')){//저장된 공지의 번호
 			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
 			Api.replyRoom("test","새공지! "+newnotice);
 			D.update('notice', { number: firstnum, msg: newnotice });
@@ -312,7 +312,7 @@ function noticecheck(){
 T.register("noticeCheck",()=>{
 	while(true){
 		java.lang.Thread.sleep(3*30*1000);
-		noticecheck();
+		noticecheck;
 	}
 }).start();
 //--------------------------------------------------------------------Response-------------------------------------------------//
