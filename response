@@ -406,7 +406,12 @@ function notice(r){
     	.cookies(cookie2).cookies(cookie1).get().select('tbody');
 	}
     
-    var text = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText()).join("\n\n");
+    var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
+    var text = [];
+    for(i=0;i<temptext.length;i++){
+    	text.push(temptext[i]);
+    }
+    text.join("\n\n");
 	
     r.replier.reply(text);
 }
