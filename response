@@ -28,7 +28,7 @@ function reload() {
     var Timer = new Date();
 	Api.reload();
     var time = (new Date() - Timer) / 1000;
-    Api.replyRoom('test', "reloading 완료 / " + time + "s");
+	Api.replyRoom('test', "reloading 완료 / " + time + "s");
 }
 
 //time
@@ -419,168 +419,154 @@ T.register("noticeChecker",()=>{
 }).start();
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-    r = { replier: replier, msg: msg, sender: sender, room: room };
-    
-    //eval
-    if (msg.indexOf("]") == 0) {
-        if(room == 'test' || room == 'bot'){
-            try{
-                replier.reply(eval(msg.substring(1)));
-            }catch(e){
-                replier.reply(e + "\n" + e.stack);
+    try {
+        r = { replier: replier, msg: msg, sender: sender, room: room };
+
+        //eval
+        if (msg.indexOf("]") == 0) {
+            if (room == 'test' || room == 'bot') {
+                try {
+                    replier.reply(eval(msg.substring(1)));
+                } catch (e) {
+                    replier.reply(e + "\n" + e.stack);
+                }
+            }
+        }
+
+        if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
+            if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+                recentchat(r, 'c' + room);
+            }
+        }
+
+        if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
+            if (room == 'test' || room == 'bot' || room == 'ele') {
+                replier.reply(D.selectForArray('willdo').join("\n"));
+            }
+        }
+
+        if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
+            if (room == 'test' || room == 'agent') {
+                getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/daily-weather-forecast/1873980')
+            }
+        }
+
+        if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
+            if (room == 'test' || room == 'agent') {
+                notice(r);
+            }
+        }
+
+        //최근채팅
+        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+        } else {
+            if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+                D.insert('c' + room, { name: sender, msg: msg });
+            }
+        }
+
+        if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
+            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+                add(r, "menu", "메뉴", 0);
+            }
+        }
+
+        //메뉴동의합의
+        if (this["flag" + room][0] == 1) {
+            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+                agree(r, "menu", "메뉴", 0);
+            }
+        }
+
+        if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
+            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+                add(r, "res", "음식점", 1);
+            }
+        }
+
+        //음식점동의합의
+        if (this["flag" + room][0] == 1) {
+            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+                agree(r, "res", "음식점", 1);
+            }
+        }
+
+        if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
+            if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+                recom(r, "res");
+            }
+        }
+
+        //기능설명
+        if (msg.indexOf("!기능 ") == 0) {
+            func(r);
+        }
+
+        //로또
+        if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
+            lotto(r);
+        }
+
+        //오버워치
+        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
+            overWatch(r);
+        }
+
+        //메뉴추천
+        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
+            recom(r, "menu");
+        }
+
+        if (msg.indexOf("/기능") == 0) {
+            replier.reply("!기능으로 작동합니다");
+        }
+
+        if (msg.indexOf("/학식") == 0) {
+            replier.reply(sender + "님 학식 드시나요?");
+        }
+
+        if (msg.indexOf("시발") >= 0 || msg.indexOf("ㅅㅂ") >= 0 || msg.indexOf("tq") >= 0 || msg.indexOf("쓰발") >= 0 || msg.indexOf("ㅆㅂ") >= 0 || msg.indexOf("존나") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
+            replier.reply("욕은 안좋아");
+        }
+
+        //-----------------------------------------------------개인채팅방------------------------------------------------
+        if (room == "test") {
+            if (msg == "!기능") {
+                replier.reply("!로또\n!최근채팅\n!날씨\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+            }
+        }
+        //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
+        if (room == "bot") {
+            if (msg == "!기능") {
+                replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+            }
+        }
+        //-------------------------------------------------------공익----------------------------------------------------
+        if (room == 'agent') {
+            if (msg == "!기능") {
+                replier.reply("!공지\n!로또\n!최근채팅\n!메뉴\n!오버워치\n!날씨\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+            }
+        }
+        //-------------------------------------------------------전전컴톡방-----------------------------------------------------
+        if (room == "ele") {
+            if (msg == "!기능") {
+                replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+            }
+        }
+        //--------------------------------------------------------자생방-----------------------------------------
+        if (room == 'ja') {
+            if (msg == "!기능") {
+                replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+            }
+        }
+        //-----------------------------------------------------오버워치방-----------------------------------------
+        if (room == 'over') {
+            if (msg == "!기능") {
+                replier.reply("!로또\n!최근채팅\n!메뉴\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
     }
-        
-    //최근채팅
-    if (msg.indexOf("!최근채팅") == 0||msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele' )
-        {
-            recentchat(r, 'c'+room);
-        }
-    }
-        
-    //할일
-    if (msg.indexOf("!예정기능") == 0||msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
-        if (room == 'test' || room == 'bot' || room=='ele'){
-            replier.reply(D.selectForArray('willdo').join("\n"));
-        }
-    }
-        
-    if (msg.indexOf("!날씨") == 0||msg.indexOf("!ㄴㅆ") == 0) {
-        if (room == 'test' || room == 'agent'){
-            getTimeWeather('https://www.accuweather.com/ko/kr/mujeon-dong/1873980/daily-weather-forecast/1873980')
-        }
-    }
-        
-    //공지
-    if (msg.indexOf("!공지") == 0||msg.indexOf("!ㄱㅈ") == 0) {
-        if (room == 'test' || room == 'agent'){
-            notice(r);
-        }
-    }
-        
-    //최근채팅
-    if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
-    } else {
-        if (room == 'test' || room =='bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele' )
-        {
-            D.insert('c'+room, { name: sender, msg: msg });
-        }
-    }
-        
-    //메뉴추가
-    if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
-        {
-            add(r, "menu", "메뉴", 0);
-        }
-    }
-
-    //메뉴동의합의
-    if (this["flag" + room][0] == 1) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
-        {
-            agree(r, "menu", "메뉴", 0);
-        }
-    }
-    
-    //음식점추가
-    if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
-        {
-            add(r, "res", "음식점", 1);
-        }
-    }
-
-    //음식점동의합의
-    if (this["flag" + room][0] == 1) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
-        {
-            agree(r, "res", "음식점", 1);
-        }
-    }
-
-    //음식점추천
-    if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
-        if (room == 'test' || room =='bot' || room == 'ja' || room == 'ele' )
-        {
-            recom(r, "res");
-        }
-    }
-        
-    //기능설명
-    if (msg.indexOf("!기능 ") == 0) {
-        func(r);
-    }
-    
-    //로또
-    if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
-        lotto(r);
-    }
-    
-    //오버워치
-    if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
-        overWatch(r);
-    }
-    
-    //메뉴추천
-    if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
-		recom(r, "menu");
-    }
-    
-    if(msg.indexOf("/기능") == 0) {
-        replier.reply("!기능으로 작동합니다");
-    }
-    
-    if(msg.indexOf("/학식") == 0) {
-        replier.reply(sender+"님 학식 드시나요?");
-    }
-    
-    if (msg.indexOf("시발") >= 0 ||msg.indexOf("ㅅㅂ") >= 0 ||msg.indexOf("tq") >= 0 ||msg.indexOf("쓰발") >= 0 ||msg.indexOf("ㅆㅂ") >= 0 || msg.indexOf("존나") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
-        replier.reply("욕은 안좋아");
-    }
-        
-    //-----------------------------------------------------개인채팅방------------------------------------------------
-    if (room == "test") {
-        //기능
-        if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!날씨\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-        }
-    }
-    //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
-    if (room == "bot") {
-        //기능
-        if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-        }
-    }
-    //-------------------------------------------------------공익----------------------------------------------------
-    if (room == 'agent') {
-        //기능
-        if (msg == "!기능") {
-            replier.reply("!공지\n!로또\n!최근채팅\n!메뉴\n!오버워치\n!날씨\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-        }
-    }
-    //-------------------------------------------------------전전컴톡방-----------------------------------------------------
-    if (room == "ele") {
-        //기능
-        if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-        }
-    }    
-    //--------------------------------------------------------자생방-----------------------------------------
-    if (room == 'ja') {
-        //기능
-        if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-        }
-    }
-    //-----------------------------------------------------오버워치방-----------------------------------------
-    if (room == 'over') {
-        //기능
-        if (msg == "!기능") {
-            replier.reply("!로또\n!최근채팅\n!메뉴\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-        }
+    catch (e) {
+        replier.reply(e + "\n" + e.stack);
     }
 }
