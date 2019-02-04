@@ -107,7 +107,7 @@ function lotto(r) {
     var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]+1;
 	
-    var today = new Date().getTime();
+    var today = new Date();
 	var year   = today.getFullYear();
 	var month  = today.getMonth() + 1;
 	var day = today.getDay();
