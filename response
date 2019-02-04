@@ -102,16 +102,17 @@ function lotto(r) {
             break;
         }
     }
+    r.replier.reply(templotto.sort(compare).join(", "));
+    
     var today = new Date();
-	var year   = today.getFullYear();
+	/*var year   = today.getFullYear();
 	var month  = today.getMonth() + 1;
 	var day = today.getDay();
 	var date   = today.getDate();
 	var hour   = today.getHours();
 	var minute = today.getMinutes();
-
-    r.replier.reply(templotto.sort(compare).join(", "));
-    D.insert('lotto', {year: year, month: month, date:date, day: day, hour:hour, minute:minute, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, day: day, hour:hour, minute:minute, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});*/
+    D.insert('lotto', {room : r.room, sender : r.sender, date: today, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 }
 
 function lottocheck(r) {
@@ -127,6 +128,12 @@ function lottocheck(r) {
 		D.update('lottowin', {year: date[0], month: date[1], date: date[2], num1:win[0], num2:win[1], num3:win[2], num4:win[3], num5:win[4], num6:win[5], bonus:bonus});
 		windata = D.selectForArray('lottowin');
 	}
+	
+	var timeend = new Date(date[0], date[1], date[2], 20).getTime();
+	var timestart = timeend-(7*24*60*60*1000);
+	
+	var lottodata = D.selectForArray('lotto', date, 'timestart<date.getTime() && date.getTime()<timeend');
+	
 }
 
 //오버워치
