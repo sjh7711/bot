@@ -413,9 +413,6 @@ function notice(r){
     r.replier.reply(text.join("\n\n"));
 }
 
-function dc(name){
-	D.selectForString(name);
-}
 //공지체크기
 function noticecheck(){
 	try{
