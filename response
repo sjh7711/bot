@@ -104,35 +104,28 @@ function lotto(r) {
     }
     r.replier.reply(templotto.sort(compare).join(", "));
     
+    var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4').text().split('회')[0]+1;
+	
     var today = new Date().getTime();
-	/*var year   = today.getFullYear();
+	var year   = today.getFullYear();
 	var month  = today.getMonth() + 1;
 	var day = today.getDay();
 	var date   = today.getDate();
 	var hour   = today.getHours();
 	var minute = today.getMinutes();
-    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, day: day, hour:hour, minute:minute, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});*/
-    D.insert('lotto', {room : r.room, sender : r.sender, date: today, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+	
+    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 }
 
 function lottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var num = raw.select('h4');
+	var lastnum = raw.select('h4').text().split('회')[0];
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").replace("년","").replace("월","").replace("일","").split(" ").slice();
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	
-	var windata = D.selectForArray('lottowin');
-	
-	if(windata[2]!=date){
-		D.update('lottowin', {year: date[0], month: date[1], date: date[2], num1:win[0], num2:win[1], num3:win[2], num4:win[3], num5:win[4], num6:win[5], bonus:bonus});
-		windata = D.selectForArray('lottowin');
-	}
-	
-	var timeend = new Date(date[0], date[1], date[2], 20).getTime();
-	var timestart = timeend-(7*24*60*60*1000);
-	
-	var lottodata = D.selectForArray('lotto', 'date', 'timestart<date && date<timeend');
+	var lottodata = D.selectForArray('lotto', 'date', num==lastnum);
 	
 }
 
