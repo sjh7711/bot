@@ -104,10 +104,10 @@ function lotto(r) {
     }
     r.replier.reply(templotto.sort(compare).join(", "));
     
-    var rawlotto = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	
-    var today = new Date();
+	var today = new Date();
 	var year   = today.getFullYear();
 	var month  = today.getMonth() + 1;
 	var date   = today.getDate();
