@@ -121,7 +121,12 @@ function lottocheck(r) {
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	
-	D.update('lottowin', {year: date[0], month: date[1], date: date[2], num1:win[0], num2:win[1], num3:win[2], num4:win[3], num5:win[4], num6:win[5], bonus:bonus});
+	var windata = D.selectForArray('lottowin');
+	
+	if(windata[2]!=date){
+		D.update('lottowin', {year: date[0], month: date[1], date: date[2], num1:win[0], num2:win[1], num3:win[2], num4:win[3], num5:win[4], num6:win[5], bonus:bonus});
+		windata = D.selectForArray('lottowin');
+	}
 }
 
 //오버워치
