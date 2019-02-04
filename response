@@ -102,7 +102,26 @@ function lotto(r) {
             break;
         }
     }
+    var today = new Date();
+	var year   = today.getFullYear();
+	var month  = today.getMonth() + 1;
+	var day = today.getDay();
+	var date   = today.getDate();
+	var hour   = today.getHours();
+	var minute = today.getMinutes();
+
     r.replier.reply(templotto.sort(compare).join(", "));
+    D.insert('lotto', {date:{year: year, month: month, day: day, hour:hour, minute:minute}, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+}
+
+function lottocheck(r) {
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4');
+	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").replace("년","").replace("월","").replace("일","").split(" ").slice();
+	var win = raw.select('p').get(1).text().split(" ").slice();
+	var bonus = raw.select('p').get(2).text();
+	
+	D.update('lottowin', {year: date[0], month: date[1], day: date[2], num1:win[0], num2:win[1], num3:win[2], num4:win[3], num5:win[4], num6:win[5], bonus:bonus});
 }
 
 //오버워치
@@ -366,6 +385,30 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 
 //-------------------------------------------------------------변경안할 함수------------------------------------------------------
+//절전모드 관리
+wake=(function() { 
+   const PM=android.os.PowerManager;
+   const pm =Api.getContext().getSystemService(android.content.Context.POWER_SERVICE);
+   const wl= pm.newWakeLock(PM.SCREEN_DIM_WAKE_LOCK|PM.ACQUIRE_CAUSES_WAKEUP |PM.ON_AFTER_RELEASE,"FAIL");
+    return {
+        on :function(){
+            if(!wl.isHeld()){
+                wl.acquire();
+                return "wake on done";
+            }else return "not changed";
+        },
+        off:function(){
+            if(wl.isHeld()){
+                wl.release();
+                return "wake off done";
+            }else return "not changed";
+        },
+        toString: function(){
+            return wl.toString();
+        }
+    }
+})();
+
 //홈페이지 파밍
 //.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
 //.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
