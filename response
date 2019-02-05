@@ -289,7 +289,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         //식당동의합의
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (this["flag" + room][0] == 1) {
+            if (this["flag" + room][1] == 1) {
                 agree(r, "res", "식당", 1);
             }
         }
