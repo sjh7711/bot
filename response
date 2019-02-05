@@ -365,6 +365,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
             lotto(r);
         }
+        
+        if (msg.indexOf("!로또결과") == 0 || msg.indexOf("!ㄹㄸㄱㄱ") == 0) {
+            lottocheck(r);
+        }
 
         //오버워치
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
