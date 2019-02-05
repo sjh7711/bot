@@ -513,11 +513,11 @@ function lottocheck(r) {
 	}
 	
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
-	var yourname = r.msg.split(" ")[1];
+	var namelength = r.msg.split(" ")[1].length;
 	if ( temp.length == 0 ){
 		r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
-	} else if ( yourname.length != 0 ) { 
-		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,yourname]);
+	} else if ( namelength != 0 ) { 
+		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
 		if ( temp.length == 0 ){
 			r.replier.reply(yourname+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
 		}else{
