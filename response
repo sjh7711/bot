@@ -148,7 +148,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
         if (this["flag" + r.room][num] == 0) {
-            r.replier.reply("3명 이상이 "+name1+"동의를 입력하면 즉시 추가됩니다. 투표는 1회만 가능합니다.");
+            r.replier.reply(name1+"동의를 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
             this["flag" + name + r.room] = temp;
             this["flag" + r.room][num] = 1;
         }
@@ -166,8 +166,7 @@ function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / nam
             r.replier.reply("찬성 : "+this[name + "agree" + r.room] + "/3");
             this["sender" + name + r.room].push(r.sender);
         }
-    }
-    if (r.msg == name1 + "반대") {
+    } else if (r.msg == name1 + "반대") {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "opp" + r.room] += 1;
             r.replier.reply("반대 : "+this[name + "opp" + r.room] + "/3");
@@ -181,7 +180,7 @@ function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / nam
         clear(r, name, num);
     } else if (this[name + "opp" + r.room] == 1) {
     	clear(r, name, num);
-    	r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 반대되었습니다.");
+    	r.replier.reply(this["flag" + name + r.room].이가() + " 반대되었습니다.");
     }
 }
 
@@ -191,6 +190,7 @@ function clear(r, name, num) {
     this["sender" + name + r.room] = undefined;
     this["flag" + name + r.room] = undefined;
     this[name + "agree" + r.room] = 0;
+    this[name + "opp" + r.room] = 0;
 }
 
 
