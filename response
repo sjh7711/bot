@@ -138,14 +138,16 @@ function lottocheck(r) {
 						break;
 					}
 				}
-			if(j==5){
-				if(count==5){
-					for(var j=0;j<6;j++){
-						if(lastdata[i][j+8]==bonus){
-							count+=2;
-							break;
+				if(j==5){
+					if(count==5){
+						for(var j=0;j<6;j++){
+							if(lastdata[i][j+8]==bonus){
+								count+=2;
+								break;
+							}
 						}
 					}
+				}
 				lastdata[i].push(count);
 				if(count==0||count==1||count==2){
 					lastdata[i].push('꽝');
