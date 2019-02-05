@@ -280,10 +280,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if (room == 'test' || room == 'bot') {
  		try {
 			if (msg.indexOf("]") == 0) {
-			replier.reply(eval(msg.substring(1)));
-		}catch(e) {
-        replier.reply(e + "\n" + e.stack);
-    	}
+				replier.reply(eval(msg.substring(1)));
+			}catch(e) {
+				replier.reply(e + "\n" + e.stack);
+			}
+		}
 	}
 	try {
         r = { replier: replier, msg: msg, sender: sender, room: room };
@@ -419,10 +420,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             if (msg == "!기능") {
                 replier.reply("!로또\n!최근채팅\n!메뉴\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
-        }
-    } catch (e) {
+		}
+	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
-    }
+	}
 }
 
 
