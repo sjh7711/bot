@@ -188,14 +188,12 @@ function recentchat(r) { //name : DB이름
 			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
 		} else {
 			var tempchat = D.selectForArray('c'+r.room);
-			if (0 < num && num < 17) {
-				num = temp1*1;
+			if (0 < temp1*1; && temp1*1; < 17) {
+				num = temp1*1
 			}
 		}
-	} else {
-		var tempchat = D.selectForArray('c'+r.room);
 	}
-	
+		
 	var temp = [];//뽑은 채팅을 담을 공간
     if (0 < num && num < 17) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
