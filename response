@@ -197,8 +197,8 @@ function recentchat(r) { //name : DB이름
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
             temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
         }
-        r.replier.reply(temp.join("\n"));
     }
+    r.replier.reply(temp.join("\n"));
 }
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
