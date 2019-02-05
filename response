@@ -136,16 +136,9 @@ function lottocheck(r) {
 					if(lottodata[i][j+8]==win[k]){
 						count+=1;
 						break;
-					}
-				}
-				if(j==5){
-					if(count==5){
-						for(var j=0;j<6;j++){
-							if(lottodata[i][j+8]==bonus){
-								count+=2;
-								break;
-							}
-						}
+					}else if(lottodata[i][j+8]==bonus){
+						count+=2;
+						break;
 					}
 				}
 			}
@@ -169,7 +162,7 @@ function lottocheck(r) {
 	
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
 	
-	var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n";
+	var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 	for(var i=0; i<temp.length; i++){
 		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
 	}
