@@ -92,6 +92,7 @@ var sendermenuover = [];
 //------------------------------------------------------기능함수---------------------------------------------------------//
 //로또
 function lotto(r) {
+	try{
     var templotto = []; //로또번호 담길곳
     for (var i = 0; i < 100; i++) {
         var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
@@ -115,9 +116,14 @@ function lotto(r) {
 	var minute = today.getMinutes();
 	
     D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+	}catch (e) {
+        Api.replyRoom("test", e + "\n" + e.stack);
+	}
 }
 
+
 function lottocheck(r) {
+	try{
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = raw.select('h4').text().split('회')[0];
 	var win = raw.select('p').get(1).text().split(" ").slice();
@@ -171,6 +177,9 @@ function lottocheck(r) {
 		result+=temp[i][1]+"|생성일:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+"|"+temp[i][15]+"등";
 	}
 	r.replier.reply(result);
+	}catch (e) {
+        Api.replyRoom("test", e + "\n" + e.stack);
+	}
 }
 
 //오버워치
@@ -278,17 +287,17 @@ function recentchat(r) { //name : DB이름
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	//eval
 	if (room == 'test' || room == 'bot') {
- 		try {
-			if (msg.indexOf("]") == 0) {
+		if (msg.indexOf("]") == 0) {
+			try {
 				replier.reply(eval(msg.substring(1)));
-			}catch(e) {
-				replier.reply(e + "\n" + e.stack);
+			} catch (e) {
+			replier.reply(e + "\n" + e.stack);
 			}
 		}
 	}
+	r = { replier: replier, msg: msg, sender: sender, room: room };
+	
 	try {
-        r = { replier: replier, msg: msg, sender: sender, room: room };
-
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
