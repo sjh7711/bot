@@ -163,7 +163,18 @@ function lottocheck(r) {
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
 	if ( temp.length == 0 ){
 		r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
-	} else {
+	} else if ( r.msg.split(" ")[1] != undefined ) { 
+		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.sender]);
+		if ( temp.length == 0 ){
+			r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
+		} else {
+			var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
+		}
+		for(var i=0; i<temp.length; i++){
+			result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+		}
+		r.replier.reply(result);
+	} else{
 		var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 		for(var i=0; i<temp.length; i++){
 			result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
@@ -459,7 +470,7 @@ function func(r) {
         r.replier.reply("로또번호를 추천해줍니다.");
     }
     if (r.msg.split(" ")[1] == "당첨") {
-        r.replier.reply("지난 회차에 뽑았던 당첨번호들이 몇 등인지 알려줍니다. 3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
+        r.replier.reply("지난 회차에 뽑았던 당첨번호들이 몇 등인지 알려줍니다. !당첨 BOT와 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다. 3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
     }
     if (r.msg.split(" ")[1] == "메뉴추천") {
         r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
