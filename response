@@ -125,9 +125,9 @@ function lottocheck(r) {
 	var bonus = raw.select('p').get(2).text();
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 
-	var temp=D.selectForArray('lottoresult','num')
+	var temp=D.selectForArray('lottoresult','num');
 	
-	if(temp[temp.length-1]!=lastnum){
+	if(temp[temp.length-1]!=lastnum*1){
 		var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
 		for(var i=0;i<lottodata.length;i++){
 			var count = 0;
