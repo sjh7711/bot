@@ -184,11 +184,11 @@ function recentchat(r) { //name : DB이름
 			num = temp2*1;
 		}
 	} else if(typeof temp1 == 'string') {
-		var tempchat = D.selectForArray('c'+r.room);
 		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
-			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1).length;
+			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
 		} else {
 			if (0 < num && num < 17) {
+				var tempchat = D.selectForArray('c'+r.room);
 				num = temp1*1;
 			}
 		}
