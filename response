@@ -167,10 +167,10 @@ function lottocheck(r) {
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
 	
 	var result=temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus;
-	result+=temp[i][1]+"|생성일:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+"|"+temp[i][15]+"등";
-	
+	for(var i=0; i<temp.length; i++){
+		result+=temp[i][1]+"|생성일:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+"|"+temp[i][15]+"등";
+	}
 	r.replier.reply(result);
-	
 }
 
 //오버워치
