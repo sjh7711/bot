@@ -176,13 +176,16 @@ function clear(r, name, num) {
 function recentchat(r) { //name : DB이름
     var temp1 = r.msg.split(" ")[1];
     var temp2 = r.msg.split(" ")[2];
+    var num = -1;
     
 	if(typeof temp1 == 'string' && typeof temp2 == 'number'){
 		var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
-		var num = temp2;
+		num = temp2;
 	} else if(typeof temp1 == 'number') {
 		var tempchat = D.selectForArray('c'+r.room);
-		var num = temp1;
+		num = temp1;
+	} else {
+		var tempchat = D.selectForArray('c'+r.room);
 	}
 
     if (0 < num && num < 17) {
