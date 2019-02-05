@@ -43,6 +43,8 @@ var es=String.fromCharCode(8237).repeat(500);
 var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
 var menuagreebot = 0; //메뉴추가동의 인원수
 var resagreebot = 0; //음식점추가동의 인원수
+var menuoppbot = 0; //메뉴추가반대 인원수
+var resoppbot = 0; //음식점추가반대 인원수
 var flagmenubot; //추가심사중인 메뉴
 var flagresbot; //추가심사중인 음식점
 var sendermenubot = []; //메뉴추가에 동의한 사람
@@ -52,6 +54,8 @@ var senderresbot = []; //음식점추가에 동의한 사람
 var flagele = [0, 0]; 
 var menuagreeele = 0;
 var resagreeele = 0;
+var menuoppele = 0; //메뉴추가반대 인원수
+var resoppele = 0; //음식점추가반대 인원수
 var flagmenuele; 
 var flagresele; 
 var sendermenuele = [];
@@ -61,6 +65,8 @@ var senderresele = [];
 var flagtest = [0, 0];
 var menuagreetest = 0; 
 var resagreetest = 0; 
+var menuopptest = 0; //메뉴추가반대 인원수
+var resopptest = 0; //음식점추가반대 인원수
 var flagmenutest; 
 var flagrestest;
 var sendermenutest = []; 
@@ -70,6 +76,8 @@ var senderrestest = [];
 var flagja = [0, 0]; 
 var menuagreeja = 0; 
 var resagreeja = 0; 
+var menuoppja = 0; //메뉴추가반대 인원수
+var resoppja = 0; //음식점추가반대 인원수
 var flagmenuja; 
 var flagresja;
 var sendermenuja = []; 
@@ -79,6 +87,8 @@ var senderresja = [];
 var flagbot = [0, 0]; 
 var menuagreebot = 0; 
 var resagreebot = 0; 
+var menuoppbot = 0; //메뉴추가반대 인원수
+var resoppbot = 0; //음식점추가반대 인원수
 var flagmenubot; 
 var flagresbot;
 var sendermenubot = []; 
@@ -87,6 +97,7 @@ var senderresbot = [];
 //오버워치용 변수
 var flagover = [0];
 var menuagreeover = 0; 
+var menuoppover = 0; 
 var flagmenuover; 
 var sendermenuover = []; 
 //------------------------------------------------------기능함수---------------------------------------------------------//
@@ -137,7 +148,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
         if (this["flag" + r.room][num] == 0) {
-            r.replier.reply("4명 이상이 메뉴동의를 입력하면 즉시 추가됩니다.");
+            r.replier.reply("3명 이상이 "+name1+"동의를 입력하면 즉시 추가됩니다. 투표는 1회만 가능합니다.");
             this["flag" + name + r.room] = temp;
             this["flag" + r.room][num] = 1;
         }
@@ -152,15 +163,25 @@ function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / nam
     if (r.msg == name1 + "동의") {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "agree" + r.room] += 1;
-            r.replier.reply(this[name + "agree" + r.room] + "/4");
+            r.replier.reply("찬성 : "+this[name + "agree" + r.room] + "/3");
             this["sender" + name + r.room].push(r.sender);
         }
     }
-    if (this[name + "agree" + r.room] == 4) {
+    if (r.msg == name1 + "반대") {
+        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
+            this[name + "opp" + r.room] += 1;
+            r.replier.reply("반대 : "+this[name + "opp" + r.room] + "/3");
+            this["sender" + name + r.room].push(r.sender);
+        }
+    }
+    if (this[name + "agree" + r.room] == 1) {
         var temp = this["flag" + name + r.room];
         D.insert(name, { name: temp });
         r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 추가되었습니다.");
         clear(r, name, num);
+    } else if (this[name + "opp" + r.room] == 1) {
+    	clear(r, name, num);
+    	r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 반대되었습니다.");
     }
 }
 
@@ -172,40 +193,7 @@ function clear(r, name, num) {
     this[name + "agree" + r.room] = 0;
 }
 
-//최근채팅
-function recentchat(r) { //name : DB이름
-    var temp1 = r.msg.split(" ")[1];
-    var temp2 = r.msg.split(" ")[2];
-    var num = 6;
-    
-	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
-		var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
-		if (0 < num && num < 17) {
-			num = temp2*1;
-		}
-	} else if(typeof temp1 == 'string') {
-		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
-			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
-		} else {
-			var tempchat = D.selectForArray('c'+r.room);
-			if (0 < temp1*1 && temp1*1 < 17) {
-				num = temp1*1
-			}
-		}
-	}
-	
-	if(tempchat.length<6){
-		num = tempchat.length
-	}
-		
-	var temp = [];//뽑은 채팅을 담을 공간
-    if (0 < num && num < 17) {
-        for (var i = tempchat.length - num; i < tempchat.length; i++) {
-            temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
-        }
-    }
-    r.replier.reply(temp.join("\n"));
-}
+
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -384,31 +372,31 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 //기능설명
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이하면 16개를 불러오고 최대 16개까지 조회가능합니다.");
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이 입력하면 16개를 불러오고 최대 16개까지 조회가능합니다. !최근채팅 닉네임 16과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다.");
     }
     if (r.msg.split(" ")[1] == "오버워치") {
         r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
     }
     if (r.msg.split(" ")[1] == "로또") {
-        r.replier.reply("로또번호를 추천해줍니다.");
+        r.replier.reply("로또번호를 추천해줍니다. !당첨으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
     }
     if (r.msg.split(" ")[1] == "당첨") {
-        r.replier.reply("지난 회차에 뽑았던 당첨번호들이 몇 등인지 알려줍니다. !당첨 BOT와 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다. 3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
+        r.replier.reply("지난 회차에 뽑았던 당첨번호들이 몇 등인지 알려줍니다. !당첨 닉네임 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다.\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
     }
     if (r.msg.split(" ")[1] == "메뉴추천") {
         r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     }
     if (r.msg.split(" ")[1] == "메뉴추가") {
-        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!메뉴추가 냉장고");
+        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!메뉴추가 메뉴이름");
     }
     if (r.msg.split(" ")[1] == "음식점추천") {
         r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     }
     if (r.msg.split(" ")[1] == "음식점추가") {
-        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다. ex)!음식점추가 789비어");
+        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!음식점추가 789비어");
     }
     if (r.msg.split(" ")[1] == "예정기능") {
-        r.replier.reply("앞으로 만들어볼 기능들입니다. 하는건 내맘");
+        r.replier.reply("앞으로 만들어질 수 있는 기능들입니다.");
     }
     if (r.msg.split(" ")[1] == "공지") {
         r.replier.reply("최근 5개의 공지를 띄워줍니다. !공지 15 와 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다.");
@@ -417,6 +405,42 @@ function func(r) {
         r.replier.reply("무전동 날씨를 보여줍니다");
     }
 }
+
+//최근채팅
+function recentchat(r) { //name : DB이름
+    var temp1 = r.msg.split(" ")[1];
+    var temp2 = r.msg.split(" ")[2];
+    var num = 6;
+    
+	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
+		var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+		if (0 < num && num < 17) {
+			num = temp2*1;
+		}
+	} else if(typeof temp1 == 'string') {
+		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
+			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+		} else {
+			var tempchat = D.selectForArray('c'+r.room);
+			if (0 < temp1*1 && temp1*1 < 17) {
+				num = temp1*1
+			}
+		}
+	}
+	
+	if(tempchat.length<6){
+		num = tempchat.length
+	}
+		
+	var temp = [];//뽑은 채팅을 담을 공간
+    if (0 < num && num < 17) {
+        for (var i = tempchat.length - num; i < tempchat.length; i++) {
+            temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
+        }
+    }
+    r.replier.reply(temp.join("\n"));
+}
+
 
 //로또
 function lotto(r) {
