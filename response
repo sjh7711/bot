@@ -90,99 +90,6 @@ var menuagreeover = 0;
 var flagmenuover; 
 var sendermenuover = []; 
 //------------------------------------------------------기능함수---------------------------------------------------------//
-//로또
-function lotto(r) {
-    var templotto = []; //로또번호 담길곳
-    for (var i = 0; i < 100; i++) {
-        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
-        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
-            templotto.push(rad);
-        }
-        if (templotto.length == 6) {//6개까지
-            break;
-        }
-    }
-    r.replier.reply(templotto.sort(compare).join(", "));
-    
-	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var num = raw.select('h4').text().split('회')[0]*1+1;
-	
-	var today = new Date();
-	var year   = today.getFullYear();
-	var month  = today.getMonth() + 1;
-	var date   = today.getDate();
-	var hour   = today.getHours();
-	var minute = today.getMinutes();
-	
-    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
-}
-
-
-function lottocheck(r) {
-	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var lastnum = raw.select('h4').text().split('회')[0];
-	var win = raw.select('p').get(1).text().split(" ").slice();
-	var bonus = raw.select('p').get(2).text();
-	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
-
-	var temp=D.selectForArray('lottoresult','num');
-	
-	if(temp[temp.length-1]!=lastnum*1){
-		var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
-		for(var i=0;i<lottodata.length;i++){
-			var count = 0;
-			for(var j=0;j<6;j++){
-				for(var k=0;k<6;k++){
-					if(lottodata[i][j+8]==win[k]){
-						count+=1;
-						break;
-					}else if(lottodata[i][j+8]==bonus){
-						count+=2;
-						break;
-					}
-				}
-			}
-			lottodata[i].push(count);
-			if(count==0||count==1||count==2){
-				lottodata[i].push('꽝');
-			}else if(count==3){
-				lottodata[i].push('5등');
-			}else if(count==4){
-				lottodata[i].push('4등');
-			}else if(count==5){
-				lottodata[i].push('3등');
-			}else if(count==7){
-				lottodata[i].push('2등');
-			}else if(count==6){
-				lottodata[i].push('1등');
-			}
-			D.insert('lottoresult', {room : lottodata[i][0], sender : lottodata[i][1], year: lottodata[i][2], month: lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7], num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],count:lottodata[i][14],class:lottodata[i][15]});
-		}
-	}
-	
-	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
-	if ( temp.length == 0 ){
-		r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
-	} else if ( r.msg.split(" ")[1].length != 0 ) { 
-		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
-		if ( temp.length == 0 ){
-			r.replier.reply(r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
-		}else{
-			var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
-			for(var i=0; i<temp.length; i++){
-				result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
-			}
-			r.replier.reply(result);
-		}
-	} else{
-		var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
-		for(var i=0; i<temp.length; i++){
-			result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
-		}
-		r.replier.reply(result);
-	}
-}
-
 //오버워치
 function overWatch(r) {
     var name = r.msg.substr(6);//배틀태그가 담기는 공간
@@ -257,7 +164,7 @@ function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / nam
     }
 }
 
-//메뉴추가 초기화함수
+//추가 초기화함수
 function clear(r, name, num) {
     this["flag" + r.room][num] = 0;
     this["sender" + name + r.room] = undefined;
@@ -267,8 +174,17 @@ function clear(r, name, num) {
 
 //최근채팅
 function recentchat(r) { //name : DB이름
-    var tempchat = D.selectForArray('c'+r.room);
-    var num = r.msg.split(" ")[1];//num : 최근채팅 보고싶은 개수
+    var temp1 = r.msg.split(" ")[1];
+    var temp2 = r.msg.split(" ")[2];
+    
+	if(typeof temp1 == 'string' && typeof temp2 == 'number'){
+		var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+		var num = temp2;
+	} else if(typeof temp1 == 'number') {
+		var tempchat = D.selectForArray('c'+r.room);
+		var num = temp1;
+	}
+
     if (0 < num && num < 17) {
         var temp = [];//뽑은 채팅을 담을 공간
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
@@ -494,6 +410,100 @@ function func(r) {
         r.replier.reply("무전동 날씨를 보여줍니다");
     }
 }
+
+//로또
+function lotto(r) {
+    var templotto = []; //로또번호 담길곳
+    for (var i = 0; i < 100; i++) {
+        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
+        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
+            templotto.push(rad);
+        }
+        if (templotto.length == 6) {//6개까지
+            break;
+        }
+    }
+    r.replier.reply(templotto.sort(compare).join(", "));
+    
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4').text().split('회')[0]*1+1;
+	
+	var today = new Date();
+	var year   = today.getFullYear();
+	var month  = today.getMonth() + 1;
+	var date   = today.getDate();
+	var hour   = today.getHours();
+	var minute = today.getMinutes();
+	
+    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+}
+
+
+function lottocheck(r) {
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var lastnum = raw.select('h4').text().split('회')[0];
+	var win = raw.select('p').get(1).text().split(" ").slice();
+	var bonus = raw.select('p').get(2).text();
+	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
+
+	var temp=D.selectForArray('lottoresult','num');
+	
+	if(temp[temp.length-1]!=lastnum*1){
+		var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
+		for(var i=0;i<lottodata.length;i++){
+			var count = 0;
+			for(var j=0;j<6;j++){
+				for(var k=0;k<6;k++){
+					if(lottodata[i][j+8]==win[k]){
+						count+=1;
+						break;
+					}else if(lottodata[i][j+8]==bonus){
+						count+=2;
+						break;
+					}
+				}
+			}
+			lottodata[i].push(count);
+			if(count==0||count==1||count==2){
+				lottodata[i].push('꽝');
+			}else if(count==3){
+				lottodata[i].push('5등');
+			}else if(count==4){
+				lottodata[i].push('4등');
+			}else if(count==5){
+				lottodata[i].push('3등');
+			}else if(count==7){
+				lottodata[i].push('2등');
+			}else if(count==6){
+				lottodata[i].push('1등');
+			}
+			D.insert('lottoresult', {room : lottodata[i][0], sender : lottodata[i][1], year: lottodata[i][2], month: lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7], num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],count:lottodata[i][14],class:lottodata[i][15]});
+		}
+	}
+	
+	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
+	if ( temp.length == 0 ){
+		r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
+	} else if ( r.msg.split(" ")[1].length != 0 ) { 
+		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
+		if ( temp.length == 0 ){
+			r.replier.reply(r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
+		}else{
+			var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
+			for(var i=0; i<temp.length; i++){
+				result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+			}
+			r.replier.reply(result);
+		}
+	} else{
+		var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
+		for(var i=0; i<temp.length; i++){
+			result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+		}
+		r.replier.reply(result);
+	}
+}
+
 
 //홈페이지 파밍
 //.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
