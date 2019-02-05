@@ -179,8 +179,8 @@ function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / nam
         r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 추가되었습니다.");
         clear(r, name, num);
     } else if (this[name + "opp" + r.room] == 1) {
-    	clear(r, name, num);
     	r.replier.reply(this["flag" + name + r.room].이가() + " 반대되었습니다.");
+    	clear(r, name, num);
     }
 }
 
@@ -420,6 +420,10 @@ function recentchat(r) { //name : DB이름
 	} else if(typeof temp1 == 'string') {
 		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
 			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+			if (0 < temp1*1 && temp1*1 < 17) {
+				var tempchat = D.selectForArray('c'+r.room);
+				num = temp1*1
+			}
 		} else {
 			var tempchat = D.selectForArray('c'+r.room);
 			if (0 < temp1*1 && temp1*1 < 17) {
