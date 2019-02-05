@@ -128,8 +128,7 @@ function lottocheck(r) {
 	
 	if(temp[temp.length-1]!=lastnum){
 		var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
-	
-		for(var i=0;i<lastdata.length;i++){
+		for(var i=0;i<lottodata.length;i++){
 			var count = 0;
 			for(var j=0;j<6;j++){
 				for(var k=0;k<6;k++){
@@ -373,7 +372,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             lotto(r);
         }
         
-        if (msg.indexOf("!로또결과") == 0 || msg.indexOf("!ㄹㄸㄱㄱ") == 0) {
+        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
         }
 
