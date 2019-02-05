@@ -148,7 +148,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
         if (this["flag" + r.room][num] == 0) {
-            r.replier.reply(name1+"동의를 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
+            r.replier.reply("1을 3명이 입력하면 리스트에 추가되고 0을 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
             this["flag" + name + r.room] = temp;
             this["flag" + r.room][num] = 1;
         }
@@ -160,13 +160,13 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
 //리스트 추가 다수 동의
 function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "음식점"..) / num : flag number
     list = D.selectForArray(name);
-    if (r.msg == name1 + "동의") {
+    if (r.msg == 1) {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "agree" + r.room] += 1;
             r.replier.reply("찬성 : "+this[name + "agree" + r.room] + "/3");
             this["sender" + name + r.room].push(r.sender);
         }
-    } else if (r.msg == name1 + "반대") {
+    } else if (r.msg == 0) {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "opp" + r.room] += 1;
             r.replier.reply("반대 : "+this[name + "opp" + r.room] + "/3");
@@ -193,6 +193,19 @@ function clear(r, name, num) {
     this[name + "opp" + r.room] = 0;
 }
 
+var flagbot = [0, 0]; 
+
+var menuagreebot = 0; 
+var resagreebot = 0; 
+
+var menuoppbot = 0; //메뉴추가반대 인원수
+var resoppbot = 0; //음식점추가반대 인원수
+
+var flagmenubot; 
+var flagresbot;
+
+var sendermenubot = []; 
+var senderresbot = []; 
 
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
@@ -267,17 +280,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 add(r, "res", "음식점", 1);
             }
         }
+        
+		if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
+                recom(r, "res");
+            }
+        }
 
         //음식점동의합의
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
             if (this["flag" + room][0] == 1) {
                 agree(r, "res", "음식점", 1);
-            }
-        }
-
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
-                recom(r, "res");
             }
         }
 
