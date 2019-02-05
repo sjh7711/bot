@@ -31,7 +31,7 @@ function reload() {
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:음식점/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅
+//menu:메뉴/res:식당/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅
 //D.selectForString("sqlite_master")
 var T = require("ThreadManager.js");
 //T.getThreadList()
@@ -40,22 +40,22 @@ var es=String.fromCharCode(8237).repeat(500);
 
 
 //봇제작방용 변수
-var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=음식점추가flag
+var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag
 var menuagreebot = 0; //메뉴추가동의 인원수
-var resagreebot = 0; //음식점추가동의 인원수
+var resagreebot = 0; //식당추가동의 인원수
 var menuoppbot = 0; //메뉴추가반대 인원수
-var resoppbot = 0; //음식점추가반대 인원수
+var resoppbot = 0; //식당추가반대 인원수
 var flagmenubot; //추가심사중인 메뉴
-var flagresbot; //추가심사중인 음식점
+var flagresbot; //추가심사중인 식당
 var sendermenubot = []; //메뉴추가에 동의한 사람
-var senderresbot = []; //음식점추가에 동의한 사람
+var senderresbot = []; //식당추가에 동의한 사람
 
 //전전컴톡방용 변수
 var flagele = [0, 0]; 
 var menuagreeele = 0;
 var resagreeele = 0;
 var menuoppele = 0; //메뉴추가반대 인원수
-var resoppele = 0; //음식점추가반대 인원수
+var resoppele = 0; //식당추가반대 인원수
 var flagmenuele; 
 var flagresele; 
 var sendermenuele = [];
@@ -66,7 +66,7 @@ var flagtest = [0, 0];
 var menuagreetest = 0; 
 var resagreetest = 0; 
 var menuopptest = 0; //메뉴추가반대 인원수
-var resopptest = 0; //음식점추가반대 인원수
+var resopptest = 0; //식당추가반대 인원수
 var flagmenutest; 
 var flagrestest;
 var sendermenutest = []; 
@@ -77,7 +77,7 @@ var flagja = [0, 0];
 var menuagreeja = 0; 
 var resagreeja = 0; 
 var menuoppja = 0; //메뉴추가반대 인원수
-var resoppja = 0; //음식점추가반대 인원수
+var resoppja = 0; //식당추가반대 인원수
 var flagmenuja; 
 var flagresja;
 var sendermenuja = []; 
@@ -88,7 +88,7 @@ var flagbot = [0, 0];
 var menuagreebot = 0; 
 var resagreebot = 0; 
 var menuoppbot = 0; //메뉴추가반대 인원수
-var resoppbot = 0; //음식점추가반대 인원수
+var resoppbot = 0; //식당추가반대 인원수
 var flagmenubot; 
 var flagresbot;
 var sendermenubot = []; 
@@ -158,7 +158,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
 }
 
 //리스트 추가 다수 동의
-function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "음식점"..) / num : flag number
+function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "식당"..) / num : flag number
     list = D.selectForArray(name);
     if (r.msg == 1) {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
@@ -199,7 +199,7 @@ var menuagreebot = 0;
 var resagreebot = 0; 
 
 var menuoppbot = 0; //메뉴추가반대 인원수
-var resoppbot = 0; //음식점추가반대 인원수
+var resoppbot = 0; //식당추가반대 인원수
 
 var flagmenubot; 
 var flagresbot;
@@ -263,7 +263,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 
         //메뉴추천
-        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
+        if (msg.indexOf("!메뉴추천") == 0 || msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
         }
         
@@ -276,21 +276,21 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!음식점추가 ") == 0 || msg.indexOf("!ㅇㅅㅈㅊㄱ ") == 0) {
-                add(r, "res", "음식점", 1);
+            if (msg.indexOf("!식당추가 ") == 0 || msg.indexOf("!ㅅㄷㅊㄱ ") == 0) {
+                add(r, "res", "식당", 1);
             }
         }
         
 		if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!음식점") == 0 || msg.indexOf("!ㅇㅅㅈ") == 0) {
+            if (msg.indexOf("!식당추천") == 0 || msg.indexOf("!ㅅㄷㅊㅊ") == 0) {
                 recom(r, "res");
             }
         }
 
-        //음식점동의합의
+        //식당동의합의
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
             if (this["flag" + room][0] == 1) {
-                agree(r, "res", "음식점", 1);
+                agree(r, "res", "식당", 1);
             }
         }
 
@@ -333,13 +333,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //-----------------------------------------------------개인채팅방------------------------------------------------
         if (room == "test") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!날씨\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!날씨\n!메뉴\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
         if (room == "bot") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-------------------------------------------------------공익----------------------------------------------------
@@ -351,13 +351,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //-------------------------------------------------------전전컴톡방-----------------------------------------------------
         if (room == "ele") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //--------------------------------------------------------자생방-----------------------------------------
         if (room == 'ja') {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴\n!메뉴추가\n!음식점\n!음식점추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------오버워치방-----------------------------------------
@@ -400,13 +400,13 @@ function func(r) {
         r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴추천 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     }
     if (r.msg.split(" ")[1] == "메뉴추가") {
-        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!메뉴추가 메뉴이름");
+        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 3명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!메뉴추가 메뉴이름");
     }
-    if (r.msg.split(" ")[1] == "음식점추천") {
-        r.replier.reply("시립대 주변 음식점을 추천해 줍니다. !음식점추천 3과 같이 입력하면 음식점를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+    if (r.msg.split(" ")[1] == "식당추천") {
+        r.replier.reply("시립대 주변 식당을 추천해 줍니다. !식당추천 3과 같이 입력하면 식당를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     }
-    if (r.msg.split(" ")[1] == "음식점추가") {
-        r.replier.reply("추가되었으면하는 음식점을 추천해주세요. 4명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!음식점추가 789비어");
+    if (r.msg.split(" ")[1] == "식당추가") {
+        r.replier.reply("시립대 주변의 추가되었으면하는 식당을 추천해주세요. 3명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!식당추가 789비어");
     }
     if (r.msg.split(" ")[1] == "예정기능") {
         r.replier.reply("앞으로 만들어질 수 있는 기능들입니다.");
