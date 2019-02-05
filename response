@@ -193,6 +193,10 @@ function recentchat(r) { //name : DB이름
 			}
 		}
 	}
+	
+	if(tempchat.length<6){
+		num = tempchat.length
+	}
 		
 	var temp = [];//뽑은 채팅을 담을 공간
     if (0 < num && num < 17) {
