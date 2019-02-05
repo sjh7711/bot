@@ -276,14 +276,16 @@ function recentchat(r) { //name : DB이름
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-    try {
-        //eval
-        if (room == 'test' || room == 'bot') {
-            if (msg.indexOf("]") == 0) {
-                replier.reply(eval(msg.substring(1)));
-            }
-        }
-
+	//eval
+	if (room == 'test' || room == 'bot') {
+ 		try {
+			if (msg.indexOf("]") == 0) {
+			replier.reply(eval(msg.substring(1)));
+		}catch(e) {
+        replier.reply(e + "\n" + e.stack);
+    	}
+	}
+	try {
         r = { replier: replier, msg: msg, sender: sender, room: room };
 
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
