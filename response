@@ -120,13 +120,56 @@ function lotto(r) {
 function lottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = raw.select('h4').text().split('회')[0];
-	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").replace("년","").replace("월","").replace("일","").split(" ").slice();
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
+
+	var temp=D.selectForArray('lottoresult','num')
 	
-	var lottodata = D.selectForArray('lotto', 'date', num==lastnum);
+	if(temp[temp.length-1]!=lastnum){
+		var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
 	
+		for(var i=0;i<lastdata.length;i++){
+			var count = 0;
+			for(var j=0;j<6;j++){
+				for(var k=0;k<6;k++){
+					if(lastdata[i][j+8]==win[k]){
+						count+=1;
+						break;
+					}
+				}
+			if(j==5){
+				if(count==5){
+					for(var j=0;j<6;j++){
+						if(lastdata[i][j+8]==bonus){
+							count+=2;
+							break;
+						}
+					}
+				lastdata[i].push(count);
+				if(count==0||count==1||count==2){
+					lastdata[i].push('꽝');
+				}else if(count==3){
+					lastdata[i].push('5등');
+				}else if(count==4){
+					lastdata[i].push('4등');
+				}else if(count==5){
+					lastdata[i].push('3등');
+				}else if(count==7){
+					lastdata[i].push('2등');
+				}else if(count==6){
+					lastdata[i].push('1등');
+				}
+			}
+		}
+		D.insert('lottoresult', {room : lastdata[i][0], sender : lastdata[i][1], year: lastdata[i][2], month: lastdata[i][3], date:lastdata[i][4], hour:lastdata[i][5], minute:lastdata[i][6], num:lastdata[i][7], num1:lastdata[i][8],num2:lastdata[i][9],num3:lastdata[i][10],num4:lastdata[i][11],num5:lastdata[i][12],num6:lastdata[i][13],count:lastdata[i][14],class:lastdata[i][15]});
+	}
 	
+	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
+	
+	var result=temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus;
+	result+=temp[i][1]+"|생성일:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+"|"+temp[i][15]+"등";
+	
+	r.replier.reply(result);
 	
 }
 
