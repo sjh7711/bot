@@ -242,13 +242,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //-----------------------------------------------------개인채팅방------------------------------------------------
         if (room == "test") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!날씨\n!메뉴추천\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!날씨\n!메뉴추천\n!메뉴추가\n!식당추천\n!식당추가\n!오버워치\n!예정기능\n!공지\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
         if (room == "bot") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당추천\n!식당추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-------------------------------------------------------공익----------------------------------------------------
@@ -260,13 +260,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //-------------------------------------------------------전전컴톡방-----------------------------------------------------
         if (room == "ele") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당추천\n!식당추가\n!오버워치\n!예정기능\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //--------------------------------------------------------자생방-----------------------------------------
         if (room == 'ja') {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당\n!식당추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당추천\n!식당추가\n!오버워치\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------오버워치방-----------------------------------------
@@ -391,7 +391,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
     var temp = r.msg.split(" ")[1];
     var list = D.selectForArray(name);
     if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
-        D.insert('recom' + name, { name: temp })
+    	Api.replyRoom('recom', name1+"건의 : "+temp);
         r.replier.reply(temp.이가() + " 건의되었습니다.");
         if (this["flag" + r.room][num] == 1) {
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
@@ -469,7 +469,6 @@ function lotto(r) {
     D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 }
 
-
 function lottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = raw.select('h4').text().split('회')[0];
@@ -513,22 +512,20 @@ function lottocheck(r) {
 	}
 	
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
+	var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 	if ( temp.length == 0 ){
-		var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 		r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 	} else if ( typeof r.msg.split(" ")[1] != 'undefined' ) { 
 		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
 		if ( temp.length == 0 ){
-			r.replier.reply(r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
+			r.replier.reply(result+r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
 		}else{
-			var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 			for(var i=0; i<temp.length; i++){
 				result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
 			}
 			r.replier.reply(result);
 		}
 	} else{
-		var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 		for(var i=0; i<temp.length; i++){
 			result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
 		}
@@ -537,21 +534,14 @@ function lottocheck(r) {
 }
 
 function lottochecker(){
-	try{
-		var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
-		var temp=D.selectForArray('lottoresult','num');
-		
-		if(temp[temp.length-1]!=lastnum*1){//저장된 공지의 번호
-			Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-			//Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-			//Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-			//Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-			//Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-			//Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-		}
-	}catch(e){
-		Log.e(e+"\n"+e.stack+'\n');
-	}
+	Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	r = { room: 'test', msg : '!당첨' };
+	lottocheck(r);
 };
 T.register("lottoChecker",()=>{
 	while(true){//매주 토요일
@@ -559,15 +549,16 @@ T.register("lottoChecker",()=>{
 		var day = today.getDay();
 		var hour   = today.getHours();
 		
-		if( day == 6 && 19 < hour ){
-			java.lang.Thread.sleep(2*60*1000);
-		} else if ( day == 1 ) {
-			java.lang.Thread.sleep(4*24*60*60*1000);
-		} else {
+		var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
+		var temp=D.selectForArray('lottoresult','num');
+		
+		if( day == 6 && 19 < hour && (temp[temp.length-1]!=lastnum*1) ){ // 토요일 8시 부터  2분마다 확인
+			lottochecker();
+		} else if ( -1 < day && day < 5) {
+			java.lang.Thread.sleep(1*24*60*60*1000);
+		} else { // 보통은 1시간 잠수
 			java.lang.Thread.sleep(1*60*60*1000);
 		}
-
-		lottochecker()
 	}
 }).start();
 
