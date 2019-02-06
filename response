@@ -554,10 +554,10 @@ T.register("lottoChecker",()=>{
 		
 		if( day == 6 && 19 < hour && (temp[temp.length-1]!=lastnum*1) ){ // 토요일 8시 부터  2분마다 확인
 			lottochecker();
-		} else if ( -1 < day && day < 5) {
-			java.lang.Thread.sleep(1*24*60*60*1000);
-		} else { // 보통은 1시간 잠수
-			java.lang.Thread.sleep(1*60*60*1000);
+		} else if ( -1 < day && day < 6) {
+			java.lang.Thread.sleep(21*60*60*1000);
+		} else if (day == 6 && hour < 20){ 
+			java.lang.Thread.sleep(50*60*1000);
 		}
 	}
 }).start();
