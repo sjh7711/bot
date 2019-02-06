@@ -535,12 +535,12 @@ function lottocheck(r) {
 }
 
 function lottochecker(){
-	Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");/*
 	Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");
 	Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
 	Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");
 	Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-	Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+	Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");*/
 	r = { room: 'test', msg : '!당첨' };
 	lottocheck(r);
 };
