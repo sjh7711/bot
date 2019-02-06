@@ -515,7 +515,7 @@ function lottocheck(r) {
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
 	if ( temp.length == 0 ){
 		r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
-	} else if ( r.msg.split(" ")[1] != [] ) { 
+	} else if ( r.msg.split(" ")[1].length != 0 ) { 
 		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
 		if ( temp.length == 0 ){
 			r.replier.reply(r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
@@ -536,9 +536,6 @@ function lottocheck(r) {
 }
 
 
-//홈페이지 파밍
-//.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8") - cookie1 cookie2
-//.data("url","http://www.knfb1377.or.kr%2Fhtml%2Fmain.html") - cookie2
 var cookie1;
 var cookie2;
 var doc;
