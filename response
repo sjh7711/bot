@@ -392,13 +392,12 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
     var list = D.selectForArray(name);
     if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
     	Api.replyRoom("recom", name1+"건의 : "+temp);
-    	Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
         r.replier.reply(temp.이가() + " 건의되었습니다.");
-        if (this["flag" + r.room][0] == 1 || this["flag" + r.room][1] == 1) {
+        if (this["flag" + r.room][num] == 1 ) {
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
-        if (this["flag" + r.room][num] == 0) {
-            r.replier.reply("1을 3명이 입력하면 리스트에 추가되고 0을 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
+        if (this["flag" + r.room][num] == 0 ) {
+            r.replier.reply(name1+"동의를 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
             this["flag" + name + r.room] = temp;
             this["flag" + r.room][num] = 1;
         }
@@ -410,13 +409,13 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
 //리스트 추가 다수 동의
 function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "식당"..) / num : flag number
     list = D.selectForArray(name);
-    if (r.msg == 1) {
+    if (r.msg == name1+'찬성') {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "agree" + r.room] += 1;
             r.replier.reply(name1+"찬성 : "+this[name + "agree" + r.room] + "/3");
             this["sender" + name + r.room].push(r.sender);
         }
-    } else if (r.msg == 0) {
+    } else if (r.msg == name1+'반대') {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "opp" + r.room] += 1;
             r.replier.reply(name1+"반대 : "+this[name + "opp" + r.room] + "/3");
