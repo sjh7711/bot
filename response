@@ -391,9 +391,10 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
     var temp = r.msg.split(" ")[1];
     var list = D.selectForArray(name);
     if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
-    	Api.replyRoom('recom', name1+"건의 : "+temp);
+    	Api.replyRoom("recom", name1+"건의 : "+temp);
+    	Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
         r.replier.reply(temp.이가() + " 건의되었습니다.");
-        if (this["flag" + r.room][num] == 1) {
+        if (this["flag" + r.room][0] == 1 || this["flag" + r.room][1] == 1) {
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
         if (this["flag" + r.room][num] == 0) {
@@ -412,13 +413,13 @@ function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / nam
     if (r.msg == 1) {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "agree" + r.room] += 1;
-            r.replier.reply("찬성 : "+this[name + "agree" + r.room] + "/3");
+            r.replier.reply(name1+"찬성 : "+this[name + "agree" + r.room] + "/3");
             this["sender" + name + r.room].push(r.sender);
         }
     } else if (r.msg == 0) {
         if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
             this[name + "opp" + r.room] += 1;
-            r.replier.reply("반대 : "+this[name + "opp" + r.room] + "/3");
+            r.replier.reply(name1+"반대 : "+this[name + "opp" + r.room] + "/3");
             this["sender" + name + r.room].push(r.sender);
         }
     }
