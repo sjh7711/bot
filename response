@@ -534,12 +534,14 @@ function lottocheck(r) {
 }
 
 function lottochecker(){
-	Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");/*
-	Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-	Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-	Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-	Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");
-	Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");*/
+	var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
+	var temp=D.selectForString('lottoresult', null, ' num = ?', lastnum );
+	if(temp.indexOf('test') > 0){Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
+	if(temp.indexOf('bot') > 0){Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
+	if(temp.indexOf('ele') > 0){Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
+	if(temp.indexOf('ja') > 0){Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
+	if(temp.indexOf('over') > 0){Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
+	if(temp.indexOf('agent') > 0){Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	r = { room: 'test', msg : '!당첨' };
 	lottocheck(r);
 };
