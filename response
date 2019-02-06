@@ -1,4 +1,3 @@
-//파일입출력
 function reload() {
 	try {
 		var Timer = new Date();
@@ -27,13 +26,11 @@ function reload() {
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:식당/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅
+//menu:메뉴/res:식당/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅/cagent:공익채팅
 //D.selectForString("sqlite_master")
 var T = require("ThreadManager.js");
 //T.getThreadList()
-
 var es=String.fromCharCode(8237).repeat(500);
-
 
 //봇제작방용 변수
 var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag
@@ -50,8 +47,8 @@ var senderresbot = []; //식당추가에 동의한 사람
 var flagele = [0, 0]; 
 var menuagreeele = 0;
 var resagreeele = 0;
-var menuoppele = 0; //메뉴추가반대 인원수
-var resoppele = 0; //식당추가반대 인원수
+var menuoppele = 0; 
+var resoppele = 0; 
 var flagmenuele; 
 var flagresele; 
 var sendermenuele = [];
@@ -61,8 +58,8 @@ var senderresele = [];
 var flagtest = [0, 0];
 var menuagreetest = 0; 
 var resagreetest = 0; 
-var menuopptest = 0; //메뉴추가반대 인원수
-var resopptest = 0; //식당추가반대 인원수
+var menuopptest = 0;
+var resopptest = 0;
 var flagmenutest; 
 var flagrestest;
 var sendermenutest = []; 
@@ -72,8 +69,8 @@ var senderrestest = [];
 var flagja = [0, 0]; 
 var menuagreeja = 0; 
 var resagreeja = 0; 
-var menuoppja = 0; //메뉴추가반대 인원수
-var resoppja = 0; //식당추가반대 인원수
+var menuoppja = 0;
+var resoppja = 0; 
 var flagmenuja; 
 var flagresja;
 var sendermenuja = []; 
@@ -83,8 +80,8 @@ var senderresja = [];
 var flagbot = [0, 0]; 
 var menuagreebot = 0; 
 var resagreebot = 0; 
-var menuoppbot = 0; //메뉴추가반대 인원수
-var resoppbot = 0; //식당추가반대 인원수
+var menuoppbot = 0; 
+var resoppbot = 0;
 var flagmenubot; 
 var flagresbot;
 var sendermenubot = []; 
@@ -134,6 +131,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
         
+      //최근채팅저장
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+            if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+            } else {
+                D.insert('c' + room, { name: sender, msg: msg });
+            }
+        }
+
         if (room == 'test' || room == 'bot' || room == 'ele') {
             if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
                 replier.reply(D.selectForArray('willdo').join("\n"));
@@ -152,26 +157,31 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        //최근채팅저장
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
-            if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
-            } else {
-                D.insert('c' + room, { name: sender, msg: msg });
-            }
+        //로또
+        if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
+            lotto(r);
+        }
+        
+        //당첨
+        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
+            lottocheck(r);
         }
 
+        //오버워치
+        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
+            overWatch(r);
+        }
+        
+        //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
             if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
                 add(r, "menu", "메뉴", 0);
             }
         }
-
-
-        //메뉴추천
+        
         if (msg.indexOf("!메뉴추천") == 0 || msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
         }
-        
         
         //메뉴동의합의
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
@@ -198,30 +208,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 agree(r, "res", "식당", 1);
             }
         }
-
-        //기능설명
-        if (msg.indexOf("!기능 ") == 0) {
-            func(r);
-        }
-
-        //로또
-        if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
-            lotto(r);
-        }
-        
-        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
-            lottocheck(r);
-        }
-
-        //오버워치
-        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
-            overWatch(r);
-        }
-
-        //메뉴추천
-        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
-            recom(r, "menu");
-        }
+        //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
 
         if (msg.indexOf("/기능") == 0) {
             replier.reply("!기능으로 작동합니다");
@@ -235,6 +222,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             replier.reply("욕은 안좋아");
         }
 
+        //기능설명
+        if (msg.indexOf("!기능 ") == 0) {
+            func(r);
+        }
+        
         //-----------------------------------------------------개인채팅방------------------------------------------------
         if (room == "test") {
             if (msg == "!기능") {
