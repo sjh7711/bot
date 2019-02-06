@@ -514,7 +514,8 @@ function lottocheck(r) {
 	
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
 	if ( temp.length == 0 ){
-		r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
+		var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
+		r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 	} else if ( typeof r.msg.split(" ")[1] != 'undefined' ) { 
 		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
 		if ( temp.length == 0 ){
@@ -534,6 +535,41 @@ function lottocheck(r) {
 		r.replier.reply(result);
 	}
 }
+
+function lottochecker(){
+	try{
+		var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
+		var temp=D.selectForArray('lottoresult','num');
+		
+		if(temp[temp.length-1]!=lastnum*1){//저장된 공지의 번호
+			Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+			//Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+			//Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+			//Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+			//Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+			//Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");
+		}
+	}catch(e){
+		Log.e(e+"\n"+e.stack+'\n');
+	}
+};
+T.register("lottoChecker",()=>{
+	while(true){//매주 토요일
+		var today = new Date();
+		var day = today.getDay();
+		var hour   = today.getHours();
+		
+		if( day == 6 && 19 < hour ){
+			java.lang.Thread.sleep(2*60*1000);
+		} else if ( day == 1 ) {
+			java.lang.Thread.sleep(4*24*60*60*1000);
+		} else {
+			java.lang.Thread.sleep(1*60*60*1000);
+		}
+
+		lottochecker()
+	}
+}).start();
 
 
 var cookie1;
@@ -622,7 +658,7 @@ function noticecheck(){
 };
 T.register("noticeCheck",()=>{
 	while(true){
-		java.lang.Thread.sleep(3*30*1000);
+		java.lang.Thread.sleep(2*60*1000); //2분
 		noticecheck();
 	}
 }).start();
