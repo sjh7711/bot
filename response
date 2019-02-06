@@ -397,7 +397,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
         }
         if (this["flag" + r.room][num] == 0 ) {
-            r.replier.reply(name1+"동의를 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
+            r.replier.reply(name1+"찬성을 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
             this["flag" + name + r.room] = temp;
             this["flag" + r.room][num] = 1;
         }
