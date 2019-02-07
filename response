@@ -215,10 +215,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             replier.reply("!기능으로 작동합니다");
         }
 
-        if (msg.indexOf("/학식") == 0) {
-            replier.reply(sender + "님 학식 드시나요?");
-        }
-
         if (msg.indexOf("시발") >= 0 || msg.indexOf("ㅅㅂ") >= 0 || msg.indexOf("tq") >= 0 || msg.indexOf("쓰발") >= 0 || msg.indexOf("ㅆㅂ") >= 0 || msg.indexOf("존나") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
             replier.reply("욕은 안좋아");
         }
@@ -326,11 +322,17 @@ function recentchat(r) { //name : DB이름
     var temp1 = r.msg.split(" ")[1];
     var temp2 = r.msg.split(" ")[2];
     var num = 6;
+    var flag = 0;
     
 	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
-		var tempchat = D.selectForArray('c'+r.room, 'msg' , 'name=?', temp1);
+		var tempchat = D.selectForArray('ctest', ['time', 'msg'] , 'name=?', temp1).join('\n');
+		var templeng = tempchat.length;
+		for ( i = 0 ; i < templeng ; i ++ ){
+			]tempchat = temp1+"님의 채팅 내역\n"+ D.selectForArray('ctest', ['time', 'msg'] , 'name=?', temp1)[i].join(" | ")
+		}
 		if (0 < num && num < 17) {
 			num = temp2*1;
+			flag = 1;
 		}
 	} else if(typeof temp1 == 'string') {
 		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
@@ -348,7 +350,7 @@ function recentchat(r) { //name : DB이름
 	}
 	
 	if(tempchat.length<6){
-		num = tempchat.length
+		num = tempchat.length;
 	}
 		
 	var temp = [];//뽑은 채팅을 담을 공간
