@@ -324,27 +324,31 @@ function recentchat(r) { //name : DB이름
     var num = 6;
     var flag = 0;
     
-	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
-		var tempchat = D.selectForArray('ctest', ['time', 'msg'] , 'name=?', temp1).join('\n');
+	if(temp1 != null && temp2 != null){
+		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp1);
 		var templeng = tempchat.length;
 		for ( i = 0 ; i < templeng ; i ++ ){
-			]tempchat = temp1+"님의 채팅 내역\n"+ D.selectForArray('ctest', ['time', 'msg'] , 'name=?', temp1)[i].join(" | ")
+			tempchat[i] = tempchat[i].join(" | ");
 		}
-		if (0 < num && num < 17) {
+		if(0 < temp2*1 && temp2*1 < 17 ) {
 			num = temp2*1;
 			flag = 1;
 		}
-	} else if(typeof temp1 == 'string') {
+	} else if(temp1 != null) {
 		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
 			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+			var templeng = tempchat.length;
+			for ( i = 0 ; i < templeng ; i ++ ){
+				tempchat[i] = tempchat[i].join(" | ");
+			}
 			if (0 < temp1*1 && temp1*1 < 17) {
-				var tempchat = D.selectForArray('c'+r.room);
 				num = temp1*1
 			}
 		} else {
 			var tempchat = D.selectForArray('c'+r.room);
-			if (0 < temp1*1 && temp1*1 < 17) {
-				num = temp1*1
+			var templeng = tempchat.length;
+			for ( i = 0 ; i < templeng ; i ++ ){
+				tempchat[i] = tempchat[i].join(" | ");
 			}
 		}
 	}
@@ -354,12 +358,15 @@ function recentchat(r) { //name : DB이름
 	}
 		
 	var temp = [];//뽑은 채팅을 담을 공간
+	if(flag==1){
+		temp[0]=temp1+"님의 채팅 내역\n"; 
+	}
     if (0 < num && num < 17) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
-        	if( i - tempchat.length + num == 6){
+        	if( i - tempchat.length + num == 3){
         		temp.push(es);
         	}
-            temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
+            temp.push(tempchat[i]);//불러온 파일에서 채팅 옮겨담기
         }
     }
     r.replier.reply(temp.join("\n"));
