@@ -350,14 +350,15 @@ function recentchat(r) { //name : DB이름
 					num = tempchat.length;
 				}
 			}
-		} else {
-			var tempchat = D.selectForArray('c'+r.room);
-			var templeng = tempchat.length;
-			for ( i = 0 ; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
-			}
+		}
+	}else {
+		var tempchat = D.selectForArray('c'+r.room);
+		var templeng = tempchat.length;
+		for ( i = 0 ; i < templeng ; i ++ ){
+			tempchat[i] = tempchat[i].join(" | ");
 		}
 	}
+}
 	
 		
 	var temp = [];//뽑은 채팅을 담을 공간
