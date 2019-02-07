@@ -1,3 +1,4 @@
+//소스불러오기및 리로딩
 function reload() {
 	try {
 		var Timer = new Date();
@@ -135,6 +136,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
             } else {
+            	
                 D.insert('c' + room, { name: sender, msg: msg });
             }
         }
@@ -227,6 +229,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             func(r);
         }
         
+        if (msg.indexOf('예정추가 ') > 0 ) {
+        	D.insert('willdo', {name : msg.split(" ")[1]});
+        }
+        
         //-----------------------------------------------------개인채팅방------------------------------------------------
         if (room == "test") {
             if (msg == "!기능") {
@@ -282,7 +288,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 //기능설명
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이 입력하면 16개를 불러오고 최대 16개까지 조회가능합니다. !최근채팅 닉네임 16과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다.");
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이 입력하면 16개를 불러오고 최대 16개까지 조회가능합니다. !최근채팅 닉네임 16 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 해당 닉네임이 없거나 숫자범위를 벗어나는 경우 최근채팅 6개를 불러옵니다.");
     }
     if (r.msg.split(" ")[1] == "오버워치") {
         r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
@@ -323,7 +329,7 @@ function recentchat(r) { //name : DB이름
     var num = 6;
     
 	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
-		var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+		var tempchat = D.selectForArray('c'+r.room, 'msg' , 'name=?', temp1);
 		if (0 < num && num < 17) {
 			num = temp2*1;
 		}
@@ -349,6 +355,9 @@ function recentchat(r) { //name : DB이름
 	var temp = [];//뽑은 채팅을 담을 공간
     if (0 < num && num < 17) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
+        	if( i - tempchat.length + num == 6){
+        		temp.push(es);
+        	}
             temp.push(tempchat[i].join(" : "));//불러온 파일에서 채팅 옮겨담기
         }
     }
@@ -691,7 +700,9 @@ function time() {
 	minute = minute < 10 ? '0' + minute : minute;
 	second = second < 10 ? '0' + second : second;
 	
-	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
+	//var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
+	
+	return { year : year, month : month , date : date, day : day, hour : hour , minute : minute , second : second, ampm : ampm };
 	
 	return now
 }
