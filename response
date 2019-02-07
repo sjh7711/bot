@@ -332,6 +332,9 @@ function recentchat(r) { //name : DB이름
 		}
 		if(0 < temp2*1 && temp2*1 < 17 ) {
 			num = temp2*1;
+			if(tempchat.length<temp2*1){
+				num = tempchat.length;
+			}
 			flag = 1;
 		}
 	} else if(temp1 != null) {
@@ -343,6 +346,9 @@ function recentchat(r) { //name : DB이름
 			}
 			if (0 < temp1*1 && temp1*1 < 17) {
 				num = temp1*1
+				if(tempchat.length<temp1*1){
+					num = tempchat.length;
+				}
 			}
 		} else {
 			var tempchat = D.selectForArray('c'+r.room);
@@ -353,9 +359,6 @@ function recentchat(r) { //name : DB이름
 		}
 	}
 	
-	if(tempchat.length<6){
-		num = tempchat.length;
-	}
 		
 	var temp = [];//뽑은 채팅을 담을 공간
 	if(flag==1){
@@ -364,9 +367,11 @@ function recentchat(r) { //name : DB이름
     if (0 < num && num < 17) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
         	if( i - tempchat.length + num == 3){
-        		temp.push(es);
+        		temp.push(tempchat[i]+es);
+        	} else {
+        		temp.push(tempchat[i]);
         	}
-            temp.push(tempchat[i]);//불러온 파일에서 채팅 옮겨담기
+            //불러온 파일에서 채팅 옮겨담기
         }
     }
     r.replier.reply(temp.join("\n"));
