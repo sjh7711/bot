@@ -334,8 +334,8 @@ function recentchat(r) { //name : DB이름
     var flag2 = 0;
     var tempchat = D.selectForArray('c'+r.room);
 	var templeng = tempchat.length;
-	if(templeng > 16) {
-		for ( i = templeng - 16; i < templeng ; i ++ ){
+	if(templeng > 7) {
+		for ( i = templeng - 7; i < templeng ; i ++ ){
 			tempchat[i] = tempchat[i].join(" | ");
 		}
 	} else {
@@ -348,11 +348,11 @@ function recentchat(r) { //name : DB이름
 	}
     
     
-	if(temp1 == 'string' && temp2 == 'string'){
+	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
 		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp2);
 		var templeng = tempchat.length;
 		if(templeng > 16) {
-			for ( i = templeng - 16; i < templeng ; i ++ ){
+			for ( i = templeng - 17; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
 			}
 		} else {
@@ -371,7 +371,7 @@ function recentchat(r) { //name : DB이름
 		var tempchat = D.selectForArray('c'+r.room);
 		var templeng = tempchat.length;
 		if(templeng > 16) {
-			for ( i = templeng - 16; i < templeng ; i ++ ){
+			for ( i = templeng - 17; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
 			}
 		} else {
@@ -383,7 +383,7 @@ function recentchat(r) { //name : DB이름
 		if(tempchat.length<temp1*1){
 			num = templeng;
 		}
-	} else if(temp2 == 'string') {
+	} else if(typeof temp2 == 'string') {
 		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
 		var templeng = tempchat.length;
 		flag2 = 1;
