@@ -343,7 +343,7 @@ function recentchat(r) { //name : DB이름
 	} else if(temp1 != null) {
 		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
 			flag2 = 1;
-			var tempchat = D.selectForArray('c'+r.room, null, 'name=?', temp1);
+			var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp1);
 			var templeng = tempchat.length;
 			for ( i = 0 ; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
@@ -361,11 +361,8 @@ function recentchat(r) { //name : DB이름
 			tempchat[i] = tempchat[i].join(" | ");
 		}
 		num = 6;
-		if (0 < temp1*1 && temp1*1 < 17) {
-			num = temp1*1
-			if(tempchat.length<temp1*1){
-				num = templeng;
-			}
+		if(tempchat.length<temp1*1){
+			num = templeng;
 		}
 	}
 }
@@ -376,7 +373,7 @@ function recentchat(r) { //name : DB이름
 	}
     if (0 < num && num < 17) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
-        	if( i - tempchat.length + num == 3){
+        	if( i - tempchat.length + num == 2){
         		temp.push(tempchat[i]+es);
         	} else {
         		temp.push(tempchat[i]);
