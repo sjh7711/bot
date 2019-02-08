@@ -401,7 +401,7 @@ function recentchat(r) { //name : DB이름
 	
 	var temp = [];//뽑은 채팅을 담을 공간
 	if(flag==1 || flag2==1){
-		temp[0]=temp1+"님의 채팅 내역\n"; 
+		temp[0]=temp2+"님의 채팅 내역\n"; 
 	}
     if (0 < num && num < 17) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
