@@ -562,8 +562,8 @@ function lottocheck(r) {
 }
 
 
-function lottochecker(r){
-	r = { room: 'test', msg : '!당첨', replier : r.replier };
+function lottochecker(){
+	r = { room: 'test', msg : '!당첨' };
 	lottocheck(r);
 	var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
 	var temp=D.selectForString('lottoresult', null, ' num = ?', lastnum );
