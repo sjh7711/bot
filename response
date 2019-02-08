@@ -398,6 +398,9 @@ function recentchat(r) { //name : DB이름
 			}
 		}
 		flag2 = 1;
+	} else {
+		var tempchat = ['잘못입력했습니다.'];
+		num = 1;
 	}
 	
 	
@@ -415,10 +418,7 @@ function recentchat(r) { //name : DB이름
             //불러온 파일에서 채팅 옮겨담기
         }
     }
-    if(temp == undefined){
-    	r.replier.reply("잘못입력했습니다.")
-    }else{
-    	r.replier.reply(temp.join("\n"));
+    r.replier.reply(temp.join("\n"));
     }
     
 }
