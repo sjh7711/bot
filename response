@@ -540,7 +540,7 @@ function lottocheck(r) {
 	}
 	
 	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
-	var result=date+" "+temp[0][7]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
+	var result=date+" "+temp[0][5]+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 	if ( temp.length == 0 ){
 		r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 	} else if ( typeof r.msg.split(" ")[1] != 'undefined' ) { 
