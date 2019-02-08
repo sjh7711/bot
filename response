@@ -353,17 +353,18 @@ function recentchat(r) { //name : DB이름
 			for ( i = 0 ; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
 			}
-		} else {
-			var tempchat = D.selectForArray('c'+r.room);
-			var templeng = tempchat.length;
-			for ( i = 0 ; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
-			}
-			if(tempchat.length<temp1*1){
-				num = templeng;
-			}
+		}
+	} else {
+		var tempchat = D.selectForArray('c'+r.room);
+		var templeng = tempchat.length;
+		for ( i = 0 ; i < templeng ; i ++ ){
+			tempchat[i] = tempchat[i].join(" | ");
+		}
+		if(tempchat.length<temp1*1){
+			num = templeng;
 		}
 	}
+
 	
 	var temp = [];//뽑은 채팅을 담을 공간
 	if(flag==1 || flag2==1){
@@ -667,7 +668,7 @@ function noticecheck(){
 };
 T.register("noticeCheck",()=>{
 	while(true){
-		java.lang.Thread.sleep(2*60*1000); //2분
+		java.lang.Thread.sleep(2*50*1000); //100초
 		noticecheck();
 	}
 }).start();
