@@ -419,7 +419,7 @@ function add(r, name, name1, num) { // name : DB 이름 / num : flag number
     var temp = r.msg.split(" ")[1];
     var list = D.selectForArray(name);
     if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
-    	Api.replyRoom("recom", r.sender+":"+name1+"건의 : "+temp);
+    	Api.replyRoom("recom", r.sender+" : "+name1+"건의 : "+temp);
         r.replier.reply(temp.이가() + " 건의되었습니다.");
         if (this["flag" + r.room][num] == 1 ) {
             r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
@@ -562,17 +562,17 @@ function lottocheck(r) {
 }
 
 
-function lottochecker(){
+function lottochecker(r){
+	r = { room: 'test', msg : '!당첨', replier : r.replier };
+	lottocheck(r);
 	var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
 	var temp=D.selectForString('lottoresult', null, ' num = ?', lastnum );
-	if(temp.indexOf('test') > 0){Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");}/*
+	if(temp.indexOf('test') > 0){Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");/*
 	if(temp.indexOf('bot') > 0){Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('ele') > 0){Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('ja') > 0){Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('over') > 0){Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('agent') > 0){Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");}*/
-	r = { room: 'test', msg : '!당첨' };
-	lottocheck(r);
 };
 T.register("lottoChecker",()=>{
 	while(true){//매주 토요일
@@ -583,11 +583,11 @@ T.register("lottoChecker",()=>{
 		var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
 		var temp=D.selectForArray('lottoresult','num');
 		
-		if( day == 6 && 19 < hour && (temp[temp.length-1]!=lastnum*1) ){ // 토요일 8시 부터  2분마다 확인
+		if( day == 6 && 19 < hour && (temp[temp.length-1]!=lastnum*1) ){ //한번걸리면 163시간 (6일 19시간) 수면
 			lottochecker();
 			java.lang.Thread.sleep(163*1*60*60*1000);
 		} else {
-			java.lang.Thread.sleep(2*60*1000);
+			java.lang.Thread.sleep(2*60*1000); // 그외에는 2분씩체크
 		}
 	}
 }).start();
