@@ -225,8 +225,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             func(r);
         }
         
-        if (msg.indexOf('예정추가 ') > 0 ) {
+        if (msg.indexOf('예정추가 ') > 0 && room == 'test') {
         	D.insert('willdo', {name : msg.split(" ")[1]});
+        }
+        
+        if (msg.indexOf('!건의')==0){
+        	Api.replyRoom('recom', sender+" : "+msg.split(' ')[1])
         }
         
         //-----------------------------------------------------개인채팅방------------------------------------------------
@@ -315,6 +319,9 @@ function func(r) {
     }
     if (r.msg.split(" ")[1] == "날씨") {
         r.replier.reply("무전동 날씨를 보여줍니다");
+    }
+    if (r.msg.split(" ")[1] == "건의") {
+        r.replier.reply("건의를 받습니다.");
     }
 }
 
