@@ -333,6 +333,7 @@ function recentchat(r) { //name : DB이름
     var num = 6;
     var flag = 0;
     var flag2 = 0;
+    	
     var tempchat = D.selectForArray('c'+r.room);
 	var templeng = tempchat.length;
 	if(templeng > 7) {
@@ -387,7 +388,6 @@ function recentchat(r) { //name : DB이름
 	} else if(typeof temp2 == 'string') {
 		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
 		var templeng = tempchat.length;
-		flag2 = 1;
 		if(templeng > 16) {
 			for ( i = templeng - 16; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
@@ -397,6 +397,7 @@ function recentchat(r) { //name : DB이름
 				tempchat[i] = tempchat[i].join(" | ");
 			}
 		}
+		flag2 = 1;
 	}
 	
 	
@@ -414,7 +415,12 @@ function recentchat(r) { //name : DB이름
             //불러온 파일에서 채팅 옮겨담기
         }
     }
-    r.replier.reply(temp.join("\n"));
+    if(temp == undefined){
+    	r.replier.reply("잘못입력했습니다.")
+    }else{
+    	r.replier.reply(temp.join("\n"));
+    }
+    
 }
 
 //리스트에서 추천하기(1개 or 여러개)
