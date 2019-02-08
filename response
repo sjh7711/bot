@@ -363,7 +363,6 @@ function recentchat(r) { //name : DB이름
 			num = templeng;
 		}
 	}
-}
 	
 	var temp = [];//뽑은 채팅을 담을 공간
 	if(flag==1 || flag2==1){
