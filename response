@@ -482,7 +482,7 @@ function lotto(r) {
             break;
         }
     }
-    r.replier.reply(templotto.sort(compare).join(", "));
+    templotto = templotto.sort(compare);
     
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
@@ -495,6 +495,11 @@ function lotto(r) {
 	var minute = today.getMinutes();
 	
     D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+    
+    for (var i =0 ; i< 6; i++){
+    	templotto[i].map(v=>(v<=20) ? String.fromCharCode(9311+v) : (v<=35) ? String.fromCharCode(12860+v) : String.fromCharCode(12941+v)).join(" ");
+    }
+    r.replier.reply(templotto.sort(compare).join(", "));
 }
 
 function lottocheck(r) {
