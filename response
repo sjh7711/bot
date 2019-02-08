@@ -288,7 +288,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 //기능설명
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅 16 와 같이 입력하면 16개를 불러오고 최대 16개까지 조회가능합니다. !최근채팅 닉네임 16 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 해당 닉네임이 없거나 숫자범위를 벗어나는 경우 최근채팅 6개를 불러옵니다.");
+        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅16 와 같이 입력하면 16개를 불러오고 최대 16개까지 조회가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 해당 닉네임이 없거나 숫자범위를 벗어나는 경우 출력하지 않습니다.");
     }
     if (r.msg.split(" ")[1] == "오버워치") {
         r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전 모스트 3까지 보여줍니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
@@ -327,35 +327,39 @@ function func(r) {
 
 //최근채팅
 function recentchat(r) { //name : DB이름
-    var temp1 = r.msg.split(" ")[1];
-    var temp2 = r.msg.split(" ")[2];
+    var temp1 = r.msg.split("!최근채팅")[1].split(" ")[0]; // 개수
+    var temp2 = r.msg.split(" ")[1];//닉
     var num = 6;
     var flag = 0;
     var flag2 = 0;
     var tempchat = [];
     
-	if(temp1 != null && temp2 != null){
-		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp1);
+	if(temp1.length > 0 && temp2.length > 0){
+		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp2);
 		var templeng = tempchat.length;
 		for ( i = 0 ; i < templeng ; i ++ ){
 			tempchat[i] = tempchat[i].join(" | ");
 		}
-		if(0 < temp2*1 && temp2*1 < 17 ) {
-			num = temp2*1;
-			if(tempchat.length<temp2*1){
+		if(0 < temp1*1 && temp1*1 < 17 ) {
+			num = temp1*1;
+			if(tempchat.length<temp1*1){
 				num = templeng;
 			}
 			flag = 1;
 		}
-	} else if(temp1 != null) {
-		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
+	}
+	
+	if(temp2.length > 0) {
+		if ( D.selectForArray('c'+r.room, null, 'name=?', temp2).length > 0 ) {
 			flag2 = 1;
-			var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp1);
+			var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
 			var templeng = tempchat.length;
 			for ( i = 0 ; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
 			}
-		} else if (0 < temp1*1 && temp1*1 < 17) {
+		}
+	}
+	if (0 < temp1*1 && temp1*1 < 17) {
 			var tempchat = D.selectForArray('c'+r.room);
 			var templeng = tempchat.length;
 			for ( i = 0 ; i < templeng ; i ++ ){
@@ -366,13 +370,14 @@ function recentchat(r) { //name : DB이름
 				num = templeng;
 			}
 		}
-	} else {
+	}
+	if{
 		var tempchat = D.selectForArray('c'+r.room);
 		var templeng = tempchat.length;
 		for ( i = 0 ; i < templeng ; i ++ ){
 			tempchat[i] = tempchat[i].join(" | ");
 		}
-		if(tempchat.length<temp1*1){
+		if(6 > templeng){
 			num = templeng;
 		}
 	}
