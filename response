@@ -499,7 +499,7 @@ function lotto(r) {
     for (var i =0 ; i< 6; i++){
     	templotto[i].map(v=>(v<=20) ? String.fromCharCode(9311+v) : (v<=35) ? String.fromCharCode(12860+v) : String.fromCharCode(12941+v)).join(" ");
     }
-    r.replier.reply(templotto.sort(compare).join(", "));
+    r.replier.reply(templotto);
 }
 
 function lottocheck(r) {
