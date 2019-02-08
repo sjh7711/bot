@@ -341,26 +341,24 @@ function recentchat(r) { //name : DB이름
 			flag = 1;
 		}
 	} else if(temp1 != null) {
-		if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
+		if (0 < temp1*1 && temp1*1 < 17) {
+			num = temp1*1
+			if(tempchat.length<temp1*1){
+				num = templeng;
+			}
+		} else if ( D.selectForArray('c'+r.room, null, 'name=?', temp1).length > 0 ) {
 			flag2 = 1;
 			var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp1);
 			var templeng = tempchat.length;
 			for ( i = 0 ; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
 			}
-		if (0 < temp1*1 && temp1*1 < 17) {
-			num = temp1*1
-			if(tempchat.length<temp1*1){
-				num = templeng;
-			}
-		}
-	} else {
+		} else {
 		var tempchat = D.selectForArray('c'+r.room);
 		var templeng = tempchat.length;
 		for ( i = 0 ; i < templeng ; i ++ ){
 			tempchat[i] = tempchat[i].join(" | ");
 		}
-		num = 6;
 		if(tempchat.length<temp1*1){
 			num = templeng;
 		}
