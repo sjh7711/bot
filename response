@@ -419,8 +419,6 @@ function recentchat(r) { //name : DB이름
         }
     }
     r.replier.reply(temp.join("\n"));
-    }
-    
 }
 
 //리스트에서 추천하기(1개 or 여러개)
