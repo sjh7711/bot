@@ -324,6 +324,7 @@ function recentchat(r) { //name : DB이름
     var num = 6;
     var flag = 0;
     var flag2 = 0;
+    var tempchat = [];
     
 	if(temp1 != null && temp2 != null){
 		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp1);
