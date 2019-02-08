@@ -215,9 +215,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             replier.reply("!기능으로 작동합니다");
         }
 
+        /*
         if (msg.indexOf("시발") >= 0 || msg.indexOf("ㅅㅂ") >= 0 || msg.indexOf("tq") >= 0 || msg.indexOf("쓰발") >= 0 || msg.indexOf("ㅆㅂ") >= 0 || msg.indexOf("존나") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
             replier.reply("욕은 안좋아");
-        }
+        }*/
 
         //기능설명
         if (msg.indexOf("!기능 ") == 0) {
@@ -307,7 +308,7 @@ function func(r) {
         r.replier.reply("시립대 주변의 추가되었으면하는 식당을 추천해주세요. 3명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!식당추가 789비어");
     }
     if (r.msg.split(" ")[1] == "예정기능") {
-        r.replier.reply("앞으로 만들어질 수 있는 기능들입니다.");
+        r.replier.reply("앞으로 만들어질 예정/오류수정예정/추가기능 등등 개선될 내용입니다. 본인방에서 작동하지 않는 기능도 있습니다.");
     }
     if (r.msg.split(" ")[1] == "공지") {
         r.replier.reply("최근 5개의 공지를 띄워줍니다. !공지 15 와 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다.");
@@ -359,6 +360,7 @@ function recentchat(r) { //name : DB이름
 		for ( i = 0 ; i < templeng ; i ++ ){
 			tempchat[i] = tempchat[i].join(" | ");
 		}
+		num = 6;
 		if (0 < temp1*1 && temp1*1 < 17) {
 			num = temp1*1
 			if(tempchat.length<temp1*1){
@@ -368,9 +370,8 @@ function recentchat(r) { //name : DB이름
 	}
 }
 	
-		
 	var temp = [];//뽑은 채팅을 담을 공간
-	if(flag==1 || flag==2){
+	if(flag==1 || flag2==1){
 		temp[0]=temp1+"님의 채팅 내역\n"; 
 	}
     if (0 < num && num < 17) {
@@ -552,6 +553,7 @@ function lottocheck(r) {
 	}
 }
 
+/*
 function lottochecker(){
 	var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
 	var temp=D.selectForString('lottoresult', null, ' num = ?', lastnum );
@@ -581,7 +583,7 @@ T.register("lottoChecker",()=>{
 			java.lang.Thread.sleep(50*60*1000);
 		}
 	}
-}).start();
+}).start();*/
 
 
 var cookie1;
