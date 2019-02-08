@@ -354,13 +354,14 @@ function recentchat(r) { //name : DB이름
 				tempchat[i] = tempchat[i].join(" | ");
 			}
 		} else {
-		var tempchat = D.selectForArray('c'+r.room);
-		var templeng = tempchat.length;
-		for ( i = 0 ; i < templeng ; i ++ ){
-			tempchat[i] = tempchat[i].join(" | ");
-		}
-		if(tempchat.length<temp1*1){
-			num = templeng;
+			var tempchat = D.selectForArray('c'+r.room);
+			var templeng = tempchat.length;
+			for ( i = 0 ; i < templeng ; i ++ ){
+				tempchat[i] = tempchat[i].join(" | ");
+			}
+			if(tempchat.length<temp1*1){
+				num = templeng;
+			}
 		}
 	}
 	
