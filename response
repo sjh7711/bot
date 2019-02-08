@@ -328,7 +328,8 @@ function func(r) {
 //최근채팅
 function recentchat(r) { //name : DB이름
     var temp1 = r.msg.split("!최근채팅")[1].split(" ")[0]; // 개수
-    var temp2 = r.msg.split(" ")[1];//닉
+    var temp3= r.msg.split(" ")[0];
+    var temp2 = r.msg.split(temp3)[1];//닉
     var num = 6;
     var flag = 0;
     var flag2 = 0;
