@@ -353,21 +353,25 @@ function recentchat(r) { //name : DB이름
 	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
 		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp2);
 		var templeng = tempchat.length;
-		if(templeng > 16) {
-			for ( i = templeng - 17; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
-			}
+		if(templeng==0){
+			tempchat=[temp2+"의 채팅이 없습니다."];
 		} else {
-			for ( i = 0; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
+			if(templeng > 16) {
+				for ( i = templeng - 17; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
+			} else {
+				for ( i = 0; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
 			}
-		}
-		if(0 < temp1*1 && temp1*1 < 17 ) {
-			num = temp1*1;
-			if(tempchat.length<temp1*1){
-				num = templeng;
+			if(0 < temp1*1 && temp1*1 < 17 ) {
+				num = temp1*1;
+				if(tempchat.length<temp1*1){
+					num = templeng;
+				}
+				flag = 1;
 			}
-			flag = 1;
 		}
 	} else if (0 < temp1*1 && temp1*1 < 17) {
 		var tempchat = D.selectForArray('c'+r.room);
@@ -399,12 +403,6 @@ function recentchat(r) { //name : DB이름
 		}
 		flag2 = 1;
 	}
-	
-	//if(){
-		var tempchat = ['잘못입력했습니다.'];
-		num = 1;
-	}// 이렇게 말고 에러뜨는 부분직ㅈ접가서해결
-	
 	
 	var temp = [];//뽑은 채팅을 담을 공간
 	if(flag==1 || flag2==1){
