@@ -390,12 +390,12 @@ function recentchat(r) { //name : DB이름
 			num = templeng;
 		}
 	} else if(typeof temp2 == 'string') {
+		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
+		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
 			num = 1;
 		} else {
-			var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
-			var templeng = tempchat.length;
 			if(templeng > 16) {
 				for ( i = templeng - 16; i < templeng ; i ++ ){
 					tempchat[i] = tempchat[i].join(" | ");
