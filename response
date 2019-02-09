@@ -353,7 +353,8 @@ function sel(r){
         for (var i = 0; i < num; i++) {
         	var rad = Math.floor(Math.random() * templist.length);
         	if (listmul.indexOf(templist[rad]) == -1){//중복이면 거른다
-            listmul.push(templist.splice(rad, 1));
+        		listmul.push(templist.splice(rad, 1));
+        	}
         }
         r.replier.reply(listmul.join(", "));
     }
