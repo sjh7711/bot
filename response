@@ -545,9 +545,14 @@ function lottocheck(r) {
 					if(lottodata[i][j+8]==win[k]){
 						count+=1;
 						break;
-					}else if(lottodata[i][j+8]==bonus){
-						count+=2;
-						break;
+					}
+				}
+				for(var k=0;k<6;k++){
+					if(count == 5){
+						if(lottodata[i][j+8]==bonus){
+							count+=2;
+							break;
+						}	
 					}
 				}
 			}
