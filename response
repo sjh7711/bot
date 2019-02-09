@@ -398,10 +398,12 @@ function recentchat(r) { //name : DB이름
 			}
 		}
 		flag2 = 1;
-	} else {
+	}
+	
+	//if(){
 		var tempchat = ['잘못입력했습니다.'];
 		num = 1;
-	}
+	}// 이렇게 말고 에러뜨는 부분직ㅈ접가서해결
 	
 	
 	var temp = [];//뽑은 채팅을 담을 공간
@@ -565,7 +567,7 @@ function lottocheck(r) {
 		}
 	}
 	
-	var temp = D.selectForArray('lottoresult',null,'room=?', r.room);
+	var temp = D.selectForArray('lottoresult',null,'room=? and num=?', [r.room, lastnum]);
 	var result=date+" "+lastnum+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 	if ( temp.length == 0 ){
 		r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
@@ -587,15 +589,15 @@ function lottocheck(r) {
 	}
 }
 
-
+/*
 function lottochecker(){
 	var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
 	if(temp.indexOf('test') > 0){Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('bot') > 0){Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('ele') > 0){Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('over') > 0){Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");}/*
+	if(temp.indexOf('over') > 0){Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 	if(temp.indexOf('ja') > 0){Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('agent') > 0){Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");}*/
+	if(temp.indexOf('agent') > 0){Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
 };
 T.register("lottoChecker",()=>{
 	while(true){//매주 토요일
@@ -613,7 +615,7 @@ T.register("lottoChecker",()=>{
 			java.lang.Thread.sleep(2*60*1000); // 그외에는 2분씩체크
 		}
 	}
-}).start();
+}).start();*/
 
 
 var cookie1;
