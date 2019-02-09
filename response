@@ -385,23 +385,27 @@ function recentchat(r) { //name : DB이름
 				tempchat[i] = tempchat[i].join(" | ");
 			}
 		}
-		num = temp1*1;
+		num = Math.floor( temp1*1 );
 		if(tempchat.length<temp1*1){
 			num = templeng;
 		}
 	} else if(typeof temp2 == 'string') {
-		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
-		var templeng = tempchat.length;
-		if(templeng > 16) {
-			for ( i = templeng - 16; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
-			}
+		if(templeng==0){
+			tempchat=[temp2+"의 채팅이 없습니다."];
 		} else {
-			for ( i = 0; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
+			var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
+			var templeng = tempchat.length;
+			if(templeng > 16) {
+				for ( i = templeng - 16; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
+			} else {
+				for ( i = 0; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
 			}
+			flag2 = 1;
 		}
-		flag2 = 1;
 	}
 	
 	var temp = [];//뽑은 채팅을 담을 공간
