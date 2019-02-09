@@ -151,6 +151,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 getTimeWeather(r, 'https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980');
             }
         }
+        
+        if (room == 'test' || room == 'agent') {
+            if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0) {
+                sel('r');
+            }
+        }
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
@@ -223,10 +229,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //기능설명
         if (msg.indexOf("!기능 ") == 0) {
             func(r);
-        }
-        
-        if (msg.indexOf('예정추가 ') > 0 && room == 'test') {
-        	D.insert('willdo', {name : msg.split(" ")[1]});
         }
         
         if (msg.indexOf('!건의')==0){
@@ -322,6 +324,38 @@ function func(r) {
     }
     if (r.msg.split(" ")[1] == "건의") {
         r.replier.reply("건의를 받습니다.");
+    }
+    if (r.msg.split(" ")[1] == "추첨") {
+        r.replier.reply("일할사람을 뽑습니다. 컴퓨터 담당은 1명만 뽑힙니다.");
+    }
+}
+
+
+
+
+//추첨기
+function sel(r){
+	var num = r.msg.split(" ")[1];
+	var list1 = ['신종화', '박형진', '박준영'];
+	var list2 = ['김성연', '조우영'];
+	if (num == undefined) {//1개만 추천
+		var templist = list1.concat(list2);
+        var rad = Math.floor(Math.random() * templist.length);
+        r.replier.reply(templist[rad]);
+    }
+    if (1 < num && num < 5) {
+    	var templist = list2;
+        var rad = Math.floor(Math.random() * templist.length);
+        list2=[templist[rad]];
+        
+    	var templist = list1.concat(list2);
+        var listmul = [];
+        for (var i = 0; i < num; i++) {
+        	var rad = Math.floor(Math.random() * templist.length);
+        	if (listmul.indexOf(templist[rad]) == -1){//중복이면 거른다
+            listmul.push(templist.splice(rad, 1));
+        }
+        r.replier.reply(listmul.join(", "));
     }
 }
 
