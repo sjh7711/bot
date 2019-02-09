@@ -548,8 +548,8 @@ function lottocheck(r) {
 						break;
 					}
 				}
-				for(var k=0;k<6;k++){
-					if(count == 5){
+				if(count == 5){
+					for(var k=0;k<6;k++){
 						if(lottodata[i][j+8]==bonus){
 							count+=2;
 							break;
