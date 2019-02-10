@@ -330,16 +330,11 @@ function func(r) {
     }
 }
 
-
-
-//var list1 = ['신종화', '박형진', '박준영'];
-//var list2 = ['김성연', '조우영'];
-
 //추첨기
 function sel(r){
 	var num = r.msg.split(" ")[1];
-	var list1 = ['1', '2', '3'];
-	var list2 = ['4', '5'];
+	var list1 = ['SJH', 'PHJ', 'PJY'];
+	var list2 = ['KSY', 'CWY'];
 	if (num == undefined) {//1개만 추천
 		var templist = list1.concat(list2);
         var rad = Math.floor(Math.random() * templist.length);
