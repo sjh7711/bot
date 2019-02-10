@@ -154,7 +154,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if (room == 'test' || room == 'agent') {
             if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0) {
-                sel('r');
+                sel(r);
             }
         }
 
@@ -262,7 +262,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //--------------------------------------------------------자생방-----------------------------------------
         if (room == 'ja') {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!최근채팅\n!메뉴추천\n!메뉴추가\n!식당추천\n!식당추가\n!오버워치\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!메뉴추천\n!메뉴추가\n!식당추천\n!식당추가\n!오버워치\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------오버워치방-----------------------------------------
@@ -332,6 +332,8 @@ function func(r) {
 
 
 
+//var list1 = ['신종화', '박형진', '박준영'];
+//var list2 = ['김성연', '조우영'];
 
 //추첨기
 function sel(r){
