@@ -126,7 +126,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	r = { replier: replier, msg: msg, sender: sender, room: room };
 	
 	try {
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
             }
