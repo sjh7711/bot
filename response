@@ -701,7 +701,7 @@ function notice(r){
         var wantnum = firstnum-count;
     	var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
     	var doctitle = doc.select("a:first-child").get(wantnum).ownText();
-    	var doclink = doc.select("td.title>a").get(wantnum).attr("abs:href");
+    	var doclink = doc.select("a:first-child").get(wantnum).attr("abs:href");
     	
     	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get();
     	
