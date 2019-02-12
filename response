@@ -694,8 +694,9 @@ function notice(r){
     var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
     var text = [];
     var count = r.msg.split(" ")[1];
+    var lastnum = doc.select("tr.num").get(14).select("td.num").get(0).text();
     
-    if(780<count){
+    if(lastnum-1<count){
     	var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
         var wantnum = firstnum-count;
     	var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
@@ -749,7 +750,6 @@ function noticecheck(){
 		}
 		
 		var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
-		D.insert('status', {date: time().now, num:firstnum});
 		
 		if(firstnum!=D.selectForArray('notice', 'num')[0][0]){//저장된 공지의 번호
 			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
