@@ -749,13 +749,20 @@ function noticecheck(){
     		.cookies(cookie2).cookies(cookie1).get().select('tbody');
 		}
 		
-		var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
-		
-		if(firstnum!=D.selectForArray('notice', 'num')[0][0]){//저장된 공지의 번호
-			var newnotice = doc.select("tr.num").get(0).select("td.title").get(0).text();
-			Api.replyRoom("test","새공지! "+newnotice);
-			Api.replyRoom("agent","새공지! "+newnotice);
-			D.update('notice', { num: firstnum, msg: newnotice });
+    	var docnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
+    	var doctitle = doc.select("a:first-child").get(0).ownText();
+    	
+		if(firstnum!=D.selectForArray('notice', 'num')[0][0] || doctitle!=D.selectForArray('notice', 'msg')[0][0]){//저장된 공지의 번호
+	    	var doclink = doc.select("a:first-child").get(0).attr("abs:href");
+	    	
+	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get();
+	    	
+	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.content").eachText().toArray()[0];
+	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
+	    	
+			Api.replyRoom("test",docnum+" : "+doctitle+"\n---------------------------------------------\n"+es+text+"\n---------------------------------------------\n"+repl+"\n---------------------------------------------\n"+doclink);
+			Api.replyRoom("agent",docnum+" : "+doctitle+"\n---------------------------------------------\n"+es+text+"\n---------------------------------------------\n"+repl+"\n---------------------------------------------\n"+doclink);
+			D.update('notice', { num: docnum, msg: doctitle });
 		}
 	}catch(e){
 		Log.e(e+"\n"+e.stack+'\n');
