@@ -134,7 +134,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
       //최근채팅저장
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
-            if (/*msg.indexOf("/") == 0 ||*/ sender == "시립봇" || sender == "파이봇") {
+            if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
             } else {
                 D.insert('c' + room, { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg });
             }
@@ -698,12 +698,29 @@ function notice(r){
     	for(i=0;i<count;i++){
     		text.push(temptext[i]);
     	}
+    	r.replier.reply(text.join("\n\n"));
     }else{
     	for(i=0;i<5;i++){
     		text.push(temptext[i]);
     	}
+    	r.replier.reply(text.join("\n\n"));
     }
-    r.replier.reply(text.join("\n\n"));
+    
+    
+    if(780<count){
+    	var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
+        var wantnum = firstnum-count;
+    	var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
+    	var doctitle = doc.select("td.title>a").get(wantnum).ownText();
+    	var doclink = doc.select("td.title>a").get(wantnum).attr("abs:href");
+    	
+    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get();
+    	
+    	var text = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.content").eachText().toArray()[0];
+    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
+    	
+    	r.replier.reply(docnum+" : "+doctitle+"\n\n"+es+text+"\n"+repl+"\n\n"+doclink);
+    }
 }
 
 //공지체크기
