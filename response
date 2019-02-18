@@ -363,7 +363,7 @@ function recentchat(r) { //name : DB이름
     var num = 6;
     var flag = 0;
     	
-    var tempchat = D.selectForArray('chatdb', null , 'room=?', r.room);
+    var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 	var templeng = tempchat.length;
 	if(templeng > 7) {
 		for ( i = templeng - 7; i < templeng ; i ++ ){
@@ -404,7 +404,7 @@ function recentchat(r) { //name : DB이름
 			flag = 1;
 		}
 	} else if (0 < temp1*1 && temp1*1 < 17) {
-		var tempchat = D.selectForArray('chatdb', null , 'room=?', r.room);
+		var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 		var templeng = tempchat.length;
 		if(templeng > 16) {
 			for ( i = templeng - 17; i < templeng ; i ++ ){
