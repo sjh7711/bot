@@ -133,11 +133,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
       //최근채팅저장
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'ja' || room == 'agent' || room == 'ele') {
-            if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
-            } else {
-                D.insert('c' + room, { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg });
-            }
+        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+        } else {
+             D.insert(chatdb, { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
         }
 
         if (room == 'test' || room == 'bot' || room == 'ele') {
@@ -365,7 +363,7 @@ function recentchat(r) { //name : DB이름
     var num = 6;
     var flag = 0;
     	
-    var tempchat = D.selectForArray('c'+r.room);
+    var tempchat = D.selectForArray(chatdb, null , 'room=?', r.room);
 	var templeng = tempchat.length;
 	if(templeng > 7) {
 		for ( i = templeng - 7; i < templeng ; i ++ ){
@@ -382,7 +380,7 @@ function recentchat(r) { //name : DB이름
     
     
 	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
-		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'] , 'name=?', temp2);
+		var tempchat = D.selectForArray(chatdb, ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
@@ -406,7 +404,7 @@ function recentchat(r) { //name : DB이름
 			flag = 1;
 		}
 	} else if (0 < temp1*1 && temp1*1 < 17) {
-		var tempchat = D.selectForArray('c'+r.room);
+		var tempchat = D.selectForArray(chatdb, null , 'room=?', r.room);
 		var templeng = tempchat.length;
 		if(templeng > 16) {
 			for ( i = templeng - 17; i < templeng ; i ++ ){
@@ -422,7 +420,7 @@ function recentchat(r) { //name : DB이름
 			num = templeng;
 		}
 	} else if(typeof temp2 == 'string') {
-		var tempchat = D.selectForArray('c'+r.room, ['time', 'msg'], 'name=?', temp2);
+		var tempchat = D.selectForArray(chatdb, ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
