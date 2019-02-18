@@ -147,13 +147,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
-            if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0) {
+            if (msg == "!날씨" || msg == "!ㄴㅆ" ) {
                 getTimeWeather(r, 'https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980');
             }
         }
         
         if (room == 'test' || room == 'agent') {
-            if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0) {
+            if (msg == "!ㅊㅊ" || msg == "!추첨" ) {
                 sel(r);
             }
         }
@@ -165,7 +165,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 
         //로또
-        if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
+        if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
         }
         
