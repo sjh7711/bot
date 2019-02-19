@@ -4,7 +4,7 @@ function reload() {
 		var Timer = new Date();
 	    file = "storage/emulated/0/kbot/response.js";
 	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
-	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response").openConnection();
+	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
 	    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
 	    str = "";
 	    tmp = null;
@@ -18,14 +18,13 @@ function reload() {
 	    var time = (new Date() - Timer) / 1000;
 	    Api.replyRoom('test', "파일저장 완료 / " + time + "s");
 	    T.interrupt();
-		Api.reload();
+	    Api.reload();
 	    var time = (new Date() - Timer) / 1000;
-		Api.replyRoom('test', "reloading 완료 / " + time + "s");
+	    Api.replyRoom('test', "reloading 완료 / " + time + "s");
 	}catch (e){
 		Api.replier('test',e + "\n" + e.stack);
 	}
 }
-//test//test
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
 //menu:메뉴/res:식당/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅/cagent:공익채팅
