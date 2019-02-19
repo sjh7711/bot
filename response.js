@@ -805,9 +805,10 @@ function getTimeWeather(room) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        var j = i-timeData[0];
-        res += windData[j] + " " + windData1[j] + "\n";
+        res += windData[i] + " " + windData1[i] + "\n";
     }
+    
+    res += es;
 
     var next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
     
@@ -835,8 +836,7 @@ function getTimeWeather(room) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        var j = i-timeData[0];
-        res += windData[j] + " " + windData1[j] + "\n";
+        res += windData[i] + " " + windData1[i] + "\n";
     }
     Api.replyRoom(room,"통영시 무전동 날씨\n시간   날씨  온도(체감) 바람\n"+res);
     
