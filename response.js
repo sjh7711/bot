@@ -113,6 +113,8 @@ function overWatch(r) {
 }
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	r = { replier: replier, msg: msg, sender: sender, room: room };
+	
 	//eval
 	if (room == 'test' || room == 'bot') {
 		if (msg.indexOf("]") == 0) {
@@ -123,7 +125,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			}
 		}
 	}
-	r = { replier: replier, msg: msg, sender: sender, room: room };
 	
 	try {
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
