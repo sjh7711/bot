@@ -838,7 +838,7 @@ function getTimeWeather(room) {
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
         res += windData[i] + " " + windData1[i] + "\n";
     }
-    Api.replyRoom(room,"통영시 무전동 날씨\n시간   날씨  온도(체감) 바람\n"+res);
+    Api.replyRoom(room,"통영시 무전동 날씨\n시간   날씨  온도(체감) 바람(m/s)\n"+res);
     
 };
 T.register("weatherClockCheck",()=>{
