@@ -780,7 +780,7 @@ const weatherSet = ({1:"맑음ㅤㅤ", 2:"구름약간", 3:"구름조금", 4:"�
 function getTimeWeather(room) {
 	var url = 'https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980'
 	
-    var rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
+	    var rawData = org.jsoup.Jsoup.connect(next).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
     var data = rawData.select(".hourly-table").select(".overview-hourly");
     var timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
         var r = /^(\d+)오(.)$/.exec(v);
@@ -791,10 +791,11 @@ function getTimeWeather(room) {
     var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     var windData = [];
-    for(var i = 0 ; i< 8 ; i++){
+    for(i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
     windData = windData.map(v=>  Math.floor(v*1000/3600*100)/100);
+    
     var windData1 = [];
     for(i = 0 ; i< 8 ; i++){
     	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
@@ -828,6 +829,7 @@ function getTimeWeather(room) {
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
     windData = windData.map(v=>  Math.floor(v*1000/3600*100)/100);
+    
     var windData1 = [];
     for(i = 0 ; i< 8 ; i++){
     	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
