@@ -794,7 +794,7 @@ function getTimeWeather(room) {
     for(i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
-    windData.map(v=>v*1000/3600)
+    windData.map(v=>Math.floor(v*1000/3600*10)/10)
     var windData1 = [];
     for(i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
@@ -824,7 +824,7 @@ function getTimeWeather(room) {
     for(i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
-    windData.map(v=>v*1000/3600)
+    windData.map(v=>Math.floor(v*1000/3600*10)/10)
     var windData1 = [];
     for(i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
