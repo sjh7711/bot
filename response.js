@@ -794,10 +794,10 @@ function getTimeWeather(room) {
     for(var i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
-    windData.map(v=>  Math.floor(v*1000/3600*100)/100);
+    windData = windData.map(v=>  Math.floor(v*1000/3600*100)/100);
     var windData1 = [];
     for(i = 0 ; i< 8 ; i++){
-    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
+    	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
     	}
     var res = "";
     for (var i in timeData) {
@@ -812,6 +812,7 @@ function getTimeWeather(room) {
     res += es;
 
     var next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
+    
     var rawData = org.jsoup.Jsoup.connect(next).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
     var data = rawData.select(".hourly-table").select(".overview-hourly");
     var timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
@@ -826,10 +827,10 @@ function getTimeWeather(room) {
     for(i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
-    windData.map(v=> Math.floor(v*1000/3600*100)/100);
+    windData = windData.map(v=>  Math.floor(v*1000/3600*100)/100);
     var windData1 = [];
     for(i = 0 ; i< 8 ; i++){
-    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
+    	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
     	}
     var res = "";
     for (var i in timeData) {
