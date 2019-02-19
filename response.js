@@ -790,13 +790,21 @@ function getTimeWeather(room) {
     var weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
     var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
+    var windData = [];
+    for(i = 0 ; i< 8 ; i++){
+    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
+    	}
+    windData.map(v=>v*1000/3600)
+    var windData1 = [];
+    for(i = 0 ; i< 8 ; i++){
+    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
+    	}
     var res = "";
     for (var i in timeData) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        res += windData[i] + "\n";
+        res += windData[i] + " " + windData1[i] "\n";
     }
     
     res += es;
@@ -812,20 +820,29 @@ function getTimeWeather(room) {
     var weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
     var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var windData = data.select("tbody tr").get(2).select("td>span").eachText().toArray();
+    var windData = [];
+    for(i = 0 ; i< 8 ; i++){
+    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
+    	}
+    windData.map(v=>v*1000/3600)
+    var windData1 = [];
+    for(i = 0 ; i< 8 ; i++){
+    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
+    	}
+    var res = "";
     for (var i in timeData) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        res += windData[i] + "\n";
+        res += windData[i] + " " + windData1[i] "\n";
     }
-    Api.replyRoom(room,"경상남도 통영시 무전동 날씨\n시간   날씨  온도(체감) 바람\n"+res);
+    Api.replyRoom(room,"통영시 무전동 날씨\n시간   날씨  온도(체감) 바람\n"+res);
     
 };
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			getTimeWeather('test');
+			getTimeWeather('agent');
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
 		java.lang.Thread.sleep(60*1000); //1분
