@@ -791,7 +791,7 @@ function getTimeWeather(room) {
     var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
     var windData = [];
-    for(i = 0 ; i< 8 ; i++){
+    for(var i = 0 ; i< 8 ; i++){
     	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
     	}
     windData.map(v=> { Math.floor(v*1000/3600*100)/100} );
@@ -804,10 +804,9 @@ function getTimeWeather(room) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
+        i=i-timeData[0];
+        res += windData[i] + " " + windData1[i] "\n";
     }
-    for(i = 0 ; i< 8 ; i++){
-    	res += windData[i] + " " + windData1[i] "\n";
-    	}
     
     
     res += es;
@@ -837,10 +836,9 @@ function getTimeWeather(room) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
+        i=i-timeData[0];
+        res += windData[i] + " " + windData1[i] "\n";
     }
-    for(i = 0 ; i< 8 ; i++){
-    	res += windData[i] + " " + windData1[i] "\n";
-    	}
     Api.replyRoom(room,"통영시 무전동 날씨\n시간   날씨  온도(체감) 바람\n"+res);
     
 };
