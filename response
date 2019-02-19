@@ -802,10 +802,10 @@ function getTimeWeather(room) {
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			getTimeWeather(test);
-			//java.lang.Thread.sleep(60*60*1000); //10분
+			getTimeWeather('test');
+			java.lang.Thread.sleep(60*60*1000); //10분
 		}
-		java.lang.Thread.sleep(30*1000); //10분
+		java.lang.Thread.sleep(60*1000); //10분
 	}
 }).start();
 
