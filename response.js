@@ -25,7 +25,6 @@ function reload() {
 		Api.replier('test',e + "\n" + e.stack);
 	}
 }
-//test111111
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
 //menu:메뉴/res:식당/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅/cagent:공익채팅
