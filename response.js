@@ -798,6 +798,8 @@ function getTimeWeather(room) {
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
         res += windData[i] + "\n";
     }
+    
+    res += es;
 
     var next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
     var rawData = org.jsoup.Jsoup.connect(next).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
@@ -817,17 +819,16 @@ function getTimeWeather(room) {
         res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
         res += windData[i] + "\n";
     }
-    
-    Api.replyRoom(room,"경상남도 통영시 무전동\n오늘의  16시간 날씨\n시간 ㅤ날씨ㅤ온도(체감) 바람\n"+res);
+    Api.replyRoom(room,"경상남도 통영시 무전동 날씨\n시간   날씨  온도(체감) 바람\n"+res);
     
 };
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
 			getTimeWeather('test');
-			java.lang.Thread.sleep(60*60*1000); //10분
+			java.lang.Thread.sleep(60*60*1000); //60분
 		}
-		java.lang.Thread.sleep(60*1000); //10분
+		java.lang.Thread.sleep(60*1000); //1분
 	}
 }).start();
 
