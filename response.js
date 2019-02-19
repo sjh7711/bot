@@ -808,9 +808,6 @@ function getTimeWeather(room) {
         var j = i-timeData[0];
         res += windData[j] + " " + windData1[j] + "\n";
     }
-    
-    
-    res += es;
 
     var next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
     
@@ -834,7 +831,6 @@ function getTimeWeather(room) {
     for(var i = 0 ; i< 8 ; i++){
     	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
     	}
-    var res = "";
     for (var i in timeData) {
         res += String(timeData[i]).extension("0", 2) + "시 ";
         res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
