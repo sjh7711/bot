@@ -352,18 +352,18 @@ function banklist(r){
 			r.replier.reply(D.selectForString('bankls'));
 		}
 	} else if(typeof name == 'string'){
-		var temp=[];
-		for(var i=0;i<D.selectForArray('bankls',null,'name like ?','%'+name+'%').length;i++){
-			temp.push(D.selectForArray('bankls',null,'name like ?','%'+name+'%')[i].join(" : "))
+		var temp=D.selectForArray('bankls',null,'name like ?','%'+name+'%');
+		for(var i=0;i<temp.length;i++){
+			temp[i]=temp[i].join(" : ")
 			if(i==3){
 				temp[2]=temp[2]+es;
 			}
 		}
 		r.replier.reply("     기관명      |     전화번호   \n"+temp.join("\n\n"));
 	} else {
-		var temp=[];
-		for(var i=0;i<D.selectForArray('bankls').length;i++){
-			temp.push(D.selectForArray('bankls')[i].join(" : "))
+		var temp=D.selectForArray('bankls');
+		for(var i=0;i<temp.length;i++){
+			temp[i]=temp[i].join(" : ")
 			if(i==3){
 				temp[2]=temp[2]+es;
 			}
