@@ -133,11 +133,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
         
+        if (room == 'test') {
+            if (msg.indexOf("!모든채팅") == 0 || msg.indexOf("!ㅁㄷㅊㅌ") == 0) {
+            	allchat(r);                
+            }
+        }
+        
         if (room == 'agent' || room =='test' || room == 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){
         		banklist(r);
         	}
         }
+
         
       //최근채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
@@ -179,6 +186,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             lottocheck(r);
         }
 
+        //맛집
+        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
+    		famous(r);
+    	}
+        
         //오버워치
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overWatch(r);
@@ -336,6 +348,17 @@ function func(r) {
     if (r.msg.split(" ")[1] == "명단") {
         r.replier.reply("푸드뱅크 명단을 보여줍니다. !명단 만월 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n!명단추가 복지센터 055645XXXX 처럼 입력하면 추가되고 !명단삭제 복지센터 처럼 입력하면 목록이 삭제됩니다. 삭제할땐 반드시 제대로 된 기관명을 입력해야합니다.");
     }
+    if (r.msg.split(" ")[1] == "맛집") {
+        r.replier.reply("검색한 지역의 맛집을 알려줍니다.");
+    }
+}
+
+function famous(r){
+	var name = r.msg.split(" ")[1];
+	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
+	var url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort').get(1).attr("abs:href");
+	var 
+	
 }
 
 function banklist(r){
@@ -356,7 +379,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("     기관명      |     전화번호   \n----------------------------------\n"+temp.join("\n\n"));
+		r.replier.reply("       기관명        |     전화번호   \n----------------------------------\n"+temp.join("\n\n"));
 	} else {
 		var temp=D.selectForArray('bankls');
 		for(var i=0;i<temp.length;i++){
@@ -365,7 +388,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("     기관명      |     전화번호   \n----------------------------------\n"+temp.join("\n\n"));
+		r.replier.reply("       기관명        |     전화번호   \n----------------------------------\n"+temp.join("\n\n"));
 	}
 }
 
@@ -462,6 +485,106 @@ function recentchat(r) { //name : DB이름
 		}
 	} else if(typeof temp2 == 'string') {
 		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+		var templeng = tempchat.length;
+		if(templeng==0){
+			tempchat=[temp2+"의 채팅이 없습니다."];
+			num = 1;
+		} else {
+			if(templeng > 16) {
+				for ( i = templeng - 16; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
+			} else {
+				for ( i = 0; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
+			}
+			flag = 1;
+		}
+	}
+	
+	var temp = [];//뽑은 채팅을 담을 공간
+	if(flag==1){
+		temp[0]=temp2+"님의 채팅내역\n"; 
+	}
+    if (0 < num && num < 17) {
+        for (var i = tempchat.length - num; i < tempchat.length; i++) {
+        	if( i - tempchat.length + num == 2){
+        		temp.push(tempchat[i]+es);
+        	} else {
+        		temp.push(tempchat[i]);
+        	}
+            //불러온 파일에서 채팅 옮겨담기
+        }
+    }
+    r.replier.reply(temp.join("\n"));
+}
+
+
+function allchat(r) { //name : DB이름
+    var temp1 = r.msg.split("!모든채팅")[1].split(" ")[0]; // 개수
+    var temp3= r.msg.split(" ")[0];
+    var temp2 = r.msg.split(temp3+" ")[1];//닉
+    var num = 6;
+    var flag = 0;
+    	
+    var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
+	var templeng = tempchat.length;
+	if(templeng > 7) {
+		for ( i = templeng - 7; i < templeng ; i ++ ){
+			tempchat[i] = tempchat[i].join(" | ");
+		}
+	} else {
+		for ( i = 0; i < templeng ; i ++ ){
+			tempchat[i] = tempchat[i].join(" | ");
+		}
+	}
+    if(6 > templeng){
+		num = templeng;
+	}
+    
+	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
+		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=?', [temp2]);
+		var templeng = tempchat.length;
+		if(templeng==0){
+			tempchat=[temp2+"의 채팅이 없습니다."];
+			num = 1;
+		} else {
+			if(templeng > 16) {
+				for ( i = templeng - 17; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
+			} else {
+				for ( i = 0; i < templeng ; i ++ ){
+					tempchat[i] = tempchat[i].join(" | ");
+				}
+			}
+			if(0 < temp1*1 && temp1*1 < 17 ) {
+				num = temp1*1;
+				if(tempchat.length<temp1*1){
+					num = templeng;
+				}
+			}
+			flag = 1;
+		}
+	} else if (0 < temp1*1 && temp1*1 < 17) {
+		var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
+		var templeng = tempchat.length;
+		if(templeng > 16) {
+			for ( i = templeng - 17; i < templeng ; i ++ ){
+				tempchat[i] = tempchat[i].join(" | ");
+			}
+		} else {
+			for ( i = 0; i < templeng ; i ++ ){
+				tempchat[i] = tempchat[i].join(" | ");
+			}
+		}
+		num = Math.floor( temp1*1 );
+		if(tempchat.length<temp1*1){
+			num = templeng;
+		}
+	} else if(typeof temp2 == 'string') {
+		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=?', [temp2]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
@@ -671,35 +794,6 @@ function lottocheck(r) {
 		r.replier.reply(result);
 	}
 }
-
-/*
-function lottochecker(){
-	var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
-	if(temp.indexOf('test') > 0){Api.replyRoom("test","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('bot') > 0){Api.replyRoom("bot","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('ele') > 0){Api.replyRoom("ele","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('over') > 0){Api.replyRoom("over","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('ja') > 0){Api.replyRoom("ja","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-	if(temp.indexOf('agent') > 0){Api.replyRoom("agent","로또결과가 떴습니다. !당첨으로 확인해주세요.");}
-};
-T.register("lottoChecker",()=>{
-	while(true){//매주 토요일
-		var today = new Date();
-		var day = today.getDay();
-		var hour   = today.getHours();
-		
-		var lastnum = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result').select('h4').text().split('회')[0];
-		var temp=D.selectForArray('lottoresult','num');
-		
-		if( day == 6 && 19 < hour && (temp[temp.length-1]!=lastnum*1) ){ //한번걸리면 163시간 (6일 19시간) 수면
-			lottochecker();
-			java.lang.Thread.sleep(163*1*60*60*1000);
-		} else {
-			java.lang.Thread.sleep(2*60*1000); // 그외에는 2분씩체크
-		}
-	}
-}).start();*/
-
 
 var cookie1;
 var cookie2;
