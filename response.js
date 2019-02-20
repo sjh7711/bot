@@ -133,6 +133,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
         
+        if (room == 'agent'){
+        	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){
+        		banklist(r);
+        	}
+        }
+        
       //최근채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
         } else {
@@ -327,6 +333,15 @@ function func(r) {
     if (r.msg.split(" ")[1] == "추첨") {
         r.replier.reply("일할사람을 뽑습니다. 컴퓨터 담당은 1명만 뽑힙니다.");
     }
+}
+
+function banklist(r){
+	var name = r.msg.split(" ")[1];
+	if(typeof name == 'string'){
+		r.replier.reply(D.selectForString('bankls',null,'name like ?','%'+name+'%'));
+	} else {
+		r.replier.reply(D.selectForString('bankls'));
+	}	
 }
 
 //추첨기
