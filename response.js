@@ -133,7 +133,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
         
-        if (room == 'agent' || room =='test' || room = 'bot'){
+        if (room == 'agent' || room =='test' || room == 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){
         		banklist(r);
         	}
