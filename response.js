@@ -357,7 +357,6 @@ function famous(r){
 	var name = r.msg.split(" ")[1];
 	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
 	var url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort').get(1).attr("abs:href");
-	var 
 	
 }
 
