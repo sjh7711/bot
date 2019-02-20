@@ -385,7 +385,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("         기관명          |      전화번호   \n----------------------------------\n"+temp.join("\n\n"));
+		r.replier.reply("        기관명        |      전화번호   \n----------------------------------\n"+temp.join("\n\n"));
 	} else {
 		var temp=D.selectForArray('bankls');
 		for(var i=0;i<temp.length;i++){
@@ -394,7 +394,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("         기관명          |      전화번호   \n----------------------------------\n"+temp.join("\n\n"));
+		r.replier.reply("        기관명        |      전화번호   \n----------------------------------\n"+temp.join("\n\n"));
 	}
 }
 
