@@ -362,7 +362,7 @@ function famous(r){
 	if (temptext.length > 3){
 		temptext[2]=temptext[2]+es;
 	}
-	temptext = temptext.join('\n');
+	temptext = temptext.join('\n\n');
 	
 	r.replier.reply(temptext);
 }
