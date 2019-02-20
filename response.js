@@ -344,10 +344,12 @@ function banklist(r){
 	var cmd = r.msg.split(" ")[0].split("!명단")[1];
 	if(typeof name == 'string' && typeof cmd == 'string'){
 		if(cmd=="추가"){
-			D.insert("bankls", {name :name, phone:phone})
+			D.insert("bankls", {name :name, phone:phone});
+			r.replier.reply(D.selectForString('bankls'));
 		}
 		if(cmd=="삭제"){
-			D.delete("bankls", "name=?", [name])
+			D.delete("bankls", "name=?", [name]);
+			r.replier.reply(D.selectForString('bankls'));
 		}
 	} else if(typeof name == 'string'){
 		r.replier.reply(D.selectForString('bankls',null,'name like ?','%'+name+'%'));
