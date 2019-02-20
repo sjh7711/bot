@@ -538,7 +538,7 @@ function allchat(r) { //name : DB이름
     var num = 12;
     var flag = 0;
     	
-    var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
+    var tempchat = D.selectForArray('chatdb');
 	var templeng = tempchat.length;
 	if(templeng > 12) {
 		for ( i = templeng - 12; i < templeng ; i ++ ){
@@ -554,7 +554,7 @@ function allchat(r) { //name : DB이름
 	}
     
 	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
-		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=?', [temp2]);
+		var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
@@ -578,7 +578,7 @@ function allchat(r) { //name : DB이름
 			flag = 1;
 		}
 	} else if (0 < temp1*1 && temp1*1 < 101) {
-		var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
+		var tempchat = D.selectForArray('chatdb');
 		var templeng = tempchat.length;
 		if(templeng > 100) {
 			for ( i = templeng - 100; i < templeng ; i ++ ){
@@ -594,7 +594,7 @@ function allchat(r) { //name : DB이름
 			num = templeng;
 		}
 	} else if(typeof temp2 == 'string') {
-		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=?', [temp2]);
+		var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
