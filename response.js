@@ -358,7 +358,7 @@ function famous(r){
 	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
 	var url = undefined;
 	url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort');
-	if(url == undefined){
+	if(url.toArray()[0] == undefined){
 		r.replier.reply("실제로 있는 지역을 입력하세요.");
 	}else{
 		url = url.get(1).attr("abs:href");
