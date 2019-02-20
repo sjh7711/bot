@@ -358,7 +358,7 @@ function famous(r){
 	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
 	var url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort').get(1).attr("abs:href");
 	var doc = org.jsoup.Jsoup.connect(url).get();
-	var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").get(0).text() + " : " +v.select("div.txt").get(0).text() );
+	var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt").text() );
 	if (temptext.length > 3){
 		temptext[2]=temptext[2]+es;
 	}
