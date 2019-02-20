@@ -356,7 +356,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("     기관명      |     전화번호   \n------------------------------------\n"+temp.join("\n\n"));
+		r.replier.reply("     기관명      |     전화번호   \n----------------------------------\n"+temp.join("\n\n"));
 	} else {
 		var temp=D.selectForArray('bankls');
 		for(var i=0;i<temp.length;i++){
@@ -365,7 +365,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("     기관명      |     전화번호   \n------------------------------------\n"+temp.join("\n\n"));
+		r.replier.reply("     기관명      |     전화번호   \n----------------------------------\n"+temp.join("\n\n"));
 	}
 }
 
@@ -799,8 +799,8 @@ function noticecheck(){
 	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.content").eachText().toArray()[0];
 	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
-			Api.replyRoom("test","새공지!\n"+docnum+" : "+doctitle+"\n---------------------------------------------\n"+es+text+"\n---------------------------------------------\n"+repl+"\n---------------------------------------------\n"+doclink);
-			Api.replyRoom("agent","새공지!\n"+docnum+" : "+doctitle+"\n---------------------------------------------\n"+es+text+"\n---------------------------------------------\n"+repl+"\n---------------------------------------------\n"+doclink);
+			Api.replyRoom("test","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+			Api.replyRoom("agent","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			D.update('notice', { num: docnum, msg: doctitle });
 		}
 	}catch(e){
