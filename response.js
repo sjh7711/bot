@@ -341,16 +341,13 @@ function func(r) {
 function banklist(r){
 	var name = r.msg.split(" ")[1];
 	var phone = r.msg.split(" ")[2];
-	var cmd = r.msg.split(" ")[0].split("!명단")[1];
-	if(typeof name == 'string' && typeof cmd == 'string'){
-		if(cmd=="추가"){
-			D.insert("bankls", {name :name, phone:phone});
-			r.replier.reply(D.selectForString('bankls'));
-		}
-		if(cmd=="삭제"){
-			D.delete("bankls", "name=?", [name]);
-			r.replier.reply(D.selectForString('bankls'));
-		}
+	var cmd = r.msg.split("!명단")[1].split(" ")[0];
+	if(typeof name == 'string' && typeof cmd == '추가' && typeof phone == 'string'){
+		D.insert("bankls", {name :name, phone:phone});
+		r.replier.reply(D.selectForString('bankls'));
+	}else if(typeof name == 'string' && typeof cmd == '삭제'){
+		D.delete("bankls", "name=?", [name]);
+		r.replier.reply(D.selectForString('bankls'));
 	} else if(typeof name == 'string'){
 		var temp=D.selectForArray('bankls',null,'name like ?','%'+name+'%');
 		for(var i=0;i<temp.length;i++){
