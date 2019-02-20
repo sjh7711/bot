@@ -133,7 +133,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
         
-        if (room == 'agent' || room =='test'){
+        if (room == 'agent' || room =='test' || room = 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){
         		banklist(r);
         	}
@@ -332,6 +332,9 @@ function func(r) {
     }
     if (r.msg.split(" ")[1] == "추첨") {
         r.replier.reply("일할사람을 뽑습니다. 컴퓨터 담당은 1명만 뽑힙니다.");
+    }
+    if (r.msg.split(" ")[1] == "명단") {
+        r.replier.reply("푸드뱅크 명단을 보여줍니다. !명단 만월 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.");
     }
 }
 
