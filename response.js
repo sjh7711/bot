@@ -134,7 +134,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (room == 'test') {
-            if (msg.indexOf("!모든채팅") == 0 || msg.indexOf("!ㅁㄷㅊㅌ") == 0) {
+            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) {
             	allchat(r);                
             }
         }
@@ -528,9 +528,9 @@ function recentchat(r) { //name : DB이름
 
 function allchat(r) { //name : DB이름
     var temp1 = undefined;
-    temp1 = r.msg.split("!모든채팅")[1]; // 개수
+    temp1 = r.msg.split("!전체채팅")[1]; // 개수
     if (temp1 == undefined){
-    	temp1 = r.msg.split("!ㅁㄷㅊㅌ")[1]; // 개수
+    	temp1 = r.msg.split("!ㅈㅊㅊㅌ")[1]; // 개수
     }
     temp1 = temp1.split(" ")[0];
     var temp3= r.msg.split(" ")[0];
@@ -540,8 +540,8 @@ function allchat(r) { //name : DB이름
     	
     var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
 	var templeng = tempchat.length;
-	if(templeng > 7) {
-		for ( i = templeng - 7; i < templeng ; i ++ ){
+	if(templeng > 13) {
+		for ( i = templeng - 13; i < templeng ; i ++ ){
 			tempchat[i] = tempchat[i].join(" | ");
 		}
 	} else {
@@ -549,7 +549,7 @@ function allchat(r) { //name : DB이름
 			tempchat[i] = tempchat[i].join(" | ");
 		}
 	}
-    if(6 > templeng){
+    if(13 > templeng){
 		num = templeng;
 	}
     
@@ -560,8 +560,8 @@ function allchat(r) { //name : DB이름
 			tempchat=[temp2+"의 채팅이 없습니다."];
 			num = 1;
 		} else {
-			if(templeng > 16) {
-				for ( i = templeng - 17; i < templeng ; i ++ ){
+			if(templeng > 100) {
+				for ( i = templeng - 100; i < templeng ; i ++ ){
 					tempchat[i] = tempchat[i].join(" | ");
 				}
 			} else {
@@ -580,8 +580,8 @@ function allchat(r) { //name : DB이름
 	} else if (0 < temp1*1 && temp1*1 < 100) {
 		var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
 		var templeng = tempchat.length;
-		if(templeng > 16) {
-			for ( i = templeng - 17; i < templeng ; i ++ ){
+		if(templeng > 100) {
+			for ( i = templeng - 100; i < templeng ; i ++ ){
 				tempchat[i] = tempchat[i].join(" | ");
 			}
 		} else {
@@ -600,8 +600,8 @@ function allchat(r) { //name : DB이름
 			tempchat=[temp2+"의 채팅이 없습니다."];
 			num = 1;
 		} else {
-			if(templeng > 16) {
-				for ( i = templeng - 16; i < templeng ; i ++ ){
+			if(templeng > 100) {
+				for ( i = templeng - 100; i < templeng ; i ++ ){
 					tempchat[i] = tempchat[i].join(" | ");
 				}
 			} else {
