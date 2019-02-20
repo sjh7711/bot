@@ -357,10 +357,11 @@ function famous(r){
 	var name = r.msg.split(" ")[1];
 	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
 	var url = undefined;
-	url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort').get(1).attr("abs:href");
+	url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort');
 	if(url == undefined){
 		r.replier.reply("실제로 있는 지역을 입력하세요.");
 	}else{
+		url = url.get(1).attr("abs:href");
 		var doc = org.jsoup.Jsoup.connect(url).get();
 		var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt").text() );
 		if (temptext.length > 3){
