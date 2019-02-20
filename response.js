@@ -356,15 +356,20 @@ function func(r) {
 function famous(r){
 	var name = r.msg.split(" ")[1];
 	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
-	var url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort').get(1).attr("abs:href");
-	var doc = org.jsoup.Jsoup.connect(url).get();
-	var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt").text() );
-	if (temptext.length > 3){
-		temptext[2]=temptext[2]+es;
+	var url = undefined;
+	url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort').get(1).attr("abs:href");
+	if(url == undefined){
+		r.replier.reply("실제로 있는 지역을 입력하세요.");
+	}else{
+		var doc = org.jsoup.Jsoup.connect(url).get();
+		var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt").text() );
+		if (temptext.length > 3){
+			temptext[2]=temptext[2]+es;
+		}
+		temptext = temptext.join('\n\n');
+		
+		r.replier.reply(temptext);
 	}
-	temptext = temptext.join('\n\n');
-	
-	r.replier.reply(temptext);
 }
 
 function banklist(r){
