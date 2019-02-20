@@ -145,7 +145,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
              D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
         }
 
-        if (room == 'test' || room == 'bot' || room == 'ele') {
+        if (room == 'test' || room == 'bot') {
             if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
                 replier.reply(D.selectForArray('willdo').join("\n"));
             }
