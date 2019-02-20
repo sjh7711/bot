@@ -365,7 +365,7 @@ function banklist(r){
 				temp[2]=temp[2]+es;
 			}
 		}
-		r.replier.reply("     기관명      |     전화번호   \n"+temp.join("\n\n"));
+		r.replier.reply("     기관명      |     전화번호   \n---------------------------------\n"+temp.join("\n\n"));
 	}
 }
 
