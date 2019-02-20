@@ -522,6 +522,9 @@ function recentchat(r) { //name : DB이름
 
 function allchat(r) { //name : DB이름
     var temp1 = r.msg.split("!모든채팅")[1].split(" ")[0]; // 개수
+    if (temp1 == undefined){
+    	temp1 = r.msg.split("!ㅁㄷㅊㅌ")[1].split(" ")[0]; // 개수
+    }
     var temp3= r.msg.split(" ")[0];
     var temp2 = r.msg.split(temp3+" ")[1];//닉
     var num = 6;
