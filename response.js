@@ -249,7 +249,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg.indexOf('!건의')==0){
-        	Api.replyRoom('recom', sender+" : "+msg.split(' ')[1])
+        	Api.replyRoom('recom', room+" : "+sender+" : "+msg.split(msg.split(' ')[0])[1])
         }
         
         //-----------------------------------------------------개인채팅방------------------------------------------------
