@@ -250,6 +250,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if (msg.indexOf('!건의')==0){
         	Api.replyRoom('recom', room+" : "+sender+" : "+msg.split(msg.split(' ')[0])[1])
+        	replier.reply(sender+"님의 건의가 접수되었습니다.")
         }
         
         //-----------------------------------------------------개인채팅방------------------------------------------------
@@ -404,30 +405,41 @@ function banklist(r){
 	}
 }
 
+var flaga = 0;
+var flagb = 0;
 //추첨기
 function sel(r){
-	var num = r.msg.split(" ")[1];
-	var list1 = ['SJH', 'PHJ', 'PJY'];
-	var list2 = ['KSY', 'CWY'];
-	if (num == undefined) {//1개만 추천
-		var templist = list1.concat(list2);
-        var rad = Math.floor(Math.random() * templist.length);
-        r.replier.reply(templist[rad]);
+	var list = [];
+	var list1 = [];
+	
+	var num = -1;
+	if (flaga == 0 && flagb == 0){
+		r.replier.reply("참여할 인원 수를 !숫자 로 입력해주세요.");
+	}
+	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 5 && 0 < r.msg.split("!")[1] && flaga == 0 && flagb == 0){
+		num = r.msg.split("!")[1];
+		flaga = 1;
+	}
+    if (list1.length != num){
+    	if ( flaga == 1 && flagb == 0 ){
+    		r.replier.reply("참여할 사람은 !참가 를 입력해주세요");
+    	}
+    	if (r.msg == '!참가' && flaga == 1 && flagb == 0){
+    		list1.push(r.sender);
+    	}
+    } else if(list1.length == num){
+    	flagb = 1;
     }
-    if (1 < num && num < 5) {
-    	var templist = list2;
-        var rad = Math.floor(Math.random() * templist.length);
-        list2=[templist[rad]];
-        
-    	var templist = list1.concat(list2);
-        var listmul = [];
-        for (var i = 0; i < num; i++) {
-        	var rad = Math.floor(Math.random() * templist.length);
-        	if (listmul.indexOf(templist[rad]) == -1){//중복이면 거른다
-        		listmul.push(templist.splice(rad, 1));
+    if ( flagb == 1 ){
+    	for (var i = 0; i < list.length; i++) {
+        	var rad = Math.floor(Math.random() * list.length);
+        	if (list1.indexOf(list[rad]) == -1){//중복이면 거른다
+        		list1.push(list.splice(rad, 1));
         	}
         }
-        r.replier.reply(listmul.join(", "));
+    	r.replier.reply(list1.join(", "));
+    	flaga=0;
+    	flagb=0;
     }
 }
 
