@@ -419,15 +419,13 @@ function sel(r){
 	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 5 && 0 < r.msg.split("!")[1] && flaga == 0 && flagb == 0){
 		num = r.msg.split("!")[1];
 		flaga = 1;
+		r.replier.reply(num+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
 	}
-    if (list1.length != num){
-    	if ( flaga == 1 && flagb == 0 ){
-    		r.replier.reply("참여할 사람은 !참가 를 입력해주세요");
-    	}
+    if (list.length != num){
     	if (r.msg == '!참가' && flaga == 1 && flagb == 0){
-    		list1.push(r.sender);
+    		list.push(r.sender);
     	}
-    } else if(list1.length == num){
+    } else if(list.length == num){
     	flagb = 1;
     }
     if ( flagb == 1 ){
