@@ -479,6 +479,9 @@ function selexit(r){
 		this["flag" + r.room][2] = 0;
 		this["flag" + r.room][3] = 0;
 		r.replier.reply("추첨을 종료했습니다. 새로운 추첨이 가능합니다.")
+	} else {
+		var temp = new Date().getTime();
+		r.replier.reply((90000 - temp - seltime)/1000 + "초 뒤에 추첨이 가능합니다.")
 	}
 }
 
