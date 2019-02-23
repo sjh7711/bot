@@ -408,7 +408,7 @@ function banklist(r){
 var selnum = -1;
 var selsender = "";
 //추첨기
-function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0 -> 숫자를 입력받은상태 // flag[2]==1&&flag[3]==1 -> 참가인원 모집 // flag[2]==0&&flag[3] ==1 -> 추첨결과
+function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // flag[2]==1&&flag[3]==1 ->  // flag[2]==0&&flag[3] ==1 -> 
 	var list = [];
 	var list1 = [];
 	
@@ -418,21 +418,19 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0
 
 	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
 		r.replier.reply("뽑을 인원 수를 입력해주세요. 5명까지 가능합니다.");
-		selsender == r.sender;
-	}
-	
-	if(selsender == r.sender && r.msg.split("!")[1] < 5 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-		selnum = r.msg;
+		selsender = r.sender;
 		this["flag" + r.room][2] = 1;
 	}
 	
-	if(this["flag" + r.room][2]==1 && this["flag" + r.room][3]==0){
-		r.replier.reply("참여할 사람은 !참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.");
+	if(selsender == r.sender && r.msg.split("!")[1] < 5 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 0){
+		selnum = r.msg;
+		r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 !참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.");
 		this["flag" + r.room][3]=1;
 	}
 	
 	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
 		list.push(r.sender);
+		r.replier.reply(list.length+'명 참가');
 	}
 	
    if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
