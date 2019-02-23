@@ -175,8 +175,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {
-        	sel(r);
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {
+        		sel(r);
+        	}
         }
         
         if (msg =="!추첨종료"){
