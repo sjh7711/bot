@@ -424,7 +424,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
 	
 	if(selsender == r.sender && r.msg < 5 && 0 < r.msg && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 0){
 		selnum = r.msg;
-		r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 !참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.");
+		r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.");
 		this["flag" + r.room][3]=1;
 	}
 	
