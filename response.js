@@ -428,10 +428,10 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
 		this["flag" + r.room][3]=1;
 	}
 	
-	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
+	if (r.msg == '참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
 		if(sellist.indexOf(r.sender)==-1){
 			sellist.push(r.sender);
-			r.replier.reply(sellist.length+'명 참가');
+			r.replier.reply(r.sender+"님이 참가를 하셨습니다. 현재 "+sellist.length+'명');
 		}
 	}
 	
@@ -450,7 +450,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
             	}
             }
     	}
-    	r.replier.reply("당첨된 사람 : "+list1.join(", "));
+    	r.replier.reply("당첨자 : "+list1.join(", "));
     	this["flag" + r.room][3] = 0;
     	selnum = -1;
     	selsender = "";
