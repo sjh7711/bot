@@ -171,7 +171,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        if (msg == "!ㅊㅊ" || msg == "!추첨" ) {
+        if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0 ) {
         	sel(r);
         }
 
@@ -405,35 +405,37 @@ function banklist(r){
 	}
 }
 
-var flagnum = -1;
-
+var selnum = -1;
+var selsender = "";
 //추첨기
 function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0 -> 숫자를 입력받은상태 // flag[2]==1&&flag[3]==1 -> 참가인원 모집 // flag[2]==0&&flag[3] ==1 -> 추첨결과
 	var list = [];
 	var list1 = [];
+	
+	if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.mgs == '!추첨'){
+		r.replier.reply('현재 추첨이 진행중입니다.')
+	}
 
 	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-		r.replier.reply("참여할 인원 수를 !숫자 로 입력해주세요.");
-		if(r.mgs == "!추첨"){
-			r.replier.reply("추첨이 진행중입니다.")
-		}
+		r.replier.reply("뽑을 인원 수를 입력해주세요.");
+		selsender == r.sender;
 	}
 	
-	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 15 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-		flagnum = r.msg.split("!")[1];
+	if(selsender == r.sender && typeof r.msg =='number' && r.msg.split("!")[1] < 15 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
+		selnum = r.msg.split("!")[1];
 		this["flag" + r.room][2] = 1;
 	}
 	
 	if(this["flag" + r.room][2]==1 && this["flag" + r.room][3]==0){
-		r.replier.reply(flagnum+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
+		r.replier.reply(selnum+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
 		this["flag" + r.room][3]=1;
 	}
 	
-    if (list.length != flagnum){
+    if (list.length != selnum){
     	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
     		list.push(r.sender);
     	}
-    } else if(list.length == flagnum){
+    } else if(list.length == selnum){
     	this["flag" + r.room][2]=0;
     }
     if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
@@ -445,7 +447,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0
         }
     	r.replier.reply(list1.join(", "));
     	this["flag" + r.room][3] = 0;
-    	flagnum = -1;
+    	selnum = -1;
     }
 }
 
