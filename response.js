@@ -426,7 +426,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 
 	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
 		r.replier.reply("뽑을 인원 수를 입력해주세요. 5명까지 가능합니다.");
-		var seltime = new Date().getTime();
+		seltime = new Date().getTime();
 		selsender = r.sender;
 		this["flag" + r.room][2] = 1;
 	}
