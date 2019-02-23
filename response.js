@@ -33,6 +33,12 @@ var T = require("ThreadManager.js");
 //T.getThreadList()
 var es=String.fromCharCode(8237).repeat(500);
 
+//추첨기 변수
+var selnum = -1;
+var selsender = "";
+var sellist = [];
+var seltime = "";
+
 //봇제작방용 변수
 var flagbot = [0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2]= flag[3]=
 var menuagreebot = 0; //메뉴추가동의 인원수
@@ -173,6 +179,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {
         	sel(r);
+        }
+        
+        if (msg =="!추첨종료"){
+        	selexit(r);
         }
 
         
@@ -405,11 +415,9 @@ function banklist(r){
 	}
 }
 
-var selnum = -1;
-var selsender = "";
-var sellist = [];
+
 //추첨기
-function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // flag[2]==1&&flag[3]==1 ->  // flag[2]==0&&flag[3] ==1 -> 
+function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3]==0 -> 추첨이 시작함 // flag[2]==1&&flag[3]==1 -> 추첨인원 모집  // flag[2]==0&&flag[3] ==1 -> 당첨자 발표
 	var list1 = [];
 	
 	if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.msg == '!추첨'){
@@ -418,6 +426,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
 
 	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
 		r.replier.reply("뽑을 인원 수를 입력해주세요. 5명까지 가능합니다.");
+		var seltime = new Date().getTime();
 		selsender = r.sender;
 		this["flag" + r.room][2] = 1;
 	}
@@ -460,6 +469,19 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
     	sellist=[];
     }
 }
+
+function selexit(r){
+	var selexittime = new Date().getTime();
+	if( seltime + 1000*60*1.5 < selexittime){
+		selnum = -1;
+		selsender = "";
+		sellist=[];
+		this["flag" + r.room][2] == 0;
+		this["flag" + r.room][3] == 0;
+		r.replier.reply("추첨을 종료했습니다. 새로운 추첨이 가능합니다.")
+	}
+}
+
 
 //최근채팅
 function recentchat(r) { //name : DB이름
