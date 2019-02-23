@@ -34,7 +34,7 @@ var T = require("ThreadManager.js");
 var es=String.fromCharCode(8237).repeat(500);
 
 //봇제작방용 변수
-var flagbot = [0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag
+var flagbot = [0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2]= flag[3]=
 var menuagreebot = 0; //메뉴추가동의 인원수
 var resagreebot = 0; //식당추가동의 인원수
 var menuoppbot = 0; //메뉴추가반대 인원수
@@ -164,11 +164,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
         
-        if (room == 'test' || room == 'agent') {
-            if (msg == "!ㅊㅊ" || msg == "!추첨" ) {
-                sel(r);
-            }
-        }
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
@@ -176,6 +171,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
+        if (msg == "!ㅊㅊ" || msg == "!추첨" ) {
+        	sel(r);
+        }
+
+        
         //로또
         if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
@@ -405,30 +405,38 @@ function banklist(r){
 	}
 }
 
-var flaga = 0;
-var flagb = 0;
+var flagnum = -1;
+
 //추첨기
-function sel(r){
+function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0 -> 숫자를 입력받은상태 // flag[2]==1&&flag[3]==1 -> 참가인원 모집 // flag[2]==0&&flag[3] ==1 -> 추첨결과
 	var list = [];
 	var list1 = [];
-	
-	var num = -1;
-	if (flaga == 0 && flagb == 0){
+
+	if (flag[2] == 0 && flag[3] == 0){
 		r.replier.reply("참여할 인원 수를 !숫자 로 입력해주세요.");
+		if(r.mgs == "!추첨"){
+			r.replier.reply("추첨이 진행중입니다.")
+		}
 	}
-	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 5 && 0 < r.msg.split("!")[1] && flaga == 0 && flagb == 0){
-		num = r.msg.split("!")[1];
-		flaga = 1;
-		r.replier.reply(num+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
+	
+	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 15 && 0 < r.msg.split("!")[1] && flag[2] == 0 && flag[3] == 0){
+		flagnum = r.msg.split("!")[1];
+		flag[2] = 1;
 	}
-    if (list.length != num){
+	
+	if(flag[2]==1 && flag[3]==0){
+		r.replier.reply(flagnum+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
+		flag[3]=1;
+	}
+	
+    if (list.length != flagnum){
     	if (r.msg == '!참가' && flaga == 1 && flagb == 0){
     		list.push(r.sender);
     	}
-    } else if(list.length == num){
-    	flagb = 1;
+    } else if(list.length == flagnum){
+    	flag[2]=0;
     }
-    if ( flagb == 1 ){
+    if ( flag[2] == 0 && flag[3] == 1 ){
     	for (var i = 0; i < list.length; i++) {
         	var rad = Math.floor(Math.random() * list.length);
         	if (list1.indexOf(list[rad]) == -1){//중복이면 거른다
@@ -436,8 +444,8 @@ function sel(r){
         	}
         }
     	r.replier.reply(list1.join(", "));
-    	flaga=0;
-    	flagb=0;
+    	flag[3] = 0;
+    	flagnum = -1;
     }
 }
 
