@@ -171,7 +171,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0 || flag[2] == 1 || flag [3] == 1) {
+        if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0 || flag[2] == 1 || flag[3] == 1) {
         	sel(r);
         }
 
