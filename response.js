@@ -200,7 +200,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg == "!상태"){
-        	status(r);
+        	checkstatus(r);
         }
         //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
@@ -355,7 +355,7 @@ function func(r) {
     }
 }
 
-function status(r){
+function checkstatus(r){
 	bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
 	temperature = bm.getIntExtra("temperature",0)/10 + "'C";
 	scale = bm.getIntExtra("scale",0) + "%";
