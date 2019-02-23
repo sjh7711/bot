@@ -417,29 +417,30 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0
 	}
 
 	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-		r.replier.reply("뽑을 인원 수를 입력해주세요.");
+		r.replier.reply("뽑을 인원 수를 입력해주세요. 5명까지 가능합니다.");
 		selsender == r.sender;
 	}
 	
-	if(selsender == r.sender && typeof r.msg =='number' && r.msg.split("!")[1] < 15 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-		selnum = r.msg.split("!")[1];
+	if(selsender == r.sender && r.msg.split("!")[1] < 5 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
+		selnum = r.msg;
 		this["flag" + r.room][2] = 1;
 	}
 	
 	if(this["flag" + r.room][2]==1 && this["flag" + r.room][3]==0){
-		r.replier.reply(selnum+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
+		r.replier.reply("참여할 사람은 !참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.');
 		this["flag" + r.room][3]=1;
 	}
 	
-    if (list.length != selnum){
-    	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
-    		list.push(r.sender);
-    	}
-    } else if(list.length == selnum){
+	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
+		list.push(r.sender);
+	}
+	
+   if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
     	this["flag" + r.room][2]=0;
     }
+   
     if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
-    	for (var i = 0; i < list.length; i++) {
+    	for (var i = 0; i < selnum; i++) {
         	var rad = Math.floor(Math.random() * list.length);
         	if (list1.indexOf(list[rad]) == -1){//중복이면 거른다
         		list1.push(list.splice(rad, 1));
@@ -448,6 +449,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0
     	r.replier.reply(list1.join(", "));
     	this["flag" + r.room][3] = 0;
     	selnum = -1;
+    	selsender = "";
     }
 }
 
