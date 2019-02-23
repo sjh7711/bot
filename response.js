@@ -171,7 +171,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        if (msg.indexOf("!ㅊㅊ") == 0 || msg.indexOf("!추첨") == 0 || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {
+        if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {
         	sel(r);
         }
 
@@ -412,7 +412,7 @@ var sellist = [];
 function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // flag[2]==1&&flag[3]==1 ->  // flag[2]==0&&flag[3] ==1 -> 
 	var list1 = [];
 	
-	if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.mgs == '!추첨'){
+	if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.msg == '!추첨'){
 		r.replier.reply('현재 추첨이 진행중입니다.')
 	}
 
@@ -440,6 +440,9 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
     }
    
     if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
+    	if(sellist.length == 0){
+    		list1=['아무도 참가하지 않았습니다.'];
+    	}
     	if(sellist.length <= selnum){
     		list1=sellist;
     	} else {
