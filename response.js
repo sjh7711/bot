@@ -407,9 +407,9 @@ function banklist(r){
 
 var selnum = -1;
 var selsender = "";
+var sellist = [];
 //추첨기
 function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // flag[2]==1&&flag[3]==1 ->  // flag[2]==0&&flag[3] ==1 -> 
-	var list = [];
 	var list1 = [];
 	
 	if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.mgs == '!추첨'){
@@ -429,8 +429,10 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
 	}
 	
 	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
-		list.push(r.sender);
-		r.replier.reply(list.length+'명 참가');
+		if(sellist.indexOf(r.sender)==-1){
+			sellist.push(r.sender);
+			r.replier.reply(sellist.length+'명 참가');
+		}
 	}
 	
    if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
@@ -438,12 +440,16 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
     }
    
     if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
-    	for (var i = 0; i < selnum; i++) {
-        	var rad = Math.floor(Math.random() * list.length);
-        	if (list1.indexOf(list[rad]) == -1){//중복이면 거른다
-        		list1.push(list.splice(rad, 1));
-        	}
-        }
+    	if(sellist.length <= selnum){
+    		list1=sellist;
+    	} else {
+    		for (var i = 0; i < selnum; i++) {
+            	var rad = Math.floor(Math.random() * sellist.length);
+            	if (list1.indexOf(sellist[rad]) == -1){//중복이면 거른다
+            		list1.push(sellist.splice(rad, 1));
+            	}
+            }
+    	}
     	r.replier.reply(list1.join(", "));
     	this["flag" + r.room][3] = 0;
     	selnum = -1;
