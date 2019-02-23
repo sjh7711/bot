@@ -450,7 +450,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
             	}
             }
     	}
-    	r.replier.reply(list1.join(", "));
+    	r.replier.reply("당첨된 사람 : "+list1.join(", "));
     	this["flag" + r.room][3] = 0;
     	selnum = -1;
     	selsender = "";
