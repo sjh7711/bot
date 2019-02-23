@@ -454,6 +454,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 ->  // flag[2]==1&&flag[3]==0 -> // fl
     	this["flag" + r.room][3] = 0;
     	selnum = -1;
     	selsender = "";
+    	sellist=[];
     }
 }
 
