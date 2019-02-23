@@ -45,7 +45,7 @@ var sendermenubot = []; //메뉴추가에 동의한 사람
 var senderresbot = []; //식당추가에 동의한 사람
 
 //전전컴톡방용 변수
-var flagele = [0, 0]; 
+var flagele = [0, 0, 0, 0]; 
 var menuagreeele = 0;
 var resagreeele = 0;
 var menuoppele = 0; 
@@ -56,7 +56,7 @@ var sendermenuele = [];
 var senderresele = [];
 
 //개인방용 변수
-var flagtest = [0, 0];
+var flagtest = [0, 0, 0, 0];
 var menuagreetest = 0; 
 var resagreetest = 0; 
 var menuopptest = 0;
@@ -67,7 +67,7 @@ var sendermenutest = [];
 var senderrestest = []; 
 
 //자생방용 변수
-var flagja = [0, 0]; 
+var flagja = [0, 0, 0, 0]; 
 var menuagreeja = 0; 
 var resagreeja = 0; 
 var menuoppja = 0;
@@ -78,7 +78,7 @@ var sendermenuja = [];
 var senderresja = []; 
 
 //봇제작방용 변수
-var flagbot = [0, 0]; 
+var flagbot = [0, 0, 0, 0]; 
 var menuagreebot = 0; 
 var resagreebot = 0; 
 var menuoppbot = 0; 
@@ -89,7 +89,7 @@ var sendermenubot = [];
 var senderresbot = []; 
 
 //오버워치용 변수
-var flagover = [0];
+var flagover = [0, 0, 0, 0];
 var menuagreeover = 0; 
 var menuoppover = 0; 
 var flagmenuover; 
@@ -412,31 +412,31 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0
 	var list = [];
 	var list1 = [];
 
-	if (flag[2] == 0 && flag[3] == 0){
+	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
 		r.replier.reply("참여할 인원 수를 !숫자 로 입력해주세요.");
 		if(r.mgs == "!추첨"){
 			r.replier.reply("추첨이 진행중입니다.")
 		}
 	}
 	
-	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 15 && 0 < r.msg.split("!")[1] && flag[2] == 0 && flag[3] == 0){
+	if(r.msg.split("!")[1]=='number' && r.msg.split("!")[1] < 15 && 0 < r.msg.split("!")[1] && this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
 		flagnum = r.msg.split("!")[1];
-		flag[2] = 1;
+		this["flag" + r.room][2] = 1;
 	}
 	
-	if(flag[2]==1 && flag[3]==0){
+	if(this["flag" + r.room][2]==1 && this["flag" + r.room][3]==0){
 		r.replier.reply(flagnum+'명이 추첨에 참여합니다. 참여할 사람은 !참가 를 입력해주세요');
-		flag[3]=1;
+		this["flag" + r.room][3]=1;
 	}
 	
     if (list.length != flagnum){
-    	if (r.msg == '!참가' && flaga == 1 && flagb == 0){
+    	if (r.msg == '!참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
     		list.push(r.sender);
     	}
     } else if(list.length == flagnum){
-    	flag[2]=0;
+    	this["flag" + r.room][2]=0;
     }
-    if ( flag[2] == 0 && flag[3] == 1 ){
+    if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
     	for (var i = 0; i < list.length; i++) {
         	var rad = Math.floor(Math.random() * list.length);
         	if (list1.indexOf(list[rad]) == -1){//중복이면 거른다
@@ -444,7 +444,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기값 // flag[2]==1&&flag[3]==0
         	}
         }
     	r.replier.reply(list1.join(", "));
-    	flag[3] = 0;
+    	this["flag" + r.room][3] = 0;
     	flagnum = -1;
     }
 }
