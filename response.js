@@ -357,12 +357,12 @@ function func(r) {
 
 function checkstatus(r){
 	bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
-	temperature = bm.getIntExtra("temperature",0)/10 + "'C";
-	scale = bm.getIntExtra("scale",0) + "%";
-	status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1];
-	voltage = bm.getIntExtra("voltage",0)/1000 + "V";
+	temperature = bm.getIntExtra("temperature",0)/10 + "'C"
+	level = bm.getIntExtra("level",0) + "%"
+	status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
+	voltage = bm.getIntExtra("voltage",0)/1000 + "V"
 	        
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+scale + "\n상태 : " + status + "\n전압 : " + voltage;
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage
 	r.replier.reply(batteryStatusStr);
 }
 
