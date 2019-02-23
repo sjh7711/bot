@@ -150,7 +150,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		banklist(r);
         	}
         }
-
         
       //최근채팅저장
         if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
@@ -169,7 +168,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 getTimeWeather(room);
             }
         }
-        
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
@@ -184,28 +182,26 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg =="!추첨종료"){
         	selexit(r);
         }
-
         
-        //로또
         if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
         }
         
-        //당첨
         if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
         }
 
-        //맛집
         if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
     		famous(r);
     	}
         
-        //오버워치
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overWatch(r);
         }
         
+        if (mgs == "!상태"){
+        	status(r);
+        }
         //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
         if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
             if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
@@ -247,11 +243,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다");
         }
-
-        /*
-        if (msg.indexOf("시발") >= 0 || msg.indexOf("ㅅㅂ") >= 0 || msg.indexOf("tq") >= 0 || msg.indexOf("쓰발") >= 0 || msg.indexOf("ㅆㅂ") >= 0 || msg.indexOf("존나") >= 0 || msg.indexOf("개새") >= 0 || msg.indexOf("병신") >= 0 || msg.indexOf("좆") >= 0) {
-            replier.reply("욕은 안좋아");
-        }*/
 
         //기능설명
         if (msg.indexOf("!기능 ") == 0) {
@@ -362,6 +353,17 @@ function func(r) {
     if (r.msg.split(" ")[1] == "맛집") {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다.");
     }
+}
+
+function status(r){
+	bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
+	temperature = bm.getIntExtra("temperature",0)/10 + "'C";
+	scale = bm.getIntExtra("scale",0) + "%";
+	status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1];
+	voltage = bm.getIntExtra("voltage",0)/1000 + "V";
+	        
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+scale + "\n상태 : " + status + "\n전압 : " + voltage;
+	r.replier.reply(batteryStatusStr);
 }
 
 function famous(r){
