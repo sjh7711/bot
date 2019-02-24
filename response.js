@@ -183,7 +183,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	}
         
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
-            overWatch(r);
+            overwatch(r);
         }
         
         if (msg == "!상태"){
