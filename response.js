@@ -373,22 +373,22 @@ function overWatch(r) {
         
         var most1 = compplaytime.select('div.ProgressBar-title').get(0).text();
         var mosttime1 = compplaytime.select('div.ProgressBar-description').get(0).text();
-        var mostwinrate1 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text();  if(mostwinrate1.indexOf("%"==-1){mostwinrate1+'%'};
+        var mostwinrate1 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text();  if(mostwinrate1.indexOf("%")==-1){mostwinrate1+'%'};
         var mostkilldeath1 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text();
         
         var most2 = compplaytime.select('div.ProgressBar-title').get(1).text();
         var mosttime2 = compplaytime.select('div.ProgressBar-description').get(1).text();
-        var mostwinrate2 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text();  if(mostwinrate2.indexOf("%"==-1){mostwinrate2+'%'};
+        var mostwinrate2 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text();  if(mostwinrate2.indexOf("%")==-1){mostwinrate2+'%'};
         var mostkilldeath2 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text();
         
         var most3 = compplaytime.select('div.ProgressBar-title').get(2).text();
         var mosttime3 = compplaytime.select('div.ProgressBar-description').get(2).text();
-        var mostwinrate3 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text();  if(mostwinrate3.indexOf("%"==-1){mostwinrate3+'%'};
+        var mostwinrate3 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text();  if(mostwinrate3.indexOf("%")==-1){mostwinrate3+'%'};
         var mostkilldeath3 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text();
         
         var most4 = compplaytime.select('div.ProgressBar-title').get(3).text();
         var mosttime4 = compplaytime.select('div.ProgressBar-description').get(3).text();
-        var mostwinrate4 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text();  if(mostwinrate4.indexOf("%"==-1){mostwinrate4+'%'};
+        var mostwinrate4 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text();  if(mostwinrate4.indexOf("%")==-1){mostwinrate4+'%'};
         var mostkilldeath4 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text();
         
         
