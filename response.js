@@ -102,15 +102,15 @@ var flagmenuover;
 var sendermenuover = []; 
 
 //
-RS = T.register("reactionSpeed",()=>{
+var RS = T.register("reactionSpeed",()=>{
 	if(this["flag" + r.room][4] == 0){
 		r.replier.reply("10초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
 		this["flag" + r.room][4] = 1;
+		var rand = 2+Math.floor(Math.random() * 8000);
+		java.lang.Thread.sleep(rand);
+		r.replier.reply('시작!');
+		var now = new date().getTime();
 	}
-	var rand = 2+Math.floor(Math.random() * 8000);
-	java.lang.Thread.sleep(rand);
-	r.replier.reply('시작!');
-	var now = new date().getTime();
 	if(this["flag" + r.room][4] == 1 && r.mgs == '.'){
 		var now1 = new date().getTime();
 		r.replier.reply(r.sender+"님의 반응 속도 : "+ (now-now1)/1000+'초');
