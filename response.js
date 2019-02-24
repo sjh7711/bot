@@ -134,7 +134,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	try {
 		if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ" + || this["flag" + r.room][4] == 1) {
+        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ" || this["flag" + r.room][4] == 1) {
         		RS.start();
         	}
         }
