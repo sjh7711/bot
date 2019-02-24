@@ -103,6 +103,8 @@ var menuoppover = 0;
 var flagmenuover; 
 var sendermenuover = []; 
 
+
+
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	r = { replier: replier, msg: msg, sender: sender, room: room };
@@ -119,7 +121,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	try {
-		if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+		/*if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
         	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
         		T.register("reactionSpeed",()=>{
         			var now;
@@ -145,7 +147,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         			}
         		}).start();
         	}
-        }
+        }*/
 		
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
