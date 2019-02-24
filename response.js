@@ -392,7 +392,7 @@ function overWatch(r) {
         var mostkilldeath4 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text();
         
         
-        r.replier.reply("닉네임 : "+r.msg.substr(6)+"점수 : "+score+"\n티어 : "+tier+"\n\n플레이한 영웅"+es+
+        r.replier.reply("닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n플레이한 영웅"+es+
         		"\n\n1."+most1+"\n  플레이 시간 : "+mosttime1+"\n  승률 : "+mostwinrate1+"\n  목숨당처치 : "+mostkilldeath1+
         		"\n\n2."+most2+"\n  플레이 시간 : "+mosttime2+"\n  승률 : "+mostwinrate2+"\n  목숨당처치 : "+mostkilldeath2+
         		"\n\n3."+most3+"\n  플레이 시간 : "+mosttime3+"\n  승률 : "+mostwinrate3+"\n  목숨당처치 : "+mostkilldeath3+
