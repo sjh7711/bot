@@ -149,6 +149,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }*/
 		
+		
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
