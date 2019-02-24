@@ -132,8 +132,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         					now = new Date().getTime();
         				}
         				var reactiontime = new Date().getTime();
-        				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime-now-250 > 0) ){
-        					r.replier.reply(sender+"님의 반응 속도 : "+ (now1-reactiontime-250)/1000 +'초');
+        				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
+        					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
         					this["flag" + room][4] = 0;
         					break;
         				}
