@@ -372,27 +372,27 @@ function overWatch(r) {
 		
         
         var most1 = compplaytime.select('div.ProgressBar-title').get(0).text();
-        var mosttime1 = " "+compplaytime.select('div.ProgressBar-description').get(0).text();
+        var mosttime1 = compplaytime.select('div.ProgressBar-description').get(0).text();
         var mostwinrate1 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text()
         var mostkilldeath1 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text()
         
         var most2 = compplaytime.select('div.ProgressBar-title').get(1).text();
-        var mosttime2 = " "+compplaytime.select('div.ProgressBar-description').get(1).text();
+        var mosttime2 = compplaytime.select('div.ProgressBar-description').get(1).text();
         var mostwinrate2 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text()
         var mostkilldeath2 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text()
         
         var most3 = compplaytime.select('div.ProgressBar-title').get(2).text();
-        var mosttime3 = " "+compplaytime.select('div.ProgressBar-description').get(2).text();
+        var mosttime3 = compplaytime.select('div.ProgressBar-description').get(2).text();
         var mostwinrate3 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text()
         var mostkilldeath3 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text()
         
         var most4 = compplaytime.select('div.ProgressBar-title').get(3).text();
-        var mosttime4 = " "+compplaytime.select('div.ProgressBar-description').get(3).text();
+        var mosttime4 = compplaytime.select('div.ProgressBar-description').get(3).text();
         var mostwinrate4 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text()
         var mostkilldeath4 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text()
         
         
-        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n   모스트 영웅  시간  승률  목처\n1."+most1.extensionRight("   ", 6)+mosttime1+" "+mostwinrate1+" "+mostkilldeath1+"\n2."+most2.extensionRight("   ", 6)+mosttime2+" "+mostwinrate2+" "+mostkilldeath2+"\n3."+most3.extensionRight("   ", 6)+mosttime3+" "+mostwinrate3+" "+mostkilldeath3+"\n4."+most4.extensionRight("   ", 6)+mosttime4+" "+mostwinrate4+" "+mostkilldeath4);
+        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n   모스트 영웅  시간  승률  목처\n1."+most1.extension("   ", 6)+" "+mosttime1+" "+mostwinrate1+" "+mostkilldeath1+"\n2."+most2.extension("   ", 6)+" "+mosttime2+" "+mostwinrate2+" "+mostkilldeath2+"\n3."+most3.extension("   ", 6)+" "+mosttime3+" "+mostwinrate3+" "+mostkilldeath3+"\n4."+most4.extension("   ", 6)+" "+mosttime4+" "+mostwinrate4+" "+mostkilldeath4);
     }
 }
 
