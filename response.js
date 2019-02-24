@@ -106,8 +106,8 @@ var RS = T.register("reactionSpeed",()=>{
 	var now;
 	while(1){
 		if(this["flag" + r.room][4] == 0){
-			r.replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-			var rand = 1+Math.floor(Math.random() * 7000);
+			r.replier.reply("12초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+			var rand = 1+Math.floor(Math.random() * 11000);
 			java.lang.Thread.sleep(rand);
 			this["flag" + r.room][4] = 1;
 			r.replier.reply('시작!');
