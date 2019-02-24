@@ -116,7 +116,7 @@ var RS = T.register("reactionSpeed",()=>{
 		}
 		if(this["flag" + r.room][4] == 1 && r.msg == '.'){
 			var now1 = new Date().getTime();
-			r.replier.reply(r.sender+"님의 반응 속도 : "+ (now1-now)/1000 - 288 +'초');
+			r.replier.reply(r.sender+"님의 반응 속도 : "+ ((now1-now)/1000) - 288 +'초');
 			this["flag" + r.room][4] = 0;
 			break;
 		}
