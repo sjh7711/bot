@@ -343,6 +343,8 @@ function checkstatus(r){
 	r.replier.reply(batteryStatusStr);
 }
 
+
+
 //오버워치
 function overwatch(r) {
     var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
@@ -354,7 +356,7 @@ function overwatch(r) {
 		var score = temp.select('div.u-align-center').get(0).text();
         var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
         
-        var quickplaytime = source.select('div.progress-category.toggle-display').get(0);
+        //var quickplaytime = source.select('div.progress-category.toggle-display').get(0);
 		
 		var compplaytime = source.select('div.progress-category.toggle-display').get(7);
 		var compwinrate = source.select('div.progress-category.toggle-display').get(10);
@@ -372,7 +374,6 @@ function overwatch(r) {
             var mostkilldeath = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();
             res+="\n  목숨당처치 : "+mostkilldeath;
         }
-
         r.replier.reply(res);
     }
 }
