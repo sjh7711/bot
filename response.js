@@ -489,7 +489,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	if (r.msg == '참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
 		if(sellist.indexOf(r.sender)==-1){
 			sellist.push(r.sender);
-			r.replier.reply(r.sender+"님이 참가를 하셨습니다. 현재 "+sellist.length+'명');
+			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+sellist.length+'명');
 		}
 	}
 	
