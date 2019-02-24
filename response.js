@@ -113,7 +113,7 @@ var RS = T.register("reactionSpeed",()=>{
 			r.replier.reply('시작!');
 			now = new date().getTime();
 		}
-		if(this["flag" + r.room][4] == 1 && r.mgs == '.'){
+		if(this["flag" + r.room][4] == 1 && r.msg == '.'){
 			var now1 = new date().getTime();
 			r.replier.reply(r.sender+"님의 반응 속도 : "+ (now1-now)/1000+'초');
 			this["flag" + r.room][4] = 0;
