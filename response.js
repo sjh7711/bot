@@ -361,18 +361,38 @@ function overWatch(r) {
     	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
 	} else {
 		var temp = source.select('div.masthead');
-		var comp = source.select('div.progress-category.toggle-display.is-active').get(1);
-		var quick = source.select('div.progress-category.toggle-display.is-active').get(0);
-		
 		var score = temp.select('div.u-align-center').get(0).text();
         var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
         
-        var most1 = comp.select('div.ProgressBar-title').get(0).text();
-        var most2 = comp.select('div.ProgressBar-title').get(1).text();
-        var most3 = comp.select('div.ProgressBar-title').get(2).text();
-        var most4 = comp.select('div.ProgressBar-title').get(3).text();
+        var quickplaytime = source.select('div.progress-category.toggle-display').get(0);
+		
+		var compplaytime = source.select('div.progress-category.toggle-display').get(7);
+		var compwinrate = source.select('div.progress-category.toggle-display').get(10);
+		var compkilldeath = source.select('div.progress-category.toggle-display').get(11);
+		
         
-        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n모스트 영웅\n1."+most1+"\n2."+most2+"\n3."+most3+"\n4."+most4);
+        var most1 = compplaytime.select('div.ProgressBar-title').get(0).text();
+        var mosttime1 = compplaytime.select('div.ProgressBar-description').get(0).text();
+        var mostwinrate1 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text()
+        var mostkilldeath1 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text()
+        
+        var most2 = compplaytime.select('div.ProgressBar-title').get(1).text();
+        var mosttime2 = compplaytime.select('div.ProgressBar-description').get(1).text();
+        var mostwinrate2 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text()
+        var mostkilldeath2 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text()
+        
+        var most3 = compplaytime.select('div.ProgressBar-title').get(2).text();
+        var mosttime3 = compplaytime.select('div.ProgressBar-description').get(2).text();
+        var mostwinrate3 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text()
+        var mostkilldeath3 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text()
+        
+        var most4 = compplaytime.select('div.ProgressBar-title').get(3).text();
+        var mosttime4 = compplaytime.select('div.ProgressBar-description').get(3).text();
+        var mostwinrate4 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text()
+        var mostkilldeath4 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text()
+        
+        
+        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n모스트 영웅  시간  승률  목처\n1."+most1+" "+mosttime1+" "+mostwinrate1+" "+mostkilldeath1+"\n2."+most2+" "+mosttime2+" "+mostwinrate2+" "+mostkilldeath2+"\n3."+most3+" "+mosttime3+" "+mostwinrate3+" "+mostkilldeath3+"\n4."+most4+" "+mosttime4+" "+mostwinrate4+" "+mostkilldeath4);
     }
 }
 
