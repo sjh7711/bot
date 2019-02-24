@@ -116,7 +116,7 @@ RS = T.register("reactionSpeed",()=>{
 		r.replier.reply(r.sender+"님의 반응 속도 : "+ (now-now1)/1000+'초');
 		this["flag" + r.room][4] = 0;
 	}
-}
+})
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	r = { replier: replier, msg: msg, sender: sender, room: room };
@@ -134,7 +134,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	try {
 		if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!반응속도" || this["flag" + r.room][4] == 1) {
+        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ" + || this["flag" + r.room][4] == 1) {
         		RS.start();
         	}
         }
