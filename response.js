@@ -369,6 +369,7 @@ function overWatch(r) {
         	var most1 = comp.select('div.ProgressBar-title').get(0).text();
         	var most2 = comp.select('div.ProgressBar-title').get(1).text();
         	var most3 = comp.select('div.ProgressBar-title').get(2).text();
+        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n모스트 영웅\n1."+most1+"\n2."+most2+"\n3."+most3);
     }
 }
 
