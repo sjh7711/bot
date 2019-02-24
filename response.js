@@ -356,11 +356,11 @@ function checkstatus(r){
 //오버워치
 function overWatch(r) {
     var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
-    var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get()
+    var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get();
+    var temp = source.select('div.masthead');
     if (temp.select('div.u-align-center') == "" ) {
     	r.replier.reply(name + "의 정보를 알 수 없습니다.");
 	} else {
-		var temp = source.select('div.masthead');
 		var comp = source.select('div.progress-category.toggle-display.is-active').get(1);
 		var quick = source.select('div.progress-category.toggle-display.is-active').get(0);
 		
