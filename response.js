@@ -31,6 +31,8 @@ var D = require("DBManager.js")("D");
 //D.selectForString("sqlite_master")
 var T = require("ThreadManager.js");
 //T.getThreadList()
+var I = require("Interactive.js");
+
 var es=String.fromCharCode(8237).repeat(500);
 
 //추첨기 변수
