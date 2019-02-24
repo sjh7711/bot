@@ -101,22 +101,7 @@ var menuoppover = 0;
 var flagmenuover; 
 var sendermenuover = []; 
 //------------------------------------------------------기능함수---------------------------------------------------------//
-//오버워치
-function overWatch(r) {
-    var name = r.msg.substr(6);//배틀태그가 담기는 공간
-    name1 = name.replace("#", "-");
-    var source = Utils.getWebText("https://playoverwatch.com/ko-kr/career/pc/" + name1);
-        if (source.indexOf("u-align-center h5") == -1) {
-        	r.replier.reply(name + "의 점수를 알 수 없습니다.");
-		} else {
-       		var score = source.split("u-align-center h5\">")[1].split("<")[0].trim();
-        	var tier = source.split("rank-icons/rank-")[1].split("Tier.")[0];
-        	var most = source.split("u-max-width-container career-section")[3];
-        	var most1 = most.split("<div class=\"ProgressBar-title\">")[1].split("<")[0].trim();
-        	var most2 = most.split("<div class=\"ProgressBar-title\">")[2].split("<")[0].trim();
-        	var most3 = most.split("<div class=\"ProgressBar-title\">")[3].split("<")[0].trim();
-    }
-}
+
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	r = { replier: replier, msg: msg, sender: sender, room: room };
@@ -307,7 +292,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 
 
-//-------------------------------------------------------------변경안할 함수------------------------------------------------------
+//------------------------------------------------------------------ 함수------------------------------------------------------
 //기능설명
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
@@ -366,6 +351,25 @@ function checkstatus(r){
 	        
 	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage
 	r.replier.reply(batteryStatusStr);
+}
+
+//오버워치
+function overWatch(r) {
+    var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
+    var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get()
+    var temp = source.select('div.masthead');
+    var comp = source.select('div.progress-category.toggle-display.is-active').get(1);
+    var quick = source.select('div.progress-category.toggle-display.is-active').get(0);
+    
+        if (temp.select('div.u-align-center') == "" ) {
+        	r.replier.reply(name + "의 정보를 알 수 없습니다.");
+		} else {
+       		var score = temp.select('div.u-align-center').get(0).text();
+        	var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
+        	var most1 = comp.select('div.ProgressBar-title').get(0).text();
+        	var most2 = comp.select('div.ProgressBar-title').get(1).text();
+        	var most3 = comp.select('div.ProgressBar-title').get(2).text();
+    }
 }
 
 function famous(r){
