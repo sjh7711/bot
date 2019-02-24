@@ -111,6 +111,7 @@ var RS = T.register("reactionSpeed",()=>{
 			java.lang.Thread.sleep(rand);
 			this["flag" + r.room][4] = 1;
 			r.replier.reply('시작!');
+			msg="";
 			now = new Date().getTime();
 		}
 		if(this["flag" + r.room][4] == 1 && r.msg == '.'){
