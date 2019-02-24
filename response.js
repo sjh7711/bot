@@ -119,6 +119,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
         	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
+        		var time = new Date().getTime();
         		T.register("reactionSpeed",()=>{
         			var now;
         			while(1){
@@ -131,7 +132,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         					msg="";
         					now = new Date().getTime();
         				}
-        				if(this["flag" + room][4] == 1 && msg == '.' && ((var time = new Date().getTime())-now-250 > 0) ){
+        				if(this["flag" + room][4] == 1 && msg == '.' && ((time-now-250 > 0) ){
         					r.replier.reply(sender+"님의 반응 속도 : "+ (now1-time-250)/1000 +'초');
         					this["flag" + room][4] = 0;
         					break;
