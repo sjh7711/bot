@@ -111,15 +111,15 @@ var RS = T.register("reactionSpeed",()=>{
 			java.lang.Thread.sleep(rand);
 			this["flag" + r.room][4] = 1;
 			r.replier.reply('시작!');
-			now = new date().getTime();
+			now = new Date().getTime();
 		}
 		if(this["flag" + r.room][4] == 1 && r.msg == '.'){
-			var now1 = new date().getTime();
+			var now1 = new Date().getTime();
 			r.replier.reply(r.sender+"님의 반응 속도 : "+ (now1-now)/1000+'초');
 			this["flag" + r.room][4] = 0;
 			break;
 		}
-		if((new date().getTime()-now) > 20000){
+		if(((new Date().getTime())-now) > 20000){
 			break;
 		}
 	}
