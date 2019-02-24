@@ -101,29 +101,6 @@ var menuoppover = 0;
 var flagmenuover; 
 var sendermenuover = []; 
 
-//
-var RS = T.register("reactionSpeed",()=>{
-	var now;
-	while(1){
-		if(this["flag" + r.room][4] == 0){
-			r.replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-			var rand = 1+Math.floor(Math.random() * 7000);
-			java.lang.Thread.sleep(rand);
-			this["flag" + r.room][4] = 1;
-			r.replier.reply('시작!');
-			r.msg="";
-			now = new Date().getTime();
-		}
-		if(this["flag" + r.room][4] == 1 && r.msg == '.' && now+r.time-250 > 0){
-			r.replier.reply(r.sender+"님의 반응 속도 : "+ (now1-r.time-250)/1000 +'초');
-			this["flag" + r.room][4] = 0;
-			break;
-		}
-		if(((new Date().getTime())-now) > 20000){
-			break;
-		}
-	}
-})
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	r = { replier: replier, msg: msg, sender: sender, room: room };
@@ -142,8 +119,28 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
         	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
-        		r = { replier: replier, msg: msg, sender: sender, room: room, time : new Date().getTime() };
-        		RS.start();
+        		T.register("reactionSpeed",()=>{
+        			var now;
+        			while(1){
+        				if(this["flag" + room][4] == 0){
+        					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+        					var rand = 1+Math.floor(Math.random() * 7000);
+        					java.lang.Thread.sleep(rand);
+        					this["flag" + room][4] = 1;
+        					replier.reply('시작!');
+        					msg="";
+        					now = new Date().getTime();
+        				}
+        				if(this["flag" + room][4] == 1 && msg == '.' && (var time = new Date().getTime())-now-250 > 0){
+        					r.replier.reply(sender+"님의 반응 속도 : "+ (now1-time-250)/1000 +'초');
+        					this["flag" + room][4] = 0;
+        					break;
+        				}
+        				if(((new Date().getTime())-now) > 20000){
+        					break;
+        				}
+        			}
+        		}).start();
         	}
         }
 		
