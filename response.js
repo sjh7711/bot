@@ -354,7 +354,7 @@ function checkstatus(r){
 }
 
 //오버워치
-function overWatch(r) {
+function overwatch(r) {
     var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
     var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get();
     if (source.select('div.u-align-center').text().indexOf('이 프로필은 비공개입니다.')>0 ) {
@@ -370,33 +370,20 @@ function overWatch(r) {
 		var compwinrate = source.select('div.progress-category.toggle-display').get(10);
 		var compkilldeath = source.select('div.progress-category.toggle-display').get(11);
 		
+        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 4"+es;
         
-        var most1 = compplaytime.select('div.ProgressBar-title').get(0).text();
-        var mosttime1 = compplaytime.select('div.ProgressBar-description').get(0).text();
-        var mostwinrate1 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text();  if(mostwinrate1.indexOf("%")==-1){mostwinrate1+='%'};
-        var mostkilldeath1 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most1+")").select('div.ProgressBar-description').text();
-        
-        var most2 = compplaytime.select('div.ProgressBar-title').get(1).text();
-        var mosttime2 = compplaytime.select('div.ProgressBar-description').get(1).text();
-        var mostwinrate2 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text();  if(mostwinrate2.indexOf("%")==-1){mostwinrate2+='%'};
-        var mostkilldeath2 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most2+")").select('div.ProgressBar-description').text();
-        
-        var most3 = compplaytime.select('div.ProgressBar-title').get(2).text();
-        var mosttime3 = compplaytime.select('div.ProgressBar-description').get(2).text();
-        var mostwinrate3 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text();  if(mostwinrate3.indexOf("%")==-1){mostwinrate3+='%'};
-        var mostkilldeath3 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most3+")").select('div.ProgressBar-description').text();
-        
-        var most4 = compplaytime.select('div.ProgressBar-title').get(3).text();
-        var mosttime4 = compplaytime.select('div.ProgressBar-description').get(3).text();
-        var mostwinrate4 = compwinrate.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text();  if(mostwinrate4.indexOf("%")==-1){mostwinrate4+='%'};
-        var mostkilldeath4 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text();
-        
-        
-        r.replier.reply("닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n플레이한 영웅"+es+
-        		"\n\n1."+most1+"\n  플레이 시간 : "+mosttime1+"\n  승률 : "+mostwinrate1+"\n  목숨당처치 : "+mostkilldeath1+
-        		"\n\n2."+most2+"\n  플레이 시간 : "+mosttime2+"\n  승률 : "+mostwinrate2+"\n  목숨당처치 : "+mostkilldeath2+
-        		"\n\n3."+most3+"\n  플레이 시간 : "+mosttime3+"\n  승률 : "+mostwinrate3+"\n  목숨당처치 : "+mostkilldeath3+
-        		"\n\n4."+most4+"\n  플레이 시간 : "+mosttime4+"\n  승률 : "+mostwinrate4+"\n  목숨당처치 : "+mostkilldeath4);
+        for(var i = 0 ; i < 4 ; i++ ){
+        	var most = compplaytime.select('div.ProgressBar-title').get(i).text();
+        	res+="\n\n"+i+"."+most;
+            var mosttime = compplaytime.select('div.ProgressBar-description').get(i).text();
+        	res+="\n  플레이 시간 : "+mosttime;
+            var mostwinrate = compwinrate.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();  if(mostwinrate.indexOf("%")==-1){mostwinrate+='%'};
+            res+="\n  승률 : "+mostwinrate;
+            var mostkilldeath = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();
+            res+="\n  목숨당처치 : "+mostkilldeath;
+        }
+
+        r.replier.reply(res);
     }
 }
 
