@@ -40,7 +40,7 @@ var sellist = [];
 var seltime = "";
 
 //봇제작방용 변수
-var flagbot = [0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2]= flag[3]=
+var flagbot = [0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2]= flag[3]=
 var menuagreebot = 0; //메뉴추가동의 인원수
 var resagreebot = 0; //식당추가동의 인원수
 var menuoppbot = 0; //메뉴추가반대 인원수
@@ -51,7 +51,7 @@ var sendermenubot = []; //메뉴추가에 동의한 사람
 var senderresbot = []; //식당추가에 동의한 사람
 
 //전전컴톡방용 변수
-var flagele = [0, 0, 0, 0]; 
+var flagele = [0, 0, 0, 0, 0]; 
 var menuagreeele = 0;
 var resagreeele = 0;
 var menuoppele = 0; 
@@ -62,7 +62,7 @@ var sendermenuele = [];
 var senderresele = [];
 
 //개인방용 변수
-var flagtest = [0, 0, 0, 0];
+var flagtest = [0, 0, 0, 0, 0];
 var menuagreetest = 0; 
 var resagreetest = 0; 
 var menuopptest = 0;
@@ -73,7 +73,7 @@ var sendermenutest = [];
 var senderrestest = []; 
 
 //자생방용 변수
-var flagja = [0, 0, 0, 0]; 
+var flagja = [0, 0, 0, 0, 0]; 
 var menuagreeja = 0; 
 var resagreeja = 0; 
 var menuoppja = 0;
@@ -84,7 +84,7 @@ var sendermenuja = [];
 var senderresja = []; 
 
 //봇제작방용 변수
-var flagbot = [0, 0, 0, 0]; 
+var flagbot = [0, 0, 0, 0, 0]; 
 var menuagreebot = 0; 
 var resagreebot = 0; 
 var menuoppbot = 0; 
@@ -95,11 +95,28 @@ var sendermenubot = [];
 var senderresbot = []; 
 
 //오버워치용 변수
-var flagover = [0, 0, 0, 0];
+var flagover = [0, 0, 0, 0, 0];
 var menuagreeover = 0; 
 var menuoppover = 0; 
 var flagmenuover; 
 var sendermenuover = []; 
+
+//
+RS = T.register("reactionSpeed",()=>{
+	if(this["flag" + r.room][4] == 0){
+		r.replier.reply("10초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+		this["flag" + r.room][4] = 1;
+	}
+	var rand = 2+Math.floor(Math.random() * 8000);
+	java.lang.Thread.sleep(rand);
+	r.replier.reply('시작!');
+	var now = new date().getTime();
+	if(this["flag" + r.room][4] == 1 && r.mgs == '.'){
+		var now1 = new date().getTime();
+		r.replier.reply(r.sender+"님의 반응 속도 : "+ (now-now1)/1000+'초');
+		this["flag" + r.room][4] = 0;
+	}
+}
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	r = { replier: replier, msg: msg, sender: sender, room: room };
@@ -116,6 +133,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	try {
+		if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+        	if (msg =="!반응속도" || this["flag" + r.room][4] == 1) {
+        		RS.start();
+        	}
+        }
+		
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
