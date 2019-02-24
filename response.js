@@ -392,7 +392,7 @@ function overWatch(r) {
         var mostkilldeath4 = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most4+")").select('div.ProgressBar-description').text()
         
         
-        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n   모스트 영웅  시간  승률  목처\n1."+most1.extension("   ", 6)+" "+mosttime1+" "+mostwinrate1+" "+mostkilldeath1+"\n2."+most2.extension("   ", 6)+" "+mosttime2+" "+mostwinrate2+" "+mostkilldeath2+"\n3."+most3.extension("   ", 6)+" "+mosttime3+" "+mostwinrate3+" "+mostkilldeath3+"\n4."+most4.extension("   ", 6)+" "+mosttime4+" "+mostwinrate4+" "+mostkilldeath4);
+        r.replier.reply("점수 : "+score+"\n티어 : "+tier+"\n   모스트 영웅  시간  승률  목처\n1."+String(most1).extensionRight("   ", 6)+" "+mosttime1+" "+mostwinrate1+" "+mostkilldeath1+"\n2."+String(most2).extensionRight("   ", 6)+" "+mosttime2+" "+mostwinrate2+" "+mostkilldeath2+"\n3."+String(most3).extensionRight("   ", 6)+" "+mosttime3+" "+mostwinrate3+" "+mostkilldeath3+"\n4."+String(most4).extensionRight("   ", 6)+" "+mosttime4+" "+mostwinrate4+" "+mostkilldeath4);
     }
 }
 
