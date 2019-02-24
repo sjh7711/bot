@@ -118,7 +118,7 @@ var RS = T.register("reactionSpeed",()=>{
 			this["flag" + r.room][4] = 0;
 			break;
 		}
-		if((new date().getTime()-now)) > 20000){
+		if((new date().getTime()-now) > 20000){
 			break;
 		}
 	}
