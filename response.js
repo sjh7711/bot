@@ -370,11 +370,11 @@ function overwatch(r) {
 		var compwinrate = source.select('div.progress-category.toggle-display').get(10);
 		var compkilldeath = source.select('div.progress-category.toggle-display').get(11);
 		
-        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 4"+es;
+        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP4"+es;
         
         for(var i = 0 ; i < 4 ; i++ ){
         	var most = compplaytime.select('div.ProgressBar-title').get(i).text();
-        	res+="\n\n"+i+"."+most;
+        	res+="\n\n"+(i+1)+"."+most;
             var mosttime = compplaytime.select('div.ProgressBar-description').get(i).text();
         	res+="\n  플레이 시간 : "+mosttime;
             var mostwinrate = compwinrate.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();  if(mostwinrate.indexOf("%")==-1){mostwinrate+='%'};
