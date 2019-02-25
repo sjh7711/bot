@@ -563,9 +563,9 @@ function recentchat(r) { //name : DB이름
 
 function allchat(r) { //name : DB이름
     var temp1 = undefined;
-    temp1 = r.msg.split("!전체채팅")[1]; // 개수
+    temp1 = r.msg.split("!전체")[1]; // 개수
     if (temp1 == undefined){
-    	temp1 = r.msg.split("!ㅈㅊㅊㅌ")[1]; // 개수
+    	temp1 = r.msg.split("!ㅈㅊ")[1]; // 개수
     }
     temp1 = temp1.split(" ")[0];
     var temp3= r.msg.split(" ")[0];
