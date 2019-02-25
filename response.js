@@ -170,11 +170,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg.indexOf('!건의')==0){
-        	if(msg.length > 3){
-        		replier.reply("건의가 너무 짧습니다.")
+        	if(msg.split("!건의")[1].length > 3){
+        		replier.reply("건의가 너무 짧습니다.");
         	}else{
-        	Api.replyRoom('recom', room+" : "+sender+" : "+msg.split(msg.split(' ')[0])[1])
-        	replier.reply(sender+"님의 건의가 접수되었습니다.")
+        		Api.replyRoom('recom', room+" : "+sender+" : "+msg.split(msg.split(' ')[0])[1]);
+        		replier.reply(sender+"님의 건의가 접수되었습니다.");
         	}
         }
         
