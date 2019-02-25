@@ -75,35 +75,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	try {
-		/*if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
-        		T.register("reactionSpeed",()=>{
-        			var now;
-        			while(1){
-        				if(this["flag" + room][4] == 0){
-        					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-        					var rand = 1+Math.floor(Math.random() * 7000);
-        					java.lang.Thread.sleep(rand);
-        					this["flag" + room][4] = 1;
-        					replier.reply('시작!');
-        					msg="";
-        					now = new Date().getTime();
-        				}
-        				var reactiontime = new Date().getTime();
-        				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
-        					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
-        					this["flag" + room][4] = 0;
-        					break;
-        				}
-        				if(((new Date().getTime())-now) > 20000){
-        					break;
-        				}
-        			}
-        		}).start();
-        	}
-        }*/
-		
-		
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
@@ -111,7 +82,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (room == 'test') {
-            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) {
+            if (msg.indexOf("!전체") == 0 || msg.indexOf("!ㅈㅊ") == 0) {
             	allchat(r);                
             }
         }
@@ -123,7 +94,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
       //최근채팅저장
-        if (msg.indexOf("/") == 0 || sender == "시립봇" || sender == "파이봇") {
+        if (sender == "시립봇" || sender == "파이봇") {
         } else {
              D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
         }
@@ -175,42 +146,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!상태"){
         	checkstatus(r);
         }
-        //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
-                add(r, "menu", "메뉴", 0);
-            }
-        }
-        
-        if (msg.indexOf("!메뉴추천") == 0 || msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
+       
+        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
             recom(r, "menu");
         }
         
-        //메뉴동의합의
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (this["flag" + room][0] == 1) {
-                agree(r, "menu", "메뉴", 0);
-            }
-        }
-
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!식당추가 ") == 0 || msg.indexOf("!ㅅㄷㅊㄱ ") == 0) {
-                add(r, "res", "식당", 1);
-            }
-        }
-        
-		if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!식당추천") == 0 || msg.indexOf("!ㅅㄷㅊㅊ") == 0) {
+	if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0) {
                 recom(r, "res");
             }
         }
 
-        //식당동의합의
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (this["flag" + room][1] == 1) {
-                agree(r, "res", "식당", 1);
-            }
-        }
+
         //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
 
         if (msg=="/기능") {
@@ -230,37 +177,37 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //-----------------------------------------------------개인채팅방------------------------------------------------
         if (room == "test") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!추첨\n!최근채팅\n!메뉴추천\n!식당추천\n!맛집\n!추첨\n!공지\n!날씨\n!전체채팅\n!명단\n!오버워치\n!예정기능\n!공지\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!추첨\n!메뉴\n!식당\n!맛집\n!추첨\n!오버워치\n!최근채팅\n!전체채팅\n!공지\n!날씨\n!명단\n!예정기능\n!공지\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
         if (room == "bot") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!추첨\n!최근채팅\n!메뉴추천\n!식당추천\n!맛집\n!오버워치\n!예정기능\n!명단\n!날씨\n!공지\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!추첨\n!메뉴\n!식당\n!맛집\n!오버워치\n!최근채팅\n!예정기능\n!명단\n!날씨\n!공지\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-------------------------------------------------------공익----------------------------------------------------
         if (room == 'agent') {
             if (msg == "!기능") {
-                replier.reply("!로또\n!추첨\n!당첨\n!최근채팅\n!메뉴추천\n!맛집\n!오버워치\n!공지\n!날씨\n!명단\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!추첨\n!당첨\n!메뉴\n!맛집\n!오버워치\n!최근채팅\n!공지\n!날씨\n!명단\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-------------------------------------------------------전전컴톡방-----------------------------------------------------
         if (room == "ele") {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!추첨\n!최근채팅\n!메뉴추천\n!식당추천\n!맛집\n!오버워치\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!추첨\n!메뉴\n!식당\n!맛집\n!오버워치\n!최근채팅\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //--------------------------------------------------------자생방-----------------------------------------
         if (room == 'ja') {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!추첨\n!메뉴추천\n!식당추천\n!맛집\n!오버워치\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!추첨\n!메뉴\n!식당\n!맛집\n!오버워치\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
         }
         //-----------------------------------------------------오버워치방-----------------------------------------
         if (room == 'over') {
             if (msg == "!기능") {
-                replier.reply("!로또\n!당첨\n!추첨\n!최근채팅\n!메뉴추천\n!맛집\n!오버워치\n!건의\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+                replier.reply("!로또\n!당첨\n!추첨\n!메뉴\n!맛집\n!오버워치\n!최근채팅\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
             }
 		}
 	} catch (e) {
@@ -318,6 +265,34 @@ function func(r) {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다.");
     }
 }
+
+/*if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
+        		T.register("reactionSpeed",()=>{
+        			var now;
+        			while(1){
+        				if(this["flag" + room][4] == 0){
+        					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+        					var rand = 1+Math.floor(Math.random() * 7000);
+        					java.lang.Thread.sleep(rand);
+        					this["flag" + room][4] = 1;
+        					replier.reply('시작!');
+        					msg="";
+        					now = new Date().getTime();
+        				}
+        				var reactiontime = new Date().getTime();
+        				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
+        					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
+        					this["flag" + room][4] = 0;
+        					break;
+        				}
+        				if(((new Date().getTime())-now) > 20000){
+        					break;
+        				}
+        			}
+        		}).start();
+        	}
+        }*/
 
 function checkstatus(r){
 	bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
@@ -1232,4 +1207,31 @@ function clear(r, name, num) {
     this[name + "agree" + r.room] = 0;
     this[name + "opp" + r.room] = 0;
 }
+*/
+
+/*
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
+                add(r, "menu", "메뉴", 0);
+            }
+        }
+        //메뉴동의합의
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (this["flag" + room][0] == 1) {
+                agree(r, "menu", "메뉴", 0);
+            }
+        }
+
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (msg.indexOf("!식당추가 ") == 0 || msg.indexOf("!ㅅㄷㅊㄱ ") == 0) {
+                add(r, "res", "식당", 1);
+            }
+        }
+		
+        //식당동의합의
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+            if (this["flag" + room][1] == 1) {
+                agree(r, "res", "식당", 1);
+            }
+        }
 */
