@@ -163,7 +163,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다");
         }
-psbcncj
+	
         //기능설명
         if (msg.indexOf("!기능 ") == 0) {
             func(r);
