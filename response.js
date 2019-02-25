@@ -308,11 +308,11 @@ function checkstatus(r){
 	var idle = stat2[3]-stat1[3];
 	var total = user+system+nice+idle;
 	var userPerc =  user/total*100;
-	var systemPerc = system/total*100
+	var idlePerc = idle/total*100
 	
 	
 	        
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "%\n쓰레드 수 : "+T.getThreadList().length + "\nCPU점유율 : " + Math.floor(userPerc*100)/100 + "\n시스템CPU점유율 : "+ Math.floor(systemPerc*100)/100+ "\n전체CPU점유율 : "+ Math.floor(total*100)/100
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n쓰레드 수 : "+T.getThreadList().length + "\nCPU점유율 : " + Math.floor(userPerc*100)/100 + "%" + "\n전체CPU점유율 : "+ Math.floor(idlePerc*100)/100 +"%" 
 	r.replier.reply(batteryStatusStr);
 }
 
