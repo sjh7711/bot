@@ -298,8 +298,19 @@ function checkstatus(r){
 	level = bm.getIntExtra("level",0) + "%"
 	status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
 	voltage = bm.getIntExtra("voltage",0)/1000 + "V"
+	
+	stat1 = readFile().substr(5).split(" ");
+	java.lang.Thread.sleep(1000);
+	stat2 = readFile().substr(5).split(" ");        
+	user = stat2[0]-stat1[0];
+	system = stat2[1]-stat1[1];
+	nice = stat2[2]-stat1[2];
+	idle = stat2[3]-stat1[3];
+	total = user+system+nice+idle;
+	userPerc =  user/total*100;
+	
 	        
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\ncpu점유율 : " + userPerc +"\n쓰레드 수 : "+T.getThreadList().length
 	r.replier.reply(batteryStatusStr);
 }
 
@@ -979,6 +990,25 @@ T.register("weatherClockCheck",()=>{
 		java.lang.Thread.sleep(60*1000); //1분
 	}
 }).start();
+
+
+function readFile() {
+    var filedir = new java.io.File("/proc/stat");
+    try {
+        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
+        var readStr = "";
+        var str = null;
+        while (((str = br.readLine()) != null)) {
+            readStr += str + "\n";
+        }
+        br.close();
+        return readStr.trim();
+    }
+    catch (e) {
+        Log.e(e + "\n" + e.stack);
+        throw e;
+    }
+}
 
 
 //time
