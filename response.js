@@ -42,69 +42,25 @@ var sellist = [];
 var seltime = "";
 
 //봇제작방용 변수
-var flagbot = [0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2]= flag[3]=
-var menuagreebot = 0; //메뉴추가동의 인원수
-var resagreebot = 0; //식당추가동의 인원수
-var menuoppbot = 0; //메뉴추가반대 인원수
-var resoppbot = 0; //식당추가반대 인원수
-var flagmenubot; //추가심사중인 메뉴
-var flagresbot; //추가심사중인 식당
-var sendermenubot = []; //메뉴추가에 동의한 사람
-var senderresbot = []; //식당추가에 동의한 사람
+var flagbot = [0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2], flag[3] = 추첨기 //flag[4] = 반응속도
 
 //전전컴톡방용 변수
 var flagele = [0, 0, 0, 0, 0]; 
-var menuagreeele = 0;
-var resagreeele = 0;
-var menuoppele = 0; 
-var resoppele = 0; 
-var flagmenuele; 
-var flagresele; 
-var sendermenuele = [];
-var senderresele = [];
 
 //개인방용 변수
 var flagtest = [0, 0, 0, 0, 0];
-var menuagreetest = 0; 
-var resagreetest = 0; 
-var menuopptest = 0;
-var resopptest = 0;
-var flagmenutest; 
-var flagrestest;
-var sendermenutest = []; 
-var senderrestest = []; 
 
 //자생방용 변수
 var flagja = [0, 0, 0, 0, 0]; 
-var menuagreeja = 0; 
-var resagreeja = 0; 
-var menuoppja = 0;
-var resoppja = 0; 
-var flagmenuja; 
-var flagresja;
-var sendermenuja = []; 
-var senderresja = []; 
 
 //봇제작방용 변수
 var flagbot = [0, 0, 0, 0, 0]; 
-var menuagreebot = 0; 
-var resagreebot = 0; 
-var menuoppbot = 0; 
-var resoppbot = 0;
-var flagmenubot; 
-var flagresbot;
-var sendermenubot = []; 
-var senderresbot = []; 
 
 //오버워치용 변수
 var flagover = [0, 0, 0, 0, 0];
-var menuagreeover = 0; 
-var menuoppover = 0; 
-var flagmenuover; 
-var sendermenuover = []; 
 
+//공익방
 var flagagent = [0,0,0,0,0];
-
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -316,7 +272,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 }
 
 
-
 //------------------------------------------------------------------ 함수------------------------------------------------------
 //기능설명
 function func(r) {
@@ -377,8 +332,6 @@ function checkstatus(r){
 	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage
 	r.replier.reply(batteryStatusStr);
 }
-
-
 
 //오버워치
 function overwatch(r) {
@@ -765,61 +718,7 @@ function recom(r, name) { //name : DB이름
     }
 }
 
-//리스트에 추가하기
-function add(r, name, name1, num) { // name : DB 이름 / num : flag number
-    var temp = r.msg.split(" ")[1];
-    var list = D.selectForArray(name);
-    if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
-    	Api.replyRoom("recom", r.sender+" : "+name1+"건의 : "+temp);
-        r.replier.reply(temp.이가() + " 건의되었습니다.");
-        if (this["flag" + r.room][num] == 1 ) {
-            r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
-        }
-        if (this["flag" + r.room][num] == 0 ) {
-            r.replier.reply(name1+"찬성을 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
-            this["flag" + name + r.room] = temp;
-            this["flag" + r.room][num] = 1;
-        }
-    } else {
-        r.replier.reply(temp.은는() + " 이미있는 " + name1 + "입니다.");
-    }
-}
 
-//리스트 추가 다수 동의
-function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "식당"..) / num : flag number
-    list = D.selectForArray(name);
-    if (r.msg == name1+'찬성') {
-        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
-            this[name + "agree" + r.room] += 1;
-            r.replier.reply(name1+"찬성 : "+this[name + "agree" + r.room] + "/3");
-            this["sender" + name + r.room].push(r.sender);
-        }
-    } else if (r.msg == name1+'반대') {
-        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
-            this[name + "opp" + r.room] += 1;
-            r.replier.reply(name1+"반대 : "+this[name + "opp" + r.room] + "/3");
-            this["sender" + name + r.room].push(r.sender);
-        }
-    }
-    if (this[name + "agree" + r.room] == 3) {
-        var temp = this["flag" + name + r.room];
-        D.insert(name, { name: temp });
-        r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 추가되었습니다.");
-        clear(r, name, num);
-    } else if (this[name + "opp" + r.room] == 3) {
-    	r.replier.reply(this["flag" + name + r.room].이가() + " 반대되었습니다.");
-    	clear(r, name, num);
-    }
-}
-
-//추가 초기화함수
-function clear(r, name, num) {
-    this["flag" + r.room][num] = 0;
-    this["sender" + name + r.room] = undefined;
-    this["flag" + name + r.room] = undefined;
-    this[name + "agree" + r.room] = 0;
-    this[name + "opp" + r.room] = 0;
-}
 
 //로또
 function lotto(r) {
@@ -1265,3 +1164,75 @@ Date.prototype.toTimeString=function(sep){
 	sep = (sep==undefined) ? ':' : sep;
 		return String(this.getHours()).extension("0",2)+sep+String(this.getMinutes()).extension("0",2)+sep+String(this.getSeconds()).extension("0",2);
 }
+
+
+//안쓰는변수
+/*
+var menuagreebot = 0; //메뉴추가동의 인원수
+var resagreebot = 0; //식당추가동의 인원수
+var menuoppbot = 0; //메뉴추가반대 인원수
+var resoppbot = 0; //식당추가반대 인원수
+var flagmenubot; //추가심사중인 메뉴
+var flagresbot; //추가심사중인 식당
+var sendermenubot = []; //메뉴추가에 동의한 사람
+var senderresbot = []; //식당추가에 동의한 사람
+/*
+
+//안쓰는함수
+/*
+//리스트에 추가하기
+function add(r, name, name1, num) { // name : DB 이름 / num : flag number
+    var temp = r.msg.split(" ")[1];
+    var list = D.selectForArray(name);
+    if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
+    	Api.replyRoom("recom", r.sender+" : "+name1+"건의 : "+temp);
+        r.replier.reply(temp.이가() + " 건의되었습니다.");
+        if (this["flag" + r.room][num] == 1 ) {
+            r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
+        }
+        if (this["flag" + r.room][num] == 0 ) {
+            r.replier.reply(name1+"찬성을 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
+            this["flag" + name + r.room] = temp;
+            this["flag" + r.room][num] = 1;
+        }
+    } else {
+        r.replier.reply(temp.은는() + " 이미있는 " + name1 + "입니다.");
+    }
+}
+
+//리스트 추가 다수 동의
+function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "식당"..) / num : flag number
+    list = D.selectForArray(name);
+    if (r.msg == name1+'찬성') {
+        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
+            this[name + "agree" + r.room] += 1;
+            r.replier.reply(name1+"찬성 : "+this[name + "agree" + r.room] + "/3");
+            this["sender" + name + r.room].push(r.sender);
+        }
+    } else if (r.msg == name1+'반대') {
+        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
+            this[name + "opp" + r.room] += 1;
+            r.replier.reply(name1+"반대 : "+this[name + "opp" + r.room] + "/3");
+            this["sender" + name + r.room].push(r.sender);
+        }
+    }
+    if (this[name + "agree" + r.room] == 3) {
+        var temp = this["flag" + name + r.room];
+        D.insert(name, { name: temp });
+        r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 추가되었습니다.");
+        clear(r, name, num);
+    } else if (this[name + "opp" + r.room] == 3) {
+    	r.replier.reply(this["flag" + name + r.room].이가() + " 반대되었습니다.");
+    	clear(r, name, num);
+    }
+}
+
+//추가 초기화함수
+function clear(r, name, num) {
+    this["flag" + r.room][num] = 0;
+    this["sender" + name + r.room] = undefined;
+    this["flag" + name + r.room] = undefined;
+    this[name + "agree" + r.room] = 0;
+    this[name + "opp" + r.room] = 0;
+}
+*/
