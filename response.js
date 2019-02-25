@@ -310,7 +310,7 @@ function checkstatus(r){
 	userPerc =  user/total*100;
 	
 	        
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\nCPU점유율 : " + userPerc +"%\n쓰레드 수 : "+T.getThreadList().length
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\nCPU점유율 : " + Math.floor(userPerc*100)/100 +"%\n쓰레드 수 : "+T.getThreadList().length
 	r.replier.reply(batteryStatusStr);
 }
 
