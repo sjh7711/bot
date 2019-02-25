@@ -293,24 +293,26 @@ function func(r) {
         }*/
 
 function checkstatus(r){
-	bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
-	temperature = bm.getIntExtra("temperature",0)/10 + "'C"
-	level = bm.getIntExtra("level",0) + "%"
-	status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
-	voltage = bm.getIntExtra("voltage",0)/1000 + "V"
+	var bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
+	var temperature = bm.getIntExtra("temperature",0)/10 + "'C"
+	var level = bm.getIntExtra("level",0) + "%"
+	var status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
+	var voltage = bm.getIntExtra("voltage",0)/1000 + "V"
 	
-	stat1 = readFile().substr(5).split(" ");
+	var stat1 = readFile().substr(5).split(" ");
 	java.lang.Thread.sleep(1000);
-	stat2 = readFile().substr(5).split(" ");        
-	user = stat2[0]-stat1[0];
-	system = stat2[1]-stat1[1];
-	nice = stat2[2]-stat1[2];
-	idle = stat2[3]-stat1[3];
-	total = user+system+nice+idle;
-	userPerc =  user/total*100;
+	var stat2 = readFile().substr(5).split(" ");        
+	var user = stat2[0]-stat1[0];
+	var system = stat2[1]-stat1[1];
+	var nice = stat2[2]-stat1[2];
+	var idle = stat2[3]-stat1[3];
+	var total = user+system+nice+idle;
+	var userPerc =  user/total*100;
+	var systemPerc = system/total*100
+	
 	
 	        
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\nCPU점유율 : " + Math.floor(userPerc*100)/100 +"%\n쓰레드 수 : "+T.getThreadList().length
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "%\n쓰레드 수 : "+T.getThreadList().length + "\nCPU점유율 : " + Math.floor(userPerc*100)/100 + "\n시스템CPU점유율 : "+ Math.floor(systemPerc*100)/100+ "\n전체CPU점유율 : "+ Math.floor(total*100)/100
 	r.replier.reply(batteryStatusStr);
 }
 
