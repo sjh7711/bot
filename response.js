@@ -147,12 +147,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	checkstatus(r);
         }
        
-        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
+        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
         }
         
 	if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0) {
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷ") == 0) {
                 recom(r, "res");
             }
         }
@@ -163,7 +163,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다");
         }
-
+psbcncj
         //기능설명
         if (msg.indexOf("!기능 ") == 0) {
             func(r);
