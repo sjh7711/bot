@@ -41,6 +41,11 @@ var selsender = "";
 var sellist = [];
 var seltime = "";
 
+//공지 변수
+var cookie1;
+var cookie2;
+var doc;
+
 //봇제작방용 변수
 var flagbot = [0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2], flag[3] = 추첨기 //flag[4] = 반응속도
 
@@ -313,6 +318,16 @@ function checkstatus(r){
 	r.replier.reply(batteryStatusStr);
 }
 
+function weather(r){
+	var input = r.msg.substr(4);
+	var doc = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
+	var name = doc.map(v=>"이름 : "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기',''));
+	var loc = doc.map(v=>v.select('dd.cont').text().replace(' 펼치기/접기',''));
+	var link = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[]+" 날씨").get().select('div.api_more_wrap').select('a').attr("abs:href");
+	
+	
+
+}
 //오버워치
 function overwatch(r) {
     var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
@@ -800,9 +815,7 @@ function lottocheck(r) {
 	}
 }
 
-var cookie1;
-var cookie2;
-var doc;
+
 
 function notice(r){
 	if(cookie1==undefined||cookie2==undefined){
