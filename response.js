@@ -318,6 +318,7 @@ function checkstatus(r){
 	r.replier.reply(batteryStatusStr);
 }
 
+<<<<<<< HEAD
 function weather(r){
 	var input = r.msg.substr(4);
 	var doc = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
@@ -328,6 +329,49 @@ function weather(r){
 	
 
 }
+=======
+/*
+function weather(r){
+	   Interactive.register("weatherSelect",r.room,r.sender,function(input){
+		      try{
+		    	  var input = r.msg.substr(4);
+		    	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
+		    	  var i = 0;
+		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
+		    	  var loc = temp.map(v=>v.select('dd.cont').text().replace(' 펼치기/접기',''));
+		    	  
+		    	  var msg;
+		          var errCount=0;
+		          r.reply("원하는 장소의 번호를 입력해주세요.");
+		          while(errCount<3){
+		             msg=input.getMsg()
+		             msg=Number(msg);
+		             if(!isNaN(msg) && msg>=1 && msg<=5){
+		                var targetNum=msg-1
+		                break;
+		             }
+		             errCount++;
+		             r.reply("유효한 값을 입력해주세요." +" ("+errCount+"/3)");
+		          }
+		          
+		          if(errCount>=3) {
+		             r.reply("입력 오류가 많아 취소되었습니다.");
+		             return;
+		          }
+		          
+		          var link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+" 날씨").get();
+		          var link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		          
+		          var degree = org.jsoup.Jsoup.connect(link2)
+		          
+		          }catch(e){
+		        	  r.reply(e+"\n"+e.stack)
+		        	  }
+		   });
+		}
+		
+		*/
+>>>>>>> 2e3f5c8a8a7388d1bb0c6e5f19ee4652526cd556
 //오버워치
 function overwatch(r) {
     var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
@@ -443,6 +487,12 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	
    if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
     	this["flag" + r.room][2]=0;
+    	r.replier.reply('3');
+    	java.lang.Thread.sleep(1000);
+    	r.replier.reply('2');
+    	java.lang.Thread.sleep(1000);
+    	r.replier.reply('1');
+    	java.lang.Thread.sleep(1000);
     }
    
     if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
