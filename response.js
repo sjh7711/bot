@@ -600,6 +600,7 @@ function recentchat(r) { //name : DB이름
 		}
 	}
 	
+	
 	var temp = [];
 	if(flag==1){
 		temp[0]=temp2+"님의 채팅내역\n"; 
@@ -652,8 +653,8 @@ function allchat(r) { //name : DB이름
 	if(temp1.length > 0){
 		var num = Math.floor( temp1*1 );
 	}
-	if(num > temp1.length){
-		num = temp1.length;
+	if(num > tempchat.length){
+		num = tempchat.length;
 	}
 	
 	var temp = [];
