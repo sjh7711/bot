@@ -22,7 +22,7 @@ function reload() {
 	    var time = (new Date() - Timer) / 1000;
 	    Api.replyRoom('test', "reloading 완료 / " + time + "s");
 	}catch (e){
-		Api.replier('test',e + "\n" + e.stack);
+		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
@@ -62,7 +62,7 @@ var flagja = [0, 0, 0, 0, 0];
 var flagover = [0, 0, 0, 0, 0];
 
 //공익방
-var flagagent = [0,0,0,0,0];
+var flagagent = [0, 0, 0, 0, 0];
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -387,7 +387,7 @@ function weather(r){
 
 	          }
 	          }catch(e){
-	        	  r.reply(e+"\n"+e.stack)
+	        	  Api.replyRoom('test',e+"\n"+e.stack);
 	        	  }
 	   });
 	}
@@ -395,462 +395,507 @@ function weather(r){
 
 //오버워치
 function overwatch(r) {
-    var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
-    var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get();
-    if (source.select('div.u-align-center').text().indexOf('이 프로필은 비공개입니다.')>0 ) {
-    	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
-	} else {
-		var temp = source.select('div.masthead');
-		var score = temp.select('div.u-align-center').get(0).text();
-        var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
-        
-        //var quickplaytime = source.select('div.progress-category.toggle-display').get(0);
-		
-		var compplaytime = source.select('div.progress-category.toggle-display').get(7);
-		var compwinrate = source.select('div.progress-category.toggle-display').get(10);
-		var compkilldeath = source.select('div.progress-category.toggle-display').get(11);
-		
-        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP4"+es;
-        
-        for(var i = 0 ; i < 4 ; i++ ){
-        	var most = compplaytime.select('div.ProgressBar-title').get(i).text();
-        	res+="\n\n"+(i+1)+"."+most;
-            var mosttime = compplaytime.select('div.ProgressBar-description').get(i).text();
-        	res+="\n  플레이 시간 : "+mosttime;
-            var mostwinrate = compwinrate.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();  if(mostwinrate.indexOf("%")==-1){mostwinrate+='%'};
-            res+="\n  승률 : "+mostwinrate;
-            var mostkilldeath = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();
-            res+="\n  목숨당처치 : "+mostkilldeath;
-        }
-        r.replier.reply(res);
-    }
+	try{
+		var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
+	    var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get();
+	    if (source.select('div.u-align-center').text().indexOf('이 프로필은 비공개입니다.')>0 ) {
+	    	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
+		} else {
+			var temp = source.select('div.masthead');
+			var score = temp.select('div.u-align-center').get(0).text();
+	        var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
+	        
+	        //var quickplaytime = source.select('div.progress-category.toggle-display').get(0);
+			
+			var compplaytime = source.select('div.progress-category.toggle-display').get(7);
+			var compwinrate = source.select('div.progress-category.toggle-display').get(10);
+			var compkilldeath = source.select('div.progress-category.toggle-display').get(11);
+			
+	        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP4"+es;
+	        
+	        for(var i = 0 ; i < 4 ; i++ ){
+	        	var most = compplaytime.select('div.ProgressBar-title').get(i).text();
+	        	res+="\n\n"+(i+1)+"."+most;
+	            var mosttime = compplaytime.select('div.ProgressBar-description').get(i).text();
+	        	res+="\n  플레이 시간 : "+mosttime;
+	            var mostwinrate = compwinrate.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();  if(mostwinrate.indexOf("%")==-1){mostwinrate+='%'};
+	            res+="\n  승률 : "+mostwinrate;
+	            var mostkilldeath = compkilldeath.select("div.ProgressBar-textWrapper:contains("+most+")").select('div.ProgressBar-description').text();
+	            res+="\n  목숨당처치 : "+mostkilldeath;
+	        }
+	        r.replier.reply(res);
+	    }
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 function famous(r){
-	var name = r.msg.split(" ")[1];
-	var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
-	var url = undefined;
-	url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort');
-	if(url.toArray()[0] == undefined){
-		r.replier.reply("실제로 있는 지역을 입력하세요.");
-	}else{
-		url = url.get(1).attr("abs:href");
-		var doc = org.jsoup.Jsoup.connect(url).get();
-		var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt").text() );
-		if (temptext.length > 3){
-			temptext[2]=temptext[2]+es;
+	try{
+		var name = r.msg.split(" ")[1];
+		var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";
+		var url = undefined;
+		url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort');
+		if(url.toArray()[0] == undefined){
+			r.replier.reply("실제로 있는 지역을 입력하세요.");
+		}else{
+			url = url.get(1).attr("abs:href");
+			var doc = org.jsoup.Jsoup.connect(url).get();
+			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt").text() );
+			if (temptext.length > 3){
+				temptext[2]=temptext[2]+es;
+			}
+			temptext = temptext.join('\n\n');
+			
+			r.replier.reply(temptext);
 		}
-		temptext = temptext.join('\n\n');
-		
-		r.replier.reply(temptext);
-	}
+    }catch(e){
+    	Api.replyRoom('test',e+"\n"+e.stack);
+		}
+	
 }
 
 function banklist(r){
-	var name = r.msg.split(" ")[1];
-	var phone = r.msg.split(" ")[2];
-	var cmd = r.msg.split("!명단")[1].split(" ")[0];
-	if(typeof name == 'string' && typeof cmd == '추가' && typeof phone == 'string'){
-		D.insert("bankls", {name :name, phone:phone});
-		r.replier.reply(D.selectForString('bankls'));
-	}else if(typeof name == 'string' && typeof cmd == '삭제'){
-		D.delete("bankls", "name=?", [name]);
-		r.replier.reply(D.selectForString('bankls'));
-	} else if(typeof name == 'string'){
-		var temp=D.selectForArray('bankls',null,'name like ?','%'+name+'%');
-		for(var i=0;i<temp.length;i++){
-			temp[i]=temp[i].join(" : ")
-			if(i==3){
-				temp[2]=temp[2]+es;
+	try{
+		var name = r.msg.split(" ")[1];
+		var phone = r.msg.split(" ")[2];
+		var cmd = r.msg.split("!명단")[1].split(" ")[0];
+		if(typeof name == 'string' && typeof cmd == '추가' && typeof phone == 'string'){
+			D.insert("bankls", {name :name, phone:phone});
+			r.replier.reply(D.selectForString('bankls'));
+		}else if(typeof name == 'string' && typeof cmd == '삭제'){
+			D.delete("bankls", "name=?", [name]);
+			r.replier.reply(D.selectForString('bankls'));
+		} else if(typeof name == 'string'){
+			var temp=D.selectForArray('bankls',null,'name like ?','%'+name+'%');
+			for(var i=0;i<temp.length;i++){
+				temp[i]=temp[i].join(" : ")
+				if(i==3){
+					temp[2]=temp[2]+es;
+				}
 			}
-		}
-		r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
-	} else {
-		var temp=D.selectForArray('bankls');
-		for(var i=0;i<temp.length;i++){
-			temp[i]=temp[i].join(" : ")
-			if(i==3){
-				temp[2]=temp[2]+es;
+			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+		} else {
+			var temp=D.selectForArray('bankls');
+			for(var i=0;i<temp.length;i++){
+				temp[i]=temp[i].join(" : ")
+				if(i==3){
+					temp[2]=temp[2]+es;
+				}
 			}
+			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
 		}
-		r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
-	}
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 
 //추첨기
 function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3]==0 -> 추첨이 시작함 // flag[2]==1&&flag[3]==1 -> 추첨인원 모집  // flag[2]==0&&flag[3] ==1 -> 당첨자 발표
-	var list1 = [];
-	
-	if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.msg == '!추첨'){
-		r.replier.reply('현재 추첨이 진행중입니다.')
-	}
-
-	if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-		r.replier.reply("뽑힐 인원 수를 입력해주세요. 5명까지 가능합니다. 참여엔 제한이 없습니다. 90초 이후에 !추첨종료 로 종료가 가능합니다.");
-		seltime = new Date().getTime();
-		selsender = r.sender;
-		this["flag" + r.room][2] = 1;
-	}
-	
-	if(selsender == r.sender && r.msg < 5 && 0 < r.msg && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 0){
-		selnum = r.msg;
-		r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.");
-		this["flag" + r.room][3]=1;
-	}
-	
-	if (r.msg == '참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
-		if(sellist.indexOf(r.sender)==-1){
-			sellist.push(r.sender);
-			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+sellist.length+'명');
+	try{
+		var list1 = [];
+		
+		if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.msg == '!추첨'){
+			r.replier.reply('현재 추첨이 진행중입니다.')
 		}
-	}
-	
-   if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
-    	this["flag" + r.room][2]=0;
-    	r.replier.reply('3');
-    	java.lang.Thread.sleep(1000);
-    	r.replier.reply('2');
-    	java.lang.Thread.sleep(1000);
-    	r.replier.reply('1');
-    	java.lang.Thread.sleep(1000);
-    }
-   
-    if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
-    	if(sellist.length == 0){
-    		list1=['아무도 참가하지 않았습니다.'];
-    	}
-    	if(sellist.length <= selnum){
-    		list1=sellist;
-    	} else {
-    		for (var i = 0; i < selnum; i++) {
-            	var rad = Math.floor(Math.random() * sellist.length);
-            	if (list1.indexOf(sellist[rad]) == -1){//중복이면 거른다
-            		list1.push(sellist.splice(rad, 1));
-            	}
-            }
-    	}
-    	r.replier.reply("당첨자 : "+list1.join(", "));
-    	this["flag" + r.room][3] = 0;
-    	selnum = -1;
-    	selsender = "";
-    	sellist=[];
-    }
+
+		if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
+			r.replier.reply("뽑힐 인원 수를 입력해주세요. 5명까지 가능합니다. 참여엔 제한이 없습니다. 90초 이후에 !추첨종료 로 종료가 가능합니다.");
+			seltime = new Date().getTime();
+			selsender = r.sender;
+			this["flag" + r.room][2] = 1;
+		}
+		
+		if(selsender == r.sender && r.msg < 5 && 0 < r.msg && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 0){
+			selnum = r.msg;
+			r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 참가 를 입력해주세요. 추첨을 제안한 사람이 !마감을 입력하면 마감됩니다.");
+			this["flag" + r.room][3]=1;
+		}
+		
+		if (r.msg == '참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
+			if(sellist.indexOf(r.sender)==-1){
+				sellist.push(r.sender);
+				r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+sellist.length+'명');
+			}
+		}
+		
+	   if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
+	    	this["flag" + r.room][2]=0;
+	    	r.replier.reply('3');
+	    	java.lang.Thread.sleep(1000);
+	    	r.replier.reply('2');
+	    	java.lang.Thread.sleep(1000);
+	    	r.replier.reply('1');
+	    	java.lang.Thread.sleep(1000);
+	    }
+	   
+	    if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
+	    	if(sellist.length == 0){
+	    		list1=['아무도 참가하지 않았습니다.'];
+	    	}
+	    	if(sellist.length <= selnum){
+	    		list1=sellist;
+	    	} else {
+	    		for (var i = 0; i < selnum; i++) {
+	            	var rad = Math.floor(Math.random() * sellist.length);
+	            	if (list1.indexOf(sellist[rad]) == -1){//중복이면 거른다
+	            		list1.push(sellist.splice(rad, 1));
+	            	}
+	            }
+	    	}
+	    	r.replier.reply("당첨자 : "+list1.join(", "));
+	    	this["flag" + r.room][3] = 0;
+	    	selnum = -1;
+	    	selsender = "";
+	    	sellist=[];
+	    }
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 function selexit(r){
-	var selexittime = new Date().getTime();
-	if( seltime + 1000*60*1.5 < selexittime){
-		selnum = -1;
-		selsender = "";
-		sellist=[];
-		this["flag" + r.room][2] = 0;
-		this["flag" + r.room][3] = 0;
-		r.replier.reply("추첨을 종료했습니다. 새로운 추첨이 가능합니다.")
-	} else {
-		var temp = new Date().getTime();
-		r.replier.reply((90000 - (temp - seltime))/1000 + "초 뒤에 !추첨종료가 가능합니다.")
-	}
+	try{
+		var selexittime = new Date().getTime();
+		if( seltime + 1000*60*1.5 < selexittime){
+			selnum = -1;
+			selsender = "";
+			sellist=[];
+			this["flag" + r.room][2] = 0;
+			this["flag" + r.room][3] = 0;
+			r.replier.reply("추첨을 종료했습니다. 새로운 추첨이 가능합니다.")
+		} else {
+			var temp = new Date().getTime();
+			r.replier.reply((90000 - (temp - seltime))/1000 + "초 뒤에 !추첨종료가 가능합니다.")
+		}
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 
 //최근채팅
-function recentchat(r) { //name : DB이름
-	var temp1 = r.msg.substr(5); // 개수
-    if(temp1.length!=0){
-    	temp1 = temp1.split(" ")[0];
-    }
-    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
-    var num = 6;
-    var flag = 0;
-    	
-    var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
-	var templeng = tempchat.length;
-    if(6 > templeng){
-		num = templeng;
-	}
-    
-	if(temp1.length > 0 &&  temp2.length > 0){
-		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+function recentchat(r) {
+	try{
+		var temp1 = r.msg.substr(5); // 개수
+	    if(temp1.length!=0){
+	    	temp1 = temp1.split(" ")[0];
+	    }
+	    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
+	    var num = 6;
+	    var flag = 0;
+	    	
+	    var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 		var templeng = tempchat.length;
-		if(templeng==0){
-			r.replier.reply(temp2+"의 채팅이 없습니다.");
-			return;
-		} else {
-			if(0 < temp1*1 && temp1*1 < 17 ) {
-				var num = temp1*1;
-				if(tempchat.length<temp1*1){
-					num = templeng;
-				}
-			}
-			flag = 1;
-		}
-	} else if (0 < temp1*1 && temp1*1 < 17) {
-		var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
-		var templeng = tempchat.length;
-		var num = Math.floor( temp1*1 );
-		if(tempchat.length<temp1*1){
+	    if(6 > templeng){
 			num = templeng;
 		}
-	} else if(temp2.length > 0) {
-		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
-		var templeng = tempchat.length;
-		if(templeng==0){
-			r.replier.reply(temp2+"의 채팅이 없습니다.");
-			return;
-		} else {
-			flag = 1;
+	    
+		if(temp1.length > 0 &&  temp2.length > 0){
+			var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+			var templeng = tempchat.length;
+			if(templeng==0){
+				r.replier.reply(temp2+"의 채팅이 없습니다.");
+				return;
+			} else {
+				if(0 < temp1*1 && temp1*1 < 17 ) {
+					var num = temp1*1;
+					if(tempchat.length<temp1*1){
+						num = templeng;
+					}
+				}
+				flag = 1;
+			}
+		} else if (0 < temp1*1 && temp1*1 < 17) {
+			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
+			var templeng = tempchat.length;
+			var num = Math.floor( temp1*1 );
+			if(tempchat.length<temp1*1){
+				num = templeng;
+			}
+		} else if(temp2.length > 0) {
+			var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+			var templeng = tempchat.length;
+			if(templeng==0){
+				r.replier.reply(temp2+"의 채팅이 없습니다.");
+				return;
+			} else {
+				flag = 1;
+			}
 		}
-	}
-	
-	
-	var temp = [];
-	if(flag==1){
-		temp[0]=temp2+"님의 채팅내역\n"; 
-	}
-    if (0 < num && num < 17) {
-        for (var i = tempchat.length - num; i < tempchat.length; i++) {
-        	if( i - tempchat.length + num == 2){
-        		temp.push(tempchat[i].join(" | ")+es);
-        	} else {
-        		temp.push(tempchat[i].join(" | "));
-        	}
-        }
-    }
-    r.replier.reply(temp.join("\n"));
+		
+		
+		var temp = [];
+		if(flag==1){
+			temp[0]=temp2+"님의 채팅내역\n"; 
+		}
+	    if (0 < num && num < 17) {
+	        for (var i = tempchat.length - num; i < tempchat.length; i++) {
+	        	if( i - tempchat.length + num == 2){
+	        		temp.push(tempchat[i].join(" | ")+es);
+	        	} else {
+	        		temp.push(tempchat[i].join(" | "));
+	        	}
+	        }
+	    }
+	    r.replier.reply(temp.join("\n"));
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 
-function allchat(r) { //name : DB이름
-    var temp1 = r.msg.substr(5); // 개수
-    if(temp1.length!=0){
-    	temp1 = temp1.split(" ")[0];
-    }
-    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
-    var flag = 0;
-    var num = 12;
-    	
-    var tempchat = D.selectForArray('chatdb');
-    
-	if(temp1.length > 0 &&  temp2.length > 0){
-		var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
-		var templeng = tempchat.length;
-		if(templeng==0){
-			r.replier.reply(temp2+"의 채팅이 없습니다.")
-			return;
-		} else {
-			var num = Math.floor( temp1*1 );
-			flag = 1;
+function allchat(r) { 
+	try{
+		var temp1 = r.msg.substr(5); 
+	    if(temp1.length!=0){
+	    	temp1 = temp1.split(" ")[0];
+	    }
+	    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
+	    var flag = 0;
+	    var num = 12;
+	    	
+	    var tempchat = D.selectForArray('chatdb');
+	    
+		if(temp1.length > 0 &&  temp2.length > 0){
+			var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
+			var templeng = tempchat.length;
+			if(templeng==0){
+				r.replier.reply(temp2+"의 채팅이 없습니다.")
+				return;
+			} else {
+				var num = Math.floor( temp1*1 );
+				flag = 1;
+			}
+		} else if(temp2.length > 0) {
+			var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
+			var templeng = tempchat.length;
+			if(templeng==0){
+				r.replier.reply(temp2+"의 채팅이 없습니다.")
+				return;
+			} else {
+				var num = Math.floor( temp1*1 );
+				flag = 1;
+			}
 		}
-	} else if(temp2.length > 0) {
-		var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
-		var templeng = tempchat.length;
-		if(templeng==0){
-			r.replier.reply(temp2+"의 채팅이 없습니다.")
-			return;
-		} else {
+		if(temp1.length > 0){
 			var num = Math.floor( temp1*1 );
-			flag = 1;
 		}
-	}
-	if(temp1.length > 0){
-		var num = Math.floor( temp1*1 );
-	}
-	if(num > tempchat.length){
-		num = tempchat.length;
-	}
-	
-	var temp = [];
-	if(flag==1){
-		temp[0]=temp2+"님의 채팅내역\n"; 
-	}
-    for (var i = tempchat.length - num; i < tempchat.length; i++) {
-    	if( i - tempchat.length + num == 2){
-    		temp.push(tempchat[i].join(" | ")+es);
-    	} else {
-    		temp.push(tempchat[i].join(" | "));
-    	}
-    }
-    r.replier.reply(temp.join("\n"));
+		if(num > tempchat.length){
+			num = tempchat.length;
+		}
+		
+		var temp = [];
+		if(flag==1){
+			temp[0]=temp2+"님의 채팅내역\n"; 
+		}
+	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
+	    	if( i - tempchat.length + num == 2){
+	    		temp.push(tempchat[i].join(" | ")+es);
+	    	} else {
+	    		temp.push(tempchat[i].join(" | "));
+	    	}
+	    }
+	    r.replier.reply(temp.join("\n"));
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}   
 }
 
 //리스트에서 추천하기(1개 or 여러개)
 function recom(r, name) { //name : DB이름
-    var num = r.msg.split(" ")[1]; //num : 추천받고 싶은개수
-    var list = D.selectForArray(name);
-    if (num == undefined) {//1개만 추천
-        var rad = Math.floor(Math.random() * list.length);
-        r.replier.reply(list[rad]);
-    }
-    if (0 < num && num < 9) {//추천할 메뉴가 1개  ~ 8개이하일때
-        var templist = list.slice(); //list의 복사본을 만든다.
-        var listmul = []; //listmul : 랜덤으로 뽑힐 메뉴들이 담기는 공간
-        for (var i = 0; i < num; i++) {
-            var rad = Math.floor(Math.random() * templist.length);//rad : 뽑힌 메뉴
-            listmul.push(templist.splice(rad, 1));//rad 번째 메뉴가 뽑혀서 listmul에 담김
-        }
-        r.replier.reply(listmul.join(", "));
-    }
+	try{
+		var num = r.msg.split(" ")[1]; //num : 추천받고 싶은개수
+	    var list = D.selectForArray(name);
+	    if (num == undefined) {//1개만 추천
+	        var rad = Math.floor(Math.random() * list.length);
+	        r.replier.reply(list[rad]);
+	    }
+	    if (0 < num && num < 9) {//추천할 메뉴가 1개  ~ 8개이하일때
+	        var templist = list.slice(); //list의 복사본을 만든다.
+	        var listmul = []; //listmul : 랜덤으로 뽑힐 메뉴들이 담기는 공간
+	        for (var i = 0; i < num; i++) {
+	            var rad = Math.floor(Math.random() * templist.length);//rad : 뽑힌 메뉴
+	            listmul.push(templist.splice(rad, 1));//rad 번째 메뉴가 뽑혀서 listmul에 담김
+	        }
+	        r.replier.reply(listmul.join(", "));
+	    }
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 
 
 //로또
 function lotto(r) {
-    var templotto = []; //로또번호 담길곳
-    for (var i = 0; i < 100; i++) {
-        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
-        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
-            templotto.push(rad);
-        }
-        if (templotto.length == 6) {//6개까지
-            break;
-        }
-    }
-    r.replier.reply(templotto.sort(compare).join(", "));
-    
-	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var num = raw.select('h4').text().split('회')[0]*1+1;
-	
-	var today = new Date();
-	var year   = today.getFullYear();
-	var month  = today.getMonth() + 1;
-	var date   = today.getDate();
-	var hour   = today.getHours();
-	var minute = today.getMinutes();
-	
-	date = date < 10 ? '0' + date : date;
-	hour = hour < 10 ? '0' + hour : hour;
-	minute = minute < 10 ? '0' + minute : minute;
-	
-    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+	try{
+		var templotto = []; //로또번호 담길곳
+	    for (var i = 0; i < 100; i++) {
+	        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
+	        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
+	            templotto.push(rad);
+	        }
+	        if (templotto.length == 6) {//6개까지
+	            break;
+	        }
+	    }
+	    r.replier.reply(templotto.sort(compare).join(", "));
+	    
+		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+		var num = raw.select('h4').text().split('회')[0]*1+1;
+		
+		var today = new Date();
+		var year   = today.getFullYear();
+		var month  = today.getMonth() + 1;
+		var date   = today.getDate();
+		var hour   = today.getHours();
+		var minute = today.getMinutes();
+		
+		date = date < 10 ? '0' + date : date;
+		hour = hour < 10 ? '0' + hour : hour;
+		minute = minute < 10 ? '0' + minute : minute;
+		
+	    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 function lottocheck(r) {
-	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var lastnum = raw.select('h4').text().split('회')[0];
-	var win = raw.select('p').get(1).text().split(" ").slice();
-	var bonus = raw.select('p').get(2).text();
-	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
+	try{
+		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+		var lastnum = raw.select('h4').text().split('회')[0];
+		var win = raw.select('p').get(1).text().split(" ").slice();
+		var bonus = raw.select('p').get(2).text();
+		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 
-	var temp=D.selectForArray('lottoresult','num');
-	
-	if(temp[temp.length-1]!=lastnum*1){
-		var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
-		for(var i=0;i<lottodata.length;i++){
-			var count = 0;
-			for(var j=0;j<6;j++){
-				for(var k=0;k<6;k++){
-					if(lottodata[i][j+8]==win[k]){
-						count+=1;
-						break;
-					}
-				}
-				if(count == 5){
+		var temp=D.selectForArray('lottoresult','num');
+		
+		if(temp[temp.length-1]!=lastnum*1){
+			var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
+			for(var i=0;i<lottodata.length;i++){
+				var count = 0;
+				for(var j=0;j<6;j++){
 					for(var k=0;k<6;k++){
-						if(lottodata[i][j+8]==bonus){
-							count+=2;
+						if(lottodata[i][j+8]==win[k]){
+							count+=1;
 							break;
-						}	
+						}
+					}
+					if(count == 5){
+						for(var k=0;k<6;k++){
+							if(lottodata[i][j+8]==bonus){
+								count+=2;
+								break;
+							}	
+						}
 					}
 				}
+				lottodata[i].push(count);
+				if(count==0||count==1||count==2){
+					lottodata[i].push('꽝');
+				}else if(count==3){
+					lottodata[i].push('5등');
+				}else if(count==4){
+					lottodata[i].push('4등');
+				}else if(count==5){
+					lottodata[i].push('3등');
+				}else if(count==7){
+					lottodata[i].push('2등');
+				}else if(count==6){
+					lottodata[i].push('1등');
+				}
+				D.insert('lottoresult', {room : lottodata[i][0], sender : lottodata[i][1], year: lottodata[i][2], month: lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7], num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],count:lottodata[i][14],class:lottodata[i][15]});
 			}
-			lottodata[i].push(count);
-			if(count==0||count==1||count==2){
-				lottodata[i].push('꽝');
-			}else if(count==3){
-				lottodata[i].push('5등');
-			}else if(count==4){
-				lottodata[i].push('4등');
-			}else if(count==5){
-				lottodata[i].push('3등');
-			}else if(count==7){
-				lottodata[i].push('2등');
-			}else if(count==6){
-				lottodata[i].push('1등');
-			}
-			D.insert('lottoresult', {room : lottodata[i][0], sender : lottodata[i][1], year: lottodata[i][2], month: lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7], num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],count:lottodata[i][14],class:lottodata[i][15]});
 		}
-	}
-	
-	var temp = D.selectForArray('lottoresult',null,'room=? and num=?', [r.room, lastnum]);
-	var result=date+" "+lastnum+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
-	if ( temp.length == 0 ){
-		r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
-	} else if ( typeof r.msg.split(" ")[1] != 'undefined' ) { 
-		var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
+		
+		var temp = D.selectForArray('lottoresult',null,'room=? and num=?', [r.room, lastnum]);
+		var result=date+" "+lastnum+"회차\n당첨번호 : "+win[0]+" "+win[1]+" "+win[2]+" "+win[3]+" "+win[4]+" "+win[5]+"/"+bonus+"\n\n"+es;
 		if ( temp.length == 0 ){
-			r.replier.reply(result+r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
-		}else{
+			r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
+		} else if ( typeof r.msg.split(" ")[1] != 'undefined' ) { 
+			var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room ,r.msg.split(" ")[1]]);
+			if ( temp.length == 0 ){
+				r.replier.reply(result+r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
+			}else{
+				for(var i=0; i<temp.length; i++){
+					result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+				}
+				r.replier.reply(result);
+			}
+		} else{
 			for(var i=0; i<temp.length; i++){
 				result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
 			}
 			r.replier.reply(result);
 		}
-	} else{
-		for(var i=0; i<temp.length; i++){
-			result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
 		}
-		r.replier.reply(result);
-	}
 }
 
 
 
 function notice(r){
-	if(cookie1==undefined||cookie2==undefined){
-		cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
-		.method(org.jsoup.Connection.Method.GET).execute().cookies();
+	try{
+		if(cookie1==undefined||cookie2==undefined){
+			cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
-		cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
-		.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-		.method(org.jsoup.Connection.Method.POST).execute().cookies();
-	}
-	
-    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    .cookies(cookie2).cookies(cookie1).get().select('tbody');
-    
-    if(doc==undefined){
-    	cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
-		.method(org.jsoup.Connection.Method.GET).execute().cookies();
-
-		cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
-		.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
-		.method(org.jsoup.Connection.Method.POST).execute().cookies();
+			cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+			.method(org.jsoup.Connection.Method.POST).execute().cookies();
+		}
 		
-		doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
-	}
-    
-    var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
-    var text = [];
-    var count = r.msg.split(" ")[1];
-    var lastnum = doc.select("tr.num").get(14).select("td.num").get(0).text();
-    
-    if(lastnum-1<count){
-    	var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
-        var wantnum = firstnum-count;
-    	var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
-    	var doctitle = doc.select("a:first-child").get(wantnum).ownText();
-    	var doclink = doc.select("a:first-child").get(wantnum).attr("abs:href");
-    	
-    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get();
-    	
-    	var text = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.content").eachText().toArray()[0];
-    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
-    	
-    	r.replier.reply(docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
-    }else if(0<count&&count<16){
-    	for(i=0;i<count;i++){
-    		text.push(temptext[i]);
-    	}
-    	r.replier.reply(text.join("\n\n"));
-    }else{
-    	for(i=0;i<5;i++){
-    		text.push(temptext[i]);
-    	}
-    	r.replier.reply(text.join("\n\n"));
-    }
+	    doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+	    .cookies(cookie2).cookies(cookie1).get().select('tbody');
+	    
+	    if(doc==undefined){
+	    	cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
+			.method(org.jsoup.Connection.Method.GET).execute().cookies();
+
+			cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
+			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
+			.method(org.jsoup.Connection.Method.POST).execute().cookies();
+			
+			doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+	    	.cookies(cookie2).cookies(cookie1).get().select('tbody');
+		}
+	    
+	    var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
+	    var text = [];
+	    var count = r.msg.split(" ")[1];
+	    var lastnum = doc.select("tr.num").get(14).select("td.num").get(0).text();
+	    
+	    if(lastnum-1<count){
+	    	var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
+	        var wantnum = firstnum-count;
+	    	var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
+	    	var doctitle = doc.select("a:first-child").get(wantnum).ownText();
+	    	var doclink = doc.select("a:first-child").get(wantnum).attr("abs:href");
+	    	
+	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get();
+	    	
+	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.content").eachText().toArray()[0];
+	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
+	    	
+	    	r.replier.reply(docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+	    }else if(0<count&&count<16){
+	    	for(i=0;i<count;i++){
+	    		text.push(temptext[i]);
+	    	}
+	    	r.replier.reply(text.join("\n\n"));
+	    }else{
+	    	for(i=0;i<5;i++){
+	    		text.push(temptext[i]);
+	    	}
+	    	r.replier.reply(text.join("\n\n"));
+	    }
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
 }
 
 //공지체크기
@@ -997,8 +1042,7 @@ function readFile() {
         return readStr.trim();
     }
     catch (e) {
-        Log.e(e + "\n" + e.stack);
-        throw e;
+    	Api.replyRoom('test',e+"\n"+e.stack);
     }
 }
 
