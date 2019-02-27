@@ -600,7 +600,7 @@ function recentchat(r) { //name : DB이름
 		}
 	}
 	
-	var temp = [];//뽑은 채팅을 담을 공간
+	var temp = [];
 	if(flag==1){
 		temp[0]=temp2+"님의 채팅내역\n"; 
 	}
@@ -611,7 +611,6 @@ function recentchat(r) { //name : DB이름
         	} else {
         		temp.push(tempchat[i].join(" | "));
         	}
-            //불러온 파일에서 채팅 옮겨담기
         }
     }
     r.replier.reply(temp.join("\n"));
@@ -653,8 +652,11 @@ function allchat(r) { //name : DB이름
 	if(temp1.length > 0){
 		var num = Math.floor( temp1*1 );
 	}
+	if(num > temp1.length){
+		num = temp1.length;
+	}
 	
-	var temp = [];//뽑은 채팅을 담을 공간
+	var temp = [];
 	if(flag==1){
 		temp[0]=temp2+"님의 채팅내역\n"; 
 	}
@@ -664,7 +666,6 @@ function allchat(r) { //name : DB이름
     	} else {
     		temp.push(tempchat[i].join(" | "));
     	}
-        //불러온 파일에서 채팅 옮겨담기
     }
     r.replier.reply(temp.join("\n"));
 }
