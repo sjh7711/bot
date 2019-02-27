@@ -156,7 +156,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             recom(r, "menu");
         }
         
-	if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
             if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷ") == 0) {
                 recom(r, "res");
             }
@@ -175,10 +175,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg.indexOf('!건의 ')==0){
-        	if(msg.split("!건의 ")[1].length < 3){
+        	if(msg.substr(4).length < 3){
         		replier.reply("건의가 너무 짧습니다.");
         	}else{
-        		Api.replyRoom('recom', room+" : "+sender+" : "+msg.split(msg.split(' ')[0])[1]);
+        		Api.replyRoom('recom', room+" : "+sender+" : "+msg.substr(4));
         		replier.reply(sender+"님의 건의가 접수되었습니다.");
         	}
         }
@@ -269,33 +269,34 @@ function func(r) {
     }
 }
 
-/*if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
-        		T.register("reactionSpeed",()=>{
-        			var now;
-        			while(1){
-        				if(this["flag" + room][4] == 0){
-        					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-        					var rand = 1+Math.floor(Math.random() * 7000);
-        					java.lang.Thread.sleep(rand);
-        					this["flag" + room][4] = 1;
-        					replier.reply('시작!');
-        					msg="";
-        					now = new Date().getTime();
-        				}
-        				var reactiontime = new Date().getTime();
-        				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
-        					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
-        					this["flag" + room][4] = 0;
-        					break;
-        				}
-        				if(((new Date().getTime())-now) > 20000){
-        					break;
-        				}
-        			}
-        		}).start();
-        	}
-        }*/
+/*
+if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
+		T.register("reactionSpeed",()=>{
+			var now;
+			while(1){
+				if(this["flag" + room][4] == 0){
+					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+					var rand = 1+Math.floor(Math.random() * 7000);
+					java.lang.Thread.sleep(rand);
+					this["flag" + room][4] = 1;
+					replier.reply('시작!');
+					msg="";
+					now = new Date().getTime();
+				}
+				var reactiontime = new Date().getTime();
+				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
+					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
+					this["flag" + room][4] = 0;
+					break;
+				}
+				if(((new Date().getTime())-now) > 20000){
+					break;
+				}
+			}
+		}).start();
+	}
+}*/
 
 function checkstatus(r){
 	var bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
@@ -318,28 +319,20 @@ function checkstatus(r){
 	r.replier.reply(batteryStatusStr);
 }
 
-<<<<<<< HEAD
-function weather(r){
-	var input = r.msg.substr(4);
-	var doc = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
-	var name = doc.map(v=>"이름 : "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기',''));
-	var loc = doc.map(v=>v.select('dd.cont').text().replace(' 펼치기/접기',''));
-	var link = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[]+" 날씨").get().select('div.api_more_wrap').select('a').attr("abs:href");
-	
-	
 
-}
-=======
-/*
 function weather(r){
-	   Interactive.register("weatherSelect",r.room,r.sender,function(input){
-		      try{
-		    	  var input = r.msg.substr(4);
-		    	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
+	Interactive.register("weatherSelect",r.room,r.sender,function(input){
+		try{
+	    	  var input = r.msg.substr(4);
+	    	  
+	    	  var link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
+	          var link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+	          var check = link2.indexOf('weather');
+	          if (check == -1){
+	        	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
 		    	  var i = 0;
 		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
 		    	  var loc = temp.map(v=>v.select('dd.cont').text().replace(' 펼치기/접기',''));
-		    	  
 		    	  var msg;
 		          var errCount=0;
 		          r.reply("원하는 장소의 번호를 입력해주세요.");
@@ -348,30 +341,55 @@ function weather(r){
 		             msg=Number(msg);
 		             if(!isNaN(msg) && msg>=1 && msg<=5){
 		                var targetNum=msg-1
+		                link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
+				        link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				        check = link2.indexOf('weather');
+				        if(check == -1){
+				        	replier.reply("검색된 지역이 없습니다.")
+				        }
 		                break;
 		             }
 		             errCount++;
-		             r.reply("유효한 값을 입력해주세요." +" ("+errCount+"/3)");
+		             replier.reply("유효한 값을 입력해주세요." +" ("+errCount+"/3)");
 		          }
 		          
 		          if(errCount>=3) {
-		             r.reply("입력 오류가 많아 취소되었습니다.");
+		             replier.reply("입력 오류가 많아 취소되었습니다.");
 		             return;
 		          }
+	          }
+	          if(check > 0){
+	        	  var doc = org.jsoup.Jsoup.connect(link2).get();
 		          
-		          var link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+" 날씨").get();
-		          var link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		          var data = doc.select('div._cnWtrHourlyChartData');
 		          
-		          var degree = org.jsoup.Jsoup.connect(link2)
+		          var sky = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=0]').text().split(' ').slice();
+		          var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
 		          
-		          }catch(e){
-		        	  r.reply(e+"\n"+e.stack)
-		        	  }
-		   });
-		}
+		          var rain = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=1]').text().split(',').slice();
+		          
+		          var wind = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=2]').text().split(',').slice();
+		          var direction = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=2]').text().split(' ').slice();
+		          
+		          var wet = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=3]').text().split(',').slice();
+		          
+		          var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','24시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
+		          
+		          var uv = doc.select('li.uv').select('em').text();
+		          
+		          var index = String(doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').slice()).replace(/온도/g, "온도 ").replace(/지수/g, "지수 ");
+		          
+		          var sun1 = doc.select('li.sun_item').select('div.day').select('span').get(0).text() +" : "+ doc.select('li.sun_item').select('div.time').get(0).text();
+		          var sun2 = doc.select('li.sun_item').select('div.day').select('span').get(1).text() +" : "+ doc.select('li.sun_item').select('div.time').get(1).text();
+
+	          }
+	          }catch(e){
+	        	  r.reply(e+"\n"+e.stack)
+	        	  }
+	   });
+	}
 		
-		*/
->>>>>>> 2e3f5c8a8a7388d1bb0c6e5f19ee4652526cd556
+
 //오버워치
 function overwatch(r) {
     var name = r.msg.substr(6).replace("#", "-");;//배틀태그가 담기는 공간
@@ -641,87 +659,37 @@ function recentchat(r) { //name : DB이름
 
 
 function allchat(r) { //name : DB이름
-    var temp1 = undefined;
-    temp1 = r.msg.split("!전체")[1]; // 개수
-    if (temp1 == undefined){
-    	temp1 = r.msg.split("!ㅈㅊ")[1]; // 개수
+    var temp1 = r.msg.substr(5); // 개수
+    if(temp1.length!=0){
+    	temp1 = temp1.split(" ")[0];
     }
-    temp1 = temp1.split(" ")[0];
-    var temp3= r.msg.split(" ")[0];
-    var temp2 = r.msg.split(temp3+" ")[1];//닉
-    var num = 12;
+    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
     var flag = 0;
+    var num = 12;
     	
     var tempchat = D.selectForArray('chatdb');
-	var templeng = tempchat.length;
-	if(templeng > 12) {
-		for ( i = templeng - 12; i < templeng ; i ++ ){
-			tempchat[i] = tempchat[i].join(" | ");
-		}
-	} else {
-		for ( i = 0; i < templeng ; i ++ ){
-			tempchat[i] = tempchat[i].join(" | ");
-		}
-	}
-    if(13 > templeng){
-		num = templeng;
-	}
     
 	if(typeof temp1 == 'string' && typeof temp2 == 'string'){
 		var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
-			num = 1;
+			return;
 		} else {
-			if(templeng > 100) {
-				for ( i = templeng - 100; i < templeng ; i ++ ){
-					tempchat[i] = tempchat[i].join(" | ");
-				}
-			} else {
-				for ( i = 0; i < templeng ; i ++ ){
-					tempchat[i] = tempchat[i].join(" | ");
-				}
-			}
-			if(0 < temp1*1 && temp1*1 < 101 ) {
-				num = temp1*1;
-				if(tempchat.length<temp1*1){
-					num = templeng;
-				}
+			if(0 < temp1*1 && temp1*1 < 201 ) {
+				var num = temp1*1;
 			}
 			flag = 1;
-		}
-	} else if (0 < temp1*1 && temp1*1 < 101) {
-		var tempchat = D.selectForArray('chatdb');
-		var templeng = tempchat.length;
-		if(templeng > 100) {
-			for ( i = templeng - 100; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
-			}
-		} else {
-			for ( i = 0; i < templeng ; i ++ ){
-				tempchat[i] = tempchat[i].join(" | ");
-			}
-		}
-		num = Math.floor( temp1*1 );
-		if(tempchat.length<temp1*1){
-			num = templeng;
 		}
 	} else if(typeof temp2 == 'string') {
 		var tempchat = D.selectForArray('chatdb', ['time', 'msg', 'room'] , 'name=?', [temp2]);
 		var templeng = tempchat.length;
 		if(templeng==0){
 			tempchat=[temp2+"의 채팅이 없습니다."];
-			num = 1;
+			return;
 		} else {
-			if(templeng > 100) {
-				for ( i = templeng - 100; i < templeng ; i ++ ){
-					tempchat[i] = tempchat[i].join(" | ");
-				}
-			} else {
-				for ( i = 0; i < templeng ; i ++ ){
-					tempchat[i] = tempchat[i].join(" | ");
-				}
+			if(0 < temp1*1 && temp1*1 < 201 ) {
+				var num = temp1*1;
 			}
 			flag = 1;
 		}
@@ -731,12 +699,12 @@ function allchat(r) { //name : DB이름
 	if(flag==1){
 		temp[0]=temp2+"님의 채팅내역\n"; 
 	}
-    if (0 < num && num < 101) {
+    if (0 < num && num < 201) {
         for (var i = tempchat.length - num; i < tempchat.length; i++) {
         	if( i - tempchat.length + num == 2){
-        		temp.push(tempchat[i]+es);
+        		temp.push(tempchat[i].join(" | ")+es);
         	} else {
-        		temp.push(tempchat[i]);
+        		temp.push(tempchat[i].join(" | "));
         	}
             //불러온 파일에서 채팅 옮겨담기
         }
