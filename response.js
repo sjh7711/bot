@@ -87,7 +87,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (room == 'test' || room == 'bot') {
-            if (msg.indexOf("!전체") == 0 || msg.indexOf("!ㅈㅊ") == 0) {
+            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) {
             	allchat(r);                
             }
         }
