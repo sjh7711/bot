@@ -348,7 +348,7 @@ function weather(r){
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		}
 		        	}
-		        }else if (check == -1){
+				}else if (check == -1){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray();
 		        	var i = 0;
 		        	var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
@@ -371,7 +371,7 @@ function weather(r){
 		        		}
 		        	}
 				}
-			}
+			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
 				var where = doc.select('div.section_location').select('strong').text() + " 날씨";
