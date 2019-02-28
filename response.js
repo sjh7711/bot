@@ -346,7 +346,6 @@ function weather(r){
 		        		var targetNum=msg-1
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+checkname[targetNum]+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		        		}
 		        	}
 				}else if (check == -1){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray();
@@ -371,6 +370,7 @@ function weather(r){
 		        		}
 		        	}
 				}
+			}
 			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
@@ -421,6 +421,17 @@ function weather(r){
 		}catch(e){r.replier.reply(e+"\n"+e.stack)}
     })
 }
+/*
+T.register("weatherClockCheck",()=>{
+	while(true){
+		if( 8 == new Date().getHours() ){
+			r.msg = "!날씨"
+			weather('agent');
+			java.lang.Thread.sleep(60*60*1000); //60분
+		}
+		java.lang.Thread.sleep(60*1000); //1분
+	}
+}).start();*/
 	
 
 //오버워치
@@ -982,82 +993,6 @@ T.register("noticeCheck",()=>{
 }).start();
 
 const weatherSet = ({1:"맑음ㅤㅤ", 2:"구름약간", 3:"구름조금", 4:"구름보통", 5:"구름다수", 6:"구름많음", 7:"흐림ㅤㅤ", 8:"흐림ㅤㅤ", 11:"안개ㅤㅤ", 12:"비ㅤㅤㅤ", 13:"비ㅤㅤㅤ", 14:"비ㅤㅤㅤ", 15:"번개ㅤㅤ", 16:"번개ㅤㅤ", 17:"번개ㅤㅤ", 18:"비ㅤㅤㅤ", 19:"눈ㅤㅤㅤ", 20:"눈ㅤㅤㅤ", 21:"눈ㅤㅤㅤ", 22:"눈ㅤㅤㅤ", 23:"눈ㅤㅤㅤ", 24:"우박ㅤㅤ", 25:"25ㅤㅤ", 26:"26ㅤㅤ", 29:"진눈깨비", 30:"폭염ㅤㅤ", 31:"한파ㅤㅤ", 32:"바람ㅤㅤ", 33:"맑음ㅤㅤ", 34:"구름약간", 35:"구름조금", 36:"구름보통", 37:"구름다수", 38:"구름많음", 39:"비ㅤㅤㅤ", 40:"비ㅤㅤㅤ", 41:"번개ㅤㅤ", 42:"번개ㅤㅤ", 43:"눈ㅤㅤㅤ", 44:"눈ㅤㅤㅤ"});
-
-//날씨
-function getTimeWeather(room) {
-	var url = 'https://www.accuweather.com/ko/kr/mujeon-dong/1873980/hourly-weather-forecast/1873980'
-	
-	var rawData = org.jsoup.Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
-    var data = rawData.select(".hourly-table").select(".overview-hourly");
-    var timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
-        var r = /^(\d+)오(.)$/.exec(v);
-        return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
-    }
-    );
-    var weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
-    var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var windData = [];
-    for(var i = 0 ; i< 8 ; i++){
-    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
-    	}
-    windData = windData.map(v=>  Math.floor(v*1000/3600*10)/10);
-    
-    var windData1 = [];
-    for(var i = 0 ; i< 8 ; i++){
-    	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
-    	}
-    var res = "";
-    for (var i in timeData) {
-        res += String(timeData[i]).extension("0", 2) + "시 ";
-        res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
-        res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        res += windData[i] + " " + windData1[i] + "\n";
-    }
-    
-    res += es;
-
-    var next = rawData.select(".control-bar").get(0).select("a.right-float").attr("href");
-    
-    var rawData = org.jsoup.Jsoup.connect(next).userAgent("Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19").get();
-    var data = rawData.select(".hourly-table").select(".overview-hourly");
-    var timeData = data.select("thead div:not(.icon-weather)").eachText().toArray().map(v => {
-        var r = /^(\d+)오(.)$/.exec(v);
-        return Number(r[1]) + ((r[2] == "후") - (r[1] == "12")) * 12;
-    }
-    );
-    var weatherData = data.select("thead div.icon-weather").eachAttr("class").toArray().map(v => /i\-(\d+)\-s/.exec(v)[1]);
-    var tempData = data.select("tbody tr").get(0).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var stempData = data.select("tbody tr").get(1).select("td").eachText().toArray().map(v => v.split("\xb0")[0]);
-    var windData = [];
-    for(var i = 0 ; i< 8 ; i++){
-    	windData.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[0])
-    	}
-    windData = windData.map(v=>  Math.floor(v*1000/3600*10)/10);
-    
-    var windData1 = [];
-    for(var i = 0 ; i< 8 ; i++){
-    	windData1.push(data.select("tbody tr").get(2).select("td>span").eachText().toArray().slice()[i].split(' ')[1])
-    	}
-    for (var i in timeData) {
-        res += String(timeData[i]).extension("0", 2) + "시 ";
-        res += (weatherSet[weatherData[i]] || weatherData[i]) + " ";
-        res += String(tempData[i]).extension(" ", 2) + "(" + String(stempData[i]).extension(" ", 2) + ") ";
-        res += windData[i] + " " + windData1[i] + "\n";
-    }
-    Api.replyRoom(room,"통영시 무전동 날씨\n시간   날씨  온도(체감) 바람(m/s)\n"+res);
-    
-};
-T.register("weatherClockCheck",()=>{
-	while(true){
-		if( 8 == new Date().getHours() ){
-			getTimeWeather('agent');
-			java.lang.Thread.sleep(60*60*1000); //60분
-		}
-		java.lang.Thread.sleep(60*1000); //1분
-	}
-}).start();
-
 
 function readFile() {
     var filedir = new java.io.File("/proc/stat");
