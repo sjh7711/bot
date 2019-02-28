@@ -347,7 +347,7 @@ function weather(r){
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+checkname[targetNum]+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        	}else{
-		        		r.replier.reply("검색이 불가능 합니다.");
+		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
 				}else if (check == -1){
@@ -355,7 +355,7 @@ function weather(r){
 		        	var i = 0;
 		        	var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
 		        	if(name.length == 0){
-		        		r.replier.reply("검색이 불가능 합니다.");
+		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
 		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
@@ -368,7 +368,7 @@ function weather(r){
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		var check = link2.indexOf('weather');
 		        		if(check == -1){
-		        			r.replier.reply("검색이 불가능 합니다.");
+		        			r.replier.reply("검색이 불가능합니다.");
 							return;
 		        		}
 		        	}
