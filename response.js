@@ -325,16 +325,16 @@ function checkstatus(r){
 
 function weather(r){
 	I.register("weatherSelect",r.room,r.sender,function(input){
-		var input = r.msg.substr(4);
+		var want = r.msg.substr(4);
 		var link1 = ""
 		var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 		var check = link2.indexOf('weather');
         if(input.length > 0){
-        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
+        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
     		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	        check = link2.indexOf('weather');
 	        if (check == -1){
-	        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
+	        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray();
 		    	  var i = 0;
 		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
 		    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
