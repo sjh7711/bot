@@ -405,8 +405,8 @@ function weather(r){
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
 					res += String(degree[i]).extension(" ",2)+"℃ ";
-					res += String(rain[i]).extension(" ",3)+"% ";
-					res += String(wet[i]).extension(" ", 3)+"% ";
+					res += String(rain[i]).extension(" ",2)+"% ";
+					res += String(wet[i]).extension(" ", 2)+"% ";
 					res += String(wind[i]).extension(" ",2)+"m/s";
 					//res += String(direction[i]).extension("   ",3)+" ";
 					res += String(sky[i]).extension(" ",5)+" \n";
