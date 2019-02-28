@@ -340,6 +340,9 @@ function weather(r){
 	        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray();
 		    	  var i = 0;
 		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
+		    	  if(name.length == 0){
+		    		  r.replier.reply("검색이 불가능 합니다.");
+		    	  }
 		    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
 		    	  var msg;
 		          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
