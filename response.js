@@ -407,6 +407,8 @@ function weather(r){
 	        res += "\n자외선 : "+uv+"\n";
 	        res += "------------일상지수------------\n"+index.join("\n");
 	        res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
+	        
+	        r.replier.reply(res);
 	    }
 	}
 	catch(e){
