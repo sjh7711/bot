@@ -388,7 +388,7 @@ function weather(r){
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
 				var rain = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=1]').text().split(',').slice();
 				var wind = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=2]').text().split(',').slice();
-				var direction = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=2]').text().split(' ').slice();
+				//var direction = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=2]').text().split(' ').slice();
 				var wet = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=3]').text().split(',').slice();
 				var uv1 = doc.select('li.uv').select('em').text();
 				var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
@@ -401,14 +401,14 @@ function weather(r){
 				var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
 				var res = where+"\n";
 				res += "";
-				res += "시간 기온 강수% 습도       바람         날씨\n";
+				res += "시간 기온 강수% 습도 바람    날씨\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
 					res += String(degree[i]).extension(" ",3)+"℃ ";
 					res += String(rain[i]).extension(" ",3)+"% ";
 					res += String(wet[i]).extension(" ", 3)+"% ";
 					res += String(wind[i]).extension(" ",2)+"m/s ";
-					res += String(direction[i]).extension("   ",3)+" ";
+					//res += String(direction[i]).extension("   ",3)+" ";
 					res += String(sky[i]).extension("   ",4)+" \n";
 					if(i==7){
 						res += es;
@@ -431,7 +431,7 @@ function weather(r){
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r.msg = "!날씨"
+			r = {  msg: msg, sender: sender, room: room };
 			weather('agent');
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
