@@ -324,7 +324,7 @@ function checkstatus(r){
 
 
 function weather(r){
-	Interactive.register("weatherSelect",r.room,r.sender,function(input){
+	I.register("weatherSelect",r.room,r.sender,function(input){
 		try{
 	    	  var input = r.msg.substr(4);
 	    	  
@@ -409,6 +409,7 @@ function weather(r){
 	                  res += String(direction[i]).extension("   ",4)+" ";
 	                  res += String(sky[i]).extension("   ",5)+" \n";
 		          }
+		          res += es;
 		          res += "------------기타지수------------\n";
 		          res += dust.join("\n");
 		          res += pollution.join("\n")+"\n";
