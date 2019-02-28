@@ -335,7 +335,20 @@ function weather(r){
 	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        check = link2.indexOf('weather');
-		        if (check == -1){
+		        var i=0;
+		        var checklink = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=광주+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> (1+i++) +". "+ v.text());
+		        var checkname = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=광주+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> v.text());
+		        if (checklink.length > 1){
+		        	var msg;
+		        	r.replier.reply("지역을 선택하세요"+checklink.join('\n'));
+		        	msg=input.getMsg()*1;
+		        	if(!isNaN(msg) && msg>=1 && msg<=5){
+		        		var targetNum=msg-1
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+checkname[targetNum]+"+날씨").get();
+		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		}
+		        	}
+		        }else if (check == -1){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray();
 		        	var i = 0;
 		        	var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
@@ -398,9 +411,10 @@ function weather(r){
 				res += "------------기타지수------------\n";
 				res += dust.join("\n");
 				res += pollution.join("\n")+"\n";
-				res += "\n자외선 : "+uv+"\n";
+				res += "자외선 : "+uv+"\n";
 				res += "------------일상지수------------\n"+index.join("\n");
 				res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
+				res += link2;
 	        
 				r.replier.reply(res);
 			}
