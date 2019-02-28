@@ -388,13 +388,13 @@ function weather(r){
 	        var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
 	        var res = where+"\n";
 	        res += ""
-	        res += "시간 기온 강수% 습도        바람         날씨\n";
+	        res += "시간 기온 강수% 습도       바람         날씨\n";
 	        for (var i = 0 ; i < clock1+8 ; i++) {
 	        	res += clock[i].extension("0",3)+" ";
 	        	res += String(degree[i]).extension(" ",3)+"℃ ";
 	        	res += String(rain[i]).extension(" ",3)+"% ";
 	        	res += String(wet[i]).extension(" ", 3)+"% ";
-	        	res += String(wind[i]).extension(" ",3)+"m/s ";
+	        	res += String(wind[i]).extension(" ",2)+"m/s ";
 	        	res += String(direction[i]).extension("   ",3)+" ";
 	        	res += String(sky[i]).extension("   ",4)+" \n";
 	        	if(i==4){
