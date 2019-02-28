@@ -371,9 +371,9 @@ function weather(r){
         }*/
           
         if(check > 0){
-        	var where = doc.select('div.section_location').select('strong');
-        	
         	var doc = org.jsoup.Jsoup.connect(link2).get();
+        	
+        	var where = doc.select('div.section_location').select('strong').text() + " 날씨";
 	          
         	var data = doc.select('div._cnWtrHourlyChartData');
 	          
