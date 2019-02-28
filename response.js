@@ -47,25 +47,26 @@ var cookie2;
 var doc;
 
 //봇제작방용 변수
-var flagbot = [0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2], flag[3] = 추첨기 //flag[4] = 반응속도
+var flagbot = [0, 0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2], flag[3] = 추첨기 //flag[4] = 반응속도
 
 //전전컴톡방용 변수
-var flagele = [0, 0, 0, 0, 0]; 
+var flagele = [0, 0, 0, 0, 0, 0]; 
 
 //개인방용 변수
-var flagtest = [0, 0, 0, 0, 0];
+var flagtest = [0, 0, 0, 0, 0, 0];
 
 //자생방용 변수
-var flagja = [0, 0, 0, 0, 0]; 
+var flagja = [0, 0, 0, 0, 0, 0]; 
 
 //오버워치용 변수
-var flagover = [0, 0, 0, 0, 0];
+var flagover = [0, 0, 0, 0, 0, 0];
 
 //공익방
-var flagagent = [0, 0, 0, 0, 0];
+var flagagent = [0, 0, 0, 0, 0, 0];
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	var isRun = I.run(r.room, r.sender, r.msg);
 	r = { replier: replier, msg: msg, sender: sender, room: room };
 	
 	//eval
@@ -322,10 +323,8 @@ function checkstatus(r){
 	r.replier.reply(batteryStatusStr);
 }
 
-
 function weather(r){
-	var isRun = I.run(r.room, r.sender, r.msg);
-	
+	I.register("weatherSelect",r.room,r.sender,function(input){
 		try{
 		var want = r.msg.substr(4);
 		var link1 = ""
@@ -343,8 +342,6 @@ function weather(r){
 		    	  var msg;
 		          var errCount=0;
 		          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
-		          if(!isRun){
-		          I.register("weatherSelect",r.room,r.sender,function(input){
 		          while(errCount<3){
 		             msg=input.getMsg()
 		             msg=Number(msg);
@@ -366,8 +363,6 @@ function weather(r){
 		          if(errCount>=3) {
 		        	  r.replier.reply("취소되었습니다.");
 		        	  return;
-		          }
-		          })
 		          }
 	         }
         }
@@ -418,8 +413,9 @@ function weather(r){
 	    }
 	
 	}catch(e){r.replier.reply(e+"\n"+e.stack)}
+    })
 }
-		
+	
 
 //오버워치
 function overwatch(r) {
