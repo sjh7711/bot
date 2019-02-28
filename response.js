@@ -112,7 +112,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg == "!날씨" || msg == "!ㄴㅆ" ) {
-                getTimeWeather(room);
+                weather(r);
             }
         }
 
@@ -367,6 +367,9 @@ function weather(r){
 		          
 		          var data = doc.select('div._cnWtrHourlyChartData');
 		          
+		          var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
+		          var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
+		          
 		          var sky = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=0]').text().split(' ').slice();
 		          var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
 		          
@@ -377,12 +380,13 @@ function weather(r){
 		          
 		          var wet = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=3]').text().split(',').slice();
 		          
-		          var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','24시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
+		          
+		          
 		          
 		          var uv1 = doc.select('li.uv').select('em').text();
-		          var uv = doc.select('li.uv').select('span').text().replace(uv1, " "+uv1);
+		          var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
 		          
-		          var index = String(doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').slice()).replace(/온도/g, "온도 ").replace(/지수/g, "지수 ");
+		          var index = doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').map(v=>String(v).replace(/온도/g, "온도 : ").replace(/지수/g, "지수 : "))
 		          
 		          var sun1 = doc.select('li.sun_item').select('div.day').select('span').get(0).text() +" : "+ doc.select('li.sun_item').select('div.time').get(0).text();
 		          var sun2 = doc.select('li.sun_item').select('div.day').select('span').get(1).text() +" : "+ doc.select('li.sun_item').select('div.time').get(1).text();
@@ -390,13 +394,27 @@ function weather(r){
 		          var link3 = link2+'&default=air';
 		          
 		          var doc1 = org.jsoup.Jsoup.connect(link3).get();
-		          var pollution = doc1.select('span.number').toArray().map(v=>{vv=String(v.select('em').text());return v.text().replace(vv, " "+vv)})
-		          
-		          var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지')+"㎍/㎥")
+		          var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
 
+		          var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
+		          
 		          var res = "";
-		          
-		          
+		          res += "시간 기온 강수% 습도           바람            날씨\n";
+		          for (var i = 0 ; i < clock1+8 ; i++) {
+		        	  res += clock[i].extension("0",3)+" ";
+	                  res += String(degree[i]).extension(" ",3)+"℃ ";
+	                  res += String(rain[i]).extension(" ",3)+"% ";
+	                  res += String(wet[i]).extension(" ", 3)+"% ";
+	                  res += String(wind[i]).extension(" ",3)+"m/s ";
+	                  res += String(direction[i]).extension("   ",4)+" ";
+	                  res += String(sky[i]).extension("   ",5)+" \n";
+		          }
+		          res += "------------기타지수------------\n";
+		          res += dust.join("\n");
+		          res += pollution.join("\n")+"\n";
+		          res += "\n자외선 : "+uv+"\n\n";
+		          res += "------------일상지수------------\n"+index.join("\n")+"\n";
+		          res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
 	          }
 	          }catch(e){
 	        	  Api.replyRoom('test',e+"\n"+e.stack);
