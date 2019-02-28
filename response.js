@@ -328,12 +328,13 @@ function weather(r){
 		var input = r.msg.substr(4);
 		var link1 = ""
 		var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
+		var check = link2.indexOf('weather');
           
           if(input.length > 0){
         	  I.register("weatherSelect",r.room,r.sender,function(input){
         		  link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
 		          link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		          var check = link2.indexOf('weather');
+		          check = link2.indexOf('weather');
 		          if (check == -1){
 		        	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
 			    	  var i = 0;
