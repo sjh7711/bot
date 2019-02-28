@@ -340,7 +340,7 @@ function weather(r){
 		        var i=0;
 		        var checklink = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> (1+i++) +". "+ v.text());
 		        var checkname = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> v.text());
-		        if (checklink.length > 1){
+		        if (checklink.length > 0){
 		        	var msg;
 		        	r.replier.reply("지역을 선택하세요\n"+checklink.join('\n'));
 		        	msg=input.getMsg()*1;
