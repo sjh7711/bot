@@ -324,7 +324,8 @@ function checkstatus(r){
 
 
 function weather(r){
-	I.register("weatherSelect",r.room,r.sender,function(input){
+	var isRun = I.run(r.room, r.sender, r.msg);
+	
 		try{
 		var want = r.msg.substr(4);
 		var link1 = ""
@@ -342,6 +343,8 @@ function weather(r){
 		    	  var msg;
 		          var errCount=0;
 		          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
+		          if(!isRun){
+		          I.register("weatherSelect",r.room,r.sender,function(input){
 		          while(errCount<3){
 		             msg=input.getMsg()
 		             msg=Number(msg);
@@ -363,6 +366,8 @@ function weather(r){
 		          if(errCount>=3) {
 		        	  r.replier.reply("취소되었습니다.");
 		        	  return;
+		          }
+		          })
 		          }
 	         }
         }
@@ -411,7 +416,7 @@ function weather(r){
 	        
 	        r.replier.reply(res);
 	    }
-	})
+	
 	}catch(e){r.replier.reply(e+"\n"+e.stack)}
 }
 		
