@@ -353,7 +353,6 @@ function weather(r){
 				    	 r.replier.reply("검색이 불가능 합니다.");
 				         return;
 				     }
-		             break;
 		         }
 	         }
         }
