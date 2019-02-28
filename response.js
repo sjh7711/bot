@@ -401,7 +401,7 @@ function weather(r){
 				var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
 				var res = where+"\n";
 				res += "";
-				res += "시간 기온 강수% 습도 바람(m/s) 날씨\n";
+				res += "시간.기온.강수.습도.바람[m/s].날씨\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
 					res += String(degree[i]).extension(" ",2)+"℃ ";
