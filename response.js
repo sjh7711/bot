@@ -324,49 +324,46 @@ function checkstatus(r){
 
 
 function weather(r){
-	
-		I.register("weatherSelect",r.room,r.sender,function(input){
+	I.register("weatherSelect",r.room,r.sender,function(input){
 		var input = r.msg.substr(4);
 		var link1 = ""
 		var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 		var check = link2.indexOf('weather');
         if(input.length > 0){
-        	
-        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
-        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		          check = link2.indexOf('weather');
-		          if (check == -1){
-		        	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
-			    	  var i = 0;
-			    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
-			    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
-			    	  var msg;
-			          var errCount=0;
-			          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
-			          while(errCount<3){
-			             msg=input.getMsg()
-			             msg=Number(msg);
-			             if(!isNaN(msg) && msg>=1 && msg<=5){
-			                var targetNum=msg-1
-			                link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
-					        link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-					        check = link2.indexOf('weather');
-					        if(check == -1){
-					        	r.replier.reply("검색이 불가능 합니다.");
-					        	return;
-					        }
-			                break;
-			             }
-			             errCount++;
-			             r.replier.reply("유효한 값을 입력해주세요." +" ("+errCount+"/3)");
-			          }
-			          
-			          if(errCount>=3) {
-			        	  r.replier.reply("취소되었습니다.");
-			        	  return;
-			          }
+        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
+    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+	          check = link2.indexOf('weather');
+	          if (check == -1){
+	        	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
+		    	  var i = 0;
+		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
+		    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
+		    	  var msg;
+		          var errCount=0;
+		          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
+		          while(errCount<3){
+		             msg=input.getMsg()
+		             msg=Number(msg);
+		             if(!isNaN(msg) && msg>=1 && msg<=5){
+		                var targetNum=msg-1
+		                link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
+				        link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				        check = link2.indexOf('weather');
+				        if(check == -1){
+				        	r.replier.reply("검색이 불가능 합니다.");
+				        	return;
+				        }
+		                break;
+		             }
+		             errCount++;
+		             r.replier.reply("유효한 값을 입력해주세요." +" ("+errCount+"/3)");
 		          }
-      	  	 
+		          
+		          if(errCount>=3) {
+		        	  r.replier.reply("취소되었습니다.");
+		        	  return;
+		          }
+	          }
         }
         if(check > 0){
         	var doc = org.jsoup.Jsoup.connect(link2).get();
@@ -411,9 +408,7 @@ function weather(r){
 	        
 	        r.replier.reply(res);
 	    }
-		})
-	}
-	
+	})
 }
 		
 
