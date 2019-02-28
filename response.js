@@ -66,7 +66,8 @@ var flagagent = [0, 0, 0, 0, 0, 0];
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	var isRun = I.run(r.room, r.sender, r.msg);
+	var isRun = I.run(room, sender, msg);
+	
 	r = { replier: replier, msg: msg, sender: sender, room: room };
 	
 	//eval
