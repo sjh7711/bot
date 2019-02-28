@@ -332,9 +332,9 @@ function weather(r){
         if(input.length > 0){
         	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
     		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-	          check = link2.indexOf('weather');
-	          if (check == -1){
-	        	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
+	        check = link2.indexOf('weather');
+	        if (check == -1){
+	        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
 		    	  var i = 0;
 		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
 		    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
@@ -363,7 +363,7 @@ function weather(r){
 		        	  r.replier.reply("취소되었습니다.");
 		        	  return;
 		          }
-	          }
+	         }
         }
         if(check > 0){
         	var doc = org.jsoup.Jsoup.connect(link2).get();
@@ -389,7 +389,7 @@ function weather(r){
 	        var res = where+"\n";
 	        res += ""
 	        res += "시간 기온 강수% 습도           바람            날씨\n";
-	        for (var i = 0 ; i < clock1+7 ; i++) {
+	        for (var i = 0 ; i < clock1+8 ; i++) {
 	        	res += clock[i].extension("0",3)+" ";
 	        	res += String(degree[i]).extension(" ",3)+"℃ ";
 	        	res += String(rain[i]).extension(" ",3)+"% ";
@@ -397,8 +397,10 @@ function weather(r){
 	        	res += String(wind[i]).extension(" ",3)+"m/s ";
 	        	res += String(direction[i]).extension("   ",4)+" ";
 	        	res += String(sky[i]).extension("   ",5)+" \n";
+	        	if(i==4){
+	        		res += es;
+	        	}
 	        }
-	        res += es;
 	        res += "------------기타지수------------\n";
 	        res += dust.join("\n");
 	        res += pollution.join("\n")+"\n";
