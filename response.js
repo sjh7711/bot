@@ -340,7 +340,7 @@ function weather(r){
 		        var checkname = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=광주+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> v.text());
 		        if (checklink.length > 1){
 		        	var msg;
-		        	r.replier.reply("지역을 선택하세요"+checklink.join('\n'));
+		        	r.replier.reply("지역을 선택하세요\n"+checklink.join('\n'));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=5){
 		        		var targetNum=msg-1
