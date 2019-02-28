@@ -324,13 +324,14 @@ function checkstatus(r){
 
 
 function weather(r){
+	I.register("weatherSelect",r.room,r.sender,function(input){
 	try{
 		var input = r.msg.substr(4);
 		var link1 = ""
 		var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 		var check = link2.indexOf('weather');
         if(input.length > 0){
-        	I.register("weatherSelect",r.room,r.sender,function(input){
+        	
         		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+input+"+날씨").get();
         		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		          check = link2.indexOf('weather');
@@ -365,7 +366,7 @@ function weather(r){
 			        	  return;
 			          }
 		          }
-      	  	 })
+      	  	 
         }
         if(check > 0){
         	var doc = org.jsoup.Jsoup.connect(link2).get();
@@ -414,6 +415,7 @@ function weather(r){
 	catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 	}
+	})
 }
 		
 
