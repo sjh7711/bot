@@ -331,10 +331,12 @@ function weather(r){
 			var link1 = "";
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 			var check = link2.indexOf('weather');
+			var where = "무전동" + " 날씨";
 			if(want.length > 0){
 	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        check = link2.indexOf('weather');
+		        where = want + " 날씨";
 		        var i=0;
 		        var checklink = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> (1+i++) +". "+ v.text());
 		        var checkname = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray().map(v=> v.text());
@@ -343,9 +345,10 @@ function weather(r){
 		        	r.replier.reply("지역을 선택하세요\n"+checklink.join('\n'));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=5){
-		        		var targetNum=msg-1
+		        		var targetNum=msg-1;
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+checkname[targetNum]+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		where = checkname[targetNum] + " 날씨";
 		        	}else{
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
@@ -366,6 +369,7 @@ function weather(r){
 		        		var targetNum=msg-1
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		where = loc[targetNum] + " 날씨";
 		        		var check = link2.indexOf('weather');
 		        		if(check == -1){
 		        			r.replier.reply("검색이 불가능합니다.");
@@ -377,7 +381,7 @@ function weather(r){
 			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
-				var where = doc.select('div.section_location').select('strong').text() + " 날씨";
+				
 				var data = doc.select('div._cnWtrHourlyChartData');
 				var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
 				var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
