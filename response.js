@@ -335,10 +335,10 @@ function weather(r){
 	        	  var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+input).get().select('div.cont_info').toArray();
 		    	  var i = 0;
 		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
-		    	  var loc = temp.map(v=>v.select('dd.cont').text().replace(' 펼치기/접기',''));
+		    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
 		    	  var msg;
 		          var errCount=0;
-		          r.reply("원하는 장소의 번호를 입력해주세요.");
+		          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
 		          while(errCount<3){
 		             msg=input.getMsg()
 		             msg=Number(msg);
@@ -348,7 +348,8 @@ function weather(r){
 				        link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        check = link2.indexOf('weather');
 				        if(check == -1){
-				        	replier.reply("검색된 지역이 없습니다.")
+				        	r.replier.reply("검색된 지역이 없습니다.");
+				        	return;
 				        }
 		                break;
 		             }
@@ -378,13 +379,24 @@ function weather(r){
 		          
 		          var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','24시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
 		          
-		          var uv = doc.select('li.uv').select('em').text();
+		          var uv1 = doc.select('li.uv').select('em').text();
+		          var uv = doc.select('li.uv').select('span').text().replace(uv1, " "+uv1);
 		          
 		          var index = String(doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').slice()).replace(/온도/g, "온도 ").replace(/지수/g, "지수 ");
 		          
 		          var sun1 = doc.select('li.sun_item').select('div.day').select('span').get(0).text() +" : "+ doc.select('li.sun_item').select('div.time').get(0).text();
 		          var sun2 = doc.select('li.sun_item').select('div.day').select('span').get(1).text() +" : "+ doc.select('li.sun_item').select('div.time').get(1).text();
+		          
+		          var link3 = link2+'&default=air';
+		          
+		          var doc1 = org.jsoup.Jsoup.connect(link3).get();
+		          var pollution = doc1.select('span.number').toArray().map(v=>{vv=String(v.select('em').text());return v.text().replace(vv, " "+vv)})
+		          
+		          var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지')+"㎍/㎥")
 
+		          var res = "";
+		          
+		          
 	          }
 	          }catch(e){
 	        	  Api.replyRoom('test',e+"\n"+e.stack);
