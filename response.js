@@ -381,7 +381,6 @@ function weather(r){
 			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
-				
 				var data = doc.select('div._cnWtrHourlyChartData');
 				var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
 				var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
@@ -404,7 +403,7 @@ function weather(r){
 				res += "";
 				res += "시간 기온 강수% 습도       바람         날씨\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
-					res += clock[i].extension("0",3)+" ";
+					res += String(clock[i]).extension("0",3)+" ";
 					res += String(degree[i]).extension(" ",3)+"℃ ";
 					res += String(rain[i]).extension(" ",3)+"% ";
 					res += String(wet[i]).extension(" ", 3)+"% ";
