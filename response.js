@@ -66,7 +66,8 @@ var flagagent = [0, 0, 0, 0, 0, 0];
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	var isRun = I.run(room, sender, msg);
+	
+	I.run(room, sender, msg);
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room };
 	
@@ -341,30 +342,19 @@ function weather(r){
 		    	  var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n");
 		    	  var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});
 		    	  var msg;
-		          var errCount=0;
 		          r.replier.reply("원하는 장소의 번호를 입력해주세요.\n"+name);
-		          while(errCount<3){
-		             msg=input.getMsg()
-		             msg=Number(msg);
-		             if(!isNaN(msg) && msg>=1 && msg<=5){
-		                var targetNum=msg-1
-		                link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
-				        link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-				        check = link2.indexOf('weather');
-				        if(check == -1){
-				        	r.replier.reply("검색이 불가능 합니다.");
-				        	return;
-				        }
-		                break;
-		             }
-		             errCount++;
-		             r.replier.reply("유효한 값을 입력해주세요." +" ("+errCount+"/3)");
-		          }
-		          
-		          if(errCount>=3) {
-		        	  r.replier.reply("취소되었습니다.");
-		        	  return;
-		          }
+		          msg=input.getMsg()*1;
+		          if(!isNaN(msg) && msg>=1 && msg<=5){
+		             var targetNum=msg-1
+		             link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
+				     link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				     check = link2.indexOf('weather');
+				     if(check == -1){
+				    	 r.replier.reply("검색이 불가능 합니다.");
+				         return;
+				     }
+		             break;
+		         }
 	         }
         }
         if(check > 0){
