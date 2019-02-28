@@ -371,6 +371,8 @@ function weather(r){
         }*/
           
         if(check > 0){
+        	var where = doc.select('div.section_location').select('strong');
+        	
         	var doc = org.jsoup.Jsoup.connect(link2).get();
 	          
         	var data = doc.select('div._cnWtrHourlyChartData');
@@ -406,9 +408,10 @@ function weather(r){
 
 	        var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
 	          
-	        var res = "";
+	        var res = where+"\n";
+	        res += ""
 	        res += "시간 기온 강수% 습도           바람            날씨\n";
-	        for (var i = 0 ; i < clock1+8 ; i++) {
+	        for (var i = 0 ; i < clock1+7 ; i++) {
 	        	res += clock[i].extension("0",3)+" ";
 	        	res += String(degree[i]).extension(" ",3)+"℃ ";
 	        	res += String(rain[i]).extension(" ",3)+"% ";
@@ -421,8 +424,8 @@ function weather(r){
 	        res += "------------기타지수------------\n";
 	        res += dust.join("\n");
 	        res += pollution.join("\n")+"\n";
-	        res += "\n자외선 : "+uv+"\n\n";
-	        res += "------------일상지수------------\n"+index.join("\n")+"\n";
+	        res += "\n자외선 : "+uv+"\n";
+	        res += "------------일상지수------------\n"+index.join("\n");
 	        res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
 	    }
 	}
