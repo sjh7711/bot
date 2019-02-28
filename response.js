@@ -325,6 +325,7 @@ function checkstatus(r){
 
 function weather(r){
 	I.register("weatherSelect",r.room,r.sender,function(input){
+		try{
 		var want = r.msg.substr(4);
 		var link1 = ""
 		var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
@@ -411,6 +412,7 @@ function weather(r){
 	        r.replier.reply(res);
 	    }
 	})
+	}catch(e){r.replier.reply(e+"\n"+e.stack)}
 }
 		
 
