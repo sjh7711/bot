@@ -409,7 +409,7 @@ function weather(r){
 					}
 				}
 				res += "------------기타지수------------\n";
-				res += dust.join("\n");
+				res += dust.join("\n")+"\n";
 				res += pollution.join("\n")+"\n";
 				res += "자외선 : "+uv+"\n";
 				res += "------------일상지수------------\n"+index.join("\n");
