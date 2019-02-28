@@ -332,7 +332,7 @@ function weather(r){
 		var link1 = ""
 		var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 		var check = link2.indexOf('weather');
-        if(input.length > 0){
+        if(want.length > 0){
         	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
     		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	        check = link2.indexOf('weather');
