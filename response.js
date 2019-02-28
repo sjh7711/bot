@@ -326,7 +326,7 @@ function checkstatus(r){
 function weather(r){
 	try{
 		var input = r.msg.substr(4);
-		var link1 = link1 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
+		var link1 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 		var link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
           
           if(input.length > 0){
