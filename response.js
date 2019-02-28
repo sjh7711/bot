@@ -346,6 +346,9 @@ function weather(r){
 		        		var targetNum=msg-1
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+checkname[targetNum]+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        	}else{
+		        		r.replier.reply("검색이 불가능 합니다.");
+		        		return;
 		        	}
 				}else if (check == -1){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray();
