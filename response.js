@@ -332,7 +332,6 @@ function weather(r){
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "통영시 무전동" + " 날씨";
-			var where1 = "";
 			if(want.length > 0){ //!날씨 ~뒤에 뭔가가 있을 때
 	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
@@ -397,12 +396,9 @@ function weather(r){
 		        }
 			}
 			
-			if(link1.length > 0){
-				where1 = "("+doc.select('div.section_location').select('strong').text()+")";
-			}
-			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
+				
 				var data = doc.select('div._cnWtrHourlyChartData');
 				var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
 				var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
@@ -421,6 +417,10 @@ function weather(r){
 				var doc1 = org.jsoup.Jsoup.connect(link3).get();
 				var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
 				var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
+				var where1 = "";
+				if(want.length > 0 ){
+					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
+				}
 				var res = where+where1+"\n";
 				res += "";
 				res += "시간 기온 강수 습도 바람  날씨\n";
