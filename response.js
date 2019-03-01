@@ -343,6 +343,7 @@ function weather(r){
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
+	    			var msg;
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
