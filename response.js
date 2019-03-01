@@ -386,7 +386,7 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=5){
 		        		var targetNum=msg-1;
-		        		var link2 = link1.select('div.lcl_lst').select('a').get(targetNum)attr("abs:href");
+		        		var link2 = link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href");
 		        		var	check = link2.indexOf('weather');
 		        		where = checkname[targetNum] + " 날씨";
 		        	}else{
