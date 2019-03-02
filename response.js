@@ -406,7 +406,7 @@ function weather(r){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
 				
 				var data = doc.select('div._cnWtrHourlyChartData');
-				var clock = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().concat('0시','3시','6시','9시','12시','15시','18시','21시','0시','3시','6시','9시','12시','15시','18시','21시','24시');
+				var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
 				var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 				var sky = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=0]').text().split(' ').slice();
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
@@ -428,9 +428,9 @@ function weather(r){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
 				var res = where+where1+" 날씨\n";
-				res += "시간ㅤ날씨ㅤ기온 강수 습도 바람\nㅤㅤ ㅤㅤ      [℃]  [%]  [%] [m/s]";
+				res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]";
 				for (var i = 0 ; i < clock1+8 ; i++) {
-					res += String(clock[i]).extension("0",3)+" ";
+					res += String(clock[i]).extension("0",2)+"  ";
 					res += String(sky[i]).extensionRight("ㅤ",4)+" ";
 					res += String(degree[i]).extension(" ",2)+" ";
 					res += String(rain[i]).extension(" ",2)+" ";
