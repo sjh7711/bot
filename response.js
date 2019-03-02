@@ -87,9 +87,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
                 recentchat(r);
             }
-        }
-        
-        if (room == 'test' || room == 'bot') {
+        } else if (room == 'test' || room == 'bot') {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) {
             	allchat(r);                
             }
@@ -101,8 +99,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }
         
-      //최근채팅저장
-        if (sender == "시립봇" || sender == "파이봇") {
+        //최근채팅저장
+        if (sender == "시립봇") {
         } else {
              D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
         }
