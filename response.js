@@ -349,7 +349,7 @@ function weather(r){
 		        		var targetNum=msg-1;
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();//위에서 받은 정보로 날씨 검색
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		        		where = name[targetNum] + " 날씨";
+		        		where = name[targetNum].substr(3) + " 날씨";
 		        	}else{
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
