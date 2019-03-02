@@ -381,7 +381,7 @@ function weather(r){
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
 	    			var msg;
-	    			r.replier.reply("지역을 선택하세요1\n"+name.join('\n'));
+	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
@@ -430,7 +430,7 @@ function weather(r){
 					res += String(degree[i]).extension(" ",2)+"℃ ";
 					res += String(rain[i]).extension(" ",2)+"% ";
 					res += String(wet[i]).extension(" ", 2)+"% ";
-					res += String(wind[i]).extension(" ",2)+"m/s";
+					res += String(wind[i]).extension(" ",2);
 					//res += String(direction[i]).extension("   ",3)+" ";
 					res += String(sky[i]).extension(" ",5)+"\n";
 					if(i==7){
