@@ -476,7 +476,7 @@ T.register("weatherClockCheck1",()=>{
 T.register("weatherClockCheck2",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨', room : 'bot',sender:'중용',replier:{reply:function(msg){
+			r={msg : '!날씨 서울시립대', room : 'bot',sender:'중용',replier:{reply:function(msg){
 				Api.replyRoom("bot",msg)
 				}
 			}
