@@ -453,8 +453,8 @@ function weather(r){
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨', room : 'bot',sender:'중용',replier:{reply:function(msg){
-				Api.replyRoom("bot",msg)
+			r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
@@ -462,22 +462,12 @@ T.register("weatherClockCheck",()=>{
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();/*
+}).start();
 T.register("weatherClockCheck1",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r = {  msg: "!날씨", room: 'agent' };
-			weather(r);
-			java.lang.Thread.sleep(60*60*1000); //60분
-		}
-		java.lang.Thread.sleep(60*1000); //1분
-	}
-}).start();*/
-T.register("weatherClockCheck2",()=>{
-	while(true){
-		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨 서울시립대', room : 'bot',sender:'중용',replier:{reply:function(msg){
-				Api.replyRoom("bot",msg)
+			r={msg : '!날씨 서울시립대', room : 'ja',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
@@ -485,17 +475,46 @@ T.register("weatherClockCheck2",()=>{
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();/*
-T.register("weatherClockCheck3",()=>{
+}).start();
+T.register("weatherClockCheck2",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r = {  msg: "!날씨 서울시립대", room: 'ja' };
+			r={msg : '!날씨 서울시립대', room : 'ele',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();*/
+}).start();
+T.register("weatherClockCheck3",()=>{
+	while(true){
+		if( 8 == new Date().getHours() ){
+			r={msg : '!날씨', room : 'test',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(60*60*1000); //60분
+		}
+		java.lang.Thread.sleep(60*1000); //1분
+	}
+}).start();
+T.register("weatherClockCheck4",()=>{
+	while(true){
+		if( 8 == new Date().getHours() ){
+			r={msg : '!날씨', room : 'over',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(60*60*1000); //60분
+		}
+		java.lang.Thread.sleep(60*1000); //1분
+	}
+}).start();
 	
 
 //오버워치
