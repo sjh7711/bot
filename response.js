@@ -339,22 +339,7 @@ function weather(r){
 	    		where = want + " 날씨"; // 지역명
 	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
-	    		if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
-					var i = 0;
-	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
-	    			r.replier.reply("지역을 선택하세요1\n"+name.join('\n'));
-	    			var msg;
-		        	msg=input.getMsg()*1;
-		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
-		        		var targetNum=msg-1;
-		        		link2 = link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href");
-		        		check = link2.indexOf('weather');
-		        		where = name[targetNum] + " 날씨";
-		        	}else{
-		        		r.replier.reply("검색이 불가능합니다.");
-		        		return;
-		        	}
-		        } else if (temp.length > 1){ //같은 이름의 지역이 2곳 이상일 때
+	    		 if (temp.length > 1){ //같은 이름의 지역이 2곳 이상일 때
 		        	var i=0; //name의 번호에 필요
 		        	var name = temp.map(v=> (1+i++) +". "+ v.text()); 장소명들
 		        	var msg;
@@ -392,7 +377,22 @@ function weather(r){
 							return;
 		        		}
 		        	}
-				}
+				} else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
+					var i = 0;
+	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
+	    			var msg;
+	    			r.replier.reply("지역을 선택하세요1\n"+name.join('\n'));
+		        	msg=input.getMsg()*1;
+		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+		        		var targetNum=msg-1;
+		        		link2 = link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href");
+		        		check = link2.indexOf('weather');
+		        		where = name[targetNum] + " 날씨";
+		        	}else{
+		        		r.replier.reply("검색이 불가능합니다.");
+		        		return;
+		        	}
+		        }
 			}
 			
 			if(check > 0){
