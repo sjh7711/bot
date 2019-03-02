@@ -453,7 +453,10 @@ function weather(r){
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r = {  msg: "!날씨", room: 'test' };
+			r={msg : '!날씨', room : 'bot',sender:'중용',replier:{reply:function(msg){
+				Api.replyRoom("bot",msg)
+				}
+			}
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
@@ -473,7 +476,10 @@ T.register("weatherClockCheck1",()=>{
 T.register("weatherClockCheck2",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r = {  msg: "!날씨 서울시립대", room: 'test' };
+			r={msg : '!날씨', room : 'bot',sender:'중용',replier:{reply:function(msg){
+				Api.replyRoom("bot",msg)
+				}
+			}
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
@@ -1050,7 +1056,6 @@ T.register("noticeCheck",()=>{
 	}
 }).start();
 
-const weatherSet = ({1:"맑음ㅤㅤ", 2:"구름약간", 3:"구름조금", 4:"구름보통", 5:"구름다수", 6:"구름많음", 7:"흐림ㅤㅤ", 8:"흐림ㅤㅤ", 11:"안개ㅤㅤ", 12:"비ㅤㅤㅤ", 13:"비ㅤㅤㅤ", 14:"비ㅤㅤㅤ", 15:"번개ㅤㅤ", 16:"번개ㅤㅤ", 17:"번개ㅤㅤ", 18:"비ㅤㅤㅤ", 19:"눈ㅤㅤㅤ", 20:"눈ㅤㅤㅤ", 21:"눈ㅤㅤㅤ", 22:"눈ㅤㅤㅤ", 23:"눈ㅤㅤㅤ", 24:"우박ㅤㅤ", 25:"25ㅤㅤ", 26:"26ㅤㅤ", 29:"진눈깨비", 30:"폭염ㅤㅤ", 31:"한파ㅤㅤ", 32:"바람ㅤㅤ", 33:"맑음ㅤㅤ", 34:"구름약간", 35:"구름조금", 36:"구름보통", 37:"구름다수", 38:"구름많음", 39:"비ㅤㅤㅤ", 40:"비ㅤㅤㅤ", 41:"번개ㅤㅤ", 42:"번개ㅤㅤ", 43:"눈ㅤㅤㅤ", 44:"눈ㅤㅤㅤ"});
 
 function readFile() {
     var filedir = new java.io.File("/proc/stat");
