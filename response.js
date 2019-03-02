@@ -432,7 +432,7 @@ function weather(r){
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
 					res += String(sky[i]).extensionRight("ㅤ",4)+" ";
-					res += String(degree[i]).extension(" ",2)" ";
+					res += String(degree[i]).extension(" ",2)+" ";
 					res += String(rain[i]).extension(" ",2)+" ";
 					res += String(wet[i]).extension(" ", 2)+" ";
 					res += String(wind[i]).extension(" ",2)+"\n";
