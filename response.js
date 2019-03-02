@@ -305,7 +305,7 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 
 function checkstatus(r){
 	var bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
-	var temperature = bm.getIntExtra("temperature",0)/10 + "'C"
+	var temperature = bm.getIntExtra("temperature",0)/10 + '℃'
 	var level = bm.getIntExtra("level",0) + "%"
 	var status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
 	var voltage = bm.getIntExtra("voltage",0)/1000 + "V"
@@ -320,7 +320,7 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n쓰레드 수 : "+T.getThreadList().length + "\nCPU점유율 : "+ Math.floor(idlePerc*100)/100 +"%" 
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%" 
 	r.replier.reply(batteryStatusStr);
 }
 
