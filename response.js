@@ -427,7 +427,7 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				var res = where+where1+" 날씨\n";
+				var res = where+where1+" 날씨\n전체보기를 눌러 종합정보 확인";
 				res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += " "+String(clock[i]).extension("0",2)+" ";
@@ -439,7 +439,7 @@ function weather(r){
 					//res += String(direction[i]).extension("   ",3)+" ";
 					
 					if(i==6){
-						res +="미세먼지 등 종합정보↓"+es;
+						res +=es;
 					}
 				}
 				res += "------------기타지수------------\n";
