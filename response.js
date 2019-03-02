@@ -455,7 +455,7 @@ T.register("weatherClockCheck",()=>{
 		if( 8 == new Date().getHours() ){
 			r={msg : '!날씨', room : 'bot',sender:'중용',replier:{reply:function(msg){
 				Api.replyRoom("bot",msg)
-				}
+				}}
 			}
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
@@ -478,7 +478,7 @@ T.register("weatherClockCheck2",()=>{
 		if( 8 == new Date().getHours() ){
 			r={msg : '!날씨 서울시립대', room : 'bot',sender:'중용',replier:{reply:function(msg){
 				Api.replyRoom("bot",msg)
-				}
+				}}
 			}
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
