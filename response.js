@@ -427,7 +427,7 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				var res = where+where1+" 날씨\n전체보기를 눌러 종합정보 확인\n";
+				var res = "  <종합정보 → 전체보기>\n"+where+where1+" 날씨\n";
 				res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += " "+String(clock[i]).extension("0",2)+" ";
