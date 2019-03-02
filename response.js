@@ -429,10 +429,10 @@ function weather(r){
 				}
 				var res = where+where1+" 날씨\n";
 				res += "";
-				res += "시간 기온 강수 습도 바람  날씨\n";
+				res += "시간 ㅤ날씨ㅤ 기온 강수 습도 바람\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
-					res += String(sky[i]).extension("ㅤ",4)+" ";
+					res += String(sky[i]).extensionRight("ㅤ",4)+" ";
 					res += String(degree[i]).extension(" ",2)+"℃ ";
 					res += String(rain[i]).extension(" ",2)+"% ";
 					res += String(wet[i]).extension(" ", 2)+"% ";
