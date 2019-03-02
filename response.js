@@ -341,7 +341,7 @@ function weather(r){
 	    		
 	    		 if (temp.length > 1){ //같은 이름의 지역이 2곳 이상일 때
 		        	var i=0; //name의 번호에 필요
-		        	var name = temp.map(v=> (1+i++) +". "+ v.text()); 장소명들
+		        	var name = temp.map(v=> (1+i++) +". "+ v.text()); //장소명들
 		        	var msg;
 		        	r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
 		        	msg=input.getMsg()*1;
