@@ -450,17 +450,16 @@ function weather(r){
 		}catch(e){r.replier.reply(e+"\n"+e.stack)}
     })
 }
-/*
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r = {  msg: msg, sender: sender, room: room };
-			weather('agent');
+			r = {  msg: "!날씨", room: agent };
+			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();*/
+}).start();
 	
 
 //오버워치
