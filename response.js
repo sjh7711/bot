@@ -460,7 +460,7 @@ T.register("weatherClockCheck",()=>{
 		java.lang.Thread.sleep(60*1000); //1분
 	}
 }).start();/*
-T.register("weatherClockCheck",()=>{
+T.register("weatherClockCheck1",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
 			r = {  msg: "!날씨", room: 'agent' };
@@ -470,7 +470,7 @@ T.register("weatherClockCheck",()=>{
 		java.lang.Thread.sleep(60*1000); //1분
 	}
 }).start();*/
-T.register("weatherClockCheck",()=>{
+T.register("weatherClockCheck2",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
 			r = {  msg: "!날씨 서울시립대", room: 'test' };
@@ -480,7 +480,7 @@ T.register("weatherClockCheck",()=>{
 		java.lang.Thread.sleep(60*1000); //1분
 	}
 }).start();/*
-T.register("weatherClockCheck",()=>{
+T.register("weatherClockCheck3",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
 			r = {  msg: "!날씨 서울시립대", room: 'ja' };
