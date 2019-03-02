@@ -331,7 +331,7 @@ function weather(r){
 			var link1 = ""; // 날씨 검색화면
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
-			var where = "통영시 무전동" + " 날씨";
+			var where = "통영시 무전동";
 			if(want.length > 0){ //!날씨 ~뒤에 뭔가가 있을 때
 	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
