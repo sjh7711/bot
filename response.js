@@ -432,12 +432,13 @@ function weather(r){
 				res += "시간 기온 강수 습도 바람  날씨\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
-					res += String(degree[i]).extension(" ",2)+"℃ ";
-					res += String(rain[i]).extension(" ",2)+"% ";
-					res += String(wet[i]).extension(" ", 2)+"% ";
-					res += String(wind[i]).extension(" ",2)+" ";
+					res += String(sky[i]).extension("ㅤ",4)+" ";
+					res += String(degree[i]).extension(" ",2)+"℃ ";
+					res += String(rain[i]).extension(" ",2)+"% ";
+					res += String(wet[i]).extension(" ", 2)+"% ";
+					res += String(wind[i]).extension(" ",2)+"\n";
 					//res += String(direction[i]).extension("   ",3)+" ";
-					res += String(sky[i]).extension(" ",4)+"\n";
+					
 					if(i==7){
 						res += es;
 					}
