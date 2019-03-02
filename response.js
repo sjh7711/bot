@@ -389,7 +389,7 @@ function weather(r){
 		        		link1 = org.jsoup.Jsoup.connect(link3).get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
-		        		where = name[targetNum] + " 날씨";
+		        		where = name[targetNum].substr(3) + " 날씨";
 		        	}else{
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
