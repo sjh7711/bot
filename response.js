@@ -439,7 +439,7 @@ function weather(r){
 					//res += String(direction[i]).extension("   ",3)+" ";
 					
 					if(i==6){
-						res += es;
+						res +="미세먼지 등 종합정보↓"+es;
 					}
 				}
 				res += "------------기타지수------------\n";
