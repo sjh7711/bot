@@ -463,59 +463,7 @@ T.register("weatherClockCheck",()=>{
 		java.lang.Thread.sleep(60*1000); //1분
 	}
 }).start();
-T.register("weatherClockCheck1",()=>{
-	while(true){
-		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨 서울시립대', room : 'ja',replier:{reply:function(msg){
-				Api.replyRoom(r.room,msg)
-				}}
-			}
-			weather(r);
-			java.lang.Thread.sleep(60*60*1000); //60분
-		}
-		java.lang.Thread.sleep(60*1000); //1분
-	}
-}).start();
-T.register("weatherClockCheck2",()=>{
-	while(true){
-		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨 서울시립대', room : 'ele',replier:{reply:function(msg){
-				Api.replyRoom(r.room,msg)
-				}}
-			}
-			weather(r);
-			java.lang.Thread.sleep(60*60*1000); //60분
-		}
-		java.lang.Thread.sleep(60*1000); //1분
-	}
-}).start();
-T.register("weatherClockCheck3",()=>{
-	while(true){
-		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨', room : 'test',replier:{reply:function(msg){
-				Api.replyRoom(r.room,msg)
-				}}
-			}
-			weather(r);
-			java.lang.Thread.sleep(60*60*1000); //60분
-		}
-		java.lang.Thread.sleep(60*1000); //1분
-	}
-}).start();
-T.register("weatherClockCheck4",()=>{
-	while(true){
-		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨', room : 'over',replier:{reply:function(msg){
-				Api.replyRoom(r.room,msg)
-				}}
-			}
-			weather(r);
-			java.lang.Thread.sleep(60*60*1000); //60분
-		}
-		java.lang.Thread.sleep(60*1000); //1분
-	}
-}).start();
-	
+
 
 //오버워치
 function overwatch(r) {
