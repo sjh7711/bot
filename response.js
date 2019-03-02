@@ -336,7 +336,7 @@ function weather(r){
 	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	    		var	check = link2.indexOf('weather');
-	    		where = want + " 날씨"; // 지역명
+	    		where = want; // 지역명
 	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
 	    		 if (temp.length > 1){ //같은 이름의 지역이 2곳 이상일 때
