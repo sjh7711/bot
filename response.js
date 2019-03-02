@@ -428,8 +428,7 @@ function weather(r){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
 				var res = where+where1+" 날씨\n";
-				res += "";
-				res += "시간 ㅤ날씨ㅤ 기온 강수 습도 바람\n";
+				res += "시간ㅤ날씨ㅤ기온 강수 습도 바람\nㅤㅤ ㅤㅤ      [℃]  [%]  [%] [m/s]";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += String(clock[i]).extension("0",3)+" ";
 					res += String(sky[i]).extensionRight("ㅤ",4)+" ";
