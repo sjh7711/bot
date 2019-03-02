@@ -453,23 +453,33 @@ function weather(r){
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
+			r = {  msg: "!날씨", room: 'test' };
+			weather(r);
+			java.lang.Thread.sleep(60*60*1000); //60분
+		}
+		java.lang.Thread.sleep(60*1000); //1분
+	}
+}).start();/*
+T.register("weatherClockCheck",()=>{
+	while(true){
+		if( 8 == new Date().getHours() ){
 			r = {  msg: "!날씨", room: 'agent' };
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();
+}).start();*/
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r = {  msg: "!날씨 서울시립대", room: 'ele' };
+			r = {  msg: "!날씨 서울시립대", room: 'test' };
 			weather(r);
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();
+}).start();/*
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
@@ -479,7 +489,7 @@ T.register("weatherClockCheck",()=>{
 		}
 		java.lang.Thread.sleep(60*1000); //1분
 	}
-}).start();
+}).start();*/
 	
 
 //오버워치
