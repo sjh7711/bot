@@ -357,20 +357,20 @@ function weather(r){
 				}else if (check == -1){ //네이버에 날씨검색이 바로 안될 때
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 		        	var i = 0;
-		        	var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')).join("\n"); // want로 daum에 검색한 곳들의 이름들
+		        	var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')); // want로 daum에 검색한 곳들의 이름들
 		        	if(name.length == 0){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
 		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});  //각 이름들의 주소
 		        	var msg;
-		        	r.replier.reply("장소를 선택하세요\n"+name);
+		        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		        		where = name[targetNum] ;
+		        		where = name[targetNum].substr(3) ;
 		        		check = link2.indexOf('weather');
 		        		if(check == -1){
 		        			r.replier.reply("검색이 불가능합니다.");
