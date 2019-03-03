@@ -1,7 +1,8 @@
 ﻿//소스불러오기및 리로딩
+var reloadcheck = 0;
 function reload() {
 	try {
-		var reloadcheck = 1;
+		reloadcheck = 1;
 		var Timer = new Date();
 	    file = "storage/emulated/0/kbot/response.js";
 	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
