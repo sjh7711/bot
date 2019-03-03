@@ -28,6 +28,15 @@ function reload() {
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
+//패치노트
+var Update = '패치노트\n\
+	* 오버워치 배치를 보지 않았을 때 생기는 오류 수정.\n\
+	* 날씨 방별로 기본 값을 다르게 수정\n\
+	* 날씨 도 단위 검색이 불가했던 문제 수정\n\
+	* 날씨 기능 추가\n\
+	* 추첨 기능 추가\n\
+	* 맛집 검색 기능 추가\n\
+	'
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
 //menu:메뉴/res:식당
@@ -185,6 +194,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!기능") {
             replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
         }
+        
+        if (msg == "!패치노트"){
+        	replier.reply(Update);
+        }
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
@@ -192,6 +205,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 
 //------------------------------------------------------------------ 함수------------------------------------------------------
+
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
         r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅16 과 같이 입력하면 16개를 불러오고 최대 16개까지 조회가 가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 불필요한 띄워쓰기가 들어가거나 이름이 잘못되면 출력이 안될 수 있습니다.");
