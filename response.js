@@ -20,7 +20,7 @@ function reload() {
 	    T.interrupt();
 	    Api.reload();
 	    var time = (new Date() - Timer) / 1000;
-	    Api.replyRoom('test', "reloading 완료 / " + time + "s");
+	    return "reloading 완료 / " + time + "s";
 	}catch (e){
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
