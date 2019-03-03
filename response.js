@@ -76,104 +76,47 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if (msg.indexOf("]") == 0) {
 			try {
 				replier.reply(eval(msg.substring(1)));
-			} catch (e) {
-			replier.reply(e + "\n" + e.stack);
-			}
+			} catch (e) {replier.reply(e + "\n" + e.stack);}
 		}
 	}
 	
 	try {
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele') {
-            if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) {
-                recentchat(r);
-            }
-        } else if (room == 'test' || room == 'bot') {
-            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) {
-            	allchat(r);                
-            }
-        }
-        
-        if (room == 'agent' || room =='test' || room == 'bot'){
-        	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){
-        		banklist(r);
-        	}
-        }
-        
         //최근채팅저장
-        if (sender == "시립봇") {
-        } else {
-             D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
-        }
-
         if (room == 'test' || room == 'bot') {
-            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {
-                replier.reply(D.selectForArray('willdo').join("\n"));
-            }
-        }
-
-        if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
-                weather(r);
-        }
-        
-
-        if (room == 'test' || room == 'agent' || room == 'bot') {
-            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
-                notice(r);
-            }
-        }
-
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {
-        		sel(r);
-        	}
-        }
-        
-        if (msg =="!추첨종료"){
+            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
+        } else if (room == 'test' || room == 'agent') {
+            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r); }
+        } else if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
+        } else if (room != 'ja') {
+            if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
+        } else if (room == 'test' || room == 'bot') {
+            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
+        } else if (room == 'agent' || room =='test' || room == 'bot'){
+        	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
+        } else if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
+        	weather(r);
+        } else if (msg =="!추첨종료"){
         	selexit(r);
-        }
-        
-        if (msg == "!로또" || msg == "!ㄹㄸ" ) {
+        } else if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
-        }
-        
-        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
+        } else if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
-        }
-
-        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
+        } else if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
     		famous(r);
-    	}
-        
-        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
+    	} else if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overwatch(r);
-        }
-        
-        if (msg == "!상태"){
+        } else if (msg == "!상태"){
         	checkstatus(r);
-        }
-       
-        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
+        } else if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
-        }
-        
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
-            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷ") == 0) {
-                recom(r, "res");
-            }
-        }
-
-        //--------------------------------------------------------------------------------------식당/메뉴 -----------------------------------------
-
-        if (msg=="/기능") {
+        } else if (room != 'agent' || room != 'over') {
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res");}
+        } else if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다");
-        }
-	
-        //기능설명
-        if (msg.indexOf("!기능 ") == 0) {
+        } else if (msg.indexOf("!기능 ") == 0) {
             func(r);
-        }
-        
-        if (msg.indexOf('!건의 ')==0){
+        } else if (msg.indexOf('!건의 ')==0){
         	if(msg.substr(4).length < 3){
         		replier.reply("건의가 너무 짧습니다.");
         	}else{
@@ -182,42 +125,25 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }
         
-        //-----------------------------------------------------개인채팅방------------------------------------------------
-        if (room == "test") {
-            if (msg == "!기능") {
+        if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
+        
+        if (msg == "!기능") {
+        	if (room == "test") {
+                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅 / !전체\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!예정기능\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
+            } else if (room == "bot") {
                 replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅 / !전체\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!예정기능\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            }
-        }
-        //-----------------------------------------------------시립대 봇제작방-----------------------------------------------------
-        if (room == "bot") {
-            if (msg == "!기능") {
-                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅 / !전체\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!예정기능\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            }
-        }
-        //-------------------------------------------------------공익----------------------------------------------------
-        if (room == 'agent') {
-            if (msg == "!기능") {
+            } else if (room == 'agent') {
                 replier.reply("!로또 / !당첨\n!메뉴 / !맛집\n!최근채팅\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            }
-        }
-        //-------------------------------------------------------전전컴톡방-----------------------------------------------------
-        if (room == "ele") {
-            if (msg == "!기능") {
+            } else if (room == "ele") {
                 replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅\n!오버워치\n!추첨\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            }
-        }
-        //--------------------------------------------------------자생방-----------------------------------------
-        if (room == 'ja') {
-            if (msg == "!기능") {
+            } else if (room == 'ja') {
                 replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!오버워치\n!추첨\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            }
-        }
-        //-----------------------------------------------------오버워치방-----------------------------------------
-        if (room == 'over') {
-            if (msg == "!기능") {
+            } else if (room == 'over') {
                 replier.reply("!로또 / !당첨\n!메뉴 / !맛집\n!최근채팅\n!오버워치\n!추첨\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            }
-		}
+    		} else {
+                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅\n!오버워치\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
+    		}
+        }
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
@@ -229,44 +155,31 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
         r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅16 과 같이 입력하면 16개를 불러오고 최대 16개까지 조회가 가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 불필요한 띄워쓰기가 들어가거나 이름이 잘못되면 출력이 안될 수 있습니다.");
-    }
-    if (r.msg.split(" ")[1] == "전체채팅") {
+    } else if (r.msg.split(" ")[1] == "전체채팅") {
         r.replier.reply("방 구별없이 최근채팅 12개를 출력합니다. !최근채팅16 과 같이 입력하면 16개를 불러옵니다. DB에 저장된 마지막 데이터까지 조회가 가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "오버워치") {
+    } else if (r.msg.split(" ")[1] == "오버워치") {
         r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전에서 가장 많이 플레이한 영웅 4명을 확인할 수 있습니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
-    }
-    if (r.msg.split(" ")[1] == "로또") {
+    } else if (r.msg.split(" ")[1] == "로또") {
         r.replier.reply("로또번호를 추천해줍니다. !당첨으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
-    }
-    if (r.msg.split(" ")[1] == "당첨") {
+    } else if (r.msg.split(" ")[1] == "당첨") {
         r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. !당첨 닉네임 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
-    }
-    if (r.msg.split(" ")[1] == "메뉴") {
+    } else if (r.msg.split(" ")[1] == "메뉴") {
         r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "식당") {
+    } else if (r.msg.split(" ")[1] == "식당") {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. !식당 3과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    }
-    if (r.msg.split(" ")[1] == "예정기능") {
+    } else if (r.msg.split(" ")[1] == "예정기능") {
         r.replier.reply("앞으로 만들어질 예정/오류수정예정/추가기능 등등 개선될 내용입니다. 본인방에서 작동하지 않을 기능도 있습니다.");
-    }
-    if (r.msg.split(" ")[1] == "공지") {
+    } else if (r.msg.split(" ")[1] == "공지") {
         r.replier.reply("최근 5개의 공지를 띄워줍니다. !공지 15 과 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다. 해당 공지의 번호를 !공지 xxx 이렇게 입력하시면 내용과 댓글을 확인할 수 있습니다.");
-    }
-    if (r.msg.split(" ")[1] == "날씨") {
+    } else if (r.msg.split(" ")[1] == "날씨") {
         r.replier.reply("!날씨 지역명으로 검색가능하며 경우에 따라 선택을 해야할 수도 있습니다. 기본값은 해당 방과 가장 관련있는 지역입니다.");
-    }
-    if (r.msg.split(" ")[1] == "건의") {
+    } else if (r.msg.split(" ")[1] == "건의") {
         r.replier.reply("건의를 받습니다. !건의 건의내용 으로 입력하면 됩니다.");
-    }
-    if (r.msg.split(" ")[1] == "추첨") {
+    } else if (r.msg.split(" ")[1] == "추첨") {
         r.replier.reply("!추첨을 입력하면 참여한 사람 몇 명을 뽑을 건지 입력할 수 있습니다. 입력 후에는 참가를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 !마감을 입력하면 당첨자가 바로 발표됩니다. 90초 뒤에 !추첨종료로 종료가 가능합니다.");
-    }
-    if (r.msg.split(" ")[1] == "명단") {
+    } else if (r.msg.split(" ")[1] == "명단") {
         r.replier.reply("푸드뱅크 명단을 보여줍니다. !명단 만월 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n!명단추가 복지센터 055645XXXX 처럼 입력하면 추가되고 !명단삭제 복지센터 처럼 입력하면 목록이 삭제됩니다. 삭제할땐 반드시 제대로 된 기관명을 입력해야합니다.");
-    }
-    if (r.msg.split(" ")[1] == "맛집") {
+    } else if (r.msg.split(" ")[1] == "맛집") {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다. !맛집 지역명 으로 검색하면 됩니다.");
     }
 }
