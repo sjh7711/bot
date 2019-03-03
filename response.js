@@ -456,7 +456,7 @@ function overwatch(r) {
 			if(String(temp.select('div.u-align-center')).length==0){
 				var score = "Unranked";
 				var tier = "Unranked";
-			}else if {
+			}else if (String(temp.select('div.u-align-center')).length>0) {
 				var score = temp.select('div.u-align-center').get(0).text();
 		        var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
 			}else {
