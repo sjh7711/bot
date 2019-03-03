@@ -113,6 +113,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
                 weather(r);
+        }
         
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
