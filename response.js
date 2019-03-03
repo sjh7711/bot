@@ -111,11 +111,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         }
 
-        if (room == 'test' || room == 'agent' || room == 'bot' || room == 'ja' || room == 'ele' || room == 'over') {
-            if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
+        if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
                 weather(r);
-            }
-        }
+        
 
         if (room == 'test' || room == 'agent' || room == 'bot') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) {
