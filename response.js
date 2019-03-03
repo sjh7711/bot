@@ -84,39 +84,73 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         //최근채팅저장
         if (room == 'test' || room == 'bot') {
             if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
-        } else if (room == 'test' || room == 'agent') {
-            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r); }
-        } else if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+        }
+        
+        if (room == 'test' || room == 'agent') {
+            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r)}
+        }
+        
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
         	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
-        } else if (room != 'ja') {
+        }
+
+        if (room != 'ja') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
-        } else if (room == 'test' || room == 'bot') {
+        }
+
+        if (room == 'test' || room == 'bot') {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
-        } else if (room == 'agent' || room =='test' || room == 'bot'){
+        } 
+
+        if (room == 'agent' || room =='test' || room == 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
-        } else if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
+        } 
+
+        if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
         	weather(r);
-        } else if (msg =="!추첨종료"){
+        }
+
+        if (msg =="!추첨종료"){
         	selexit(r);
-        } else if (msg == "!로또" || msg == "!ㄹㄸ" ) {
+        } 
+
+        if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
-        } else if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
+        } 
+
+        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
-        } else if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
+        } 
+
+        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
     		famous(r);
-    	} else if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
+    	} 
+
+        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overwatch(r);
-        } else if (msg == "!상태"){
+        }
+
+        if (msg == "!상태"){
         	checkstatus(r);
-        } else if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
+        } 
+
+        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
-        } else if (room != 'agent' || room != 'over') {
-            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res");}
-        } else if (msg=="/기능") {
+        } 
+
+        if (room != 'agent' || room != 'over') {
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res")}
+        } 
+
+        if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다");
-        } else if (msg.indexOf("!기능 ") == 0) {
+        } 
+
+        if (msg.indexOf("!기능 ") == 0) {
             func(r);
-        } else if (msg.indexOf('!건의 ')==0){
+        } 
+
+        if (msg.indexOf('!건의 ')==0){
         	if(msg.substr(4).length < 3){
         		replier.reply("건의가 너무 짧습니다.");
         	}else{
