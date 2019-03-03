@@ -196,7 +196,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg == "!패치노트"){
-        	replier.reply(Update.join('\n'));
+        	temp = Update;
+        	if(temp.length > 6){
+        		temp = temp[6]+es;
+        	}
+        	replier.reply(temp.join('\n'));
         }
         str += "!패치노트\n";
 	} catch (e) {
