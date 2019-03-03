@@ -263,7 +263,7 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%" 
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%" 
 	r.replier.reply(batteryStatusStr);
 }
 
