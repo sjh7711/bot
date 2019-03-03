@@ -1,6 +1,7 @@
 ﻿//소스불러오기및 리로딩
 function reload() {
 	try {
+		var reloadcheck = 1;
 		var Timer = new Date();
 	    file = "storage/emulated/0/kbot/response.js";
 	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
@@ -20,6 +21,7 @@ function reload() {
 	    T.interrupt();
 	    Api.reload();
 	    var time = (new Date() - Timer) / 1000;
+	    reloadcheck = 0;
 	    return "reloading 완료 / " + time + "s";
 	}catch (e){
 		Api.replyRoom('test', e + "\n" + e.stack);
@@ -66,6 +68,10 @@ var flagagent = [0, 0, 0, 0, 0, 0];
 
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	
+	if(reloadcheck == 1){
+		return;
+	}
 	
 	I.run(room, sender, msg);
 	
