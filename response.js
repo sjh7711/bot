@@ -198,6 +198,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!패치노트"){
         	replier.reply(Update);
         }
+        str += "!패치노트\n";
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
