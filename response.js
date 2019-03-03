@@ -27,7 +27,7 @@ function reload() {
 }
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:식당/cele:전전컴채팅/cbot:봇제작방채팅/ctest:개인방채팅/cja:자생방채팅/cover:오버워치채팅/cagent:공익채팅
+//menu:메뉴/res:식당
 //D.selectForString("sqlite_master")
 var T = require("ThreadManager.js");
 //T.getThreadList()
@@ -71,7 +71,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room };
 	
-	//eval
 	if (room == 'test' || room == 'bot') {
 		if (msg.indexOf("]") == 0) {
 			try {
@@ -81,23 +80,37 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	try {
-        //최근채팅저장
 		var str = "";
-        if (room == 'test' || room == 'bot') {
-            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
-            str += "!예정기능\n";
+		if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
+        	weather(r);
         }
+        str += "!날씨\n"
         
-        if (room == 'test' || room == 'agent') {
-            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r)}
-            str += "!공지\n";
-        }
-        
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
-        	str += "!추첨\n";
-        }
+		if (msg == "!로또" || msg == "!ㄹㄸ" ) {
+            lotto(r);
+        } 
+        str += "!로또 / "
 
+        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
+            lottocheck(r);
+        } 
+        str += "!당첨\n";
+
+        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
+            recom(r, "menu");
+        } 
+        str += "!메뉴 / "
+
+        if (room != 'agent' || room != 'over') {
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res")}
+            str += "!식당 / "
+        } 
+        
+        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
+        	famous(r);
+        } 
+        str += "!맛집\n"
+        	
         if (room != 'ja') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
             str += "!최근채팅\n";
@@ -107,63 +120,40 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
             str += "!전체채팅\n"
         } 
+        
+        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
+            overwatch(r);
+        }
+        str += "!오버워치\n";
+        
+        if (room == 'test' || room == 'bot') {
+            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
+            str += "!예정기능\n";
+        }
+        
+        if (room == 'test' || room == 'agent' || room == 'bot') {
+            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r)}
+            str += "!공지\n";
+        }
+        
+        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
+        	str += "!추첨\n";
+        }
+        
+        if (msg =="!추첨종료"){
+        	selexit(r);
+        } 
 
         if (room == 'agent' || room =='test' || room == 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
         	str += "!명단\n"
         } 
 
-        if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
-        	weather(r);
-        }
-        str += "!날씨\n"
-
-        if (msg =="!추첨종료"){
-        	selexit(r);
-        } 
-
-        if (msg == "!로또" || msg == "!ㄹㄸ" ) {
-            lotto(r);
-        } 
-        str += "!로또\n"
-
-        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
-            lottocheck(r);
-        } 
-        str += "!당첨\n"
-
-        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
-    		famous(r);
-    	} 
-        str += "!맛집\n"
-
-        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
-            overwatch(r);
-        }
-        str += "!오버워치\n"
-
         if (msg == "!상태"){
         	checkstatus(r);
         } 
         str += "!상태\n"
-
-        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
-            recom(r, "menu");
-        } 
-        str += "!메뉴\n"
-
-        if (room != 'agent' || room != 'over') {
-            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res")}
-            str += "!식당\n"
-        } 
-
-        if (msg=="/기능") {
-            replier.reply("!기능으로 작동합니다");
-        } 
-
-        if (msg.indexOf("!기능 ") == 0) {
-            func(r);
-        } 
 
         if (msg.indexOf('!건의 ')==0){
         	if(msg.substr(4).length < 3){
@@ -173,7 +163,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(sender+"님의 건의가 접수되었습니다.");
         	}
         }
-        str += "!건의\n"
+        str += "!건의\n";
+        
+        if (msg=="/기능") {
+            replier.reply("!기능으로 작동합니다");
+        } 
+
+        if (msg.indexOf("!기능 ") == 0) {
+            func(r);
+        } 
         
         if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
         
@@ -187,7 +185,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 
 //------------------------------------------------------------------ 함수------------------------------------------------------
-//기능설명
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
         r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅16 과 같이 입력하면 16개를 불러오고 최대 16개까지 조회가 가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 불필요한 띄워쓰기가 들어가거나 이름이 잘못되면 출력이 안될 수 있습니다.");
