@@ -82,33 +82,41 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	try {
         //최근채팅저장
+		var str = "";
         if (room == 'test' || room == 'bot') {
             if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
+            str += "!예정기능\n";
         }
         
         if (room == 'test' || room == 'agent') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r)}
+            str += "!공지\n";
         }
         
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
         	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
+        	str += "!추첨\n";
         }
 
         if (room != 'ja') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
+            str += "!최근채팅\n";
         }
 
         if (room == 'test' || room == 'bot') {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
+            str += "!전체채팅\n"
         } 
 
         if (room == 'agent' || room =='test' || room == 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
+        	str += "!명단\n"
         } 
 
         if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
         	weather(r);
         }
+        str += "!날씨\n"
 
         if (msg =="!추첨종료"){
         	selexit(r);
@@ -117,29 +125,36 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
         } 
+        str += "!로또\n"
 
         if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
         } 
+        str += "!당첨\n"
 
         if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
     		famous(r);
     	} 
+        str += "!맛집\n"
 
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overwatch(r);
         }
+        str += "!오버워치\n"
 
         if (msg == "!상태"){
         	checkstatus(r);
         } 
+        str += "!상태\n"
 
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
         } 
+        str += "!메뉴\n"
 
         if (room != 'agent' || room != 'over') {
             if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res")}
+            str += "!식당\n"
         } 
 
         if (msg=="/기능") {
@@ -158,25 +173,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(sender+"님의 건의가 접수되었습니다.");
         	}
         }
+        str += "!건의\n"
         
         if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
         
         if (msg == "!기능") {
-        	if (room == "test") {
-                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅 / !전체\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!예정기능\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
-            } else if (room == "bot") {
-                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅 / !전체\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!예정기능\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            } else if (room == 'agent') {
-                replier.reply("!로또 / !당첨\n!메뉴 / !맛집\n!최근채팅\n!오버워치\n!추첨\n!공지\n!날씨\n!명단\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            } else if (room == "ele") {
-                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅\n!오버워치\n!추첨\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            } else if (room == 'ja') {
-                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!오버워치\n!추첨\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-            } else if (room == 'over') {
-                replier.reply("!로또 / !당첨\n!메뉴 / !맛집\n!최근채팅\n!오버워치\n!추첨\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-    		} else {
-                replier.reply("!로또 / !당첨\n!메뉴 / !식당 / !맛집\n!최근채팅\n!오버워치\n!날씨\n!건의"+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다");
-    		}
+            replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
         }
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
