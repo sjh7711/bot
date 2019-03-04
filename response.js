@@ -542,35 +542,35 @@ function weather(r){
 T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 8 == new Date().getHours() ){
-			r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
+			/*r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
-			java.lang.Thread.sleep(5*1000);
+			java.lang.Thread.sleep(6*1000);*/
 			r={msg : '!날씨', room : 'bot',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
-			java.lang.Thread.sleep(5*1000);
+			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨', room : 'ele',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
-			java.lang.Thread.sleep(5*1000);
+			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨', room : 'test',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
-			java.lang.Thread.sleep(5*1000);
-			r={msg : '!날씨', room : 'ja',replier:{reply:function(msg){
+			java.lang.Thread.sleep(6*1000);
+			/*r={msg : '!날씨', room : 'ja',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
-			weather(r);
+			weather(r);*/
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
 		java.lang.Thread.sleep(60*1000); //1분
