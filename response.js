@@ -406,7 +406,7 @@ function weather(r){
 				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0){
 					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','1','2','4','5','6','7','8','9');
 					var clock1 = clock.length;
-					if (clock1.length<16){
+					if (clock1 > 16){
 						clock1 = 16;
 					}
 					var res =where+where1+" 날씨\n";
