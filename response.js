@@ -402,11 +402,10 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				var res = "";
+				var res = res += "ㅤㅤ<종합정보 → 전체보기>\n"+where+where1+" 날씨\n";
 				res += "---------미세먼지/자외선----------\n";
 				res += dust.join("\n")+"\n";
-				res += "자외선 : "+uv+"\n"+es;
-				res += "ㅤㅤ<종합정보 → 전체보기>\n"+where+where1+" 날씨\n";
+				res += "자외선 : "+uv+"\n";
 				res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += " "+String(clock[i]).extension("0",2)+" ";
