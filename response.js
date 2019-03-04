@@ -439,7 +439,7 @@ function weather(r){
 					var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
 					
 					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
-					res += "---------미세먼지/자외선----------\n";
+					res += "-------미세먼지/자외선--------\n";
 					res += dust.join("\n")+"\n";
 					res += "자외선 : "+uv+"\n";
 					res += "-------------날씨-------------\n"
