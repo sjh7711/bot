@@ -366,7 +366,7 @@ function weather(r){
 		        		var targetNum=msg-1;
 		        		var jejulist = ['https://m.weather.naver.com/m/main.nhn?regionCode=14110104', 'https://m.weather.naver.com/m/main.nhn?regionCode=14130101'];
 		        		link2 = org.jsoup.Jsoup.connect(jejulist[targetNum]).get();
-		        		check = link2.indexOf('weather');
+		        		check = 1;
 		        		where = name[targetNum].substr(3);
 		        	}
 				} else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
@@ -390,10 +390,8 @@ function weather(r){
 			}
 			
 			if(check > 0){
+				
 				var doc = org.jsoup.Jsoup.connect(link2).get();
-
-				var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
-				var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 				var sky = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=0]').text().split(' ').slice();
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
 				var rain = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=1]').text().split(',').slice();
@@ -405,8 +403,10 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				if( String(doc).indexOf('Weathernews') > 0 ){
-					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
+				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0){
+					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice();
+					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
+					var res =where+where1+" 날씨\n";
 					res += "-------------날씨-------------\n"
 						res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
 						for (var i = 0 ; i < clock1+9 ; i++) {
@@ -422,6 +422,8 @@ function weather(r){
 							}
 						}
 				} else {
+					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
+					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 					var uv1 = doc.select('li.uv').select('em').text();
 					var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
 					var index = doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').map(v=>String(v).replace(/온도/g, "온도 : ").replace(/지수/g, "지수 : "))
