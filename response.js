@@ -347,16 +347,22 @@ function weather(r){
 		        	var msg;
 		        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 		        	msg=input.getMsg()*1;
-		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+		        	if(!isNaN(msg) && msg>=1 && msg<=name.length && ){
 		        		var targetNum=msg-1
-		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
-		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		        		where = name[targetNum].substr(3) ;
-		        		check = link2.indexOf('weather');
-		        		if(check == -1){
+		        		if(loc[targetNum].indexOf('동') > -1){
+		        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
+			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        		where = name[targetNum].substr(3) ;
+			        		check = link2.indexOf('weather');
+			        		if(check == -1){
+			        			r.replier.reply("검색이 불가능합니다.");
+								return;
+			        		}
+		        		} else {
 		        			r.replier.reply("검색이 불가능합니다.");
 							return;
 		        		}
+		        		
 		        	}
 				} else if(want.indexOf('제주')>-1) { //특별한 제주 ^^
 					var name = ['1. 제주' , '2. 서귀포'];
