@@ -93,7 +93,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	if(room=="test"){
 		if(msg=="사진"){
-			file = 'storage/emulated/0/kakaotalkbot/photo'+sender+" "+room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
+			file = "storage/emulated/0/kakaotalkbot/photo"+sender+" "+room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
 			write64(file, imageDB.getImage());
 			replier.reply('image save succes');
 		}
@@ -305,7 +305,7 @@ function read64(file) {
 	}
 	
 function write64(file,base64) {
-	   var base64Array=new JString(base64).getBytes();
+	   var base64Array=new java.lang.String(base64).getBytes();
 	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
 	   var is=new java.io.ByteArrayInputStream(fileArray);
 	   var os=new java.io.FileOutputStream(file);
