@@ -91,7 +91,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
 	
-	
+	if(room=="test"){
+		if(msg=="사진"){
+			file = 'storage/emulated/0/kakaotalkbot/photo'+sender+" "+room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second;
+			write64(file, imageDB.getImage());
+			replier.reply('image save succes');
+		}
+	}
 	
 	if (room == 'test' || room == 'bot') {
 		if (msg.indexOf("]") == 0) {
