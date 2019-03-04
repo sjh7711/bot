@@ -549,7 +549,7 @@ function weather(r){
 }
 T.register("weatherClockCheck",()=>{
 	while(true){
-		if( 8 == new Date().getHours() ){
+		if( 7 == new Date().getHours() ){
 			r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
