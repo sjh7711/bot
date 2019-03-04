@@ -387,7 +387,7 @@ function weather(r){
 	        		}
 		        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
 	        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-	        		where = name[targetNum].substr(3) ;
+	        		where = want;
 	        		check = link2.indexOf('weather');
 	        		if(check == -1){
 	        			r.replier.reply("검색이 불가능합니다.");
