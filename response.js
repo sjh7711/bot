@@ -87,8 +87,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		return;
 	}
 	
-	blankFunc(r);
-	
 	//Api.replyRoom('test', imageDB.getProfileImage());
 	if(imageDB.getImage()!=null){
 		Api.replyRoom('test', imageDB.getImage())
@@ -98,6 +96,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	I.run(room, sender, msg);
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room };
+	
+	blankFunc(r);
 	
 	if (room == 'test' || room == 'bot') {
 		if (msg.indexOf("]") == 0) {
