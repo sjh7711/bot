@@ -411,14 +411,14 @@ function weather(r){
 					}
 					var res =where+where1+" 날씨\n";
 					res += "-------------날씨-------------\n"
-						res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
+						res += "시간 기온 강수 습도 바람    날씨\n [h]   [℃]  [%]  [%] [m/s]    상태\n";
 						for (var i = 1 ; i < clock1 ; i++) {
 							res += " "+String(clock[i]).extension("0",2)+" ";
-							res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
 							res += String(degree[i]).extension(" ",2)+"   ";
 							res += String(rain[i]).extension(" ",2)+"   ";
 							res += String(wet[i]).extension(" ", 2)+"   ";
 							res += String(wind[i]).extension(" ",2)+"\n";
+							res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
 							//res += String(direction[i]).extension("   ",3)+" ";
 							if(i==5){
 								res +=es;
