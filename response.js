@@ -358,16 +358,16 @@ function weather(r){
 		        		}
 		        	}
 				} else if(want.indexOf('제주')>-1) { //특별한 제주 ^^
-					var name = ['1. 제주도' , '2. 서귀포'];
+					var name = ['1. 제주' , '2. 서귀포'];
 					var msg;
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		var jejulist = ['https://m.weather.naver.com/m/main.nhn?regionCode=14110104', 'https://m.weather.naver.com/m/main.nhn?regionCode=14130101'];
-		        		link1 = jejulist[targetNum];
-		        		link2 = org.jsoup.Jsoup.connect(link1).get();
-		        		check = 1;
+		        		want += " "+name[targetNum].substr(3);
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
+			    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			    		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3);
 		        	}
 				} else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
