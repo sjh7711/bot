@@ -391,7 +391,6 @@ function weather(r){
 			}
 			
 			if(check > 0){
-				
 				var doc = org.jsoup.Jsoup.connect(link2).get();
 				var sky = doc.select('div.weather_icon.sp_icon_60').toArray().map(v=> v.text());
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
@@ -405,12 +404,12 @@ function weather(r){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
 				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0){
-					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice();
+					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','1','2','4','5','6','7','8','9');
 					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 					var res =where+where1+" 날씨\n";
 					res += "-------------날씨-------------\n"
 						res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
-						for (var i = 0 ; i < clock1 ; i++) {
+						for (var i = 1 ; i < clock1 ; i++) {
 							res += " "+String(clock[i]).extension("0",2)+" ";
 							res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
 							res += String(degree[i]).extension(" ",2)+"   ";
