@@ -391,25 +391,16 @@ function weather(r){
 			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
-				
-				var data = doc.select('div._cnWtrHourlyChartData');
+
 				var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
 				var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 				var sky = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=0]').text().split(' ').slice();
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
 				var rain = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=1]').text().split(',').slice();
 				var wind = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=2]').text().split(',').slice();
-				//var direction = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=2]').text().split(' ').slice();
 				var wet = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=3]').text().split(',').slice();
-				var uv1 = doc.select('li.uv').select('em').text();
-				var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
-				var index = doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').map(v=>String(v).replace(/온도/g, "온도 : ").replace(/지수/g, "지수 : "))
-				var sun1 = doc.select('li.sun_item').select('div.day').select('span').get(0).text() +" : "+ doc.select('li.sun_item').select('div.time').get(0).text();
-				var sun2 = doc.select('li.sun_item').select('div.day').select('span').get(1).text() +" : "+ doc.select('li.sun_item').select('div.time').get(1).text();
-				var link3 = link2+'&default=air';
-				var doc1 = org.jsoup.Jsoup.connect(link3).get();
-				var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
-				var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
+				//var direction = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=2]').text().split(' ').slice();
+				
 				var where1 = "";
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
@@ -431,6 +422,16 @@ function weather(r){
 							}
 						}
 				} else {
+					var uv1 = doc.select('li.uv').select('em').text();
+					var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
+					var index = doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').map(v=>String(v).replace(/온도/g, "온도 : ").replace(/지수/g, "지수 : "))
+					var sun1 = doc.select('li.sun_item').select('div.day').select('span').get(0).text() +" : "+ doc.select('li.sun_item').select('div.time').get(0).text();
+					var sun2 = doc.select('li.sun_item').select('div.day').select('span').get(1).text() +" : "+ doc.select('li.sun_item').select('div.time').get(1).text();
+					var link3 = link2+'&default=air';
+					var doc1 = org.jsoup.Jsoup.connect(link3).get();
+					var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
+					var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
+					
 					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
 					res += "---------미세먼지/자외선----------\n";
 					res += dust.join("\n")+"\n";
