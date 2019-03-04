@@ -348,15 +348,12 @@ function weather(r){
 		        	for(var i = 0 ; i<loc.length ; i++){
 		        		if (loc[i] == null){
 		        			loc[i] = loc1[i];
-		        			if(loc1[i] = null){
-		        				loc[i] = loc2[i];
-		        				if(loc2[i] = null){
-			        				loc[i] = loc3[i];
-			        				if(loc3[i] = null){
-				        				loc[i] = loc4[i];
-				        			}
-			        			}
-		        			}
+		        		} else if(loc1[i] = null){
+		        			loc[i] = loc2[i];
+		        		} else if(loc2[i] = null){
+		        			loc[i] = loc3[i];
+		        		} else if(loc3[i] = null){
+		        			loc[i] = loc4[i];
 		        		}
 		        	}
 		        	var msg;
