@@ -332,32 +332,7 @@ function weather(r){
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		where = name[targetNum].substr(3);
 		        	}
-				}  else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 1
-		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('dd.cont').select('span.desc_addr').text();
-		        	
-		        	var wantplace="";
-		        	var loc = temp.text().substr(0,vv.lastIndexOf("면 ")+1);
-		        	var loc1 = temp.text().substr(0,vv.lastIndexOf("읍 ")+1);
-		        	var loc2 = temp.text().substr(0,vv.lastIndexOf("동 ")+1);  //각 이름들의 주소
-		        	var loc3 = temp.text().substr(0,vv.lastIndexOf("가 ")+1);
-		        	if( loc.length > 0){
-	        			wantplace=loc;
-	        		} else if (loc1.length > 0){
-	        			wantplace = loc1;
-	        		} else if(loc2.length > 0){
-	        			wantplace = loc2;
-	        		} else if(loc3.length > 0){
-	        			wantplace = loc3;
-	        		}
-		        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
-	        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-	        		where = name[targetNum].substr(3) ;
-	        		check = link2.indexOf('weather');
-	        		if(check == -1){
-	        			r.replier.reply("검색이 불가능합니다.");
-						return;
-	        		}
-		        } else if (check == -1){ //네이버에 날씨검색이 바로 안될 때 2
+				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 		        	var i = 0;
 		        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
@@ -393,7 +368,32 @@ function weather(r){
 							return;
 		        		}
 		        	}
-				} else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
+				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2
+		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('dd.cont').select('span.desc_addr').text();
+		        	
+		        	var wantplace="";
+		        	var loc = temp.text().substr(0,vv.lastIndexOf("면 ")+1);
+		        	var loc1 = temp.text().substr(0,vv.lastIndexOf("읍 ")+1);
+		        	var loc2 = temp.text().substr(0,vv.lastIndexOf("동 ")+1);  //각 이름들의 주소
+		        	var loc3 = temp.text().substr(0,vv.lastIndexOf("가 ")+1);
+		        	if( loc.length > 0){
+	        			wantplace=loc;
+	        		} else if (loc1.length > 0){
+	        			wantplace = loc1;
+	        		} else if(loc2.length > 0){
+	        			wantplace = loc2;
+	        		} else if(loc3.length > 0){
+	        			wantplace = loc3;
+	        		}
+		        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+	        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+	        		where = name[targetNum].substr(3) ;
+	        		check = link2.indexOf('weather');
+	        		if(check == -1){
+	        			r.replier.reply("검색이 불가능합니다.");
+						return;
+	        		}
+		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
 	    			var msg;
