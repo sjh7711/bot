@@ -424,8 +424,8 @@ function weather(r){
 							if(i==5){
 								res +=es;
 							}
-							res += "\n"+link2;
 						}
+						res += "\n"+link2;
 				} else {
 					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
 					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
