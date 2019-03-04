@@ -331,9 +331,6 @@ function weather(r){
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();//위에서 받은 정보로 날씨 검색
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		where = name[targetNum].substr(3);
-		        	}else{
-		        		r.replier.reply("검색이 불가능합니다.");
-		        		return;
 		        	}
 				}else if (check == -1){ //네이버에 날씨검색이 바로 안될 때
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
@@ -389,6 +386,10 @@ function weather(r){
 		        		return;
 		        	}
 		        }
+			}
+			if(link2=='https://m.weather.naver.com/m/nation.nhn'){
+				r.replier.reply("검색이 불가능합니다.");
+        		return;
 			}
 			
 			if(check > 0){
