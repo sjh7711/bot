@@ -283,6 +283,52 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 	}
 }*/
 
+function read64(file) {
+	   var is=new java.io.FileInputStream(file);
+	   var os=new java.io.ByteArrayOutputStream();
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	   var fileArray=os.toByteArray();
+	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
+	   return str;
+	}
+	
+function write64(file,base64) {
+	   var base64Array=new JString(base64).getBytes();
+	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
+	   var is=new java.io.ByteArrayInputStream(fileArray);
+	   var os=new java.io.FileOutputStream(file);
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	}
+	
+function readFile() {
+    var filedir = new java.io.File("/proc/stat");
+    try {
+        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
+        var readStr = "";
+        var str = null;
+        while (((str = br.readLine()) != null)) {
+            readStr += str + "\n";
+        }
+        br.close();
+        return readStr.trim();
+    }
+    catch (e) {
+    	Api.replyRoom('test',e+"\n"+e.stack);
+    }
+}
+
 function checkstatus(r){
 	var bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
 	var temperature = bm.getIntExtra("temperature",0)/10 + '℃'
@@ -463,7 +509,7 @@ function weather(r){
 					var link3 = link2+'&default=air';
 					var doc1 = org.jsoup.Jsoup.connect(link3).get();
 					var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
-					var dust = doc1.select('div.dust_graph_number').toArray().map(v=>v.text().replace('먼지', '먼지 :')+"㎍/㎥");
+					var dust = doc1.select('div.chart_item').toArray().map(v=>v.select('div.dust_graph_number').text().replace('먼지', '먼지 :')+"㎍/㎥" + "("+v.select('div.dust_graph_text').text()+")");
 					
 					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
 					res += "-------미세먼지/자외선--------\n";
