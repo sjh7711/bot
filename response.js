@@ -372,10 +372,10 @@ function weather(r){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('dd.cont').select('span.desc_addr').text();
 		        	
 		        	var wantplace="";
-		        	var loc = temp.text().substr(0,vv.lastIndexOf("면 ")+1);
-		        	var loc1 = temp.text().substr(0,vv.lastIndexOf("읍 ")+1);
-		        	var loc2 = temp.text().substr(0,vv.lastIndexOf("동 ")+1);  //각 이름들의 주소
-		        	var loc3 = temp.text().substr(0,vv.lastIndexOf("가 ")+1);
+		        	var loc = temp.substr(0,vv.lastIndexOf("면 ")+1);
+		        	var loc1 = temp.substr(0,vv.lastIndexOf("읍 ")+1);
+		        	var loc2 = temp.substr(0,vv.lastIndexOf("동 ")+1);  //각 이름들의 주소
+		        	var loc3 = temp.substr(0,vv.lastIndexOf("가 ")+1);
 		        	if( loc.length > 0){
 	        			wantplace=loc;
 	        		} else if (loc1.length > 0){
