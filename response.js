@@ -320,7 +320,7 @@ function weather(r){
 	    		where = want; // 지역명
 	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
-	    		 if (temp.length > 1){ //같은 이름의 지역이 2곳 이상일 때
+	    		 if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때
 		        	var i=0; //name의 번호에 필요
 		        	var name = temp.map(v=> (1+i++) +". "+ v.text()); //장소명들
 		        	var msg;
@@ -369,7 +369,7 @@ function weather(r){
 		        		}
 		        	}
 				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2
-		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('dd.cont').select('span.desc_addr').text();
+		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
 		        	
 		        	var wantplace="";
 		        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
