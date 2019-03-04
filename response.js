@@ -404,7 +404,7 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0){
+				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0 || String(doc).indexOf('accuweather') > 0){
 					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','1','2','4','5','6','7','8','9');
 					var clock1 = clock.length;
 					if (clock1 > 16){
@@ -424,6 +424,7 @@ function weather(r){
 							if(i==5){
 								res +=es;
 							}
+							res += "\n"+link2;
 						}
 				} else {
 					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
