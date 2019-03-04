@@ -340,24 +340,26 @@ function weather(r){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
-		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
-		        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
-		        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("리 ")+1)});
-		        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("가 ")+1)});
-		        	var loc4 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
+		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("리 ")+1)});
+		        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
+		        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
+		        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
+		        	var loc4 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("가 ")+1)});
 		        	var msg;
 		        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length ){
-		        		var targetNum=msg-1
-		        		var wantplace=loc[targetNum]
-		        		if (loc[targetNum].length == 0){
+		        		var targetNum=msg-1;
+		        		var wantplace="";
+		        		if( loc[targetNum].length > 0){
+		        			wantplace=loc[targetNum];
+		        		} else if (loc1[targetNum].length > 0){
 		        			wantplace = loc1[targetNum];
-		        		} else if(loc1[targetNum].length == 0){
+		        		} else if(loc2[targetNum].length > 0){
 		        			wantplace = loc2[targetNum];
-		        		} else if(loc2[targetNum].length == 0){
+		        		} else if(loc3[targetNum].length > 0){
 		        			wantplace = loc3[targetNum];
-		        		} else if(loc3[targetNum].length == 0){
+		        		} else if(loc4[targetNum].length > 0){
 		        			wantplace = loc4[targetNum];
 		        		}
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
