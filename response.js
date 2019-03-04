@@ -365,8 +365,7 @@ function weather(r){
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
 		        		var jejulist = ['https://m.weather.naver.com/m/main.nhn?regionCode=14110104', 'https://m.weather.naver.com/m/main.nhn?regionCode=14130101'];
-		        		link1 = org.jsoup.Jsoup.connect(jejulist[targetNum]).get();
-		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		link2 = org.jsoup.Jsoup.connect(jejulist[targetNum]).get();
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3);
 		        	}
