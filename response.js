@@ -405,7 +405,7 @@ function weather(r){
 				}
 				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0){
 					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','1','2','4','5','6','7','8','9');
-					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
+					var clock1 = clock.length;
 					var res =where+where1+" 날씨\n";
 					res += "-------------날씨-------------\n"
 						res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
