@@ -91,14 +91,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
 	
-	if(room=="test"){
-		if(msg=="사진"){
-			file = "storage/emulated/0/kakaotalkbot/photo"+sender+" "+room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
-			write64(file, imageDB.getImage());
-			replier.reply('image save succes');
-		}
-	}
-	
 	if (room == 'test' || room == 'bot') {
 		if (msg.indexOf("]") == 0) {
 			try {
@@ -220,6 +212,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	replier.reply(temp.join('\n'));
         }
         str += "!패치노트\n";
+        
+        if(imageDB.getImage() != null){
+    		saveImage(r);
+    	}
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
@@ -288,6 +284,12 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 		}).start();
 	}
 }*/
+
+function saveImage(r){
+	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second;
+	write64(file, r.imageDB.getImage());
+	Api.replyRoom('test', 'image save succes\n'+time().now);
+}
 
 function read64(file) {
 	   var is=new java.io.FileInputStream(file);
