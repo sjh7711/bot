@@ -573,7 +573,7 @@ T.register("weatherClockCheck",()=>{
 			weather(r);*/
 			java.lang.Thread.sleep(60*60*1000); //60분
 		}
-		java.lang.Thread.sleep(60*1000); //1분
+		java.lang.Thread.sleep(10*1000); //1분
 	}
 }).start();
 
