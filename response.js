@@ -320,7 +320,7 @@ function weather(r){
 	    		where = want; // 지역명
 	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
-	    		 if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때
+	    		 if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때 ex) 고성, 광주
 		        	var i=0; //name의 번호에 필요
 		        	var name = temp.map(v=> (1+i++) +". "+ v.text()); //장소명들
 		        	var msg;
@@ -332,7 +332,7 @@ function weather(r){
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		where = name[targetNum].substr(3);
 		        	}
-				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1
+				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1 ex)읍내면, 북극
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 		        	var i = 0;
 		        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
@@ -368,7 +368,7 @@ function weather(r){
 							return;
 		        		}
 		        	}
-				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn' || want.indexOf('제주') > 0) { // 바로 검색이 안될 때 2
+				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2 ex) 독도
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
 		        	
 		        	var wantplace="";
@@ -393,7 +393,7 @@ function weather(r){
 	        			r.replier.reply("검색이 불가능합니다.");
 						return;
 	        		}
-		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
+		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
 	    			var msg;
@@ -401,8 +401,7 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		var link3 = link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href");
-		        		link1 = org.jsoup.Jsoup.connect(link3).get();
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name.substr(3)+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
