@@ -410,9 +410,6 @@ function weather(r){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
-		        } else {
-		        	r.replier.reply("검색이 불가능합니다.");
-					return;
 		        }
 			}
 			/*
