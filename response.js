@@ -336,9 +336,9 @@ function weather(r){
 		        		return;
 		        	}
 				}else if (check == -1){ //네이버에 날씨검색이 바로 안될 때
-		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
+		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.cont_info'); // 다음에서 해당하는 곳의 주소를 가져옴
 		        	var i = 0;
-		        	var name = temp.map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').get(0).text().replace(' 펼치기/접기','')); // want로 daum에 검색한 곳들의 이름들
+		        	var name = temp.toArray().map(v=>(1+i++)+". "+v.select('div.wrap_cont').select('a').text().replace(' 펼치기/접기','')); // want로 daum에 검색한 곳들의 이름들
 		        	if(name.length == 0){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
