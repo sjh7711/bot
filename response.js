@@ -357,7 +357,7 @@ function weather(r){
 							return;
 		        		}
 		        	}
-				} else if(want.indexOf('제주')>0) { //특별한 제주 ^^
+				} else if(want.indexOf('제주')>-1) { //특별한 제주 ^^
 					var name = ['1. 제주도' , '2. 서귀포'];
 					var msg;
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
