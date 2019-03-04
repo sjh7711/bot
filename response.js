@@ -413,8 +413,8 @@ function weather(r){
 					res += "-------------날씨-------------\n"
 						res += "시간 기온 강수 습도 바람    날씨\n [h]   [℃]  [%]  [%] [m/s]    상태\n";
 						for (var i = 1 ; i < clock1 ; i++) {
-							res += " "+String(clock[i]).extension("0",2)+" ";
-							res += String(degree[i]).extension(" ",2)+"   ";
+							res += " "+String(clock[i]).extension("0",2)+"    ";
+							res += String(degree[i]).extension(" ",2)+"    ";
 							res += String(rain[i]).extension(" ",2)+"   ";
 							res += String(wet[i]).extension(" ", 2)+"   ";
 							res += String(wind[i]).extension(" ",2)+" ";
