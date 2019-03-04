@@ -417,8 +417,8 @@ function weather(r){
 							res += String(degree[i]).extension(" ",2)+"   ";
 							res += String(rain[i]).extension(" ",2)+"   ";
 							res += String(wet[i]).extension(" ", 2)+"   ";
-							res += String(wind[i]).extension(" ",2)+"\n";
-							res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
+							res += String(wind[i]).extension(" ",2)+" ";
+							res += String(sky[i])+"\n";
 							//res += String(direction[i]).extension("   ",3)+" ";
 							if(i==5){
 								res +=es;
