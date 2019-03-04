@@ -286,7 +286,7 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 }*/
 
 function saveImage(r){
-	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second;
+	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
 	Api.replyRoom('test', 'image save succes\n'+time().now);
 }
