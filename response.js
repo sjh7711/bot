@@ -365,7 +365,8 @@ function weather(r){
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
 		        		var jejulist = ['https://m.weather.naver.com/m/main.nhn?regionCode=14110104', 'https://m.weather.naver.com/m/main.nhn?regionCode=14130101'];
-		        		link2 = org.jsoup.Jsoup.connect(jejulist[targetNum]).get();
+		        		link1 = jejulist[targetNum];
+		        		link2 = org.jsoup.Jsoup.connect(link1).get();
 		        		check = 1;
 		        		where = name[targetNum].substr(3);
 		        	}
@@ -392,7 +393,7 @@ function weather(r){
 			if(check > 0){
 				
 				var doc = org.jsoup.Jsoup.connect(link2).get();
-				var sky = doc.select('tr.row.row_icon._cnWtrHourlyChart[data-tab=0]').text().split(' ').slice();
+				var sky = doc.select('div.weather_icon.sp_icon_60').toArray().map(v=> v.text());
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
 				var rain = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=1]').text().split(',').slice();
 				var wind = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=2]').text().split(',').slice();
@@ -409,7 +410,7 @@ function weather(r){
 					var res =where+where1+" 날씨\n";
 					res += "-------------날씨-------------\n"
 						res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
-						for (var i = 0 ; i < clock1+9 ; i++) {
+						for (var i = 0 ; i < clock1 ; i++) {
 							res += " "+String(clock[i]).extension("0",2)+" ";
 							res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
 							res += String(degree[i]).extension(" ",2)+"   ";
