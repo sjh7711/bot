@@ -89,7 +89,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	I.run(room, sender, msg);
 	
-	r = { replier: replier, msg: msg, sender: sender, room: room };
+	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB};
 	
 	try {
 		blankFunc(r);
