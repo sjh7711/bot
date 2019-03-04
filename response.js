@@ -340,7 +340,21 @@ function weather(r){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
-		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동")+1)});  //각 이름들의 주소
+		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
+		        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
+		        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("리 ")+1)});
+		        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
+		        	for(var i = 0 ; i<loc.length ; i++){
+		        		if (loc[i] == null){
+		        			loc[i] = loc1[i];
+		        			if(loc1[i] = null){
+		        				loc[i] = loc2[i];
+		        				if(loc2[i] = null){
+			        				loc[i] = loc3[i];
+			        			}
+		        			}
+		        		}
+		        	}
 		        	var msg;
 		        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 		        	msg=input.getMsg()*1;
@@ -386,11 +400,11 @@ function weather(r){
 		        		return;
 		        	}
 		        }
-			}
+			}/*
 			if(link2=='https://m.weather.naver.com/m/nation.nhn'){
 				r.replier.reply("검색이 불가능합니다.");
         		return;
-			}
+			}*/
 			
 			if(check > 0){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
