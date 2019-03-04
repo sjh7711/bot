@@ -402,7 +402,11 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				var res = "ㅤㅤ<종합정보 → 전체보기>\n"+where+where1+" 날씨\n";
+				var res = "";
+				res += "---------미세먼지/자외선----------\n";
+				res += dust.join("\n")+"\n";
+				res += "자외선 : "+uv+"\n"+es;
+				res += "ㅤㅤ<종합정보 → 전체보기>\n"+where+where1+" 날씨\n";
 				res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
 				for (var i = 0 ; i < clock1+8 ; i++) {
 					res += " "+String(clock[i]).extension("0",2)+" ";
@@ -412,15 +416,11 @@ function weather(r){
 					res += String(wet[i]).extension(" ", 2)+"   ";
 					res += String(wind[i]).extension(" ",2)+"\n";
 					//res += String(direction[i]).extension("   ",3)+" ";
-					
-					if(i==6){
+					if(i==5){
 						res +=es;
 					}
 				}
-				res += "------------기타지수------------\n";
-				res += dust.join("\n")+"\n";
-				res += pollution.join("\n")+"\n";
-				res += "자외선 : "+uv+"\n";
+				res += "------------기타지수------------\n"+pollution.join("\n")+"\n";
 				res += "------------일상지수------------\n"+index.join("\n");
 				res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
 				res += "\n"+link2;
