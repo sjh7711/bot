@@ -77,6 +77,9 @@ var flagover = [0, 0, 0, 0, 0, 0];
 //공익방
 var flagagent = [0, 0, 0, 0, 0, 0];
 
+function blankFunc(r){
+}
+
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -84,10 +87,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		return;
 	}
 	
+	blankFunc(r);
+	
 	//Api.replyRoom('test', imageDB.getProfileImage());
-	//if(imageDB.getImage()!=null){
-	//	Api.replyRoom('test', imageDB.getImage())
-	//}
+	if(imageDB.getImage()!=null){
+		Api.replyRoom('test', imageDB.getImage())
+	}
 	
 	
 	I.run(room, sender, msg);
