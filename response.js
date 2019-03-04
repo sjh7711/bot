@@ -357,6 +357,19 @@ function weather(r){
 							return;
 		        		}
 		        	}
+				} else if(want.indexOf('제주')>0) { //특별한 제주 ^^
+					var name = ['1. 제주도' , '2. 서귀포'];
+					var msg;
+	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
+		        	msg=input.getMsg()*1;
+		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+		        		var targetNum=msg-1;
+		        		var jejulist = ['https://m.weather.naver.com/m/main.nhn?regionCode=14110104', 'https://m.weather.naver.com/m/main.nhn?regionCode=14130101'];
+		        		link1 = org.jsoup.Jsoup.connect(jejulist[targetNum]).get();
+		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		check = link2.indexOf('weather');
+		        		where = name[targetNum].substr(3);
+		        	}
 				} else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
@@ -402,29 +415,46 @@ function weather(r){
 				if(want.length > 0 ){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
-				var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
-				res += "---------미세먼지/자외선----------\n";
-				res += dust.join("\n")+"\n";
-				res += "자외선 : "+uv+"\n";
-				res += "-------------날씨-------------\n"
-				res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
-				for (var i = 0 ; i < clock1+9 ; i++) {
-					res += " "+String(clock[i]).extension("0",2)+" ";
-					res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
-					res += String(degree[i]).extension(" ",2)+"   ";
-					res += String(rain[i]).extension(" ",2)+"   ";
-					res += String(wet[i]).extension(" ", 2)+"   ";
-					res += String(wind[i]).extension(" ",2)+"\n";
-					//res += String(direction[i]).extension("   ",3)+" ";
-					if(i==5){
-						res +=es;
+				if( String(doc).indexOf('Weathernews') > 0 ){
+					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
+					res += "-------------날씨-------------\n"
+						res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
+						for (var i = 0 ; i < clock1+9 ; i++) {
+							res += " "+String(clock[i]).extension("0",2)+" ";
+							res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
+							res += String(degree[i]).extension(" ",2)+"   ";
+							res += String(rain[i]).extension(" ",2)+"   ";
+							res += String(wet[i]).extension(" ", 2)+"   ";
+							res += String(wind[i]).extension(" ",2)+"\n";
+							//res += String(direction[i]).extension("   ",3)+" ";
+							if(i==5){
+								res +=es;
+							}
+						}
+				} else {
+					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
+					res += "---------미세먼지/자외선----------\n";
+					res += dust.join("\n")+"\n";
+					res += "자외선 : "+uv+"\n";
+					res += "-------------날씨-------------\n"
+					res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
+					for (var i = 0 ; i < clock1+9 ; i++) {
+						res += " "+String(clock[i]).extension("0",2)+" ";
+						res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
+						res += String(degree[i]).extension(" ",2)+"   ";
+						res += String(rain[i]).extension(" ",2)+"   ";
+						res += String(wet[i]).extension(" ", 2)+"   ";
+						res += String(wind[i]).extension(" ",2)+"\n";
+						//res += String(direction[i]).extension("   ",3)+" ";
+						if(i==5){
+							res +=es;
+						}
 					}
+					res += "------------기타지수------------\n"+pollution.join("\n")+"\n";
+					res += "------------일상지수------------\n"+index.join("\n");
+					res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
+					res += "\n"+link2;
 				}
-				res += "------------기타지수------------\n"+pollution.join("\n")+"\n";
-				res += "------------일상지수------------\n"+index.join("\n");
-				res += "\n------------일출&일몰-----------\n"+sun1+"\n"+sun2;
-				res += "\n"+link2;
-	        
 				r.replier.reply(res);
 			}
 		}catch(e){r.replier.reply(e+"\n"+e.stack)}
