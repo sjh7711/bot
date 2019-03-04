@@ -91,10 +91,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
 	
-	try {
-		blankFunc(r);
-	} catch (e) {replier.reply(e + "\n" + e.stack);}
-
+	
 	
 	if (room == 'test' || room == 'bot') {
 		if (msg.indexOf("]") == 0) {
@@ -103,6 +100,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			} catch (e) {replier.reply(e + "\n" + e.stack);}
 		}
 	}
+	
+	try {
+		blankFunc(r);
+	} catch (e) {replier.reply(e + "\n" + e.stack);}
+
 	
 	try {
 		var str = "";
