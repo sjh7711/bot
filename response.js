@@ -345,23 +345,22 @@ function weather(r){
 		        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("리 ")+1)});
 		        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("가 ")+1)});
 		        	var loc4 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
-		        	for(var i = 0 ; i<loc.length ; i++){
-		        		if (loc[i] == null){
-		        			loc[i] = loc1[i];
-		        		} else if(loc1[i] = null){
-		        			loc[i] = loc2[i];
-		        		} else if(loc2[i] = null){
-		        			loc[i] = loc3[i];
-		        		} else if(loc3[i] = null){
-		        			loc[i] = loc4[i];
-		        		}
-		        	}
 		        	var msg;
 		        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length ){
 		        		var targetNum=msg-1
-		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+loc[targetNum]+"+날씨").get();
+		        		var wantplace=loc[targetNum]
+		        		if (loc[targetNum].length == 0){
+		        			wantplace = loc1[targetNum];
+		        		} else if(loc1[targetNum].length == 0){
+		        			wantplace = loc2[targetNum];
+		        		} else if(loc2[targetNum].length == 0){
+		        			wantplace = loc3[targetNum];
+		        		} else if(loc3[targetNum].length == 0){
+		        			wantplace = loc4[targetNum];
+		        		}
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		where = name[targetNum].substr(3) ;
 		        		check = link2.indexOf('weather');
