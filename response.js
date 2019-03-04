@@ -368,7 +368,7 @@ function weather(r){
 							return;
 		        		}
 		        	}
-				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2
+				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn' || want.indexOf('제주') > 0) { // 바로 검색이 안될 때 2
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
 		        	
 		        	var wantplace="";
