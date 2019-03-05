@@ -714,7 +714,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		}
 
 		if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
-			r.replier.reply("뽑힐 인원 수를 입력해주세요. 숫자만 입력하면 됩니다. ex) 1\n최대 5명까지 가능합니다. 참여엔 제한이 없습니다. 90초 이후에 누구나 !추첨종료 로 종료가 가능합니다.");
+			r.replier.reply("뽑힐 인원 수를 입력해주세요. 숫자만 입력하면 됩니다. ex) 1\n최대 5명까지 가능합니다. 참여엔 제한이 없습니다.");
 			seltime = new Date().getTime();
 			selsender = r.sender;
 			this["flag" + r.room][2] = 1;
@@ -722,7 +722,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		
 		if(selsender == r.sender && r.msg < 5 && 0 < r.msg && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 0){
 			selnum = r.msg;
-			r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 '참가' 를 입력해주세요. 추첨을 제안한 사람이 !마감 을 입력하면 마감됩니다.");
+			r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 '참가' 를 입력해주세요. 추첨을 제안한 사람이 !마감 을 입력하면 마감됩니다. 90초 이후엔 누구든 마감할 수 있습니다.");
 			this["flag" + r.room][3]=1;
 		}
 		
