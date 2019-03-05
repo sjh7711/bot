@@ -762,6 +762,11 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	            	}
 	            }
 	    	}
+	    	
+	    	if(Flag.get('selend', r.room)==1){
+	    		return;
+	    	}
+	    	Flag.set('selend', r.room, 1);
 	    	r.replier.reply('3');
 	    	java.lang.Thread.sleep(1000);
 	    	r.replier.reply('2');
@@ -773,6 +778,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	    	Flag.set("selnum", r.room, -1);
 	    	Flag.set("selsender", r.room, "");
 	    	Flag.set("sellist", r.room, [])
+	    	Flag.set('selend', r.room, 0);
 	    }
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
