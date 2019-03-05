@@ -80,7 +80,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
 	
-	if (room == 'test' || room == 'bot') {
+	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
 			try {
 				replier.reply(eval(msg.substring(1)));
@@ -115,7 +115,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!메뉴 / "
 
-        if (room != 'agent' || room != 'over') {
+        if (room != '푸드마켓' || room != '갠톡하기 귀찮아서 판 오버워치 카톡방') {
             if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res")}
             str += "!식당 / "
         } 
@@ -125,12 +125,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!맛집\n"
         	
-        if (room != 'ja') {
+        if (room != '시립대 자취생 생정') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
             str += "!최근채팅\n";
         }
 
-        if (room == 'test' || room == 'bot') {
+        if (room == 'test' || room == '시립대 봇제작방') {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
             str += "!전체채팅\n"
         } 
@@ -140,22 +140,20 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         str += "!오버워치\n";
         
-        if (room == 'test' || room == 'bot') {
+        if (room == 'test' || room == '시립대 봇제작방') {
             if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
             str += "!예정기능\n";
         }
         
-        if (room == 'test' || room == 'agent' || room == 'bot') {
+        if (room == 'test' || room == '푸드마켓' || room == '시립대 봇제작방') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r)}
             str += "!공지\n";
         }
         
-        if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r)}
-        	str += "!추첨\n";
-        }
+        if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r)}
+        str += "!추첨\n";
 
-        if (room == 'agent' || room =='test' || room == 'bot'){
+        if (room == '푸드마켓' || room =='test' || room == '시립대 봇제작방'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
         	str += "!명단\n"
         } 
@@ -244,7 +242,7 @@ function func(r) {
 }
 
 /*
-if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
+if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == '푸드마켓' || room == '시립대 전전컴 톡방'||room=='시립대 자취생 생정') {
 	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
 		T.register("reactionSpeed",()=>{
 			var now;
@@ -355,7 +353,7 @@ function weather(r){
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "통영시 무전동";
-			if(r.room == 'ja' || r.room == 'ele'|| r.room == 'bot'){
+			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'){
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=09230104';
 				check = link2.indexOf('weather');
 				where = "서울시립대";
@@ -539,19 +537,19 @@ function weather(r){
 var WCC = T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 7 == new Date().getHours() ){
-			r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
+			r={msg : '!날씨', room : '푸드마켓',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨', room : 'bot',replier:{reply:function(msg){
+			r={msg : '!날씨', room : '시립대 봇제작방',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨', room : 'ele',replier:{reply:function(msg){
+			r={msg : '!날씨', room : '시립대 전전컴 톡방',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
@@ -563,13 +561,13 @@ var WCC = T.register("weatherClockCheck",()=>{
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨', room : 'ja',replier:{reply:function(msg){
+			r={msg : '!날씨', room : '시립대 자취생 생정',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨', room : 'over',replier:{reply:function(msg){
+			r={msg : '!날씨', room : '갠톡하기 귀찮아서 판 오버워치 카톡방',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
@@ -1409,26 +1407,26 @@ function clear(r, name, num) {
 */
 
 /*
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
                 add(r, "menu", "메뉴", 0);
             }
         }
         //메뉴동의합의
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (this["flag" + room][0] == 1) {
                 agree(r, "menu", "메뉴", 0);
             }
         }
 
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (msg.indexOf("!식당추가 ") == 0 || msg.indexOf("!ㅅㄷㅊㄱ ") == 0) {
                 add(r, "res", "식당", 1);
             }
         }
 		
         //식당동의합의
-        if (room == 'test' || room == 'bot' || room == 'ja' || room == 'ele') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (this["flag" + room][1] == 1) {
                 agree(r, "res", "식당", 1);
             }
