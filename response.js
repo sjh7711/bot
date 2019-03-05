@@ -722,7 +722,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		
 		var selexittime = new Date().getTime();
 		
-		if(r.msg == '!마감' && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1 && Flag.get('seltime', r.room) + 1000*60*1.5 > selexittime){
+		if(r.msg == '!마감' && r.sender != Flag.get("selsender", r.room) && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1 && Flag.get('seltime', r.room) + 1000*60*1.5 > selexittime){
 	    	if( Flag.get('seltime', r.room) + 1000*60*1.5 >= selexittime ){
 	    		var temp = new Date().getTime();
 				r.replier.reply(r.sender+'님은 '+(90000 - (temp - Flag.get('seltime', r.room)))/1000 + "초 뒤에 마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.");
