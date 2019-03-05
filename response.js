@@ -806,6 +806,7 @@ function selexit(r){
 		    	selnum = -1;
 		    	selsender = "";
 		    	sellist=[];
+		    }
 	    }
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
