@@ -723,8 +723,8 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		
 		var selexittime = new Date().getTime();
 		
-		if(r.msg == '!마감' && r.sender != Flag.get("selsender", r.room) && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1 && Flag.get('seltime', r.room) + 1000*60*1.5 > selexittime){
-	    	if( Flag.get('seltime', r.room) + 1000*60*1.5 >= selexittime ){
+		if(r.msg == '!마감' && r.sender != Flag.get("selsender", r.room) && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1){
+	    	if( Flag.get('seltime', r.room) + 1000*60*1.5 > selexittime ){
 	    		var temp = new Date().getTime();
 				r.replier.reply(r.sender+'님은 '+(90000 - (temp - Flag.get('seltime', r.room)))/1000 + "초 뒤에 마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.");
 	    	} else {
@@ -735,14 +735,8 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 			    	Flag.set("selnum", r.room, -1);
 			    	Flag.set("selsender", r.room, "");
 			    	Flag.set("sellist", r.room, [])
-		    		return;
+			    	return;
 		    	}
-		    	r.replier.reply('3');
-		    	java.lang.Thread.sleep(1000);
-		    	r.replier.reply('2');
-		    	java.lang.Thread.sleep(1000);
-		    	r.replier.reply('1');
-		    	java.lang.Thread.sleep(1000);
 	    	}
 		} else if(r.msg == '!마감' && r.sender == Flag.get("selsender", r.room) && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1){
 			Flag.set("sel0", r.room, 0);
@@ -754,12 +748,6 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		    	Flag.set("sellist", r.room, [])
 	    		return;
 	    	}
-	    	r.replier.reply('3');
-	    	java.lang.Thread.sleep(1000);
-	    	r.replier.reply('2');
-	    	java.lang.Thread.sleep(1000);
-	    	r.replier.reply('1');
-	    	java.lang.Thread.sleep(1000);
 	    }
 	   
 	    if ( Flag.get("sel0", r.room) == 0 && Flag.get("sel1", r.room) == 1 ){
@@ -774,6 +762,12 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	            	}
 	            }
 	    	}
+	    	r.replier.reply('3');
+	    	java.lang.Thread.sleep(1000);
+	    	r.replier.reply('2');
+	    	java.lang.Thread.sleep(1000);
+	    	r.replier.reply('1');
+	    	java.lang.Thread.sleep(1000);
 	    	r.replier.reply("당첨자 : "+list1.join(", "));
 	    	Flag.set("sel1", r.room, 0);
 	    	Flag.set("selnum", r.room, -1);
