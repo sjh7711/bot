@@ -40,44 +40,31 @@ var Update = ['패치노트',
 	]
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:식당
-//D.selectForString("sqlite_master")
+//menu:메뉴/res:식당//D.selectForString("sqlite_master")
 var T = require("ThreadManager.js");
 //T.getThreadList()
 var I = require("Interactive.js");
 
 var es=String.fromCharCode(8237).repeat(500);
 
-//추첨기 변수
-var selnum = -1;
-var selsender = "";
-var sellist = [];
-var seltime = "";
-
-//공지 변수
 var cookie1;
 var cookie2;
 var doc;
 
-//봇제작방용 변수
-var flagbot = [0, 0, 0, 0, 0, 0]; //flag[0]=메뉴추가flag flag[1]=식당추가flag //flag[2], flag[3] = 추첨기 //flag[4] = 반응속도
-
-//전전컴톡방용 변수
-var flagele = [0, 0, 0, 0, 0, 0]; 
-
-//개인방용 변수
-var flagtest = [0, 0, 0, 0, 0, 0];
-
-//자생방용 변수
-var flagja = [0, 0, 0, 0, 0, 0]; 
-
-//오버워치용 변수
-var flagover = [0, 0, 0, 0, 0, 0];
-
-//공익방
-var flagagent = [0, 0, 0, 0, 0, 0];
-
-
+Flag=(function(){
+	   var list={};
+	   var Flag={};
+	   Flag.set=function(flag,room,value){
+	      if(list[flag]===undefined){ 
+	         list[flag]={};
+	         list[flag][room]=value;
+	      }else list[flag][room]=value;
+	   }
+	   Flag.get=function(flag,room){
+	      return (list[flag] && list[flag][room]) || 0;
+	   }
+	   return Flag;
+	})();
 
 function blankFunc(r){
 }
@@ -164,7 +151,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room == 'ele'||room=='ja') {
-        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
+        	if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r)}
         	str += "!추첨\n";
         }
 
@@ -704,39 +691,43 @@ function banklist(r){
 function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3]==0 -> 추첨이 시작함 // flag[2]==1&&flag[3]==1 -> 추첨인원 모집  // flag[2]==0&&flag[3] ==1 -> 당첨자 발표
 	try{
 		var list1 = [];
+		var seltime = "";
 		
-		if ((this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) && r.msg == '!추첨'){
+		if ((Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) && r.msg == '!추첨'){
 			r.replier.reply('현재 추첨이 진행중입니다.')
 		}
 
-		if (this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 0){
+		if (Flag.get("sel0", r.room) == 0 && Flag.get("sel1", r.room) == 0){
 			r.replier.reply("뽑힐 인원 수를 입력해주세요. 숫자만 입력하면 됩니다. ex) 1\n최대 5명까지 가능합니다. 참여엔 제한이 없습니다.");
-			seltime = new Date().getTime();
-			selsender = r.sender;
-			this["flag" + r.room][2] = 1;
+			Flag.set('seltime', r.room, new Date().getTime());
+			Flag.set("selsender", r.room , r.sender);
+			Flag.set("sel0", r.room, 1);
 		}
 		
-		if(selsender == r.sender && r.msg < 5 && 0 < r.msg && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 0){
-			selnum = r.msg;
-			r.replier.reply(selnum+"명을 뽑습니다. 참여할 사람은 '참가' 를 입력해주세요. 추첨을 제안한 사람이 !마감 을 입력하면 마감됩니다. 90초 이후엔 누구든 마감할 수 있습니다.");
-			this["flag" + r.room][3]=1;
+		if(Flag.get("selsender", r.room) == r.sender && r.msg < 5 && 0 < r.msg && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 0){
+			Flag.set("selnum", r.room , r.msg)
+			r.replier.reply(Flag.get("selnum", r.room)+"명을 뽑습니다. 참여할 사람은 '참가' 를 입력해주세요. 추첨을 제안한 사람이 !마감 을 입력하면 마감됩니다. 90초 이후엔 누구든 !마감으로 마감할 수 있습니다.");
+			Flag.set("sel1", r.room, 1);
 		}
 		
-		if (r.msg == '참가' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
-			if(sellist.indexOf(r.sender)==-1){
-				sellist.push(r.sender);
-				r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+sellist.length+'명');
+		if (r.msg == '참가' && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1){
+			if(Flag.get(r.sender, r.room).indexOf(r.sender)==-1){
+				var temp = [];
+				temp.concat(Flag.get('sellist', r.room));
+				temp.push(r.sender);
+				Flag.set("sellist", r.room , temp);
+				r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+Flag.get('sellist', r.room).length+'명');
 			}
 		}
 		
 		var selexittime = new Date().getTime();
 		
-		if(r.msg == '!마감' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1 && seltime + 1000*60*1.5 > selexittime){
-	    	if( seltime + 1000*60*1.5 >= selexittime ){
+		if(r.msg == '!마감' && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1 && Flag.get('seltime', r.room) + 1000*60*1.5 > selexittime){
+	    	if( Flag.get('seltime', r.room) + 1000*60*1.5 >= selexittime ){
 	    		var temp = new Date().getTime();
-				r.replier.reply(r.sender+'님은 '+(90000 - (temp - seltime))/1000 + "초 뒤에 !마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.");
+				r.replier.reply(r.sender+'님은 '+(90000 - (temp - Flag.get('seltime', r.room)))/1000 + "초 뒤에 마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.");
 	    	} else {
-	    		this["flag" + r.room][2]=0;
+	    		Flag.set("sel0", r.room, 0);
 		    	r.replier.reply('3');
 		    	java.lang.Thread.sleep(1000);
 		    	r.replier.reply('2');
@@ -744,8 +735,8 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		    	r.replier.reply('1');
 		    	java.lang.Thread.sleep(1000);
 	    	}
-		} else if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
-	    	this["flag" + r.room][2]=0;
+		} else if(r.msg == '!마감' && r.sender == Flag.get("selsender", r.room) && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1){
+			Flag.set("sel0", r.room, 0);
 	    	r.replier.reply('3');
 	    	java.lang.Thread.sleep(1000);
 	    	r.replier.reply('2');
@@ -754,25 +745,25 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	    	java.lang.Thread.sleep(1000);
 	    }
 	   
-	    if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
-	    	if(sellist.length == 0){
+	    if ( Flag.get("sel0", r.room) == 0 && Flag.get("sel1", r.room) == 1 ){
+	    	if(Flag.get('sellist', r.room).length == 0){
 	    		list1=['아무도 참가하지 않았습니다.'];
 	    	}
-	    	if(sellist.length <= selnum){
-	    		list1=sellist;
+	    	if(Flag.get('sellist', r.room).length <= Flag.get("selnum", r.room)){
+	    		list1=Flag.get('sellist', r.room);
 	    	} else {
-	    		for (var i = 0; i < selnum; i++) {
-	            	var rad = Math.floor(Math.random() * sellist.length);
-	            	if (list1.indexOf(sellist[rad]) == -1){//중복이면 거른다
-	            		list1.push(sellist.splice(rad, 1));
+	    		for (var i = 0; i < Flag.get("selnum", r.room); i++) {
+	            	var rad = Math.floor(Math.random() * Flag.get('sellist', r.room).length);
+	            	if (list1.indexOf(Flag.get('sellist', r.room)[rad]) == -1){//중복이면 거른다
+	            		list1.push(Flag.get('sellist', r.room).splice(rad, 1));
 	            	}
 	            }
 	    	}
 	    	r.replier.reply("당첨자 : "+list1.join(", "));
-	    	this["flag" + r.room][3] = 0;
-	    	selnum = -1;
-	    	selsender = "";
-	    	sellist=[];
+	    	Flag.set("sel1", r.room, 0);
+	    	Flag.set("selnum", r.room, -1);
+	    	Flag.set("selsender", r.room, "");
+	    	Flag.set("sellist", r.room, [])
 	    }
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
