@@ -293,7 +293,7 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 function saveImage(r){
 	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'image save succes\n'+r.sender+' '+r.room+'\n'+time().now);
+	Api.replyRoom('test', 'image save succes'+r.sender+' '+r.room+'\n'+time().now);
 }
 //new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
 //File = new java.io.file
@@ -556,7 +556,7 @@ function weather(r){
 }
 var WCC = T.register("weatherClockCheck",()=>{
 	while(true){
-		if(T.getThreadList().join(' ').split('weatherClockCheck').length == 2){
+		if( 7 == new Date().getHours() ){
 			r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
