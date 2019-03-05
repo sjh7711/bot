@@ -167,10 +167,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	if (msg =="!ㅊㅊ"|| msg == "!추첨" || this["flag" + r.room][2] == 1 || this["flag" + r.room][3] == 1) {sel(r)}
         	str += "!추첨\n";
         }
-        
-        if (msg =="!추첨종료"){
-        	selexit(r);
-        } 
 
         if (room == 'agent' || room =='test' || room == 'bot'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
@@ -733,7 +729,22 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 			}
 		}
 		
-	   if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
+		var selexittime = new Date().getTime();
+		
+		if(r.msg == '!마감' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1 && seltime + 1000*60*1.5 > selexittime){
+	    	if( seltime + 1000*60*1.5 >= selexittime ){
+	    		var temp = new Date().getTime();
+				r.replier.reply(r.sender+'님은 '(90000 - (temp - seltime))/1000 + "초 뒤에 !마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.");
+	    	} else {
+	    		this["flag" + r.room][2]=0;
+		    	r.replier.reply('3');
+		    	java.lang.Thread.sleep(1000);
+		    	r.replier.reply('2');
+		    	java.lang.Thread.sleep(1000);
+		    	r.replier.reply('1');
+		    	java.lang.Thread.sleep(1000);
+	    	}
+		} else if(r.msg == '!마감' && r.sender == selsender && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1){
 	    	this["flag" + r.room][2]=0;
 	    	r.replier.reply('3');
 	    	java.lang.Thread.sleep(1000);
@@ -767,52 +778,6 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
 }
-
-function selexit(r){
-	try{
-		if(r.msg == '!마감' && this["flag" + r.room][2] == 1 && this["flag" + r.room][3] == 1 ){
-		    var selexittime = new Date().getTime();
-		    
-		    if( seltime + 1000*60*1.5 < selexittime) {
-		    	this["flag" + r.room][2]=0;
-		    	r.replier.reply('3');
-		    	java.lang.Thread.sleep(1000);
-		    	r.replier.reply('2');
-		    	java.lang.Thread.sleep(1000);
-		    	r.replier.reply('1');
-		    	java.lang.Thread.sleep(1000);
-		    }
-		    else {
-		    	var temp = new Date().getTime();
-				r.replier.reply(r.sender+'님은 '(90000 - (temp - seltime))/1000 + "초 뒤에 !마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.")
-		    }
-		    
-		    if ( this["flag" + r.room][2] == 0 && this["flag" + r.room][3] == 1 ){
-		    	if(sellist.length == 0){
-		    		list1=['아무도 참가하지 않았습니다.'];
-		    	}
-		    	if(sellist.length <= selnum){
-		    		list1=sellist;
-		    	} else {
-		    		for (var i = 0; i < selnum; i++) {
-		            	var rad = Math.floor(Math.random() * sellist.length);
-		            	if (list1.indexOf(sellist[rad]) == -1){//중복이면 거른다
-		            		list1.push(sellist.splice(rad, 1));
-		            	}
-		            }
-		    	}
-		    	r.replier.reply("당첨자 : "+list1.join(", "));
-		    	this["flag" + r.room][3] = 0;
-		    	selnum = -1;
-		    	selsender = "";
-		    	sellist=[];
-		    }
-	    }
-	}catch(e){
-		Api.replyRoom('test',e+"\n"+e.stack);
-		}
-}
-
 
 //최근채팅
 function recentchat(r) {
