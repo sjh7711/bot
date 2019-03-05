@@ -290,9 +290,9 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 }*/
 
 function saveImage(r){
-	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().date+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
+	file = 'storage/emulated/0/kakaotalkbot/photo'+'-'+r.sender+"."+r.room+"/"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'image save succes\n'+r.sender+' '+r.room+'\n'+time().now);
+	Api.replyRoom('test', 'image save succes\n'+r.sender+'/'+r.room+'\n'+time().now);
 }
 //new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
 //File = new java.io.file
