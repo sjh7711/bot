@@ -216,10 +216,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(imageDB.getImage() != null){
     		saveImage(r);
     	}
-        
-        if( T.getThreadList().split('weatherClockCheck').length != 2 ||  T.getThreadList().split('noticeCheck').length != 2 ){
-        	T.interrupt();
-        }
+       
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
