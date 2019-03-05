@@ -691,7 +691,6 @@ function banklist(r){
 function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3]==0 -> 추첨이 시작함 // flag[2]==1&&flag[3]==1 -> 추첨인원 모집  // flag[2]==0&&flag[3] ==1 -> 당첨자 발표
 	try{
 		var list1 = [];
-		var seltime = "";
 		
 		if ((Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) && r.msg == '!추첨'){
 			r.replier.reply('현재 추첨이 진행중입니다.')
@@ -734,6 +733,10 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	    		Flag.set("sel0", r.room, 0);
 	    		if(Flag.get('sellist', r.room).length == 0){
 		    		r.replier.reply('아무도 참가하지 않았습니다.');
+		    		Flag.set("sel1", r.room, 0);
+			    	Flag.set("selnum", r.room, -1);
+			    	Flag.set("selsender", r.room, "");
+			    	Flag.set("sellist", r.room, [])
 		    		return;
 		    	}
 		    	r.replier.reply('3');
@@ -747,6 +750,10 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 			Flag.set("sel0", r.room, 0);
 			if(Flag.get('sellist', r.room).length == 0){
 	    		r.replier.reply('아무도 참가하지 않았습니다.');
+	    		Flag.set("sel1", r.room, 0);
+		    	Flag.set("selnum", r.room, -1);
+		    	Flag.set("selsender", r.room, "");
+		    	Flag.set("sellist", r.room, [])
 	    		return;
 	    	}
 	    	r.replier.reply('3');
