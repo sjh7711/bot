@@ -77,6 +77,8 @@ var flagover = [0, 0, 0, 0, 0, 0];
 //공익방
 var flagagent = [0, 0, 0, 0, 0, 0];
 
+
+
 function blankFunc(r){
 }
 
@@ -288,7 +290,7 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 }*/
 
 function saveImage(r){
-	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().date+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
+	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().date+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
 	Api.replyRoom('test', 'image save succes\n'+r.sender+' '+r.room+'\n'+time().now);
 }
