@@ -216,6 +216,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(imageDB.getImage() != null){
     		saveImage(r);
     	}
+        
+        if( T.getThreadList().split('weatherClockCheck').length != 2 ||  T.getThreadList().split('noticeCheck').length != 2 ){
+        	T.interrupt();
+        }
+        
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
@@ -288,8 +293,10 @@ if (room == 'test' || room == 'bot' || room == 'over' || room == 'agent' || room
 function saveImage(r){
 	file = 'storage/emulated/0/kakaotalkbot/photo'+r.sender+" "+r.room+" "+time().day+" "+time().hour+" "+time().minute+" "+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'image save succes\n'+time().now);
+	Api.replyRoom('test', 'image save succes\n'+r.sender+' '+r.room+'\n'+time().now);
 }
+//new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
+//File = new java.io.file
 
 function read64(file) {
 	   var is=new java.io.FileInputStream(file);
@@ -547,9 +554,9 @@ function weather(r){
 		}catch(e){r.replier.reply(e+"\n"+e.stack)}
     })
 }
-T.register("weatherClockCheck",()=>{
+var WCC = T.register("weatherClockCheck",()=>{
 	while(true){
-		if( 7 == new Date().getHours() ){
+		if(T.getThreadList().join(' ').split('weatherClockCheck').length == 2){
 			r={msg : '!날씨', room : 'agent',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
@@ -1145,7 +1152,7 @@ function noticecheck(){
 		Log.e(e+"\n"+e.stack+'\n');
 	}
 };
-T.register("noticeCheck",()=>{
+var NC = T.register("noticeCheck",()=>{
 	while(true){
 		java.lang.Thread.sleep(2*50*1000); //100초
 		noticecheck();
