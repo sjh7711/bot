@@ -747,22 +747,21 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 			Flag.set("sel1", r.room, 1);
 		}
 		
-	
-		
 		if (r.msg == '참가' && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1){
-			if( Flag.get('sellist', r.room) == 0 || Flag.get('sellist', r.room).indexOf(r.sender)==-1){
-				var temp = [];
-				if(Flag.get('sellist', r.room) == 0){
-					Flag.set("sellist", r.room, temp);
-				} else {
-					temp.concat(Flag.get('sellist', r.room));
-				}
-				
-				temp.push(r.sender);
-				Flag.set("sellist", r.room , temp);
-				r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+Flag.get('sellist', r.room).length+'명');
-			}
-		}
+	         if( Flag.get('sellist', r.room) == 0 || Flag.get('sellist', r.room).indexOf(r.sender)==-1){
+	            var temp;
+	            if(Flag.get('sellist', r.room) == 0){
+	               temp=[];
+	            }
+	            else{
+	               temp=Flag.get('sellist', r.room);
+	            }
+	            
+	            temp.push(r.sender);
+	            Flag.set("sellist", r.room , temp);
+	            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+	         }
+	      }
 		
 		var selexittime = new Date().getTime();
 		
