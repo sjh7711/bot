@@ -125,12 +125,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!맛집\n"
         	
-        if (room != '시립대 자취생 생정') {
+        if (room != '시립대 자취생 생정' || room!='푸드마켓' || room!='공익' || room!='푸드마켓') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
             str += "!최근채팅\n";
         }
 
-        if (room == 'test' || room == '시립대 봇제작방') {
+        if (room == 'test') {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
             str += "!전체채팅\n"
         } 
@@ -161,6 +161,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!상태"){
         	checkstatus(r);
         } 
+        
+        if(room=='test'){
+        	if (msg == "!삭제"){
+        		deleteFile(r);
+        	}
+        }
+        
         str += "!상태\n"
 
         if (msg.indexOf('!건의 ')==0){
@@ -269,6 +276,15 @@ if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 
 		}).start();
 	}
 }*/
+
+function deleteFile(r){
+	for(i=0;i<a.length;i++){
+		if(String(a[i]).indexOf(r.msg.split(' ')[1])>0) {
+			File(a[i]).delete();
+		}
+	}
+	r.replier.reply(r.msg.split(' ')[1]+' 포함된 파일 삭제 완료');
+}
 
 function saveImage(r){
 	file = 'storage/emulated/0/ipdisk/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
