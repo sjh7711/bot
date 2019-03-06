@@ -1187,7 +1187,7 @@ function noticecheck(){
 	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(cookie2).cookies(cookie1).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
 			Api.replyRoom("test","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
-			Api.replyRoom("agent","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+			Api.replyRoom("푸드마켓","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			D.update('notice', { num: docnum, msg: doctitle });
 		}
 	}catch(e){
@@ -1250,6 +1250,10 @@ function compare(a, b) {
     return a - b;
 }
 
+
+own=function(obj){
+	return Object.getOwnPropertyNames(Api);
+	}
 
 String.prototype.rmspace=function(){
 	return this.toString().replace(/^\s*/,"").replace(/\s*$/,"");
