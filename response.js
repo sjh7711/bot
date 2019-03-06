@@ -794,10 +794,10 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	   
 	    if ( Flag.get("sel0", r.room) == 0 && Flag.get("sel1", r.room) == 1 ){
 	    	if(Flag.get('sellist', r.room).length <= Flag.get("selnum", r.room)){
-	    		var list1 = [];
-	    		list1=Flag.get('sellist', r.room);
+	    		var list1 = Flag.get('sellist', r.room);
 	    	} else {
 	    		for (var i = 0; i < Flag.get("selnum", r.room); i++) {
+	    			var list1 = [];
 	            	var rad = Math.floor(Math.random() * Flag.get('sellist', r.room).length);
 	            	if (list1.indexOf(Flag.get('sellist', r.room)[rad]) == -1){//중복이면 거른다
 	            		list1.push(Flag.get('sellist', r.room).splice(rad, 1));
