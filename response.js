@@ -300,6 +300,7 @@ if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 
 }*/
 
 function deleteFile(r){
+	File =java.io.File; 
 	var temp = File("/sdcard/ipdisk").listFiles();
 	for(i=0;i<temp.length;i++){
 		if(String(temp[i]).indexOf(r.msg.split(' ')[1])>-1) {
