@@ -754,7 +754,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 				var temp = [];
 				if(Flag.get('sellist', r.room) == 0){
 					Flag.set("sellist", r.room, temp);
-				} else if(Flag.get('sellist', r.room) != 0){
+				} else {
 					temp.concat(Flag.get('sellist', r.room));
 				}
 				
