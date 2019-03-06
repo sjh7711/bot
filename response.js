@@ -186,9 +186,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(T.getThreadList().join('\n'));
         	}str += "!쓰레드\n"
         	
-        	if(msg =="!reload"){
+        	if(msg =="!로딩"){
         		replier.reply(reload());
-        	}str += "!reload\n"
+        	}str += "!로딩\n"
         	
         	if(msg.indexOf("!전송") == 0){
         		if(msg.split(' ')[1].length >0 && msg.split(' ')[2].length>0){
