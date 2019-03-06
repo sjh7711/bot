@@ -169,15 +169,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!파일삭제\n"
         	
         	if (msg == "!방"){
-        		Api.getRoomList().slice().join('\n');
+        		replier.reply(Api.getRoomList().slice().join('\n'));
         	}str += "!방\n"
         	
         	if(msg == "!파일목록"){
-        		File("/sdcard/ipdisk").listFiles().slice();
+        		replier.reply(File("/sdcard/ipdisk").listFiles().slice());
         	}str += "!파일목록\n"
         	
         	if(msg =="!쓰레드"){
-        		T.getThreadList().join('\n');
+        		replier.reply(T.getThreadList().join('\n'));
         	}str += "!쓰레드\n"
         	
         	if(msg =="!reload"){
@@ -186,6 +186,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if(msg.indexOf("!전송") == 0){
         		Api.replyRoom(msg.split(' ')[1],msg.split(' ')[2]);
+        		replier.reply('성공');
         	}str += "!전송\n"
         }
         
