@@ -173,7 +173,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!방\n"
         	
         	if(msg == "!파일목록"){
-        		replier.reply(File("/sdcard/ipdisk").listFiles().slice());
+        		replier.reply(File("/sdcard/ipdisk").listFiles().slice().join('\n'));
         	}str += "!파일목록\n"
         	
         	if(msg =="!쓰레드"){
@@ -300,9 +300,9 @@ if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 
 }*/
 
 function deleteFile(r){
-	for(i=0;i<a.length;i++){
-		if(String(a[i]).indexOf(r.msg.split(' ')[1])>0) {
-			File(a[i]).delete();
+	for(i=0;i<File("/sdcard/ipdisk").listFiles().length;i++){
+		if(String(File("/sdcard/ipdisk").listFiles()[i]).indexOf(r.msg.split(' ')[1])>0) {
+			File(File("/sdcard/ipdisk").listFiles()[i]).delete();
 		}
 	}
 	r.replier.reply(r.msg.split(' ')[1]+' 포함된 파일 삭제 완료');
