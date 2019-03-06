@@ -300,9 +300,10 @@ if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 
 }*/
 
 function deleteFile(r){
-	for(i=0;i<File("/sdcard/ipdisk").listFiles().length;i++){
-		if(String(File("/sdcard/ipdisk").listFiles()[i]).indexOf(r.msg.split(' ')[1])>0) {
-			File(File("/sdcard/ipdisk").listFiles()[i]).delete();
+	var temp = File("/sdcard/ipdisk").listFiles();
+	for(i=0;i<temp.length;i++){
+		if(String(temp[i]).indexOf(r.msg.split(' ')[1])>0) {
+			File(temp[i]).delete();
 		}
 	}
 	r.replier.reply(r.msg.split(' ')[1]+' 포함된 파일 삭제 완료');
