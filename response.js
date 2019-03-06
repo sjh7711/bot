@@ -165,7 +165,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if(room=='test'){
         	if (msg == "!파일삭제"){
-        		deleteFile(r);
+        		var temp = java.io.File("/sdcard/ipdisk").listFiles();
+        		for(i=0;i<temp.length;i++){
+        			if(String(temp[i]).indexOf(msg.split(' ')[1])>-1) {
+        				File(temp[i]).delete();
+        				replier.reply(temp[i]+' 삭제 완료');
+        			}
+        		}
         	}str += "!파일삭제\n"
         	
         	if (msg == "!방"){
@@ -185,8 +191,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!reload\n"
         	
         	if(msg.indexOf("!전송") == 0){
-        		Api.replyRoom(msg.split(' ')[1],msg.split(' ')[2]);
-        		replier.reply('성공');
+        		if(msg.split(' ')[1].length >0 && msg.split(' ')[2].length>0){
+        			Api.replyRoom(msg.split(' ')[1],msg.split(' ')[2]);
+        			replier.reply('성공');
+        		} else{
+        			replier.reply('실패');
+        		}
+        		
         	}str += "!전송\n"
         }
         
@@ -298,17 +309,6 @@ if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 
 		}).start();
 	}
 }*/
-
-function deleteFile(r){
-	File =java.io.File; 
-	var temp = File("/sdcard/ipdisk").listFiles();
-	for(i=0;i<temp.length;i++){
-		if(String(temp[i]).indexOf(r.msg.split(' ')[1])>-1) {
-			File(temp[i]).delete();
-			r.replier.reply(temp[i]+' 삭제 완료');
-		}
-	}
-}
 
 function saveImage(r){
 	file = 'storage/emulated/0/ipdisk/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
