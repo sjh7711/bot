@@ -181,7 +181,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!쓰레드\n"
         	
         	if(msg =="!reload"){
-        		reload();
+        		replier.reply(reload());
         	}str += "!reload\n"
         	
         	if(msg.indexOf("!전송") == 0){
