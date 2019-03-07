@@ -164,7 +164,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if(room=='test'){
-        	if (msg == "!파일삭제"){
+        	if (msg.indexOf("!파일삭제")==0){
         		var temp = java.io.File("/sdcard/ipdisk").listFiles();
         		for(i=0;i<temp.length;i++){
         			if(String(temp[i]).indexOf(msg.split(' ')[1])>-1) {
