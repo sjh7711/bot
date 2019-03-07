@@ -278,7 +278,7 @@ function func(r) {
         r.replier.reply("로또번호를 추천해줍니다. !당첨으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "당첨") {
         r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. !당첨 닉네임 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
-    } else if (r.msg.split(" ")[1] == "메뉴") {
+    } else if (r.msg.split(" ")[1] == ";메뉴") {
         r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "식당") {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. !식당 3과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
@@ -307,7 +307,25 @@ function baseball(r){
 		
 		if(r.msg=='!시작'){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참여를 입력해주세요.');
+			Flag.set("start", r.room, 1);
 		}
+		
+		if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
+	         if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) && Flag.get('baseball', r.room).length < 4 ){
+	            var temp;
+	            if(Flag.get('sellist', r.room) == 0){
+	               temp=[];
+	            }
+	            else{
+	               temp=Flag.get('sellist', r.room);
+	            }
+	            
+	            temp.push(r.sender);
+	            Flag.set("sellist", r.room , temp);
+	            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+	         }
+	      }
+		
 	}
 	
 	
