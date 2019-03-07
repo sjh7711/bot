@@ -40,7 +40,19 @@ var Update = ['패치노트',
 	]
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-//menu:메뉴/res:식당//D.selectForString("sqlite_master")
+/*
+D.selectForString("sqlite_master")
+D.insert("cat", {name :"중용", gender : "남", age : 22})
+D.delete("cat", "name='중용'")
+D.delete("cat", "name='모모' and age='5'" )
+D.selectForString("cat", null, "age<4")
+D.selectForString("cat", "name, gender", "age<4")
+D.selectForString("cat", ["name", "gender"], "age<4")
+D.selectForString("cat","count(*)")
+D.selectForString("cat", null, "name=?",  [a]) //a='모모'
+D.update("cat", {age : 4} , "name='인문이'")
+D.create("cat", {name:"모모",gender:"남",age:4})
+*/
 var T = require("ThreadManager.js");
 //T.getThreadList()
 var I = require("Interactive.js");
@@ -164,6 +176,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if(room=='test'){
+        	
         	if (msg.indexOf("!파일삭제")==0){
         		var temp = java.io.File("/sdcard/ipdisk").listFiles();
         		for(i=0;i<temp.length;i++){
