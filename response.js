@@ -138,7 +138,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!맛집\n"
         	
-        if (room != '시립대 자취생 생정' || room!='푸드마켓' || room!='공익' || room!='푸드마켓') {
+        if (room == '시립대 전전컴 톡방' || room!='test' || room!='시립대 봇제작방') {
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
             str += "!최근채팅\n";
         }
@@ -174,6 +174,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!상태"){
         	checkstatus(r);
         } 
+        
+        if (msg == "!숫자야구" || msg == "!ㅅㅈㅇㄱ"){
+        	replier.reply('https://open.kakao.com/o/g8SoLzhb 로 입장해주세요.');
+        }
+        //str += '!숫자야구\n'
         
         if(room=='test'){
         	
@@ -294,34 +299,20 @@ function func(r) {
     }
 }
 
-/*
-if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == '푸드마켓' || room == '시립대 전전컴 톡방'||room=='시립대 자취생 생정') {
-	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
-		T.register("reactionSpeed",()=>{
-			var now;
-			while(1){
-				if(this["flag" + room][4] == 0){
-					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-					var rand = 1+Math.floor(Math.random() * 7000);
-					java.lang.Thread.sleep(rand);
-					this["flag" + room][4] = 1;
-					replier.reply('시작!');
-					msg="";
-					now = new Date().getTime();
-				}
-				var reactiontime = new Date().getTime();
-				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
-					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
-					this["flag" + room][4] = 0;
-					break;
-				}
-				if(((new Date().getTime())-now) > 20000){
-					break;
-				}
-			}
-		}).start();
+function baseball(r){
+	if(r.room=='baseball'){
+		if(D.selectForArray('baseball', [name]).indexOf(r.sender) == -1){
+			D.insert('baseball', {name : r.sender, point : 10000});
+		}
+		
+		if(r.msg=='!시작'){
+			r.replier.reply('게임을 시작합니다. 참여할 사람은 참여를 입력해주세요.');
+		}
 	}
-}*/
+	
+	
+}
+
 
 function saveImage(r){
 	file = 'storage/emulated/0/ipdisk/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
@@ -1500,3 +1491,33 @@ if (r.msg.split(" ")[1] == "메뉴추가") {
         r.replier.reply("추가되었으면하는 음식을 추천해주세요. 3명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!메뉴추가 메뉴이름");
     }
     */
+
+
+/*
+if (room == 'test' || room == '시립대 봇제작방' || room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == '푸드마켓' || room == '시립대 전전컴 톡방'||room=='시립대 자취생 생정') {
+	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
+		T.register("reactionSpeed",()=>{
+			var now;
+			while(1){
+				if(this["flag" + room][4] == 0){
+					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+					var rand = 1+Math.floor(Math.random() * 7000);
+					java.lang.Thread.sleep(rand);
+					this["flag" + room][4] = 1;
+					replier.reply('시작!');
+					msg="";
+					now = new Date().getTime();
+				}
+				var reactiontime = new Date().getTime();
+				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
+					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
+					this["flag" + room][4] = 0;
+					break;
+				}
+				if(((new Date().getTime())-now) > 20000){
+					break;
+				}
+			}
+		}).start();
+	}
+}*/
