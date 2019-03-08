@@ -308,23 +308,35 @@ function baseball(r){
 		if(r.msg=='!시작'){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참여를 입력해주세요.');
 			Flag.set("start", r.room, 1);
+			Flag.set("suggest", r.room, r.sender);
 		}
 		
 		if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
 	         if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) && Flag.get('baseball', r.room).length < 4 ){
 	            var temp;
-	            if(Flag.get('sellist', r.room) == 0){
+	            if(Flag.get('baseball', r.room) == 0){
 	               temp=[];
 	            }
 	            else{
-	               temp=Flag.get('sellist', r.room);
+	               temp=Flag.get('baseball', r.room);
 	            }
 	            
 	            temp.push(r.sender);
-	            Flag.set("sellist", r.room , temp);
+	            Flag.set("baseball", r.room , temp);
 	            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-	         }
-	      }
+	        } 
+	    }
+		
+		if ( Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender) ){
+			if(lag.get('baseball', r.room).length >0 ){
+				r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
+				Flag.get('start1', r.room, 1);
+			} else{
+				r.replier.reply('아무도 참여하지 않았습니다.');
+			}
+        }
+		
+				
 		
 	}
 	
