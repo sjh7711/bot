@@ -312,7 +312,7 @@ function baseball(r){
 		}
 		
 		if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
-	         if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) && Flag.get('baseball', r.room).length < 4 ){
+	        if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) && Flag.get('baseball', r.room).length < 4 ){
 	            var temp;
 	            if(Flag.get('baseball', r.room) == 0){
 	               temp=[];
@@ -330,13 +330,28 @@ function baseball(r){
 		if ( Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender) ){
 			if(lag.get('baseball', r.room).length >0 ){
 				r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
-				Flag.get('start1', r.room, 1);
+				Flag.set('start1', r.room, 1);
 			} else{
 				r.replier.reply('아무도 참여하지 않았습니다.');
 			}
-        }
+		}
 		
-				
+		if(Flag.get('start1', r.room) == 1) {
+			var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
+			var list1 = [];
+			for(var i=0;i<4;i++){
+				var rand = Math.floor(Math.random()*baseballnum1.length);
+				list1.push(baseballnum1.splice(rand,1))
+			}
+			
+			r.replier.reply(Flag.get('baseball', r.room)[0] + '님 부터 시작합니다.');
+			Flag.set('start2', r.room, 1);
+		}
+		
+		if(Flag.get('start2', r.room) == 1) {
+			r.msg.split('');
+		}
+		
 		
 	}
 	
