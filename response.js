@@ -311,7 +311,7 @@ function func(r) {
 }
 
 function baseball(r){
-	if(D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
+	if( D.selectForArray('baseball', 'name', 'room=?', r.room)[0] == undefined || D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000, room : r.room});
 	}
 
