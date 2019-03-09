@@ -315,7 +315,7 @@ function baseball(r){
 				이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
 	}
 	
-	if(r.msg=='!숫자야구' && !(Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 || Flag.get('start2', r.room) == 1) ){
+	if( Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
 		r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
 		Flag.set("start", r.room, 1);
 		Flag.set("suggest", r.room, r.sender);
