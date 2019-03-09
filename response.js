@@ -384,7 +384,7 @@ function baseball(r){
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
-		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
+		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.'+(Flag.get('baseball', r.room).length+2)+'자리 숫자만 입력해주세요.');
 		Flag.set('start2', r.room, 1);
 		return;
 	}
@@ -450,7 +450,7 @@ function baseball(r){
 				k=0;
 			}
 			Flag.set('k', r.room, k);
-			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
+			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.'+(Flag.get('baseball', r.room).length+2)+'자리 숫자만 입력해주세요.');
 		}
 	}
 }
