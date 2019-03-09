@@ -351,6 +351,7 @@ function baseball(r){
 			var rand = Math.floor(Math.random()*baseballnum1.length);
 			list1.push(baseballnum1.splice(rand,1))
 		}
+		Flag.set('answer',r.room, list1);
 		
 		Flag.set('playercount', r.room, Flag.get('baseball', r.room).length);
 		var k = 0;
@@ -384,7 +385,7 @@ function baseball(r){
 			var bcount=0;
 			
 			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
-				var temp = list1
+				var temp = Flag.get('answer',r.room);
 				if(number[i]==temp[i]){
 					scount+=1;
 					temp.splice(i, 1);
