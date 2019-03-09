@@ -305,22 +305,27 @@ function baseball(r){
 			D.insert('baseball', {name : r.sender, point : 10000});
 		}
 		
-		if(r.msg=='!시작'){
+		if(r.msg == '!룰'){
+			r.replier.reply('봇이 임의로 인원수에 따라 3자리~5자리의 랜덤 숫자를 정합니다.\n\
+					여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
+					참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
+					참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
+					처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
+					이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다.')
+		}
+		
+		if(r.msg=='!숫자야구'){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참여를 입력해주세요.');
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
+			var temp = [r.sender];
+			Flag.set("baseball", r.room , temp);
+			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
 		}
 		
 		if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
 	        if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) && Flag.get('baseball', r.room).length < 4 ){
-	            var temp;
-	            if(Flag.get('baseball', r.room) == 0){
-	               temp=[];
-	            }
-	            else{
-	               temp=Flag.get('baseball', r.room);
-	            }
-	            
+	            var temp = Flag.get('baseball', r.room);
 	            temp.push(r.sender);
 	            Flag.set("baseball", r.room , temp);
 	            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
@@ -328,7 +333,7 @@ function baseball(r){
 	    }
 		
 		if ( Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender) ){
-			if(lag.get('baseball', r.room).length >0 ){
+			if(Flag.get('baseball', r.room).length >0 ){
 				r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
 				Flag.set('start1', r.room, 1);
 			} else{
@@ -339,23 +344,23 @@ function baseball(r){
 		if(Flag.get('start1', r.room) == 1) {
 			var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
 			var list1 = [];
-			for(var i=0;i<4;i++){
+			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
 				var rand = Math.floor(Math.random()*baseballnum1.length);
 				list1.push(baseballnum1.splice(rand,1))
 			}
 			
-			r.replier.reply(Flag.get('baseball', r.room)[0] + '님 부터 시작합니다.');
+			r.replier.reply(Flag.get('baseball', r.room)[0] + '님 부터 시작합니다. 숫자만 입력해주세요.');
 			Flag.set('start2', r.room, 1);
 		}
 		
 		if(Flag.get('start2', r.room) == 1) {
-			r.msg.split('');
+			if(isNaN(r.msg)==true){
+				r.replier.reply('숫자가 아닙니다.')
+			}else{
+				var number = r.msg.split('');
+			}
 		}
-		
-		
 	}
-	
-	
 }
 
 
@@ -729,7 +734,7 @@ function famous(r){
 				temptext[2]=temptext[2]+es;
 			}
 			temptext = temptext.join('\n\n');
-			
+			temptext = url + '\n\n' + temptext;
 			r.replier.reply(temptext);
 		}
     }catch(e){
