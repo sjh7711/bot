@@ -406,7 +406,7 @@ function baseball(r){
 				}
 			}
 		}
-		if (checkcount > 3 ){ 
+		if (checkcount > Flag.get('baseball', r.room).length+2 ){ 
 			r.replier.reply('중복되는 숫자가 있습니다.');
 			return;
 		}else{
