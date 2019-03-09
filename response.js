@@ -314,15 +314,22 @@ function baseball(r){
 	if(D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000});
 	}
-	
-	if( Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
-		r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
-		Flag.set("start", r.room, 1);
-		Flag.set("suggest", r.room, r.sender);
-		var temp = [r.sender];
-		Flag.set("baseball", r.room , temp);
-		r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+
+	if( r.msg == '!야구'){
+		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
+			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			Flag.set("start", r.room, 1);
+			Flag.set("suggest", r.room, r.sender);
+			var temp = [r.sender];
+			Flag.set("baseball", r.room , temp);
+			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+			var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]-1000;
+			D.update("baseball", {point : temppoint} , "name=?", r.sender);
+		}else {
+			r.replier.reply('게임이 진행중입니다.')
+		}
 	}
+	 
 	
 	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
         if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) || Flag.get('baseball', r.room).length < 3 ){
@@ -330,6 +337,8 @@ function baseball(r){
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
             r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+            var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]-1000;
+			D.update("baseball", {point : temppoint} , "name=?", r.sender);
         } 
     }
 	
@@ -402,7 +411,9 @@ function baseball(r){
 			}
 			
 			if(scount == Flag.get('playercount', r.room) + 2){
-				r.replier.reply('정답! '+r.sender+'님께 '+'포인트가 지급되었습니다.');
+				r.replier.reply('정답! '+r.sender+'님께 '+(Flag.get('playercount', r.room))*1000+'포인트가 지급되었습니다.');
+				var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]+(Flag.get('playercount', r.room))*1000;
+				D.update("baseball", {point : temppoint} , "name=?", r.sender)
 				Flag.set('start2', r.room, 0);
 				return;
 			} else {
