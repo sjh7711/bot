@@ -363,6 +363,10 @@ function baseball(r){
 				var scount;
 				var bcount;
 				
+				for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+					var rand = Math.floor(Math.random()*baseballnum1.length);
+					list1.push(baseballnum1.splice(rand,1))
+				}
 				
 			}
 		}
@@ -735,7 +739,7 @@ function famous(r){
 		}else{
 			url = url.get(1).attr("abs:href");
 			var doc = org.jsoup.Jsoup.connect(url).get();
-			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt.ellp1").text() + '\n태그 : ' + v.select("span.tag").text() );
+			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt.ellp1").text() + '\n태그 : ' + String(v.select("span.tag").text()).replace(/ /g, "/" ) );
 			if (temptext.length > 3){
 				temptext[2]=temptext[2]+es;
 			}
