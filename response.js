@@ -179,17 +179,34 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
             	baseball(r);
             }
+        	if(msg == '!야구룰'){
+        		r.replier.reply('숫자야구 룰\n'+es+'봇이 임의로 인원수에 따라 3자리~5자리의 랜덤 숫자를 정합니다.\n\
+여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
+참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
+참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
+처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
+이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
+        	}
+        	if(msg == '!야구승률'){
+        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+        			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
+        			replier.reply(winrate+'%');
+        		}
+            }
+        	if(msg == '!야구전적'){
+        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+        			replier.reply(D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
+        		}
+        	}
+        	
+        	if(!msg == '!포인트조회'){
+        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+        			replier.reply(D.selectForArray('baseball', 'point','name=?',sender));
+        		}
+        	}
+        	
+        	str += '!야구\n'
         }
-        
-        if(msg == '!야구룰'){
-    		r.replier.reply('숫자야구 룰\n'+es+'봇이 임의로 인원수에 따라 3자리~5자리의 랜덤 숫자를 정합니다.\n\
-    				여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
-    				참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
-    				참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
-    				처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
-    				이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
-    	}
-        //str += '!숫자야구\n'
         
         if(room=='test'){
         	
@@ -312,7 +329,7 @@ function func(r) {
 
 function baseball(r){
 	if( D.selectForArray('baseball', 'name', 'room=?', r.room)[0] == undefined || D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
-		D.insert('baseball', {name : r.sender, point : 10000, room : r.room});
+		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win = 0, lose = 0});
 	}
 
 	if( r.msg == '!야구'){
@@ -414,7 +431,15 @@ function baseball(r){
 			if(scount == Flag.get('playercount', r.room) + 2){
 				r.replier.reply('정답! '+r.sender+'님께 '+(Flag.get('playercount', r.room))*1000+'포인트가 지급되었습니다.');
 				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number((Flag.get('playercount', r.room))*1000);
-				D.update("baseball", {point : temppoint} , "name=?", r.sender)
+				D.update("baseball", {point : temppoint} , "name=?", r.sender);
+				var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1
+				D.update('baseball', {win : tempwin }, "name=?", r.sender);
+				for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+					if(i!=k){
+						var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
+						D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
+					}
+				}
 				Flag.set('start2', r.room, 0);
 				return;
 			} else {
