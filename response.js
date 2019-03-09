@@ -303,7 +303,7 @@ function baseball(r){
 	if(r.room!='BASEBALL'){
 		r.replier.reply('https://open.kakao.com/o/g8SoLzhb 로 입장해주세요.');
 	} else {
-		if(D.selectForArray('baseball', [name]).indexOf(r.sender) == -1){
+		if(D.selectForArray('baseball', 'name').indexOf(r.sender) == -1){
 			D.insert('baseball', {name : r.sender, point : 10000});
 		}
 		
