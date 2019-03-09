@@ -358,6 +358,7 @@ function baseball(r){
 		Flag.set('start1', r.room, 0);
 		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
 		Flag.set('start2', r.room, 1);
+		return;
 	}
 	
 	if(Flag.get('start2', r.room) == 1) {
