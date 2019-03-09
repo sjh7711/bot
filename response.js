@@ -338,7 +338,6 @@ function baseball(r){
 			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다.');
 			Flag.set('start', r.room, 0);
 			Flag.set('start1', r.room, 1);
-			return;
 		} else{
 			r.replier.reply('아무도 참여하지 않았습니다.');
 			return;
@@ -357,13 +356,12 @@ function baseball(r){
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
+		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
 		Flag.set('start2', r.room, 1);
+		return;
 	}
 	
-	
 	if(Flag.get('start2', r.room) == 1) {
-		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
-		
 		if(isNaN(r.msg)==true){
 			r.replier.reply('숫자가 아닙니다.');
 			return;
