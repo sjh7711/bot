@@ -373,9 +373,9 @@ function baseball(r){
 		var number = r.msg.split('');
 		var checkcount = 0;
 		for(var i=0; i<number.length; i++){
-			for(var j=i+1; j<number.length-1; j++){
-				if(number[i]==number[j]){
-				checkcount+=1;
+			for(var j=i+1; j<number.length; j++){
+				if(number.indexOf(number[j])){
+					checkcount+=1;
 				}
 			}
 		}
@@ -386,9 +386,9 @@ function baseball(r){
 			var number = r.msg.split('');
 			var scount=0;
 			var bcount=0;
+			var temp = Flag.get('answer',r.room).slice();
 			
 			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
-				var temp = Flag.get('answer',r.room).slice();
 				if(number[i]==temp[i]){
 					scount+=1;
 					temp.splice(i, 1);
