@@ -391,13 +391,11 @@ function baseball(r){
 			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
 				if(number[i]==temp[i]){
 					scount+=1;
-					temp.splice(i, 1);
-					number.splice(i, 1);
-					i-=1;
+					temp[i]=-1;
 				}
 				
 				for(var j=0; j<temp.length; j++){
-					if(number[i]==temp[j]){
+					if(number[i]==temp[j] && temp[i]!=-1){
 						bcount+=1;
 					}
 				}
