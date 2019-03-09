@@ -374,7 +374,7 @@ function baseball(r){
 		var checkcount = 0;
 		for(var i=0; i<number.length; i++){
 			for(var j=i+1; j<number.length; j++){
-				if(number.indexOf(number[j])){
+				if(number[i]==number[j])){
 					checkcount+=1;
 				}
 			}
