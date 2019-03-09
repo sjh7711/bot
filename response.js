@@ -176,7 +176,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if (msg == "!숫자야구" || msg == "!ㅅㅈㅇㄱ"){
-        	replier.reply('https://open.kakao.com/o/g8SoLzhb 로 입장해주세요.');
+        	baseball(r);
         }
         //str += '!숫자야구\n'
         
@@ -300,7 +300,9 @@ function func(r) {
 }
 
 function baseball(r){
-	if(r.room=='baseball'){
+	if(r.room!='baseball'){
+		r.replier.reply('https://open.kakao.com/o/g8SoLzhb 로 입장해주세요.');
+	} else {
 		if(D.selectForArray('baseball', [name]).indexOf(r.sender) == -1){
 			D.insert('baseball', {name : r.sender, point : 10000});
 		}
@@ -358,6 +360,10 @@ function baseball(r){
 				r.replier.reply('숫자가 아닙니다.')
 			}else{
 				var number = r.msg.split('');
+				var scount;
+				var bcount;
+				
+				
 			}
 		}
 	}
@@ -729,7 +735,7 @@ function famous(r){
 		}else{
 			url = url.get(1).attr("abs:href");
 			var doc = org.jsoup.Jsoup.connect(url).get();
-			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt.ellp1").text() + '\n' + v.select("span.tag").text() );
+			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt.ellp1").text() + '\n태그 : ' + v.select("span.tag").text() );
 			if (temptext.length > 3){
 				temptext[2]=temptext[2]+es;
 			}
