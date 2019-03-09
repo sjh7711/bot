@@ -401,7 +401,7 @@ function baseball(r){
 				}
 			}
 			
-			if(scount == playercount + 2){
+			if(scount == Flag.get('playercount', r.room) + 2){
 				r.replier.reply('정답! '+r.sender+'님께 '+'포인트가 지급되었습니다.');
 				Flag.set('start2', r.room, 0);
 				return;
