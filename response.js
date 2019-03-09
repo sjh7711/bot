@@ -326,7 +326,8 @@ function baseball(r){
 			var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]-1000;
 			D.update("baseball", {point : temppoint} , "name=?", r.sender);
 		}else {
-			r.replier.reply('게임이 진행중입니다.')
+			r.replier.reply('게임이 진행중입니다.');
+			return;
 		}
 	}
 	 
@@ -412,7 +413,7 @@ function baseball(r){
 			
 			if(scount == Flag.get('playercount', r.room) + 2){
 				r.replier.reply('정답! '+r.sender+'님께 '+(Flag.get('playercount', r.room))*1000+'포인트가 지급되었습니다.');
-				var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]+(Flag.get('playercount', r.room))*1000;
+				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number((Flag.get('playercount', r.room))*1000);
 				D.update("baseball", {point : temppoint} , "name=?", r.sender)
 				Flag.set('start2', r.room, 0);
 				return;
