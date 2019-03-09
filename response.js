@@ -338,6 +338,7 @@ function baseball(r){
 			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다.');
 			Flag.set('start', r.room, 0);
 			Flag.set('start1', r.room, 1);
+			return;
 		} else{
 			r.replier.reply('아무도 참여하지 않았습니다.');
 			return;
