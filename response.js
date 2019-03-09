@@ -409,7 +409,7 @@ function baseball(r){
 				r.replier.reply(scount+'S / '+bcount+'B');
 			}
 			var k = Flag.get('k', r.room) + 1;
-			if(k > Flag.get('playercount', r.room)){
+			if(k >= Flag.get('playercount', r.room)){
 				k=0;
 			}
 			Flag.set('k', r.room, k);
