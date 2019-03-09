@@ -373,13 +373,13 @@ function baseball(r){
 		var number = r.msg.split('');
 		var checkcount = 0;
 		for(var i=0; i<number.length; i++){
-			for(var j=i+1; j<number.length; j++){
-				if(number[i]==number[j])){
+			for(var j=0; j<number.length; j++){
+				if(number[i]==number[j]){
 					checkcount+=1;
 				}
 			}
 		}
-		if (checkcount > 0 ){ 
+		if (checkcount > 3 ){ 
 			r.replier.reply('중복되는 숫자가 있습니다.');
 			return;
 		}else{
