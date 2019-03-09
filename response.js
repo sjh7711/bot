@@ -366,6 +366,8 @@ function baseball(r){
 		if(isNaN(r.msg)==true){
 			r.replier.reply('숫자가 아닙니다.');
 			return;
+		}else if( r.msg.split('').length != Flag.get('baseball', r.room).length+2 ){
+			r.replier.reply(Flag.get('baseball', r.room).length+2+'자리 숫자만 입력해주세요.')
 		}
 		var number = r.msg.split('');
 		var checkcount = 0;
