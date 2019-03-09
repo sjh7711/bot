@@ -334,8 +334,8 @@ function baseball(r){
     }
 	
 	if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
-		if(Flag.get('baseball', r.room).length >0 ){
-			r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
+		if(Flag.get('baseball', r.room).length > 0 ){
+			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다.');
 			Flag.set('start', r.room, 0);
 			Flag.set('start1', r.room, 1);
 		} else{
