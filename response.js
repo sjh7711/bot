@@ -368,6 +368,7 @@ function baseball(r){
 			return;
 		}else if( r.msg.split('').length != Flag.get('baseball', r.room).length+2 ){
 			r.replier.reply(Flag.get('baseball', r.room).length+2+'자리 숫자만 입력해주세요.')
+			return;
 		}
 		var number = r.msg.split('');
 		var checkcount = 0;
