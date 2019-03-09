@@ -393,10 +393,9 @@ function baseball(r){
 					scount+=1;
 					temp.splice(i, 1);
 					number.splice(i, 1);
+					i-=1;
 				}
-			}
-			
-			for(var i=0; i<temp.length; i++){
+				
 				for(var j=0; j<temp.length; j++){
 					if(number[i]==temp[j]){
 						bcount+=1;
