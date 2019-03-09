@@ -729,7 +729,7 @@ function famous(r){
 		}else{
 			url = url.get(1).attr("abs:href");
 			var doc = org.jsoup.Jsoup.connect(url).get();
-			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt.ellp1").text() + '\n' + v.select("div.tag_area").text() );
+			var temptext = doc.select('li.list_item').toArray().map(v=>v.select("span.name").text() + " : " +v.select("div.txt.ellp1").text() + '\n' + v.select("span.tag").text() );
 			if (temptext.length > 3){
 				temptext[2]=temptext[2]+es;
 			}
