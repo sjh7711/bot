@@ -303,7 +303,7 @@ function baseball(r){
 	if(r.room!='BASEBALL'){
 		r.replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요.');
 	} else {
-		if(D.selectForArray('baseball', 'name').indexOf(r.sender) == -1){
+		if(D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
 			D.insert('baseball', {name : r.sender, point : 10000});
 		}
 		
@@ -326,7 +326,7 @@ function baseball(r){
 		}
 		
 		if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
-	        if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) && Flag.get('baseball', r.room).length < 4 ){
+	        if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) || Flag.get('baseball', r.room).length < 4 ){
 	            var temp = Flag.get('baseball', r.room);
 	            temp.push(r.sender);
 	            Flag.set("baseball", r.room , temp);
