@@ -734,7 +734,7 @@ function famous(r){
 				temptext[2]=temptext[2]+es;
 			}
 			temptext = temptext.join('\n\n');
-			temptext = url + '\n\n' + temptext;
+			temptext = temptext + '\n' + url ;
 			r.replier.reply(temptext);
 		}
     }catch(e){
