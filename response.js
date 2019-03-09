@@ -301,7 +301,7 @@ function func(r) {
 
 function baseball(r){
 	if(r.room!='BASEBALL'){
-		r.replier.reply('https://open.kakao.com/o/g8SoLzhb 로 입장해주세요.');
+		r.replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요.');
 	} else {
 		if(D.selectForArray('baseball', 'name').indexOf(r.sender) == -1){
 			D.insert('baseball', {name : r.sender, point : 10000});
@@ -316,7 +316,7 @@ function baseball(r){
 					이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
 		}
 		
-		if(r.msg=='!숫자야구' && (Flag.get('start0', r.room) != 1 || Flag.get('start1', r.room) != 1 || Flag.get('start2', r.room) != 1) ){
+		if(r.msg=='!숫자야구' && !(Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 || Flag.get('start2', r.room) == 1) ){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
@@ -334,7 +334,7 @@ function baseball(r){
 	        } 
 	    }
 		
-		if ( Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender) ){
+		if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
 			if(Flag.get('baseball', r.room).length >0 ){
 				r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
 				Flag.set('start', r.room, 0);
