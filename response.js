@@ -387,7 +387,7 @@ function baseball(r){
 			var bcount=0;
 			
 			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
-				var temp = Flag.get('answer',r.room);
+				var temp = Flag.get('answer',r.room).slice();
 				if(number[i]==temp[i]){
 					scount+=1;
 					temp.splice(i, 1);
