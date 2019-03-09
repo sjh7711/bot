@@ -361,7 +361,7 @@ function baseball(r){
 		return;
 	}
 	
-	if(Flag.get('start2', r.room) == 1) {
+	if(Flag.get('start2', r.room) == 1 && Flag.get('baseball', r.room)[Flag.get('k', r.room)]==r.sender) {
 		if(isNaN(r.msg)==true){
 			r.replier.reply('숫자가 아닙니다.');
 			return;
