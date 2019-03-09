@@ -175,8 +175,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	checkstatus(r);
         } 
         
-        if (msg == "!숫자야구" || msg == "!ㅅㅈㅇㄱ"){
-        	baseball(r);
+        if(room =='test'){
+        	if (msg == "!야구" || msg == "!ㅇㄱ"){
+            	baseball(r);
+            }
         }
         //str += '!숫자야구\n'
         
@@ -300,121 +302,117 @@ function func(r) {
 }
 
 function baseball(r){
-	if(r.room!='BASEBALL'){
-		r.replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요.');
-	} else {
-		if(D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
-			D.insert('baseball', {name : r.sender, point : 10000});
+	if(D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
+		D.insert('baseball', {name : r.sender, point : 10000});
+	}
+	
+	if(r.msg == '!룰'){
+		r.replier.reply('봇이 임의로 인원수에 따라 3자리~5자리의 랜덤 숫자를 정합니다.\n\
+				여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
+				참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
+				참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
+				처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
+				이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
+	}
+	
+	if(r.msg=='!숫자야구' && !(Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 || Flag.get('start2', r.room) == 1) ){
+		r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+		Flag.set("start", r.room, 1);
+		Flag.set("suggest", r.room, r.sender);
+		var temp = [r.sender];
+		Flag.set("baseball", r.room , temp);
+		r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+	}
+	
+	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
+        if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) || Flag.get('baseball', r.room).length < 3 ){
+            var temp = Flag.get('baseball', r.room);
+            temp.push(r.sender);
+            Flag.set("baseball", r.room , temp);
+            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+        } 
+    }
+	
+	if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
+		if(Flag.get('baseball', r.room).length >0 ){
+			r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
+			Flag.set('start', r.room, 0);
+			Flag.set('start1', r.room, 1);
+		} else{
+			r.replier.reply('아무도 참여하지 않았습니다.');
+			return;
+		}
+	}
+	
+	if(Flag.get('start1', r.room) == 1) {
+		var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
+		var list1 = [];
+		for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+			var rand = Math.floor(Math.random()*baseballnum1.length);
+			list1.push(baseballnum1.splice(rand,1))
 		}
 		
-		if(r.msg == '!룰'){
-			r.replier.reply('봇이 임의로 인원수에 따라 3자리~5자리의 랜덤 숫자를 정합니다.\n\
-					여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
-					참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
-					참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
-					처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
-					이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
+		Flag.set('playercount', r.room, Flag.get('baseball', r.room).length);
+		var k = 0;
+		Flag.set('k', r.room, k);
+		Flag.set('start1', r.room, 0);
+		Flag.set('start2', r.room, 1);
+	}
+	
+	
+	if(Flag.get('start2', r.room) == 1) {
+		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
+		
+		if(isNaN(r.msg)==true){
+			r.replier.reply('숫자가 아닙니다.');
+			return;
 		}
-		
-		if(r.msg=='!숫자야구' && !(Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 || Flag.get('start2', r.room) == 1) ){
-			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
-			Flag.set("start", r.room, 1);
-			Flag.set("suggest", r.room, r.sender);
-			var temp = [r.sender];
-			Flag.set("baseball", r.room , temp);
-			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-		}
-		
-		if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
-	        if( ( Flag.get('baseball', r.room) == 0 || Flag.get('baseball', r.room).indexOf(r.sender)==-1 ) || Flag.get('baseball', r.room).length < 4 ){
-	            var temp = Flag.get('baseball', r.room);
-	            temp.push(r.sender);
-	            Flag.set("baseball", r.room , temp);
-	            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-	        } 
-	    }
-		
-		if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
-			if(Flag.get('baseball', r.room).length >0 ){
-				r.replier.reply(temp.length+'명이 참가했습니다. 게임을 시작합니다.');
-				Flag.set('start', r.room, 0);
-				Flag.set('start1', r.room, 1);
-			} else{
-				r.replier.reply('아무도 참여하지 않았습니다.');
-				return;
+		var number = r.msg.split('');
+		var checkcount = 0;
+		for(var i=0; i<number.length; i++){
+			for(var j=i; j<number.length; j++){
+				if(number[i]==number[j]){
+				checkcount+=1;
+				}
 			}
 		}
-		
-		if(Flag.get('start1', r.room) == 1) {
-			var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
-			var list1 = [];
-			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
-				var rand = Math.floor(Math.random()*baseballnum1.length);
-				list1.push(baseballnum1.splice(rand,1))
-			}
-			
-			Flag.set('playercount', r.room, Flag.get('baseball', r.room).length);
-			var k = 0;
-			Flag.set('k', r.room, k);
-			Flag.set('start1', r.room, 0);
-			Flag.set('start2', r.room, 1);
-		}
-		
-		
-		if(Flag.get('start2', r.room) == 1) {
-			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 숫자만 입력해주세요.');
-			
-			if(isNaN(r.msg)==true){
-				r.replier.reply('숫자가 아닙니다.');
-				return;
-			}
+		if (checkcount > 0 ){ 
+			r.replier.reply('중복되는 숫자가 있습니다.');
+			return;
+		}else{
 			var number = r.msg.split('');
-			var checkcount = 0;
-			for(var i=0; i<number.length; i++){
-				for(var j=i; j<number.length; j++){
-					if(number[i]==number[j]){
-					checkcount+=1;
+			var scount=0;
+			var bcount=0;
+			
+			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+				var temp = list1
+				if(number[i]==temp[i]){
+					scount+=1;
+					temp.splice(i, 1);
+					number.splice(i, 1);
+				}
+			}
+			
+			for(var i=0; i<temp.length; i++){
+				for(var j=0; j<temp.length; j++){
+					if(number[i]==temp[j]){
+						bcount+=1;
 					}
 				}
 			}
-			if (checkcount > 0 ){ 
-				r.replier.reply('중복되는 숫자가 있습니다.');
+			
+			if(scount == playercount + 2){
+				r.replier.reply('정답! '+r.sender+'님께 '+'포인트가 지급되었습니다.');
+				Flag.set('start2', r.room, 0);
 				return;
-			}else{
-				var number = r.msg.split('');
-				var scount=0;
-				var bcount=0;
-				
-				for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
-					var temp = list1
-					if(number[i]==temp[i]){
-						scount+=1;
-						temp.splice(i, 1);
-						number.splice(i, 1);
-					}
-				}
-				
-				for(var i=0; i<temp.length; i++){
-					for(var j=0; j<temp.length; j++){
-						if(number[i]==temp[j]){
-							bcount+=1;
-						}
-					}
-				}
-				
-				if(scount == playercount + 2){
-					r.replier.reply('정답! '+r.sender+'님께 '+'포인트가 지급되었습니다.');
-					Flag.set('start2', r.room, 0);
-					return;
-				} else {
-					r.replier.reply(scount+'S / '+bcount+'B');
-				}
-				var k = Flag.get('k', r.room) + 1;
-				if(k > Flag.get('playercount', r.room)){
-					k=0;
-				}
-				Flag.set('k', r.room, k);
+			} else {
+				r.replier.reply(scount+'S / '+bcount+'B');
 			}
+			var k = Flag.get('k', r.room) + 1;
+			if(k > Flag.get('playercount', r.room)){
+				k=0;
+			}
+			Flag.set('k', r.room, k);
 		}
 	}
 }
