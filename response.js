@@ -175,7 +175,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	checkstatus(r);
         } 
         
-        if(room =='test'){
+        if(room =='test' || room =='시립대 봇제작방'){
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
             	baseball(r);
             }
@@ -374,7 +374,7 @@ function baseball(r){
 	if(Flag.get('start1', r.room) == 1) {
 		var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
 		var list1 = [];
-		for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+		for(var i=0;i<4;i++){
 			var rand = Math.floor(Math.random()*baseballnum1.length);
 			list1.push(baseballnum1.splice(rand,1))
 		}
@@ -384,7 +384,7 @@ function baseball(r){
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
-		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.'+(Flag.get('baseball', r.room).length+2)+'자리 숫자만 입력해주세요.');
+		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다 . 4자리 숫자만 입력해주세요.');
 		Flag.set('start2', r.room, 1);
 		return;
 	}
@@ -393,8 +393,8 @@ function baseball(r){
 		if(isNaN(r.msg)==true){
 			r.replier.reply('숫자가 아닙니다.');
 			return;
-		}else if( r.msg.split('').length != Flag.get('baseball', r.room).length+2 ){
-			r.replier.reply(Flag.get('baseball', r.room).length+2+'자리 숫자만 입력해주세요.')
+		}else if( r.msg.split('').length != 4 ){
+			r.replier.reply('4자리 숫자만 입력해주세요.')
 			return;
 		}
 		var number = String(r.msg).split('');
@@ -406,7 +406,7 @@ function baseball(r){
 				}
 			}
 		}
-		if (checkcount > Flag.get('baseball', r.room).length+2 ){ 
+		if (checkcount > 4 ){ 
 			r.replier.reply('중복되는 숫자가 있습니다.');
 			return;
 		}else{
@@ -415,7 +415,7 @@ function baseball(r){
 			var bcount=0;
 			var temp = Flag.get('answer',r.room).slice();
 			
-			for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+			for(var i=0;i<4;i++){
 				if(number[i]==temp[i]){
 					scount+=1;
 					temp[i]=-1;
@@ -434,7 +434,7 @@ function baseball(r){
 				D.update("baseball", {point : temppoint} , "name=?", r.sender);
 				var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1
 				D.update('baseball', {win : tempwin }, "name=?", r.sender);
-				for(var i=0;i<2+Flag.get('baseball', r.room).length;i++){
+				for(var i=0;i<4;i++){
 					if(i!=k){
 						var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
 						D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
@@ -450,7 +450,7 @@ function baseball(r){
 				k=0;
 			}
 			Flag.set('k', r.room, k);
-			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.'+(Flag.get('baseball', r.room).length+2)+'자리 숫자만 입력해주세요.');
+			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 4자리 숫자만 입력해주세요.');
 		}
 	}
 }
