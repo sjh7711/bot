@@ -182,7 +182,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         } 
         
-        if(  !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='갠톡하기 오버워치 판 오버워치 카톡방' || room =='공익' || room =='시립대 전전컴 톡방'  ) && msg == "!야구" ){
+        if(  !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'  ) && msg == "!야구" ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
