@@ -233,7 +233,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if(msg == '!전체순위'){
         		var i = 1;
-        		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
+        		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
         		return;
         	}
         }
