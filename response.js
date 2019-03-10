@@ -110,69 +110,76 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		var str = "";
 		if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
         	weather(r);
+        	return;
         }
         str += "!날씨\n"
         
 		if (msg == "!로또" || msg == "!ㄹㄸ" ) {
             lotto(r);
+            return;
         } 
         str += "!로또 / "
 
         if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
+            return;
         } 
         str += "!당첨\n";
 
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
+            return;
         } 
         str += "!메뉴 / "
 
         if (room != '푸드마켓' || room != '갠톡하기 귀찮아서 판 오버워치 카톡방') {
-            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res")}
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res"); return;}
             str += "!식당 / "
         } 
         
         if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
         	famous(r);
+        	return;
         } 
         str += "!맛집\n"
         	
         if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방') {
-            if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r)}
+            if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
             str += "!최근채팅\n";
         }
 
         if (room == 'test') {
-            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r)}
+            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r); return;}
             str += "!전체채팅\n"
         } 
         
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overwatch(r);
+            return;
         }
         str += "!오버워치\n";
         
         if (room == 'test' || room == '시립대 봇제작방') {
-            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n"))}
+            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n")); return;}
             str += "!예정기능\n";
         }
         
         if (room == 'test' || room == '푸드마켓' || room == '시립대 봇제작방') {
-            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r)}
+            if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r); return;}
             str += "!공지\n";
         }
         
-        if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r)}
+        if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
 
         if (room == '푸드마켓' || room =='test' || room == '시립대 봇제작방'){
-        	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r);}
+        	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
         	str += "!명단\n"
         } 
 
         if (msg == "!상태"){
         	checkstatus(r);
+        	return;
         } 
         
         if(  !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL') && msg == "!야구" ){
@@ -181,41 +188,54 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	}
         
         if(  room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' ){
+        	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).map(v=>v[0]).indexOf(r.sender) == -1){
+        		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win : 0, lose : 0});
+        	}
+        	
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
             	baseball(r);
+            	return;
             }
         	
         	if(msg == '!야구승률'){
         		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined && (D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])) != 0){
         			var winrate = D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])/(D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room]))*100;
         			replier.reply(sender+'님의 야구 승률 : '+winrate+'%');
+        			return;
         		} else {
         			replier.reply('알 수 없습니다.');
+        			return;
         		}
             }
         	if(msg == '!야구전적'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
         			replier.reply(sender+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])+'승 / '+D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+'패');
+        			return;
         		} else {
         			replier.reply('알 수 없습니다.');
+        			return;
         		}
         	}
         	
         	if(msg == '!포인트조회'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
         			replier.reply(sender+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room]));
+        			return;
         		}else {
         			replier.reply('알 수 없습니다.');
+        			return;
         		}
         	}
         	
         	if(msg == '!야구순위'){
         		replier.reply(sender+'님의 순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'name=? and room=?',[sender, room]).map(v=>v[0]).indexOf(r.sender))+1) + '등');
+        		return;
         	}
         	
         	if(msg == '!전체순위'){
         		var i = 1;
         		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
+        		return;
         	}
         }
         str += '!야구\n';
@@ -231,59 +251,71 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         				replier.reply(temp[i]+' 삭제 완료');
         			}
         		}
-        	}str += "!파일삭제\n"
+        		return;
+        	}str += "!파일삭제\n";
         	
         	if (msg == "!방"){
         		replier.reply(Api.getRoomList().slice().join('\n'));
-        	}str += "!방\n"
+        		return;
+        	}str += "!방\n";
         	
         	if(msg == "!파일목록"){
         		replier.reply(File("/sdcard/ipdisk").listFiles().slice().join('\n'));
-        	}str += "!파일목록\n"
+        		return;
+        	}str += "!파일목록\n";
         	
         	if(msg =="!쓰레드"){
         		replier.reply(T.getThreadList().join('\n'));
-        	}str += "!쓰레드\n"
+        		return;
+        	}str += "!쓰레드\n";
         	
         	if(msg =="!로딩"){
         		replier.reply(reload());
-        	}str += "!로딩\n"
+        		return;
+        	}str += "!로딩\n";
         	
         	if(msg.indexOf("!전송") == 0){
         		if(msg.split(' ')[1].length >0 && msg.split(' ')[2].length>0){
         			Api.replyRoom(msg.split(' ')[1],msg.split(' ')[2]);
         			replier.reply('성공');
+        			return;
         		} else{
         			replier.reply('실패');
+        			return;
         		}
         		
-        	}str += "!전송\n"
+        	}str += "!전송\n";
         }
         
-        str += "!상태\n"
+        str += "!상태\n";
 
         if (msg.indexOf('!건의 ')==0){
         	if(msg.substr(4).length < 3){
         		replier.reply("건의가 너무 짧습니다.");
+        		return;
         	}else{
         		Api.replyRoom('recom', room+" : "+sender+" : "+msg.substr(4));
         		replier.reply(sender+"님의 건의가 접수되었습니다.");
+        		return;
         	}
         }
         str += "!건의\n";
         
         if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다");
+            return;
         } 
 
         if (msg.indexOf("!기능 ") == 0) {
             func(r);
+            return;
         } 
         
         if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
         
         if (msg == "!기능") {
             replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
+            return;
         }
         
         if (msg == "!패치노트"){
@@ -292,6 +324,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		temp[6] = temp[6]+es;
         	}
         	replier.reply(temp.join('\n'));
+        	return;
         }
         str += "!패치노트\n";
         
@@ -349,9 +382,7 @@ function func(r) {
 }
 
 function baseball(r){
-	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).map(v=>v[0]).indexOf(r.sender) == -1){
-		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win : 0, lose : 0});
-	}
+	
 	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 2 ){
 		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
