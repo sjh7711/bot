@@ -182,15 +182,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
             	baseball(r);
             }
-        	if(msg == '!야구규칙'){
-        		r.replier.reply('숫자야구 룰\n'+es+'봇이 임의로 4자리의 랜덤 숫자를 정합니다.\n\
-여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
-참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
-참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지 않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
-처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
-이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 닉네임으로 오시면 됩니다.\n\
-!야구승률을 통해 승률을 확인할 수 있습니다.\n!야구전적을 통해 야구전적을 확인할 수 있습니다.\n!포인트조회를 통해 포인트를 확인할 수 있습니다.\n!야구순위를 통해 자신의 등수를 확인할 수 있습니다.\n!전체순위를 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.')
-        	}
+        	
         	if(msg == '!야구승률'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender)) != 0){
         			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
@@ -223,7 +215,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		var i = 1;
         		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
         	}
-        	str += '!야구\n'
+        	
+        	str += '!야구\n';
         }
         
         if(room=='test'){
@@ -342,6 +335,14 @@ function func(r) {
         r.replier.reply("푸드뱅크 명단을 보여줍니다. !명단 만월 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n!명단추가 복지센터 055645XXXX 처럼 입력하면 추가되고 !명단삭제 복지센터 처럼 입력하면 목록이 삭제됩니다. 삭제할땐 반드시 제대로 된 기관명을 입력해야합니다.");
     } else if (r.msg.split(" ")[1] == "맛집") {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다. !맛집 지역명 으로 검색하면 됩니다.");
+    } else if (r.msg.split(" ")[1] == "야구"){
+    	r.replier.reply('숫자야구 룰\n'+es+'봇이 임의로 4자리의 랜덤 숫자를 정합니다.\n\
+    			여러분들은 !숫자야구 를 통해 게임을 시작 할 수 있으며 !숫자야구를  외친 사람은 자동으로 참가가 됩니다.\
+    			참가를 입력하면 참가가 가능하고 !시작 을 외친 사람이 시작 이라고 입력하면 게임을 시작합니다.\n\
+    			참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지 않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
+    			처음엔 무슨 숫자인지 모르니 1246이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
+    			이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 닉네임으로 오시면 됩니다.\n\
+    			!야구승률을 통해 승률을 확인할 수 있습니다.\n!야구전적을 통해 야구전적을 확인할 수 있습니다.\n!포인트조회를 통해 포인트를 확인할 수 있습니다.\n!야구순위를 통해 자신의 등수를 확인할 수 있습니다.\n!전체순위를 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.')
     }
 }
 
