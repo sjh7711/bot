@@ -332,7 +332,7 @@ function func(r) {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다. !맛집 지역명 으로 검색하면 됩니다.");
     }
 }
-var checkcount = 0;
+
 function baseball(r){
 	if( D.selectForArray('baseball', 'name', 'room=?', r.room)[0] == undefined || D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win : 0, lose : 0});
@@ -391,7 +391,7 @@ function baseball(r){
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
-		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다 . 4자리 숫자만 입력해주세요.');
+		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다 .');
 		Flag.set('start2', r.room, 1);
 		return;
 	}
@@ -405,7 +405,7 @@ function baseball(r){
 			return;
 		}
 		var number = String(r.msg).split('');
-		checkcount = 0;
+		var checkcount = 0;
 		for(var i=0; i<number.length; i++){
 			for(var j=0; j<number.length; j++){
 				if(number[i]==number[j]){
@@ -439,10 +439,10 @@ function baseball(r){
 				r.replier.reply('정답! '+r.sender+'님께 '+Flag.get('baseball', r.room).length*1000+'포인트가 지급되었습니다.');
 				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number(Flag.get('baseball', r.room).length*1000);
 				D.update("baseball", {point : temppoint} , "name=?", r.sender);
-				var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1
+				var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1;
 				D.update('baseball', {win : tempwin }, "name=?", r.sender);
 				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					if(i!=k){
+					if(Flag.get('baseball', r.room)[i] != r.sender){
 						var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
 						D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
 					}
@@ -457,7 +457,7 @@ function baseball(r){
 				k=0;
 			}
 			Flag.set('k', r.room, k);
-			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 4자리 숫자만 입력해주세요.');
+			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
 		}
 	}
 	
