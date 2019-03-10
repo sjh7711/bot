@@ -362,14 +362,14 @@ function baseball(r){
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
             r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-            var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]-1000;
+            var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
 			D.update("baseball", {point : temppoint} , "name=?", r.sender);
         } 
     }
 	
 	if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
 		if(Flag.get('baseball', r.room).length > 0 ){
-			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다.');
+			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다. 4자리 숫자만 입력하세요.');
 			Flag.set('start', r.room, 0);
 			Flag.set('start1', r.room, 1);
 		} else{
