@@ -357,7 +357,7 @@ function baseball(r){
 	 
 	
 	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
-        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 || Flag.get('baseball', r.room).length < 3 ){//||
+        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 ){//||
             var temp = Flag.get('baseball', r.room);
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
