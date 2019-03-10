@@ -326,7 +326,7 @@ function func(r) {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다. !맛집 지역명 으로 검색하면 됩니다.");
     }
 }
-
+var checkcount = 0;
 function baseball(r){
 	if( D.selectForArray('baseball', 'name', 'room=?', r.room)[0] == undefined || D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win = 0, lose = 0});
@@ -350,7 +350,7 @@ function baseball(r){
 	 
 	
 	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
-        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 ){
+        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 || Flag.get('baseball', r.room).length < 3 ){
             var temp = Flag.get('baseball', r.room);
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
@@ -398,7 +398,7 @@ function baseball(r){
 			return;
 		}
 		var number = r.msg.split('');
-		var checkcount = 0;
+		checkcount = 0;
 		for(var i=0; i<number.length; i++){
 			for(var j=0; j<number.length; j++){
 				if(number[i]==number[j]){
