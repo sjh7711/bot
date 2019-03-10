@@ -848,7 +848,7 @@ function weather(r){
 					res += "자외선 : "+uv+"\n";
 					res += "-------------날씨-------------\n"
 					res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
-					for (var i = 0 ; i < clock1 ; i++) {
+					for (var i = 0 ; i < clock1+8 ; i++) {
 						res += " "+String(clock[i]).extension("0",2)+" ";
 						res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
 						res += String(degree[i]).extension(" ",2)+"   ";
