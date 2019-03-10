@@ -194,7 +194,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
             	baseball(r);
-            	return;
             }
         	
         	if(msg == '!야구승률'){
