@@ -466,7 +466,7 @@ function baseball(r){
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
-		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다 .');
+		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
 		Flag.set('start2', r.room, 1);
 		return;
 	}
