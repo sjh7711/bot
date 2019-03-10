@@ -831,7 +831,7 @@ function weather(r){
 					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')).slice(0,templength-8));
 					clock.push(0);
 					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')).slice(templength-8,templength));
-					var clock1 = doc.select('span.th_text').length;
+					var clock1 = doc.select('span.th_text').toArray().length;
 					var uv1 = doc.select('li.uv').select('em').text();
 					var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
 					var index = doc.select('strong.title').text().replace('최근 검색한 곳','').split(' ').map(v=>String(v).replace(/온도/g, "온도 : ").replace(/지수/g, "지수 : "))
