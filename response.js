@@ -192,14 +192,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
         			replier.reply(winrate+'%');
         		} else {
-        			r.replier.reply('알 수 없습니다.');
+        			replier.reply('알 수 없습니다.');
         		}
             }
         	if(msg == '!야구전적'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
         			replier.reply(D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
         		} else {
-        			r.replier.reply('알 수 없습니다.');
+        			replier.reply('알 수 없습니다.');
         		}
         	}
         	
@@ -207,7 +207,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
         			replier.reply(D.selectForArray('baseball', 'point','name=?',sender));
         		}else {
-        			r.replier.reply('알 수 없습니다.');
+        			replier.reply('알 수 없습니다.');
         		}
         	}
         	
@@ -441,7 +441,7 @@ function baseball(r){
 				D.update("baseball", {point : temppoint} , "name=?", r.sender);
 				var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1
 				D.update('baseball', {win : tempwin }, "name=?", r.sender);
-				for(var i=0;i<4;i++){
+				for(var i=0;i<3;i++){
 					if(i!=k){
 						var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
 						D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
