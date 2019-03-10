@@ -456,6 +456,7 @@ function baseball(r){
 	if(Flag.get('start1', r.room) == 1) {
 		var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
 		var list1 = [];
+		Flag.set('answer',r.room, list1);
 		for(var i=0;i<4;i++){
 			var rand = Math.floor(Math.random()*baseballnum1.length);
 			list1.push(baseballnum1.splice(rand,1))
