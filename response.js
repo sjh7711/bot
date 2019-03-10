@@ -803,7 +803,7 @@ function weather(r){
 					clock.push(doc.select('span.th_text').select('span.now').text().replace('시', ''));
 					clock = clock.concat(doc.select('span.short').toArray().map(v=>v.text().replace('시', '')));
 					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')));
-					var clock1 = clock.length;
+					var clock1 =  doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 					if (clock1 > 16){
 						clock1 = 16;
 					}
@@ -845,7 +845,7 @@ function weather(r){
 					res += "자외선 : "+uv+"\n";
 					res += "-------------날씨-------------\n"
 					res += "시간ㅤ기상ㅤ기온 강수 습도 바람\n [h] ㅤ상태    [℃]  [%]  [%] [m/s]\n";
-					for (var i = 0 ; i < clock1+9 ; i++) {
+					for (var i = 0 ; i < clock1 ; i++) {
 						res += " "+String(clock[i]).extension("0",2)+" ";
 						res += String(sky[i]).extensionRight("ㅤ",4)+"  ";
 						res += String(degree[i]).extension(" ",2)+"   ";
