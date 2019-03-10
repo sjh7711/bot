@@ -330,6 +330,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(imageDB.getImage() != null){
     		saveImage(r);
     	}
+        
+        if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방'){
+        	if(msg.indexOf('!뽑기')==0 && !isNaN(msg)){
+        		replier.reply(Math.Floor(Math.Random()*msg.substr(4)));
+        	}
+        }
        
         
 	} catch (e) {
