@@ -329,13 +329,7 @@ function func(r) {
 var checkcount = 0;
 function baseball(r){
 	if( D.selectForArray('baseball', 'name', 'room=?', r.room)[0] == undefined || D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
-		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win = 0, lose = 0});
-	}
-	
-	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료'  ){
-		Flag.set('start', r.room, 0);
-		Flag.set('start1', r.room, 0);
-		Flag.set('start2', r.room, 0);
+		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win : 0, lose : 0});
 	}
 
 	if( r.msg == '!야구'){
@@ -435,7 +429,7 @@ function baseball(r){
 				}
 			}
 			
-			if(scount == Flag.get('playercount', r.room) + 2){
+			if(scount == 4){
 				r.replier.reply('정답! '+r.sender+'님께 '+(Flag.get('playercount', r.room))*1000+'포인트가 지급되었습니다.');
 				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number((Flag.get('playercount', r.room))*1000);
 				D.update("baseball", {point : temppoint} , "name=?", r.sender);
@@ -459,6 +453,12 @@ function baseball(r){
 			Flag.set('k', r.room, k);
 			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다. 4자리 숫자만 입력해주세요.');
 		}
+	}
+	
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료'  ){
+		Flag.set('start', r.room, 0);
+		Flag.set('start1', r.room, 0);
+		Flag.set('start2', r.room, 0);
 	}
 }
 
