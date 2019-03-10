@@ -333,7 +333,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == 'test'){
         	if(msg.indexOf('!뽑기')==0 && !isNaN(msg.split(' ')[1]) && !isNaN(msg.split(' ')[2] && (msg.split(' ')[1] < msg.split(' ')[2]) )){
-        		replier.reply(msg.split(' ')[1]+Math.floor(Math.random() * ( Number(msg.split(' ')[2])-Number(msg.split(' ')[1])) ));
+        		replier.reply(Number(msg.split(' ')[1])+Math.floor(Math.random() * ( Number(msg.split(' ')[2])-Number(msg.split(' ')[1]) ) ));
         	}
         }
        
