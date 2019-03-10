@@ -349,6 +349,26 @@ function baseball(r){
 	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).map(v=>v[0]).indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win : 0, lose : 0});
 	}
+	
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 2 ){
+		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
+			if(r.sender == Flag.get('baseball', r.room)[i]){
+				Flag.set('start', r.room, 0);
+				Flag.set('start1', r.room, 0);
+				Flag.set('start2', r.room, 0);
+				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+				return;
+			}
+		}
+	}
+	
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length == 1 ){
+		Flag.set('start', r.room, 0);
+		Flag.set('start1', r.room, 0);
+		Flag.set('start2', r.room, 0);
+		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+		return;
+	}
 
 	if( r.msg == '!야구'){
 		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
@@ -493,24 +513,6 @@ function baseball(r){
 			Flag.set('k', r.room, k);
 			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
 		}
-	}
-	
-	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 2 ){
-		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
-			if(r.sender == Flag.get('baseball', r.room)[i]){
-				Flag.set('start', r.room, 0);
-				Flag.set('start1', r.room, 0);
-				Flag.set('start2', r.room, 0);
-				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
-			}
-		}
-	}
-	
-	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length == 1 ){
-		Flag.set('start', r.room, 0);
-		Flag.set('start1', r.room, 0);
-		Flag.set('start2', r.room, 0);
-		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 	}
 }
 
