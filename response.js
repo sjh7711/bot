@@ -332,16 +332,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	}
         
         if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == 'test'){
-        	var num1 = Number(msg.split(' ')[1]);
-        	var num2 = Number(msg.split(' ')[2]);
-        	if (!isNaN(num1) && isNaN(num2)){
-        		num2=num1;
-        		num1=1;
-        	}
-        	if(msg.indexOf('!뽑기') == 0 && !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
-        		replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
-        	} else {
-        		replier.reply('잘못 입력했습니다.')
+        	if(msg.indexOf('!뽑기') == 0){
+        		var num1 = Number(msg.split(' ')[1]);
+            	var num2 = Number(msg.split(' ')[2]);
+            	if (!isNaN(num1) && isNaN(num2)){
+            		num2=num1;
+            		num1=1;
+            	}
+            	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
+            		replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
+            	} else {
+            		replier.reply('잘못 입력했습니다.');
+            	}
         	}
         }
        
