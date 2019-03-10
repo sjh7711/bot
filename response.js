@@ -208,7 +208,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		}
             }
         	if(msg == '!야구전적'){
-        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+        		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined){
         			replier.reply(sender+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])+'승 / '+D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+'패');
         			return;
         		} else {
@@ -218,7 +218,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         	
         	if(msg == '!포인트조회'){
-        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+        		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined){
         			replier.reply(sender+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room]));
         			return;
         		}else {
