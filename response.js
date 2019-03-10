@@ -334,7 +334,7 @@ function func(r) {
 }
 
 function baseball(r){
-	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).indexOf(r.sender) == -1){
+	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).map(v=>v[0]).indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win : 0, lose : 0});
 	}
 
@@ -347,7 +347,7 @@ function baseball(r){
 			var temp = [r.sender];
 			Flag.set("baseball", r.room , temp);
 			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-			var temppoint = D.selectForArray('baseball', 'point', 'name=?', r.sender)[0]-1000;
+			var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
 			D.update("baseball", {point : temppoint} , "name=?", r.sender);
 		}else {
 			r.replier.reply('게임이 진행중입니다.');
