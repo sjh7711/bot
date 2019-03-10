@@ -331,6 +331,12 @@ function baseball(r){
 	if( D.selectForArray('baseball', 'name', 'room=?', r.room)[0] == undefined || D.selectForArray('baseball', 'name')[0].indexOf(r.sender) == -1){
 		D.insert('baseball', {name : r.sender, point : 10000, room : r.room, win = 0, lose = 0});
 	}
+	
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료'  ){
+		Flag.set('start', r.room, 0);
+		Flag.set('start1', r.room, 0);
+		Flag.set('start2', r.room, 0);
+	}
 
 	if( r.msg == '!야구'){
 		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
