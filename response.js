@@ -423,8 +423,8 @@ function baseball(r){
 				Flag.set('start1', r.room, 0);
 				Flag.set('start2', r.room, 0);
 				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', Flag.get('baseball', r.room)[i])[0])+1000;
-					D.update('baseball', {point : temppoint }, "name=?", Flag.get('baseball', r.room)[i]);
+					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])+1000;
+					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 				}
 				Flag.set('supposelist', r.room, '');
 				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
@@ -438,8 +438,8 @@ function baseball(r){
 		Flag.set('start1', r.room, 0);
 		Flag.set('start2', r.room, 0);
 		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', Flag.get('baseball', r.room)[i])[0])+1000;
-			D.update('baseball', {point : temppoint }, "name=?", Flag.get('baseball', r.room)[i]);
+			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room])[0])+1000;
+			D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 		}
 		Flag.set('supposelist', r.room, '');
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
@@ -455,7 +455,7 @@ function baseball(r){
 			Flag.set("baseball", r.room , temp);
 			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
 			var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
-			D.update("baseball", {point : temppoint} , "name=?", r.sender);
+			D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
 		}else {
 			r.replier.reply('게임이 진행중입니다.');
 			return;
@@ -470,7 +470,7 @@ function baseball(r){
             Flag.set("baseball", r.room , temp);
             r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
             var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
-			D.update("baseball", {point : temppoint} , "name=?", r.sender);
+			D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
         } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
         	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
         	return;
@@ -558,14 +558,14 @@ function baseball(r){
 			if(scount == 4){
 				r.replier.reply('정답! '+r.sender+'님께 '+Flag.get('baseball', r.room).length*1100+'포인트가 지급되었습니다.');
 				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number(Flag.get('baseball', r.room).length*1100);
-				D.update("baseball", {point : temppoint} , "name=?", r.sender);
+				D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
 				if(Flag.get('baseball', r.room).length > 1){
-					var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1;
-					D.update('baseball', {win : tempwin }, "name=?", r.sender);
+					var tempwin = Number(D.selectForArray('baseball', 'win',  'name=? and room=?', [r.sender, r.room])[0])+1;
+					D.update('baseball', {win : tempwin }, 'name=? and room=?', [r.sender, r.room]);
 					for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 						if(Flag.get('baseball', r.room)[i] != r.sender){
-							var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
-							D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
+							var templose = Number(D.selectForArray('baseball', 'lose', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room])[0])+1
+							D.update('baseball', {lose : templose }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 						}
 					}
 				}
