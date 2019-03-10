@@ -332,19 +332,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	}
         
         if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == 'test'){
-        	if(msg.indexOf('!뽑기') == 0){
-        		var num1 = Number(msg.split(' ')[1]);
-            	var num2 = Number(msg.split(' ')[2]);
-            	if (!isNaN(num1) && isNaN(num2)){
-            		num2=num1;
-            		num1=1;
-            	}
-            	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
-            		replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
-            	} else {
-            		replier.reply('잘못 입력했습니다.');
-            	}
-        	}
+        	randomnumber(r);
         }
        
         
@@ -396,6 +384,26 @@ function func(r) {
 [!야구승률]을 통해 승률을 확인할 수 있습니다.\n[!야구전적]을 통해 야구전적을 확인할 수 있습니다.\n[!포인트조회]를 통해 포인트를 확인할 수 있습니다.\n[!야구순위]를 통해 자신의 등수를 확인할 수 있습니다.\n[!전체순위]를 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.\n\
 [!강제종료]를 통해 게임을 강제로 종료할 수 있습니다. 혼자 플레이 중인 경우 아무나 종료 가능하고 2인 이상일 경우 현재 참가중인 플레이어 중에서만 강제종료가 가능합니다.')
     }
+}
+
+function randomnumber(r){
+	if(msg.indexOf('!뽑기') == 0){
+		var num1 = Number(r.msg.split(' ')[1]);
+    	var num2 = Number(r.msg.split(' ')[2]);
+    	if (!isNaN(num1) && isNaN(num2)){
+    		num2=num1;
+    		num1=1;
+    	}
+    	if(num2==num1){
+    		r.replier.reply('1');
+    		return;
+    	}
+    	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
+    		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
+    	} else {
+    		r.replier.reply('잘못 입력했습니다.');
+    	}
+	}
 }
 
 function baseball(r){
