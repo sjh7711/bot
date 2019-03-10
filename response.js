@@ -188,20 +188,26 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 이런식으로 여러차례 질문을 통해 1325를 맞추시면 됩니다. 4S가 나오면 당신의 승리입니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 계정으로 오시면 됩니다.')
         	}
         	if(msg == '!야구승률'){
-        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender) != 0){
         			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
         			replier.reply(winrate+'%');
+        		} else {
+        			r.replier.reply('알 수 없습니다.');
         		}
             }
         	if(msg == '!야구전적'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
         			replier.reply(D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
+        		} else {
+        			r.replier.reply('알 수 없습니다.');
         		}
         	}
         	
-        	if(!msg == '!포인트조회'){
+        	if(msg == '!포인트조회'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
         			replier.reply(D.selectForArray('baseball', 'point','name=?',sender));
+        		}else {
+        			r.replier.reply('알 수 없습니다.');
         		}
         	}
         	
