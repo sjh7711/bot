@@ -404,6 +404,7 @@ function baseball(r){
 		Flag.set('start1', r.room, 0);
 		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다 .');
 		Flag.set('start2', r.room, 1);
+		Flag.set('supposelist', r.room, "");
 		return;
 	}
 	
@@ -429,8 +430,9 @@ function baseball(r){
 			return;
 		}else{
 			
-			var supposelist = [];
-			supposelist.push(r.msg);
+			var temp = Flag.get('supposelist', r.room);
+			temp += r.msg+' ';
+			Flag.set('supposelist', r.room, temp);
 			
 			var number = r.msg.split('');
 			var scount=0;
@@ -468,19 +470,11 @@ function baseball(r){
 				return;
 			} else {
 				
-				supposelist.push(scount+'S / '+bcount+'B');
-				
-				var temp;
-	            if(Flag.get('supposelist', r.room) == 0){
-	               temp=[];
-	            }
-	            else{
-	               temp=Flag.get('supposelist', r.room);
-	            }
-	            temp.push(supposelist);
-	            Flag.set('supposelist', r.room, supposelist);
+				var temp = Flag.get('supposelist', r.room);
+				temp += scount+'S / '+bcount+'B\n';
+				Flag.set('supposelist', r.room, temp);
 	            
-				r.replier.reply(Flag.get('supposelist', r.room).map(v=>v[0]+' '+v[1]).join('\n'));
+				r.replier.reply(Flag.get('supposelist', r.room));
 
 			}
 			
