@@ -331,7 +331,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
-        if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == 'test'){
+        if(msg == '!뽑기'){
         	randomnumber(r);
         }
        
