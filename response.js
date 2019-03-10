@@ -394,10 +394,10 @@ function randomnumber(r){
 		num1=1;
 	}
 	if(num2==num1){
-		r.replier.reply('1');
+		r.replier.reply(num1);
 		return;
 	}
-	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
+	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) && num1 > -1 & num2 > -1 ){
 		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
 	} else {
 		r.replier.reply('잘못 입력했습니다.');
