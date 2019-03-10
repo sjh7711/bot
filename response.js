@@ -405,6 +405,7 @@ function baseball(r){
 			D.update("baseball", {point : temppoint} , "name=?", r.sender);
         } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
         	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
+        	return;
         }
     }
 	
