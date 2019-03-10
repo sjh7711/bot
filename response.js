@@ -480,7 +480,7 @@ function baseball(r){
 	            temp.push(supposelist);
 	            Flag.set('supposelist', r.room, supposelist);
 	            
-				r.replier.reply(Flag.get('supposelist', r.room).map(v=>v[0]+' '+v[1]).join('\n'));
+				r.replier.reply(Flag.get('supposelist', r.room).map(v=>v.join(' ')).join('\n'));
 
 			}
 			
