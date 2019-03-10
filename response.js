@@ -383,8 +383,6 @@ function func(r) {
 }
 
 function baseball(r){
-	
-	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 2 ){
 		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
 			if(r.sender == Flag.get('baseball', r.room)[i]){
