@@ -387,22 +387,20 @@ function func(r) {
 }
 
 function randomnumber(r){
-	if(r.msg.indexOf('!뽑기') == 0){
-		var num1 = Number(r.msg.split(' ')[1]);
-    	var num2 = Number(r.msg.split(' ')[2]);
-    	if (!isNaN(num1) && isNaN(num2)){
-    		num2=num1;
-    		num1=1;
-    	}
-    	if(num2==num1){
-    		r.replier.reply('1');
-    		return;
-    	}
-    	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
-    		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
-    	} else {
-    		r.replier.reply('잘못 입력했습니다.');
-    	}
+	var num1 = Number(r.msg.split(' ')[1]);
+	var num2 = Number(r.msg.split(' ')[2]);
+	if (!isNaN(num1) && isNaN(num2)){
+		num2=num1;
+		num1=1;
+	}
+	if(num2==num1){
+		r.replier.reply('1');
+		return;
+	}
+	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2) ){
+		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
+	} else {
+		r.replier.reply('잘못 입력했습니다.');
 	}
 }
 
