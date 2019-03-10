@@ -430,7 +430,7 @@ function baseball(r){
 		}else{
 			
 			var supposelist = [];
-			supposelist.push(Number(r.msg));
+			supposelist.push(r.msg);
 			
 			var number = r.msg.split('');
 			var scount=0;
@@ -480,7 +480,7 @@ function baseball(r){
 	            temp.push(supposelist);
 	            Flag.set('supposelist', r.room, supposelist);
 	            
-				r.replier.reply(Flag.get('supposelist', r.room).map(v=>v.join(' ')).join('\n'));
+				r.replier.reply(Flag.get('supposelist', r.room).slice().join('\n'));
 
 			}
 			
