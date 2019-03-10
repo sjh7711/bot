@@ -194,7 +194,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	if(msg == '!야구승률'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender)) != 0){
         			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
-        			replier.reply(sedner+'님의 야구 승률 : '+winrate+'%');
+        			replier.reply(sender+'님의 야구 승률 : '+winrate+'%');
         		} else {
         			replier.reply('알 수 없습니다.');
         		}
@@ -221,7 +221,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if(msg == '!전체순위'){
         		var i = 1;
-        		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]));
+        		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
         	}
         	str += '!야구\n'
         }
