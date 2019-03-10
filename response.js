@@ -827,7 +827,10 @@ function weather(r){
 					var clock = [];
 					clock.push(doc.select('span.th_text').select('span.now').text().replace('시', ''));
 					clock = clock.concat(doc.select('span.short').toArray().map(v=>v.text().replace('시', '')));
-					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')));
+					var templength =doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')).length;
+					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')).slice(0,length-8));
+					clock.push(0);
+					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text().replace('시', '')).slice(length-8,length));
 					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 					var uv1 = doc.select('li.uv').select('em').text();
 					var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
