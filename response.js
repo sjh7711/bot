@@ -331,7 +331,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
-        if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방'){
+        if(room == '갠톡하기 귀찮아서 판 오버워치 카톡방' || room == 'test'){
         	if(msg.indexOf('!뽑기')==0 && !isNaN(msg.substr(4))){
         		replier.reply(Math.Floor((Math.Random()*Number(msg.substr(4)))));
         	}
