@@ -387,7 +387,7 @@ function func(r) {
 }
 
 function randomnumber(r){
-	if(msg.indexOf('!뽑기') == 0){
+	if(r.msg.indexOf('!뽑기') == 0){
 		var num1 = Number(r.msg.split(' ')[1]);
     	var num2 = Number(r.msg.split(' ')[2]);
     	if (!isNaN(num1) && isNaN(num2)){
