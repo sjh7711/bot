@@ -175,7 +175,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	checkstatus(r);
         } 
         
-        if(room =='test' || room =='시립대 봇제작방'){
+        if(room =='test' || room =='시립대 봇제작방' || room == 'BASEBALL'){
+        	if(  room !='test' && room !='시립대 봇제작방' ){
+        		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
+        	}
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
             	baseball(r);
             }
@@ -191,14 +194,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	if(msg == '!야구승률'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender)) != 0){
         			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
-        			replier.reply(winrate+'%');
+        			replier.reply(sedner+'님의 야구 승률 : '+winrate+'%');
         		} else {
         			replier.reply('알 수 없습니다.');
         		}
             }
         	if(msg == '!야구전적'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
-        			replier.reply(D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
+        			replier.reply(sedner+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
         		} else {
         			replier.reply('알 수 없습니다.');
         		}
@@ -206,10 +209,19 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if(msg == '!포인트조회'){
         		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
-        			replier.reply(D.selectForArray('baseball', 'point','name=?',sender));
+        			replier.reply(sedner+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=?',sender));
         		}else {
         			replier.reply('알 수 없습니다.');
         		}
+        	}
+        	
+        	if(msg == '!야구순위'){
+        		replier.reply(sender+'님의 순위 : '+D.selectForArray('baseball',['name','point'], 'room=?', r.room).map(v=>v[0]).indexOf(r.sender)+1);
+        	}
+        	
+        	if(msg == '!전체순위'){
+        		var i = 1;
+        		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'.' +v[0]+' '+v[1]));
         	}
         	str += '!야구\n'
         }
@@ -341,7 +353,6 @@ function baseball(r){
 	if( r.msg == '!야구'){
 		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
-			Flag.set('starttime', r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
 			var temp = [r.sender];
@@ -417,6 +428,10 @@ function baseball(r){
 			r.replier.reply('중복되는 숫자가 있습니다.');
 			return;
 		}else{
+			
+			var supposelist = [];
+			supposelist.push(r.msg);
+			
 			var number = r.msg.split('');
 			var scount=0;
 			var bcount=0;
@@ -436,22 +451,42 @@ function baseball(r){
 			}
 			
 			if(scount == 4){
-				r.replier.reply('정답! '+r.sender+'님께 '+Flag.get('baseball', r.room).length*1000+'포인트가 지급되었습니다.');
-				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number(Flag.get('baseball', r.room).length*1000);
+				r.replier.reply('정답! '+r.sender+'님께 '+Flag.get('baseball', r.room).length*1100+'포인트가 지급되었습니다.');
+				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number(Flag.get('baseball', r.room).length*1100);
 				D.update("baseball", {point : temppoint} , "name=?", r.sender);
-				var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1;
-				D.update('baseball', {win : tempwin }, "name=?", r.sender);
-				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					if(Flag.get('baseball', r.room)[i] != r.sender){
-						var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
-						D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
+				if(Flag.get('baseball', r.room).length > 1){
+					var tempwin = Number(D.selectForArray('baseball', 'win', 'name=?', r.sender)[0])+1;
+					D.update('baseball', {win : tempwin }, "name=?", r.sender);
+					for(var i=0;i<Flag.get('baseball', r.room).length;i++){
+						if(Flag.get('baseball', r.room)[i] != r.sender){
+							var templose = Number(D.selectForArray('baseball', 'lose', 'name=?', Flag.get('baseball', r.room)[i])[0])+1
+							D.update('baseball', {lose : templose }, "name=?", Flag.get('baseball', r.room)[i]);
+						}
 					}
 				}
 				Flag.set('start2', r.room, 0);
 				return;
 			} else {
-				r.replier.reply(scount+'S / '+bcount+'B');
+				
+				supposelist.push(scount+'S / '+bcount+'B');
+				
+				var temp;
+	            if(Flag.get('supposelist', r.room) == 0){
+	               temp=[];
+	            }
+	            else{
+	               temp=Flag.get('supposelist', r.room);
+	            }
+	            temp.push(supposelist);
+	            Flag.set('supposelist', r.room, supposelist);
+	            
+				r.replier.reply(Flag.get('supposelist', r.room).map(v=>v[0]+' '+v=>v[1]).join('\n'));
+				
+				
+				
+				
 			}
+			
 			var k = Flag.get('k', r.room) + 1;
 			if(k >= Flag.get('baseball', r.room).length){
 				k=0;
@@ -461,10 +496,22 @@ function baseball(r){
 		}
 	}
 	
-	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료'  ){
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 2 ){
+		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
+			if(r.sender == Flag.get('baseball', r.room)[i]){
+				Flag.set('start', r.room, 0);
+				Flag.set('start1', r.room, 0);
+				Flag.set('start2', r.room, 0);
+				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+			}
+		}
+	}
+	
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length == 1 ){
 		Flag.set('start', r.room, 0);
 		Flag.set('start1', r.room, 0);
 		Flag.set('start2', r.room, 0);
+		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 	}
 }
 
