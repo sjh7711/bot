@@ -393,6 +393,7 @@ function baseball(r){
 					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', Flag.get('baseball', r.room)[i])[0])+1000;
 					D.update('baseball', {point : temppoint }, "name=?", Flag.get('baseball', r.room)[i]);
 				}
+				Flag.set('supposelist', r.room, '');
 				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 				return;
 			}
@@ -407,6 +408,7 @@ function baseball(r){
 			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', Flag.get('baseball', r.room)[i])[0])+1000;
 			D.update('baseball', {point : temppoint }, "name=?", Flag.get('baseball', r.room)[i]);
 		}
+		Flag.set('supposelist', r.room, '');
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 		return;
 	}
@@ -456,7 +458,6 @@ function baseball(r){
 	if(Flag.get('start1', r.room) == 1) {
 		var baseballnum1 = [0,1,2,3,4,5,6,7,8,9];
 		var list1 = [];
-		Flag.set('answer',r.room, list1);
 		for(var i=0;i<4;i++){
 			var rand = Math.floor(Math.random()*baseballnum1.length);
 			list1.push(baseballnum1.splice(rand,1))
@@ -535,6 +536,7 @@ function baseball(r){
 						}
 					}
 				}
+				Flag.set('supposelist', r.room, '');
 				Flag.set('start2', r.room, 0);
 				return;
 			} else {
