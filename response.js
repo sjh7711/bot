@@ -471,10 +471,14 @@ function baseball(r){
 			} else {
 				
 				var temp = Flag.get('supposelist', r.room);
-				temp += scount+'S / '+bcount+'B\n';
+				temp += scount+'S / '+bcount+'B';
 				Flag.set('supposelist', r.room, temp);
 	            
 				r.replier.reply(Flag.get('supposelist', r.room));
+				
+				var temp = Flag.get('supposelist', r.room);
+				temp += '\n';
+				Flag.set('supposelist', r.room, temp);
 
 			}
 			
