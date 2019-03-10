@@ -341,6 +341,7 @@ function baseball(r){
 	if( r.msg == '!야구'){
 		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			Flag.set('starttime', r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
 			var temp = [r.sender];
