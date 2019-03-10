@@ -331,7 +331,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
-        if(msg == '!뽑기'){
+        if(msg.indexOf('!뽑기') == 0){
         	randomnumber(r);
         }
        
