@@ -238,6 +238,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }
         str += '!야구\n';
+        
+        if(msg.indexOf('!뽑기') == 0){
+        	randomnumber(r);
+        	return;
+        }
+        str+="!뽑기\n";
     	
         
         if(room=='test'){
@@ -330,11 +336,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(imageDB.getImage() != null){
     		saveImage(r);
     	}
-        
-        if(msg.indexOf('!뽑기') == 0){
-        	randomnumber(r);
-        }
-       
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
