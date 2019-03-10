@@ -430,7 +430,7 @@ function baseball(r){
 		}else{
 			
 			var supposelist = [];
-			supposelist.push(r.msg);
+			supposelist.push(Number(r.msg));
 			
 			var number = r.msg.split('');
 			var scount=0;
