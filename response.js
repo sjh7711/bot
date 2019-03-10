@@ -395,7 +395,7 @@ function baseball(r){
 	}
 	 
 	
-	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
+	if (r.msg == '참가' && Flag.get("start", r.room) == 1  && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){
         if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 ){//||
             var temp = Flag.get('baseball', r.room);
             temp.push(r.sender);
@@ -403,7 +403,9 @@ function baseball(r){
             r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
             var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
 			D.update("baseball", {point : temppoint} , "name=?", r.sender);
-        } 
+        } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
+        	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
+        }
     }
 	
 	if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
