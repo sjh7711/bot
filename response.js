@@ -175,49 +175,47 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	checkstatus(r);
         } 
         
-        if(room =='test' || room =='시립대 봇제작방' || room == 'BASEBALL'){
-        	if(  !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL') && msg == "!야구" ){
-        		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
-        	}
-        	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
-            	baseball(r);
-            }
-        	
-        	if(msg == '!야구승률'){
-        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender)) != 0){
-        			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
-        			replier.reply(sender+'님의 야구 승률 : '+winrate+'%');
-        		} else {
-        			replier.reply('알 수 없습니다.');
-        		}
-            }
-        	if(msg == '!야구전적'){
-        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
-        			replier.reply(sender+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
-        		} else {
-        			replier.reply('알 수 없습니다.');
-        		}
-        	}
-        	
-        	if(msg == '!포인트조회'){
-        		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
-        			replier.reply(sender+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=?',sender));
-        		}else {
-        			replier.reply('알 수 없습니다.');
-        		}
-        	}
-        	
-        	if(msg == '!야구순위'){
-        		replier.reply(sender+'님의 순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', r.room).map(v=>v[0]).indexOf(r.sender))+1) + '등');
-        	}
-        	
-        	if(msg == '!전체순위'){
-        		var i = 1;
-        		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
-        	}
-        	
-        	str += '!야구\n';
+        if(  !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL') && msg == "!야구" ){
+    		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
+    	}
+    	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
+        	baseball(r);
         }
+    	
+    	if(msg == '!야구승률'){
+    		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender)) != 0){
+    			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
+    			replier.reply(sender+'님의 야구 승률 : '+winrate+'%');
+    		} else {
+    			replier.reply('알 수 없습니다.');
+    		}
+        }
+    	if(msg == '!야구전적'){
+    		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+    			replier.reply(sender+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=?',sender)+'승 / '+D.selectForArray('baseball', 'lose','name=?',sender)+'패');
+    		} else {
+    			replier.reply('알 수 없습니다.');
+    		}
+    	}
+    	
+    	if(msg == '!포인트조회'){
+    		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined){
+    			replier.reply(sender+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=?',sender));
+    		}else {
+    			replier.reply('알 수 없습니다.');
+    		}
+    	}
+    	
+    	if(msg == '!야구순위'){
+    		replier.reply(sender+'님의 순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', r.room).map(v=>v[0]).indexOf(r.sender))+1) + '등');
+    	}
+    	
+    	if(msg == '!전체순위'){
+    		var i = 1;
+    		replier.reply('전체 순위\n'+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
+    	}
+    	
+    	str += '!야구\n';
         
         if(room=='test'){
         	
