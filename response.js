@@ -184,8 +184,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
     	
     	if(msg == '!야구승률'){
-    		if(D.selectForArray('baseball',null,'name=?',sender)!=undefined && (D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender)) != 0){
-    			var winrate = D.selectForArray('baseball', 'win','name=?',sender)/(D.selectForArray('baseball', 'lose','name=?',sender)+D.selectForArray('baseball', 'win','name=?',sender))*100;
+    		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined && (D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])) != 0){
+    			var winrate = D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])/(D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room]))*100;
     			replier.reply(sender+'님의 야구 승률 : '+winrate+'%');
     		} else {
     			replier.reply('알 수 없습니다.');
