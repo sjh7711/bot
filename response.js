@@ -176,7 +176,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if(room =='test' || room =='시립대 봇제작방' || room == 'BASEBALL'){
-        	if(  !(!(room !='test' ^ room !='시립대 봇제작방') ^ room !='BASEBALL') && msg == "!야구" ){
+        	if(  !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL') && msg == "!야구" ){
         		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
         	}
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
