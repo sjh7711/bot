@@ -799,7 +799,10 @@ function weather(r){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
 				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0 || String(doc).indexOf('accuweather') > 0){
-					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','1','2','4','5','6','7','8','9');
+					var clock = [];
+					clock.push(doc.select('span.th_text').select('span.now').text());
+					clock = clock.concat(doc.select('span.short').toArray().map(v=>v.text()));
+					clock = clock.concat(doc.select('span.th_text:containsOwn(시)').toArray().map(v=>v.text()));
 					var clock1 = clock.length;
 					if (clock1 > 16){
 						clock1 = 16;
@@ -821,7 +824,9 @@ function weather(r){
 						}
 						res += "\n"+link2;
 				} else {
-					var clock = doc.select('span.th_text').text().replace('시', '').split(' 내일')[0].split(' ').slice().concat('0','3','6','9','12','15','18','21','0','3','6','9','12','15','18','21','24');
+					var clock = [];
+					clock.push(doc.select('span.th_text').select('span.now').text().replace('시',''));
+					clock.push(
 					var clock1 = doc.select('span.th_text').text().split(' 내일')[0].split(' ').slice().length;
 					var uv1 = doc.select('li.uv').select('em').text();
 					var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
