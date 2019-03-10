@@ -429,8 +429,12 @@ function baseball(r){
 			r.replier.reply('중복되는 숫자가 있습니다.');
 			return;
 		}else{
+			if(temp!=0){
+				var temp = Flag.get('supposelist', r.room);
+			}else{
+				var temp=''
+			}
 			
-			var temp = Flag.get('supposelist', r.room);
 			temp += r.msg+' ';
 			Flag.set('supposelist', r.room, temp);
 			
