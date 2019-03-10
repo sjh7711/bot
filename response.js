@@ -404,7 +404,6 @@ function baseball(r){
 		Flag.set('start1', r.room, 0);
 		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다 .');
 		Flag.set('start2', r.room, 1);
-		Flag.set('supposelist', r.room, "");
 		return;
 	}
 	
@@ -429,10 +428,11 @@ function baseball(r){
 			r.replier.reply('중복되는 숫자가 있습니다.');
 			return;
 		}else{
+			var temp = Flag.get('supposelist', r.room);
 			if(temp!=0){
 				var temp = Flag.get('supposelist', r.room);
 			}else{
-				var temp=''
+				var temp='';
 			}
 			
 			temp += r.msg+' ';
