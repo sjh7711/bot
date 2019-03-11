@@ -425,6 +425,7 @@ function baseball(r){
 		return;
 	} else if ((Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 6000*8*60) > new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
 		r.replier.reply( (Math.floor( (Flag.get('baseballtime', r.room ) + 6000*60*8 - new Date().getTime()) / 1000 )) + '초 뒤에 강제종료가 가능합니다.');
+		return;
 	}
 	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 1 ){
