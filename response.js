@@ -28,16 +28,6 @@ function reload() {
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
-//패치노트
-var Update = ['패치노트',
-	'* 추첨을 모든 방에서 사용할 수 있도록 패치 20190305',
-	'* 해외날씨 지원 및 일부 지역 날씨 오류 수정 20190304',
-	'* 오버워치 배치를 보지 않았을 때 생기는 오류 수정 20190303',
-	'* 날씨 도 단위 검색이 불가했던 문제 수정',
-	'* 날씨 기능 추가',
-	'* 추첨 기능 추가',
-	'* 맛집 검색 기능 추가'
-	]
 //-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
 /*
@@ -305,11 +295,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }
         str += "!건의\n";
-        
-        if (msg=="/기능") {
-            replier.reply("!기능으로 작동합니다");
-            return;
-        } 
 
         if (msg.indexOf("!기능 ") == 0) {
             func(r);
@@ -323,15 +308,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             return;
         }
         
-        if (msg == "!패치노트"){
-        	temp = Update;
-        	if(temp.length > 6){
-        		temp[6] = temp[6]+es;
-        	}
-        	replier.reply(temp.join('\n'));
-        	return;
-        }
-        str += "!패치노트\n";
+        if (msg=="/기능") {
+            replier.reply("!기능으로 작동합니다 "+es+'\n'+str);
+            return;
+        } 
         
         if(imageDB.getImage() != null){
     		saveImage(r);
