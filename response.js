@@ -418,11 +418,11 @@ function randomnumber(r){
 
 function baseball(r){
 	if(r.msg < 0 ){
-		r.replier.reply('exception error');
+		r.replier.reply('양수를 입력하세요');
 		return;
 	}
 	if(r.msg.indexOf('e') > -1){
-		r.replier.reply('exception error');
+		r.replier.reply('장난치지 마세요');
 		return;
 	}
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
