@@ -416,6 +416,19 @@ function randomnumber(r){
 }
 
 function baseball(r){
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 6000*8) < new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
+		Flag.set('start', r.room, 0);
+		Flag.set('start1', r.room, 0);
+		Flag.set('start2', r.room, 0);
+		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
+			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])+1000;
+			D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+		}
+		Flag.set('supposelist', r.room, '');
+		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+		return;
+	}
+	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 1 ){
 		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
 			if(r.sender == Flag.get('baseball', r.room)[i]){
@@ -449,6 +462,7 @@ function baseball(r){
 	if( r.msg == '!야구'){
 		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			Flag.set('baseballtime', r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
 			var temp = [r.sender];
