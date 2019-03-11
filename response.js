@@ -418,12 +418,11 @@ function randomnumber(r){
 
 function baseball(r){
 	if(r.msg < 0 ){
-		r.msg *= -1;
-	}
-	if(Math.floor(r.msg) < 1000){
+		r.replier.reply('exception error');
 		return;
 	}
 	if(r.msg.indexOf('e') > -1){
+		r.replier.reply('exception error');
 		return;
 	}
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
@@ -525,7 +524,7 @@ function baseball(r){
 		if(isNaN(r.msg)==true){
 			r.replier.reply('숫자가 아닙니다.');
 			return;
-		}else if( r.msg.split('').length != 4 ){
+		}else if( r.msg.split('').length != 4  || Math.floor(r.msg) < 100 ){
 			r.replier.reply('4자리 숫자만 입력해주세요.')
 			return;
 		}
