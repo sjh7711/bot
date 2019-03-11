@@ -498,7 +498,6 @@ function baseball(r){
 			return;
 		}
 		if(r.msg.indexOf('e') > -1){
-			r.replier.reply('장난치지 마세요');
 			return;
 		}
 		if(isNaN(r.msg)==true){
