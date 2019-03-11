@@ -417,6 +417,15 @@ function randomnumber(r){
 }
 
 function baseball(r){
+	if(r.msg < 0 ){
+		r.msg *= -1;
+	}
+	if(Math.floor(r.msg) < 1000){
+		return;
+	}
+	if(r.msg.indexOf('e') > -1){
+		return;
+	}
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
 		Flag.set('start', r.room, 0);
 		Flag.set('start1', r.room, 0);
