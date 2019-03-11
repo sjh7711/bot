@@ -420,40 +420,25 @@ function baseball(r){
 		Flag.set('start', r.room, 0);
 		Flag.set('start1', r.room, 0);
 		Flag.set('start2', r.room, 0);
-		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])+1000;
-			D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-		}
 		Flag.set('supposelist', r.room, '');
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 		return;
 	}
 	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 1 ){
-		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
-			if(r.sender == Flag.get('baseball', r.room)[i]){
-				Flag.set('start', r.room, 0);
-				Flag.set('start1', r.room, 0);
-				Flag.set('start2', r.room, 0);
-				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])+1000;
-					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-				}
-				Flag.set('supposelist', r.room, '');
-				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
-				return;
-			}
-		}
+		Flag.set('start', r.room, 0);
+		Flag.set('start1', r.room, 0);
+		Flag.set('start2', r.room, 0);
+		Flag.set('supposelist', r.room, '');
+		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+		return;
 	}
+	
 	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length == 1 ){
 		Flag.set('start', r.room, 0);
 		Flag.set('start1', r.room, 0);
 		Flag.set('start2', r.room, 0);
-		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room])[0])+1000;
-			D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-		}
 		Flag.set('supposelist', r.room, '');
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 		return;
@@ -468,14 +453,11 @@ function baseball(r){
 			var temp = [r.sender];
 			Flag.set("baseball", r.room , temp);
 			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-			var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
-			D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
 		}else {
 			r.replier.reply('게임이 진행중입니다.');
 			return;
 		}
 	}
-	 
 	
 	if (r.msg == '참가' && Flag.get("start", r.room) == 1  && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){
         if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 ){//||
@@ -483,8 +465,6 @@ function baseball(r){
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
             r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-            var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])-1000;
-			D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
         } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
         	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
         	return;
@@ -511,7 +491,7 @@ function baseball(r){
 		}
 		Flag.set('answer',r.room, list1);
 		
-		Flag.get('baseball', r.room).length
+		Flag.get('baseball', r.room).length;
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
@@ -570,12 +550,20 @@ function baseball(r){
 			}
 			
 			if(scount == 4){
+				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
+					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])-1000;
+					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+				}
+				
 				r.replier.reply('정답! '+r.sender+'님께 '+Flag.get('baseball', r.room).length*1100+'포인트가 지급되었습니다.');
+				
 				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=?', r.sender)[0])+Number(Flag.get('baseball', r.room).length*1100);
 				D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
+				
 				if(Flag.get('baseball', r.room).length > 1){
 					var tempwin = Number(D.selectForArray('baseball', 'win',  'name=? and room=?', [r.sender, r.room])[0])+1;
 					D.update('baseball', {win : tempwin }, 'name=? and room=?', [r.sender, r.room]);
+					
 					for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 						if(Flag.get('baseball', r.room)[i] != r.sender){
 							var templose = Number(D.selectForArray('baseball', 'lose', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room])[0])+1
