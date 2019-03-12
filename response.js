@@ -165,7 +165,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if(msg == '!정보'){
         		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined){
-        			replier.reply(sender+'님의 순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'name=? and room=?',[sender, room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
+        			replier.reply(sender+'님의 순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
         			+'\n'+ sender+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room])
         			+'\n'+sender+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])+'승 / '+D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+'패'
         			+'\n'+sender+'님의 야구 승률 : '+ Number(D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])) / (Number(D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room]))+Number(D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])))*100+'%');
