@@ -165,10 +165,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if(msg == '!정보'){
         		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined){
+        			var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[sender, room]));
+        			var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room]));
         			replier.reply(sender+'님의 순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
         			+'\n'+ sender+'님의 포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room])
-        			+'\n'+sender+'님의 야구 전적 : '+D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])+'승 / '+D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room])+'패'
-        			+'\n'+sender+'님의 야구 승률 : '+ Math.floor((Number(D.selectForArray('baseball', 'win','name=? and room=?',[sender, room])) / (Number(D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room]))+Number(D.selectForArray('baseball', 'win','name=? and room=?',[sender, room]))))*1000)/10 + "%");
+        			+'\n'+sender+'님의 야구 전적 : '+wincount+'승 / '+losecount+'패'
+        			+'\n'+sender+'님의 야구 승률 : '+ Math.floor( wincount / (losecount + wincount) )*1000)/10 + "%");
         			return;
         		}else {
         			replier.reply('알 수 없습니다.');
