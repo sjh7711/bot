@@ -1,4 +1,4 @@
-﻿//소스불러오기및 리로딩
+﻿//소스불러오기및 리로딩//기타
 var reloadcheck = 0;
 function reload() {
 	try {
@@ -28,28 +28,11 @@ function reload() {
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
-//-------------------------------------------------------변수----------------------------------------------------------//
 var D = require("DBManager.js")("D");
-/*
-D.selectForString("sqlite_master")
-D.insert("cat", {name :"중용", gender : "남", age : 22})
-D.delete("cat", "name='중용'")
-D.delete("cat", "name='모모' and age='5'" )
-D.selectForString("cat", null, "age<4")
-D.selectForString("cat", "name, gender", "age<4")
-D.selectForString("cat", ["name", "gender"], "age<4")
-D.selectForString("cat","count(*)")
-D.selectForString("cat", null, "name=?",  [a]) //a='모모'
-D.update("cat", {age : 4} , "name='인문이'")
-D.create("cat", {name:"모모",gender:"남",age:4})
-*/
 var T = require("ThreadManager.js");
-//T.getThreadList()
 var I = require("Interactive.js");
-File =java.io.File;
-
+File = java.io.File;
 var es=String.fromCharCode(8237).repeat(500);
-
 Flag=(function(){
 	   var list={};
 	   var Flag={};
@@ -64,10 +47,8 @@ Flag=(function(){
 	   }
 	   return Flag;
 	})();
-
 function blankFunc(r){
 }
-
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
