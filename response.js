@@ -1365,7 +1365,7 @@ function notice(r){
 		}
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-	    .cookies(cookie2).cookies(cookie1).get().select('tbody');
+	    .cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select('tbody');
 
 	    var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
 	    var text = [];
@@ -1417,7 +1417,7 @@ function noticecheck(){
 		}
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-	    .cookies(cookie2).cookies(cookie1).get().select('tbody');
+	    .cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select('tbody');
 		
     	var docnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
     	var doctitle = doc.select("tr.num").select("a:first-child").get(0).ownText();
