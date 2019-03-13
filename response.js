@@ -780,7 +780,7 @@ function weather(r){
 						}
 						res += "\n"+link2;
 				} else {
-					var clock = doc.select("span.th_text").text().match(/[012345789]?[012345789]/g);
+					var clock = doc.select("span.th_text").text().match(/[0123456789]?[0123456789](?=시)/g);
 					var clock1 = clock.length;
 					var uv1 = doc.select('li.uv').select('em').text();
 					var uv = doc.select('li.uv').select('span').text().replace(uv1, " ("+uv1+")");
