@@ -951,7 +951,6 @@ function famous(r){
     }catch(e){
     	Api.replyRoom('test',e+"\n"+e.stack);
 		}
-	
 }
 
 function banklist(r){
@@ -1242,8 +1241,6 @@ function recom(r, name) { //name : DB이름
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
 }
-
-
 
 //로또
 function lotto(r) {
