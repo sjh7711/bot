@@ -1352,7 +1352,7 @@ function lottocheck(r) {
 
 function notice(r){
 	try{
-		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0 || doc == 0){
+		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
@@ -1360,8 +1360,8 @@ function notice(r){
 			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
 	
-			Flag.set('cookie1', r.room, cookie1);
-			Flag.set('cookie2', r.room, cookie2);
+			Flag.set('cookie1', 'test', cookie1);
+			Flag.set('cookie2', 'test', cookie2);
 		}
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
@@ -1404,7 +1404,7 @@ function notice(r){
 //공지체크기
 function noticecheck(){
 	try{
-		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0 || doc == 0){
+		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
@@ -1412,12 +1412,12 @@ function noticecheck(){
 			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
 
-			Flag.set('cookie1', r.room, cookie1);
-			Flag.set('cookie2', r.room, cookie2);
+			Flag.set('cookie1', 'test', cookie1);
+			Flag.set('cookie2', 'test', cookie2);
 		}
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-	    .cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select('tbody');
+	    .cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get().select('tbody');
 		
     	var docnum = doc.select("tr.num").toArray().map(v=>v.select('td.num').get(0).text());
     	var doctitle = doc.select("tr.num").toArray().map(v=>v.select('a:first-child').get(0).ownText());
@@ -1427,11 +1427,10 @@ function noticecheck(){
     	for(var i=0; i<15;i++){
     		for(var j=0; j<15; j++){
     			if(D.selectForArray('notice')[i][1].indexOf(doctitle[j]) > -1){
-    				return;
+    				break;
     			}else{
-        			difcount += 1;
+    				difcount += 1;
         			var wantnum = docnum[0]-docnum[j];
-        			var difnum = i;
         		}
     		}
     	}
@@ -1448,7 +1447,7 @@ function noticecheck(){
 	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.content").eachText().toArray()[0];
 	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
-			Api.replyRoom("test","새공지!\n"+docnum[difnum]+" : "+doctitle[difnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+			Api.replyRoom("test","새공지!\n"+docnum[wantnum]+" : "+doctitle[wantnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			//Api.replyRoom("푸드마켓","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 		}
 	}catch(e){
@@ -1457,7 +1456,7 @@ function noticecheck(){
 };
 var NC = T.register("noticeCheck",()=>{
 	while(true){
-		java.lang.Thread.sleep(2*50*1000); //100초
+		java.lang.Thread.sleep(2*10*1000); //100초
 		noticecheck();
 	}
 }).start();
