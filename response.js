@@ -1425,7 +1425,7 @@ function noticecheck(){
     	var difcount = 0;
     	
     	for(var i=0; i<15;i++){
-    		for(var j=0; j<15; j++){
+    		for(var j=i; j<15; j++){
     			if(D.selectForArray('notice')[i][1].indexOf(doctitle[j]) == 0){
     				break;
     			}else{
