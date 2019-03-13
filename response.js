@@ -1431,11 +1431,11 @@ function noticecheck(){
     	
     	for(var i=0; i<15;i++){
     		for(var j=i; j<15; j++){
-    			if(D.selectForArray('notice')[i][1].indexOf(doctitle[j]) == 0){
+    			if(D.selectForArray('notice')[14-i][1].indexOf(doctitle[j]) == 0){
     				break;
     			}else{
     				difcount += 1;
-        			var wantnum = docnum[0]-docnum[i];
+        			var wantnum = docnum[0]-docnum[j];
         			break;
         		}
     		}
