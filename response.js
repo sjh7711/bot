@@ -1435,7 +1435,7 @@ function noticecheck(){
     				break;
     			}else{
     				difcount += 1;
-        			var wantnum = docnum[0]-docnum[j];
+        			var wantnum = docnum[0]-docnum[i];
         			break;
         		}
     		}
@@ -1465,7 +1465,7 @@ function noticecheck(){
 };
 var NC = T.register("noticeCheck",()=>{
 	while(true){
-		java.lang.Thread.sleep(2*10*1000); //100초
+		java.lang.Thread.sleep(2*50*1000); //100초
 		noticecheck();
 	}
 }).start();
