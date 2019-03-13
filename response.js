@@ -1426,12 +1426,16 @@ function noticecheck(){
     	
     	for(var i=0; i<15;i++){
     		for(var j=0; j<15; j++){
-    			if(D.selectForArray('notice')[i][1].indexOf(doctitle[j]) > -1){
+    			if(D.selectForArray('notice')[i][1].indexOf(doctitle[j]) == 0){
     				break;
     			}else{
     				difcount += 1;
         			var wantnum = docnum[0]-docnum[j];
+        			break;
         		}
+    		}
+    		if(difcount > 0){
+    			break;
     		}
     	}
     	
