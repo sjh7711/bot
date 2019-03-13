@@ -394,7 +394,7 @@ function baseball(r){
 	}
 
 	if( r.msg == '!야구'){
-		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 ){
+		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000  ){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
 			Flag.set('baseballtime', r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
@@ -402,14 +402,17 @@ function baseball(r){
 			var temp = [r.sender];
 			Flag.set("baseball", r.room , temp);
 			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
-		}else {
+		}else if( Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
+			r.replier.reply('포인트가 부족합니다. 닉네임을 바꾸세요.')
+		}
+		else {
 			r.replier.reply('게임이 진행중입니다.');
 			return;
 		}
 	}
 	
-	if (r.msg == '참가' && Flag.get("start", r.room) == 1  && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){
-        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 ){//||
+	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
+        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){//||
             var temp = Flag.get('baseball', r.room);
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
