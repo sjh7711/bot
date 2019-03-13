@@ -370,18 +370,19 @@ function baseball(r){
 				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 				return;
 			}
+		} else if((Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ){
+			Flag.set('start', r.room, 0);
+			Flag.set('start1', r.room, 0);
+			Flag.set('start2', r.room, 0);
+			Flag.set('supposelist', r.room, '');
+			r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+			return;
+		}else {
+			r.replier.reply( (Math.floor( (Flag.get('baseballtime', r.room ) + 1000*60*8 - new Date().getTime()) / 1000 )) + '초 뒤에 강제종료가 가능합니다.');
+			return;
 		}
-	} else if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
-		Flag.set('start', r.room, 0);
-		Flag.set('start1', r.room, 0);
-		Flag.set('start2', r.room, 0);
-		Flag.set('supposelist', r.room, '');
-		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
-		return;
-	} else if ((Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && ( (Flag.get('baseballtime', r.room ) + 1000*8*60) > new Date().getTime() ) && Flag.get('baseball', r.room).length > 1 ){
-		r.replier.reply( (Math.floor( (Flag.get('baseballtime', r.room ) + 1000*60*8 - new Date().getTime()) / 1000 )) + '초 뒤에 강제종료가 가능합니다.');
-		return;
 	}
+	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length == 1 ){
 		Flag.set('start', r.room, 0);
 		Flag.set('start1', r.room, 0);
