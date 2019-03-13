@@ -1352,33 +1352,32 @@ function lottocheck(r) {
 
 function notice(r){
 	try{
-		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0 || Flag.get('doc', r.room) == 0){
+		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0 || doc == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
 			var cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
 			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
-			
-			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-		    .cookies(cookie2).cookies(cookie1).get().select('tbody');
-			
+	
 			Flag.set('cookie1', r.room, cookie1);
 			Flag.set('cookie2', r.room, cookie2);
-			Flag.set('doc', r.room, doc);
 		}
+		
+		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+	    .cookies(cookie2).cookies(cookie1).get().select('tbody');
 
-	    var temptext = Flag.get('doc', r.room).select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
+	    var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
 	    var text = [];
 	    var count = r.msg.split(" ")[1];
-	    var lastnum = Flag.get('doc', r.room).select("tr.num").get(14).select("td.num").get(0).text();
+	    var lastnum = doc.select("tr.num").get(14).select("td.num").get(0).text();
 	    
 	    if(lastnum-1<count){
-	    	var firstnum = Flag.get('doc', r.room).select("tr.num").get(0).select("td.num").get(0).text();
+	    	var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
 	        var wantnum = firstnum-count;
-	    	var docnum = Flag.get('doc', r.room).select("tr.num").get(wantnum).select("td.num").get(0).text();
-	    	var doctitle = Flag.get('doc', r.room).select("tr.num").select("a:first-child").get(wantnum).ownText();
-	    	var doclink = Flag.get('doc', r.room).select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
+	    	var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
+	    	var doctitle = doc.select("tr.num").select("a:first-child").get(wantnum).ownText();
+	    	var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get();
 	    	
@@ -1405,27 +1404,26 @@ function notice(r){
 //공지체크기
 function noticecheck(){
 	try{
-		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0 || Flag.get('doc', r.room) == 0){
+		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0 || doc == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
 			var cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1)
 			.data("mb_id","tyfb1377").data("mb_password","1q2w3e4r").data("x","30").data("y","30")
 			.method(org.jsoup.Connection.Method.POST).execute().cookies();
-			
-			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-		    .cookies(cookie2).cookies(cookie1).get().select('tbody');
-			
+
 			Flag.set('cookie1', r.room, cookie1);
 			Flag.set('cookie2', r.room, cookie2);
-			Flag.set('doc', r.room, doc);
 		}
 		
-    	var docnum = Flag.get('doc', r.room).select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
-    	var doctitle = Flag.get('doc', r.room).select("tr.num").select("a:first-child").get(0).ownText();
+		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
+	    .cookies(cookie2).cookies(cookie1).get().select('tbody');
+		
+    	var docnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
+    	var doctitle = doc.select("tr.num").select("a:first-child").get(0).ownText();
     	
 		if(docnum!=D.selectForArray('notice', 'num')[0][0] || doctitle!=D.selectForArray('notice', 'msg')[0][0]){//저장된 공지의 번호
-	    	var doclink = Flag.get('doc', r.room).select("a:first-child").get(0).attr("abs:href");
+	    	var doclink = doc.select("a:first-child").get(0).attr("abs:href");
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get();
 	    	
@@ -1433,7 +1431,7 @@ function noticecheck(){
 	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
 			Api.replyRoom("test","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
-			Api.replyRoom("푸드마켓","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+			//Api.replyRoom("푸드마켓","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			D.update('notice', { num: docnum, msg: doctitle });
 		}
 	}catch(e){
