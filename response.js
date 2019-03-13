@@ -1434,11 +1434,11 @@ function noticecheck(){
     		}
     	}
     	
-    	for(var i=0; i<15;i++){
-    		D.update('notice', {num : docnum[i], msg : doctitle[i]});
-    	}
-    	
 		if(difcount > 0){
+			D.delete('notice');
+	    	for(var i=0; i<15;i++){
+	    		D.insert('notice', {num : docnum[i], msg : doctitle[i]});
+	    	}
 			var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get();
