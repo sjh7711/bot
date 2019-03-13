@@ -370,7 +370,8 @@ function baseball(r){
 				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 				return;
 			}
-		} else if((Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ){
+		}
+		if((Flag.get('baseballtime', r.room ) + 1000*8*60 ) < new Date().getTime() ){
 			Flag.set('start', r.room, 0);
 			Flag.set('start1', r.room, 0);
 			Flag.set('start2', r.room, 0);
