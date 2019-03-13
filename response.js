@@ -1354,7 +1354,7 @@ function lottocheck(r) {
 
 function notice(r){
 	try{
-		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0){
+		if(Flag.get('cookie1', 'test') == 0 || Flag.get('cookie2', 'test') == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
@@ -1367,7 +1367,7 @@ function notice(r){
 		}
 		
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
-	    .cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select('tbody');
+	    .cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get().select('tbody');
 
 	    var temptext = doc.select("tr.num").toArray().map(v=>"번호:"+v.select("td.num").get(0).text()+"   날짜:"+v.select("td.date").text()+"\n"+v.select("td.title>a").first().ownText());
 	    var text = [];
@@ -1381,10 +1381,10 @@ function notice(r){
 	    	var doctitle = doc.select("tr.num").select("a:first-child").get(wantnum).ownText();
 	    	var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 	    	
-	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get();
+	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get();
 	    	
-	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.content").eachText().toArray()[0];
-	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
+	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get().select("div.content").eachText().toArray()[0];
+	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
 	    	r.replier.reply(docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 	    }else if(0<count&&count<16){
@@ -1406,7 +1406,7 @@ function notice(r){
 //공지체크기
 function noticecheck(){
 	try{
-		if(Flag.get('cookie1', r.room) == 0 || Flag.get('cookie2', r.room) == 0){
+		if(Flag.get('cookie1', 'test') == 0 || Flag.get('cookie2', 'test') == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")
 			.method(org.jsoup.Connection.Method.GET).execute().cookies();
 
@@ -1448,10 +1448,10 @@ function noticecheck(){
 	    	}
 			var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 	    	
-	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get();
+	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get();
 	    	
-	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.content").eachText().toArray()[0];
-	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
+	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get().select("div.content").eachText().toArray()[0];
+	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
 			Api.replyRoom("test","새공지!\n"+docnum[wantnum]+" : "+doctitle[wantnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			//Api.replyRoom("푸드마켓","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
