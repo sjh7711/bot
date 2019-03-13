@@ -758,7 +758,7 @@ function weather(r){
 					var where1 = "("+doc.select('div.section_location').select('strong').text()+")";
 				}
 				if( String(doc).indexOf('Weathernews') > 0 || String(doc).indexOf('The Weather Channel') > 0 || String(doc).indexOf('accuweather') > 0){
-					var clock = doc.select("span.th_text").text().match(/[012345789]?[012345789]/g);
+					var clock = doc.select("span.th_text").text().match(/[0123456789]?[0123456789](?=시)/g);
 					var clock1 = clock.length;
 					if (clock1 > 16){
 						clock1 = 16;
