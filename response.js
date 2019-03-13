@@ -1419,20 +1419,35 @@ function noticecheck(){
 		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01")
 	    .cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select('tbody');
 		
-    	var docnum = doc.select("tr.num").get(0).select("td.num").get(0).text();//제일 최근공지가 뭔지 확인
-    	var doctitle = doc.select("tr.num").select("a:first-child").get(0).ownText();
+    	var docnum = doc.select("tr.num").toArray().map(v=>v.select('td.num').get(0).text());
+    	var doctitle = doc.select("tr.num").toArray().map(v=>v.select('a:first-child').get(0).ownText());
     	
-		if(docnum!=D.selectForArray('notice', 'num')[0][0] || doctitle!=D.selectForArray('notice', 'msg')[0][0]){//저장된 공지의 번호
-	    	var doclink = doc.select("a:first-child").get(0).attr("abs:href");
+    	var difcount = 0;
+    	
+    	for(var i=0; i<15;i++){
+    		for(var j=0; j<15; j++){
+    			if(D.selectForArray('notice')[i][1].indexOf(doctitle[i]) == -1){
+        			difcount += 1;
+        			var wantnum = docnum[0]-docnum[i];
+        			var difnum = i;
+        		}
+    		}
+    	}
+    	
+    	for(var i=0; i<15;i++){
+    		D.update('notice', {num : docnum[i], msg : doctitle[i]});
+    	}
+    	
+		if(difcount > 0){
+			var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get();
 	    	
 	    	var text = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.content").eachText().toArray()[0];
 	    	var repl = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', r.room)).cookies(Flag.get('cookie1', r.room)).get().select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
-			Api.replyRoom("test","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+			Api.replyRoom("test","새공지!\n"+docnum[difnum]+" : "+doctitle[difnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			//Api.replyRoom("푸드마켓","새공지!\n"+docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
-			D.update('notice', { num: docnum, msg: doctitle });
 		}
 	}catch(e){
 		Log.e(e+"\n"+e.stack+'\n');
