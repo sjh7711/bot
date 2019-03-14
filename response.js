@@ -401,7 +401,7 @@ function baseball(r){
 			Flag.set("suggest", r.room, r.sender);
 			var temp = [r.sender];
 			Flag.set("baseball", r.room , temp);
-			r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+			r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
 		}else if( Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
 			r.replier.reply('포인트가 부족합니다. 닉네임을 바꾸세요.')
 		}
@@ -416,7 +416,7 @@ function baseball(r){
             var temp = Flag.get('baseball', r.room);
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
-            r.replier.reply(r.sender+"님이 참가하셨습니다. 현재 "+temp.length+'명');
+            r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
         } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
         	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
         	return;
@@ -509,15 +509,22 @@ function baseball(r){
 			}
 			
 			if(scount == 4){
+				var str = '';
 				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-1000;
-					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+					if(Flag.get('baseball', r.room)[i] != r.sender){
+						str += Flag.get('baseball', r.room)[i]+':'+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' -> ';
+						var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-1000;
+						D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+						str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )) + ' \n';
+					} else {
+						str += Flag.get('baseball', r.room)[i]+':'+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' -> ';
+						var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0])+Number(Flag.get('baseball', r.room).length*1100) - 1000;
+						D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+						str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )) + ' \n';
+					}
 				}
 				
-				r.replier.reply('정답! '+r.sender+'님께 '+Flag.get('baseball', r.room).length*1100+'포인트가 지급되었습니다.');
-				
-				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0])+Number(Flag.get('baseball', r.room).length*1100);
-				D.update("baseball", {point : temppoint} ,  'name=? and room=?', [r.sender, r.room]);
+				r.replier.reply(r.sender+'님 정답!\n'+str);
 				
 				if(Flag.get('baseball', r.room).length > 1){
 					var tempwin = Number(D.selectForArray('baseball', 'win',  'name=? and room=?', [r.sender, r.room])[0])+1;
@@ -529,6 +536,9 @@ function baseball(r){
 							D.update('baseball', {lose : templose }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 						}
 					}
+				} else {
+					var tempwin = Number(D.selectForArray('baseball', 'solowin',  'name=? and room=?', [r.sender, r.room])[0])+1;
+					D.update('baseball', {solowin : tempwin }, 'name=? and room=?', [r.sender, r.room]);
 				}
 				Flag.set('supposelist', r.room, '');
 				Flag.set('start2', r.room, 0);
@@ -562,7 +572,7 @@ function saveImage(r){
 	if(r.sender == '_(≥∇≤)ノ🎓'){
 		r.sender = '이모티콘';
 	}
-	file = 'storage/emulated/0/ipdisk/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
+	file = 'storage/emulated/0/kbot/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
 	Api.replyRoom('test', 'image save succes\n'+r.sender+' / '+r.room+'\n'+time().now);
 }
