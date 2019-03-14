@@ -226,18 +226,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(reload());
         		return;
         	}str += "!로딩\n";
-        	
-        	if(msg.indexOf("!전송") == 0){
-        		if(msg.split(' ')[1].length >0 && msg.split(' ')[2].length>0){
-        			Api.replyRoom(msg.split(' ')[1],msg.split(' ')[2]);
-        			replier.reply('성공');
-        			return;
-        		} else{
-        			replier.reply('실패');
-        			return;
-        		}
-        		
-        	}str += "!전송\n";
         }
         
         str += "!상태\n";
@@ -924,7 +912,7 @@ function overwatch(r) {
 	    	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
 		} else {
 			var temp = source.select('div.masthead');
-			if(String(temp.select('div.u-align-center')).length==0){
+			if(String(temp.select('div.u-align-center')).length==0 || source.select('div.masthead').select('div.u-align-center').length == undefined){
 				var score = "Unranked";
 				var tier = "Unranked";
 			}else if (String(temp.select('div.u-align-center')).length>0) {
