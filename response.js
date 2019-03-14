@@ -567,18 +567,22 @@ function baseball(r){
 			Flag.set('passtime', r.room, new Date().getTime());
 		}
 	} else if(Flag.get('start2', r.room) == 1 && Flag.get('baseball', r.room)[Flag.get('k', r.room)]!=r.sender && r.msg == '!패스' ) {
-		if(((Flag.get('passtime', r.room ) + 1000*1*30 ) < new Date().getTime() )){
-			var k = Flag.get('k', r.room) + 1;
-			if(k >= Flag.get('baseball', r.room).length){
-				k=0;
+		for( var i = 0 ; i < Flag.get('baseball', r.room).length ; i++){
+			if( r.sender == Flag.get('baseball', r.room)[i] ){
+				if(((Flag.get('passtime', r.room ) + 1000*1*30 ) < new Date().getTime() )){
+					var k = Flag.get('k', r.room) + 1;
+					if(k >= Flag.get('baseball', r.room).length){
+						k=0;
+					}
+					Flag.set('k', r.room, k);
+					r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
+					Flag.set('passtime', r.room, new Date().getTime());
+				}
+				else {
+					r.replier.reply( (Math.floor( (Flag.get('passtime', r.room ) + 1000*30*1 - new Date().getTime()) / 1000 )) + '초 뒤에 패스가 가능합니다.');
+					return;
+				}
 			}
-			Flag.set('k', r.room, k);
-			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
-			Flag.set('passtime', r.room, new Date().getTime());
-		}
-		else {
-			r.replier.reply( (Math.floor( (Flag.get('passtime', r.room ) + 1000*30*1 - new Date().getTime()) / 1000 )) + '초 뒤에 패스가 가능합니다.');
-			return;
 		}
 	}
 }
