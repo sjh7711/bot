@@ -139,7 +139,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
 
-        if (room == '푸드마켓' || room =='test' || room == '시립대 봇제작방'){
+        if (room == '푸드마켓' || room =='test'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
         	str += "!명단\n"
         } 
@@ -149,12 +149,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         } 
         
-        if( ( !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'  ) && msg == "!야구" ) || msg == "!야구방"  ){
+        if( ( !(room =='test' || room =='시립대 단톡방' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'  ) && msg == "!야구" ) || msg == "!야구방"  ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
         
-        if(  room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' ){
+        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' ){
         	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).map(v=>v[0]).indexOf(r.sender) == -1){
         		D.insert('baseball', {name : r.sender, point : 100000, room : r.room, win : 0, lose : 0, solowin : 0});
         	}
@@ -663,7 +663,7 @@ function weather(r){
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "통영시 무전동";
-			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'){
+			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'|| r.room == '시립대 단톡방'){
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=09230104';
 				check = link2.indexOf('weather');
 				where = "서울시립대";
@@ -866,6 +866,12 @@ var WCC = T.register("weatherClockCheck",()=>{
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨', room : '시립대 자취생 생정',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨', room : '시립대 단톡방',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
