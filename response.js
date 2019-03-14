@@ -235,7 +235,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply("건의가 너무 짧습니다.");
         		return;
         	}else{
-        		Api.replyRoom('recom', room+" : "+sender+" : "+msg.substr(4));
+        		Api.replyRoom('추천/건의', room+" : "+sender+" : "+msg.substr(4));
         		replier.reply(sender+"님의 건의가 접수되었습니다.");
         		return;
         	}
@@ -912,7 +912,10 @@ function overwatch(r) {
 	    	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
 		} else {
 			var temp = source.select('div.masthead');
-			if(String(temp.select('div.u-align-center')).length==0 || source.select('div.masthead').select('div.u-align-center').length == undefined){
+			if(source.select('div.masthead').select('div.u-align-center').length == undefined){
+				r.replier.reply('알 수 없습니다.');
+				return;
+			}else if(String(temp.select('div.u-align-center')).length==0 ){
 				var score = "Unranked";
 				var tier = "Unranked";
 			}else if (String(temp.select('div.u-align-center')).length>0) {
