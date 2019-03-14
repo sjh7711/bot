@@ -911,16 +911,12 @@ function overwatch(r) {
 	    if (source.select('div.u-align-center').text().indexOf('이 프로필은 비공개입니다.')>0 ) {
 	    	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
 		} else {
-			var temp = source.select('div.masthead');
-			if(source.select('div.masthead').select('div.u-align-center').length == undefined){
-				r.replier.reply('알 수 없습니다.');
-				return;
-			}else if(String(temp.select('div.u-align-center')).length==0 ){
+			if(String(source.select('div.masthead').select('div.u-align-center')).length==0 ){
 				var score = "Unranked";
 				var tier = "Unranked";
-			}else if (String(temp.select('div.u-align-center')).length>0) {
-				var score = temp.select('div.u-align-center').get(0).text();
-		        var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
+			}else if (String(source.select('div.masthead').select('div.u-align-center')).length>0) {
+				var score = source.select('div.masthead').select('div.u-align-center').get(0).text();
+		        var tier = source.select('div.masthead').select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
 			}else {
 				var score = "알 수 없습니다."
 				var tier = "Unranked";
