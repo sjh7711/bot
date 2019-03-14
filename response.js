@@ -512,19 +512,19 @@ function baseball(r){
 				var str = '';
 				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 					if(Flag.get('baseball', r.room)[i] != r.sender){
-						str += Flag.get('baseball', r.room)[i]+':'+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' -> ';
+						str += Flag.get('baseball', r.room)[i]+':'+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
 						var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-1000;
 						D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 						str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )) + ' \n';
 					} else {
-						str += Flag.get('baseball', r.room)[i]+':'+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' -> ';
+						str += Flag.get('baseball', r.room)[i]+':'+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
 						var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0])+Number(Flag.get('baseball', r.room).length*1100) - 1000;
 						D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 						str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )) + ' \n';
 					}
 				}
 				
-				r.replier.reply(r.sender+'님 정답!\n'+str);
+				r.replier.reply(str+'  <'+r.sender+'님 정답!>');
 				
 				if(Flag.get('baseball', r.room).length > 1){
 					var tempwin = Number(D.selectForArray('baseball', 'win',  'name=? and room=?', [r.sender, r.room])[0])+1;
@@ -532,7 +532,7 @@ function baseball(r){
 					
 					for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 						if(Flag.get('baseball', r.room)[i] != r.sender){
-							var templose = Number(D.selectForArray('baseball', 'lose', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]))+1
+							var templose = Number(D.selectForArray('baseball', 'lose', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]))+1;
 							D.update('baseball', {lose : templose }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 						}
 					}
