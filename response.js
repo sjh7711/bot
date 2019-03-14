@@ -347,10 +347,6 @@ function baseball(r){
 				Flag.set('start', r.room, 0);
 				Flag.set('start1', r.room, 0);
 				Flag.set('start2', r.room, 0);
-				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])+1000;
-					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-				}
 				Flag.set('supposelist', r.room, '');
 				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 				return;
