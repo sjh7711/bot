@@ -930,7 +930,13 @@ function overwatch(r) {
 			
 	        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP4"+es;
 	        
-	        for(var i = 0 ; i < 4 ; i++ ){
+	        var num = compplaytime.select('div.ProgressBar-title').toArray().length;
+	        
+	        if(num>3){
+	        	num=4;
+	        }
+	        
+	        for(var i = 0 ; i < num ; i++ ){
 	        	var most = compplaytime.select('div.ProgressBar-title').get(i).text();
 	        	res+="\n\n"+(i+1)+"."+most;
 	            var mosttime = compplaytime.select('div.ProgressBar-description').get(i).text();
