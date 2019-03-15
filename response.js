@@ -339,9 +339,11 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			T.interrupt(reactionspeed);
 			break;
 		}
-		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 20000){
+		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 5000){
+			r.replier.reply('5초가 지났습니다.')
 			break;
 		}
+		java.lang.Thread.sleep(10);
 	}
 })
 
