@@ -336,6 +336,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room))/1000 +'초');
 			Flag.set('react', r.room, 0); 
 			T.interrupt(reactionspeed);
+			break;
 		}
 		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 20000){
 			break;
