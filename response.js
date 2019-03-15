@@ -342,7 +342,6 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 20000){
 			break;
 		}
-		java.lang.Thread.sleep(1);
 	}
 })
 
