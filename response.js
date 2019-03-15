@@ -320,7 +320,7 @@ function func(r) {
     	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
     }
 }
-
+/*
 var reactionspeed = T.register("reactionSpeed",()=>{
 	while(1){
 		if(Flag.get('react', r.room) == 0){
@@ -349,7 +349,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 		}
 		java.lang.Thread.sleep(10);
 	}
-})
+})*/
 
 function randomnumber(r){
 	var num1 = Number(r.msg.split(' ')[1]);
