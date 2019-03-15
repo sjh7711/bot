@@ -160,7 +160,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
 
-        if (room == '푸드마켓' || room =='test' || room == '시립대 봇제작방'){
+        if (room == '푸드마켓' || room =='test'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
         	str += "!명단\n"
         } 
@@ -170,12 +170,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         } 
         
-        if( ( !(room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'  ) && msg == "!야구" ) || msg == "!야구방"  ){
+        if( ( !(room =='test' || room =='시립대 단톡방' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'  ) && msg == "!야구" ) || msg == "!야구방"  ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
         
-        if(  room =='test' || room =='시립대 봇제작방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' ){
+        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' ){
         	if( D.selectForArray('baseball', 'name', 'room=?', r.room) == undefined || D.selectForArray('baseball', 'name', 'room=?', r.room).map(v=>v[0]).indexOf(r.sender) == -1){
         		D.insert('baseball', {name : r.sender, point : 100000, room : r.room, win : 0, lose : 0, solowin : 0});
         	}
@@ -256,7 +256,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply("건의가 너무 짧습니다.");
         		return;
         	}else{
-        		Api.replyRoom('recom', room+" : "+sender+" : "+msg.substr(4));
+        		Api.replyRoom('추천/건의', room+" : "+sender+" : "+msg.substr(4));
         		replier.reply(sender+"님의 건의가 접수되었습니다.");
         		return;
         	}
@@ -300,33 +300,29 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
 function func(r) {
     if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. !최근채팅16 과 같이 입력하면 16개를 불러오고 최대 16개까지 조회가 가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 불필요한 띄워쓰기가 들어가거나 이름이 잘못되면 출력이 안될 수 있습니다.");
-    } else if (r.msg.split(" ")[1] == "전체채팅") {
-        r.replier.reply("방 구별없이 최근채팅 12개를 출력합니다. !최근채팅16 과 같이 입력하면 16개를 불러옵니다. DB에 저장된 마지막 데이터까지 조회가 가능합니다. !최근채팅16 닉네임 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다.");
+        r.replier.reply("최근채팅 6개를 출력합니다. [!최근채팅16]과 같이 입력하면 16개를 불러오고 최대 16개까지 조회가 가능합니다. [!최근채팅16 닉네임] 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다. 불필요한 띄워쓰기가 들어가거나 이름이 잘못되면 출력이 안될 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "오버워치") {
-        r.replier.reply("!오버워치 똥개#5468와 같이 입력하면 티어,점수,경쟁전에서 가장 많이 플레이한 영웅 4명을 확인할 수 있습니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
+        r.replier.reply("[!오버워치 똥개#5468]와 같이 입력하면 티어,점수,경쟁전에서 가장 많이 플레이한 영웅 4명을 확인할 수 있습니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
     } else if (r.msg.split(" ")[1] == "로또") {
-        r.replier.reply("로또번호를 추천해줍니다. !당첨으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
+        r.replier.reply("로또번호를 추천해줍니다. [!당첨]으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "당첨") {
-        r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. !당첨 닉네임 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
-    } else if (r.msg.split(" ")[1] == ";메뉴") {
-        r.replier.reply("먹을 음식을 추천해 줍니다. !메뉴 3과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+        r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. [!당첨 닉네임] 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
+    } else if (r.msg.split(" ")[1] == "메뉴") {
+        r.replier.reply("먹을 음식을 추천해 줍니다. [!메뉴 3]과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "식당") {
-        r.replier.reply("시립대 주변 식당을 추천해 줍니다. !식당 3과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    } else if (r.msg.split(" ")[1] == "예정기능") {
-        r.replier.reply("앞으로 만들어질 예정/오류수정예정/추가기능 등등 개선될 내용입니다. 본인방에서 작동하지 않을 기능도 있습니다.");
+        r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "공지") {
-        r.replier.reply("최근 5개의 공지를 띄워줍니다. !공지 15 과 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다. 해당 공지의 번호를 !공지 xxx 이렇게 입력하시면 내용과 댓글을 확인할 수 있습니다.");
+        r.replier.reply("최근 5개의 공지를 띄워줍니다. [!공지 15] 과 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다. 해당 공지의 번호를 [!공지 823] 이렇게 입력하시면 내용과 댓글을 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "날씨") {
-        r.replier.reply("!날씨 지역명으로 검색가능하며 경우에 따라 선택을 해야할 수도 있습니다. 기본값은 해당 방과 가장 관련있는 지역입니다.");
+        r.replier.reply("[!날씨 지역명]으로 검색가능하며 경우에 따라 선택을 해야할 수도 있습니다. 기본값은 해당 방과 가장 관련있는 지역입니다.");
     } else if (r.msg.split(" ")[1] == "건의") {
-        r.replier.reply("건의를 받습니다. !건의 건의내용 으로 입력하면 됩니다.");
+        r.replier.reply("건의를 받습니다. [!건의 건의내용] 으로 입력하면 됩니다.");
     } else if (r.msg.split(" ")[1] == "추첨") {
-        r.replier.reply("!추첨을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 특수문자 없이 숫자만 입력하면 됩니다. 입력 후에는 누구든지 참가 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 !마감 을 입력하면 당첨자가 바로 발표됩니다. 추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 !추첨이 입력된 후 90초 이후엔 !추첨종료로 종료가 가능합니다.");
+        r.replier.reply("[!추첨]을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 숫자만 입력하면 됩니다. 입력 후에는 누구든지 참가 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 [!마감 ]을 입력하면 당첨자가 바로 발표됩니다.\n추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 [!추첨]이 입력된 후 90초 이후엔 [!추첨종료]로 종료가 가능합니다.");
     } else if (r.msg.split(" ")[1] == "명단") {
-        r.replier.reply("푸드뱅크 명단을 보여줍니다. !명단 만월 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n!명단추가 복지센터 055645XXXX 처럼 입력하면 추가되고 !명단삭제 복지센터 처럼 입력하면 목록이 삭제됩니다. 삭제할땐 반드시 제대로 된 기관명을 입력해야합니다.");
+        r.replier.reply("푸드뱅크 명단을 보여줍니다. [!명단 만월] 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n[!명단추가 복지센터 055645XXXX] 처럼 입력하면 추가되고 [!명단삭제 복지센터] 처럼 입력하면 목록이 삭제됩니다. 삭제할 땐 반드시 제대로 된 기관명을 입력해야합니다.");
     } else if (r.msg.split(" ")[1] == "맛집") {
-        r.replier.reply("검색한 지역의 맛집을 알려줍니다. !맛집 지역명 으로 검색하면 됩니다.");
+        r.replier.reply("검색한 지역의 맛집을 알려줍니다. [!맛집 지역명] 으로 검색하면 됩니다.");
     } else if (r.msg.split(" ")[1] == "야구"){
     	r.replier.reply('숫자야구 룰\n'+es+'\n\
 여러분들은 [!야구] 를 통해 게임을 시작 할 수 있으며 [!야구] 를  외친 사람은 자동으로 참가가 됩니다.\
@@ -341,7 +337,7 @@ function func(r) {
 [!패스]를 통해 상대방이 30초 이상 답하지 않을 경우 그 다음 턴으로 차례를 넘길 수 있습니다.\n\
 [!야구방]을 통해 야구 전용방에 들어갈 수 있습니다.')
     } else if (r.msg.split(" ")[1] == "주사위"){
-    	r.replier.reply("기본값은 1~100이고 !주사위 200 처럼하면 1~200까지, !주사위 2 200 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
+    	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
     }
 }
 
@@ -378,10 +374,6 @@ function baseball(r){
 				Flag.set('start', r.room, 0);
 				Flag.set('start1', r.room, 0);
 				Flag.set('start2', r.room, 0);
-				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0])+1000;
-					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-				}
 				Flag.set('supposelist', r.room, '');
 				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 				return;
@@ -690,7 +682,7 @@ function weather(r){
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "통영시 무전동";
-			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'){
+			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'|| r.room == '시립대 단톡방'){
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=09230104';
 				check = link2.indexOf('weather');
 				where = "서울시립대";
@@ -898,6 +890,12 @@ var WCC = T.register("weatherClockCheck",()=>{
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨', room : '시립대 단톡방',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨', room : '오버워치',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
@@ -938,13 +936,12 @@ function overwatch(r) {
 	    if (source.select('div.u-align-center').text().indexOf('이 프로필은 비공개입니다.')>0 ) {
 	    	r.replier.reply(r.msg.substr(6) + "의 정보를 알 수 없습니다.");
 		} else {
-			var temp = source.select('div.masthead');
-			if(String(temp.select('div.u-align-center')).length==0 || source.select('div.masthead').select('div.u-align-center').length == undefined){
+			if(String(source.select('div.masthead').select('div.u-align-center')).length==0 ){
 				var score = "Unranked";
 				var tier = "Unranked";
-			}else if (String(temp.select('div.u-align-center')).length>0) {
-				var score = temp.select('div.u-align-center').get(0).text();
-		        var tier = temp.select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
+			}else if (String(source.select('div.masthead').select('div.u-align-center')).length>0) {
+				var score = source.select('div.masthead').select('div.u-align-center').get(0).text();
+		        var tier = source.select('div.masthead').select('div.competitive-rank').get(0).toString().split('rank-icons/rank-')[1].split('Tier')[0];
 			}else {
 				var score = "알 수 없습니다."
 				var tier = "Unranked";
@@ -958,7 +955,13 @@ function overwatch(r) {
 			
 	        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP4"+es;
 	        
-	        for(var i = 0 ; i < 4 ; i++ ){
+	        var num = compplaytime.select('div.ProgressBar-title').toArray().length;
+	        
+	        if(num>3){
+	        	num=4;
+	        }
+	        
+	        for(var i = 0 ; i < num ; i++ ){
 	        	var most = compplaytime.select('div.ProgressBar-title').get(i).text();
 	        	res+="\n\n"+(i+1)+"."+most;
 	            var mosttime = compplaytime.select('div.ProgressBar-description').get(i).text();
