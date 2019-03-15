@@ -49,6 +49,27 @@ Flag=(function(){
 	})();
 function blankFunc(r){
 }
+var reactionspeed = T.register("reactionSpeed",()=>{
+	while(1){
+		if(Flag.get('react', r.room) == 0){
+			r.replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+			var rand = 1+Math.floor(Math.random() * 7000);
+			java.lang.Thread.sleep(rand);
+			r.replier.reply('시작!');
+			Flag.set('react', r.room, 1);
+			Flag.set('reactstarttime', r.room, new Date().getTime());
+		}
+		var reactiontime = new Date().getTime();
+		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) > 0) ){
+			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room))/1000 +'초');
+			Flag.set('react', r.room, 0); 
+			T.interrupt(reactionspeed);
+		}
+		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 20000){
+			break;
+		}
+	}
+}
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -262,6 +283,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(imageDB.getImage() != null){
     		saveImage(r);
     	}
+        
+        if (room == 'test' || room == '시립대 봇제작방') {
+        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
+        		reactionspeed.start()
+        	}
+        }
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
@@ -1772,31 +1799,4 @@ if (r.msg.split(" ")[1] == "메뉴추가") {
     */
 
 
-/*
-if (room == 'test' || room == '시립대 봇제작방' || room == '오버워치' || room == '푸드마켓' || room == '시립대 전전컴 톡방'||room=='시립대 자취생 생정') {
-	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
-		T.register("reactionSpeed",()=>{
-			var now;
-			while(1){
-				if(this["flag" + room][4] == 0){
-					replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-					var rand = 1+Math.floor(Math.random() * 7000);
-					java.lang.Thread.sleep(rand);
-					this["flag" + room][4] = 1;
-					replier.reply('시작!');
-					msg="";
-					now = new Date().getTime();
-				}
-				var reactiontime = new Date().getTime();
-				if(this["flag" + room][4] == 1 && msg == '.' && (reactiontime - now - 250 > 0) ){
-					r.replier.reply(sender+"님의 반응 속도 : "+ (reactiontime-now-250)/1000 +'초');
-					this["flag" + room][4] = 0;
-					break;
-				}
-				if(((new Date().getTime())-now) > 20000){
-					break;
-				}
-			}
-		}).start();
-	}
-}*/
+
