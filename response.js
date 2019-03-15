@@ -331,13 +331,14 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 		
 		if(Flag.get('react', r.room) == 0 && (Flag.get('starttime1', r.room)+Flag.get('reactrand', r.room) < new Date().getTime()) );{
 			r.replier.reply('시작!');
+			java.lang.Thread.sleep(40);
 			Flag.set('react', r.room, 1);
 			Flag.set('reactstarttime', r.room, new Date().getTime());
 		}
 		
 		var reactiontime = new Date().getTime();
-		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) - 40 > 0) ){
-			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room) - 40)/1000 +'초');
+		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room)> 0) ){
+			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room))/1000 +'초');
 			Flag.set('react', r.room, 0); 
 			T.interrupt(reactionspeed);
 			break;
