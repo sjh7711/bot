@@ -49,28 +49,7 @@ Flag=(function(){
 	})();
 function blankFunc(r){
 }
-var reactionspeed = T.register("reactionSpeed",()=>{
-	while(1){
-		if(Flag.get('react', r.room) == 0){
-			r.replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-			var rand = 1+Math.floor(Math.random() * 7000);
-			java.lang.Thread.sleep(rand);
-			r.replier.reply('시작!');
-			Flag.set('react', r.room, 1);
-			Flag.set('reactstarttime', r.room, new Date().getTime());
-		}
-		var reactiontime = new Date().getTime();
-		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) > 0) ){
-			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room))/1000 +'초');
-			Flag.set('react', r.room, 0); 
-			T.interrupt(reactionspeed);
-		}
-		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 20000){
-			break;
-		}
-		java.lang.Thread.sleep(1);
-	}
-}
+
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -340,6 +319,29 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "주사위"){
     	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
     }
+}
+
+var reactionspeed = T.register("reactionSpeed",()=>{
+	while(1){
+		if(Flag.get('react', r.room) == 0){
+			r.replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
+			var rand = 1+Math.floor(Math.random() * 7000);
+			java.lang.Thread.sleep(rand);
+			r.replier.reply('시작!');
+			Flag.set('react', r.room, 1);
+			Flag.set('reactstarttime', r.room, new Date().getTime());
+		}
+		var reactiontime = new Date().getTime();
+		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) > 0) ){
+			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room))/1000 +'초');
+			Flag.set('react', r.room, 0); 
+			T.interrupt(reactionspeed);
+		}
+		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 20000){
+			break;
+		}
+		java.lang.Thread.sleep(1);
+	}
 }
 
 function randomnumber(r){
