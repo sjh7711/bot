@@ -330,6 +330,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			r.replier.reply('시작!');
 			Flag.set('react', r.room, 1);
 			Flag.set('reactstarttime', r.room, new Date().getTime());
+			r.msg = '';
 		}
 		var reactiontime = new Date().getTime();
 		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) - 40 > 0) ){
