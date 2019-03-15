@@ -329,7 +329,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			Flag.set('reactrand', r.room, 1+Math.floor(Math.random() * 7000));
 		}
 		
-		if(Flag.get('react', r.room) == 0 && Flag.get('starttime1', r.room)+Flag.set('reactrand', r.room) < new Date().getTime() );{
+		if(Flag.get('react', r.room) == 0 && Flag.get('starttime1', r.room)+Flag.get('reactrand', r.room) < new Date().getTime() );{
 			r.replier.reply('시작!');
 			Flag.set('react', r.room, 1);
 			Flag.set('reactstarttime', r.room, new Date().getTime());
