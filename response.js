@@ -342,7 +342,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 		}
 		java.lang.Thread.sleep(1);
 	}
-}
+})
 
 function randomnumber(r){
 	var num1 = Number(r.msg.split(' ')[1]);
