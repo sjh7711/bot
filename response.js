@@ -325,13 +325,16 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 	while(1){
 		if(Flag.get('react', r.room) == 0){
 			r.replier.reply("8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-			var rand = 1+Math.floor(Math.random() * 7000);
-			java.lang.Thread.sleep(rand);
+			Flag.set('starttime1', r.room, new Date().getTime());
+			Flag.set('reactrand', r.room, 1+Math.floor(Math.random() * 7000));
+		}
+		
+		if(Flag.get('starttime1', r.room)+Flag.set('reactrand', r.room) < new Date().getTime() );{
 			r.replier.reply('시작!');
 			Flag.set('react', r.room, 1);
 			Flag.set('reactstarttime', r.room, new Date().getTime());
-			r.msg = '';
 		}
+		
 		var reactiontime = new Date().getTime();
 		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) - 40 > 0) ){
 			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room) - 40)/1000 +'초');
@@ -340,7 +343,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			break;
 		}
 		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 5000){
-			r.replier.reply('5초가 지났습니다.')
+			r.replier.reply('5초가 지났습니다. 게임이 끝났습니다.')
 			break;
 		}
 		java.lang.Thread.sleep(10);
