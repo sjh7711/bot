@@ -93,7 +93,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             return;
         } 
         str += "!당첨\n";
-
+        
+        if (msg == "!역대로또"){
+        	bestlotto(r);
+        	return;
+        }
+        str += "!역대로또\n";
+        
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
             return;
@@ -1293,6 +1299,14 @@ function recom(r, name) { //name : DB이름
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
+}
+
+function bestlotto(r) {
+	var temp = D.selectForArray('lottoresult',null, 'room=?', [room], {orderBy:"class asc"}).slice(0, 10);
+	for(var i=0; i<temp.length; i++){
+		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+	}
+	r.replier.reply(result);
 }
 
 //로또
