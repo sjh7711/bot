@@ -404,7 +404,7 @@ function baseball(r){
 			r.replier.reply('Hint!\n'+str+'\n'+answer.join(''));
 			return;
 		} else if(r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 < 10){
-			r.replier.reply('힌트를 쓰려면 '+ (9 - Number(Flag.get('supposelist', r.room).split('\n').length-1)) + '차례가 더 지나야 합니다.');
+			r.replier.reply('힌트를 쓰려면 '+ (9 - Number(Flag.get('supposelist', r.room).split('\n').length)) + '턴이 지나야 합니다.');
 			return;
 		}
 	}
