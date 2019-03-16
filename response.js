@@ -773,7 +773,7 @@ function weather(r){
 	        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	        		where = want;
 	        		check = link2.indexOf('weather');
-	        		if(check == -1){
+	        		if(check == -1 || String(temp).length == 0){
 	        			r.replier.reply("검색이 불가능합니다.");
 						return;
 	        		}
