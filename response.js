@@ -345,7 +345,7 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			T.interrupt(reactionspeed);
 			break;
 		}
-		java.lang.Thread.sleep(10);
+		java.lang.Thread.sleep(5);
 	}
 })
 
