@@ -387,21 +387,24 @@ function randomnumber(r){
 }
 
 function baseball(r){
-	if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 9 ){
-		var str = '';
-		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-			if(Flag.get('baseball', r.room)[i] == r.sender){
-				str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
-				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-500;
-				D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-				str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ));
+	if(Flag.get('supposelist', r.room) != 0){
+		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 9 ){
+			var str = '';
+			for(var i=0;i<Flag.get('baseball', r.room).length;i++){
+				if(Flag.get('baseball', r.room)[i] == r.sender){
+					str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
+					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-500;
+					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+					str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ));
+				}
 			}
+			var rand = Math.floor(Math.random()*4);
+			var answer = ['_','_','_','_'];
+			answer[rand] = Flag.get('answer', r.room)[rand];
+			r.replier.reply('Hint!\n'+str+'\n'+answer.join(''));
 		}
-		var rand = Math.floor(Math.random()*4);
-		var answer = ['_','_','_','_'];
-		answer[rand] = Flag.get('answer', r.room)[rand];
-		r.replier.reply('Hint!\n'+str+'\n'+answer.join(''));
 	}
+	
 	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 1 ){
 		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
