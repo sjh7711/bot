@@ -393,22 +393,19 @@ function baseball(r){
 		return;
 	}
 	if(Flag.get('supposelist', r.room) != 0){
-		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 8 ){
+		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 8  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender){
 			var str = '';
-			for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-				if(Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender){
-					str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
-					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-500;
-					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-					str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ));
-				}
-			}
+			str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
+			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-500;
+			D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+			str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ));
+			
 			var rand = Math.floor(Math.random()*4);
 			var answer = ['_','_','_','_'];
 			answer[rand] = Flag.get('answer', r.room)[rand];
 			r.replier.reply('Hint!\n'+str+'\n'+answer.join(' '));
 			return;
-		} else if(r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 < 9){
+		} else if(r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 < 9  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
 			r.replier.reply('힌트를 쓰려면 '+ (10 - Number(Flag.get('supposelist', r.room).split('\n').length))  + '턴이 지나야 합니다.');
 			return;
 		}
