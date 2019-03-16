@@ -342,7 +342,7 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 			T.interrupt(reactionspeed);
 			break;
 		}
-		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 5000 && && Flag.get('reactionroom', r.room) != 0){
+		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 5000 && Flag.get('reactionroom', r.room) != 0){
 			Api.replyRoom(Flag.get('reactionroom', r.room), '5초가 지났습니다. 게임이 끝났습니다.')
 			Flag.set('react', r.room, 0); 
 			Flag.set('reactionspeed', r.room, 0)
