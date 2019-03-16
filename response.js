@@ -1337,7 +1337,7 @@ function bestlotto(r) {
 	var two = D.selectForArray('lottoresult', null, 'count == 7 ',null,  {orderBy:"class asc"}).length;
 	var one = D.selectForArray('lottoresult', null, 'count == 6', null, {orderBy:"class asc"}).length;
 	for(var i=0; i<temp.length; i++){
-		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
+		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
 	}
 	result+='로또 뽑은 횟수 : '+all+'\n'
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
