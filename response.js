@@ -1329,13 +1329,13 @@ function recom(r, name) { //name : DB이름
 
 function bestlotto(r) {
 	var result = "명예의 전당"+es+"\n";
-	var temp = D.selectForArray('lottoresult', null, 'count > 2 ', null , {orderBy:"class asc"});
-	var all = D.selectForArray('lottoresult', null, null ,null ,{orderBy:"class asc"}).length;
-	var five = D.selectForArray('lottoresult', null, 'count == 3', null, {orderBy:"class asc"}).length;
-	var four = D.selectForArray('lottoresult', null, 'count == 4 ',null,  {orderBy:"class asc"}).length;
-	var three = D.selectForArray('lottoresult', null, 'count == 5 ',null,  {orderBy:"class asc"}).length;
-	var two = D.selectForArray('lottoresult', null, 'count == 7 ',null,  {orderBy:"class asc"}).length;
-	var one = D.selectForArray('lottoresult', null, 'count == 6', null, {orderBy:"class asc"}).length;
+	var temp = D.selectForArray('lottoresult', null, 'count > 2 and room=?', [r.room], {orderBy:"class asc"});
+	var all = D.selectForArray('lottoresult', null, 'room=?', [r.room], {orderBy:"class asc"}).length;
+	var five = D.selectForArray('lottoresult', null, 'count == 3 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var four = D.selectForArray('lottoresult', null, 'count == 4 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var three = D.selectForArray('lottoresult', null, 'count == 5 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var two = D.selectForArray('lottoresult', null, 'count == 7 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var one = D.selectForArray('lottoresult', null, 'count == 6 and room=?', [r.room], {orderBy:"class asc"}).length;
 	for(var i=0; i<temp.length; i++){
 		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
 	}
