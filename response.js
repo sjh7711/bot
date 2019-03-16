@@ -387,6 +387,22 @@ function randomnumber(r){
 }
 
 function baseball(r){
+	if(Flag.get('supposelist', r.room).split('\n').length-1 > 9 && r.msg == '!힌트' ){
+		var str = '';
+		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
+			if(Flag.get('baseball', r.room)[i] == r.sender){
+				str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
+				var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-500;
+				D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
+				str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ));
+			}
+		}
+		var rand = Math.floor(Math.random()*4);
+		var answer = ['_','_','_','_'];
+		answer[rand] = Flag.get('answer', r.room)[rand];
+		r.replier.reply('Hint!\n'+str+'\n'+answer.join(''));
+	}
+	
 	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 1 ){
 		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
 			if(r.sender == Flag.get('baseball', r.room)[i]){
@@ -1303,7 +1319,7 @@ function recom(r, name) { //name : DB이름
 }
 
 function bestlotto(r) {
-	var result = "명예의 전당\n"+es+"\n";
+	var result = "명예의 전당"+es+"\n";
 	var temp = D.selectForArray('lottoresult', null, 'count > 2 ', null , {orderBy:"class asc"});
 	var all = D.selectForArray('lottoresult', null, null ,null ,{orderBy:"class asc"}).length;
 	var five = D.selectForArray('lottoresult', null, 'count == 3', null, {orderBy:"class asc"}).length;
