@@ -323,7 +323,7 @@ function func(r) {
 [!랭킹]을 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.\n\
 [!강제종료]를 통해 게임을 강제로 종료할 수 있습니다. 혼자 플레이 중인 경우 아무나 종료 가능하고 2인 이상일 경우 현재 참가중인 플레이어 중에서만 강제종료가 가능합니다.\n\
 [!패스]를 통해 상대방이 30초 이상 답하지 않을 경우 그 다음 턴으로 차례를 넘길 수 있습니다.\n\
-[!힌트]를 통해 9번째 턴 부터 500포인트를 사용하여 숫자 하나에 대한 정보를 얻을 수 있습니다. 힌트를 쓰는 즉시 포인트는 차감되기 때문에 강제종료를 하더라도 포인트는 돌아오지 않습니다. 신중하게 사용해주세요.\n\
+[!힌트]를 통해 8번째 턴 부터 500포인트를 사용하여 숫자 하나에 대한 정보를 얻을 수 있습니다. 힌트를 쓰는 즉시 포인트는 차감되기 때문에 강제종료를 하더라도 포인트는 돌아오지 않습니다. 신중하게 사용해주세요.\n\
 [!야구방]을 통해 야구 전용방에 들어갈 수 있습니다.')
     } else if (r.msg.split(" ")[1] == "주사위"){
     	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
@@ -393,7 +393,7 @@ function baseball(r){
 		return;
 	}
 	if(Flag.get('supposelist', r.room) != 0){
-		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 8  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender){
+		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 7  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender){
 			var str = '';
 			str += Flag.get('baseball', r.room)[Flag.get('k', r.room)]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] ))+' → ';
 			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] ))-500;
@@ -405,8 +405,8 @@ function baseball(r){
 			answer[rand] = Flag.get('answer', r.room)[rand];
 			r.replier.reply('Hint!\n'+str+'\n'+answer.join(' '));
 			return;
-		} else if(r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 < 9  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
-			r.replier.reply('힌트를 쓰려면 '+ (10 - Number(Flag.get('supposelist', r.room).split('\n').length))  + '턴이 지나야 합니다.');
+		} else if(r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 < 8  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
+			r.replier.reply('힌트를 쓰려면 '+ (9 - Number(Flag.get('supposelist', r.room).split('\n').length))  + '턴이 지나야 합니다.');
 			return;
 		}
 	}
