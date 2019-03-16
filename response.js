@@ -1315,11 +1315,11 @@ function bestlotto(r) {
 		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
 	}
 	result+='로또 뽑은 횟수 : '+all+'\n'
-	result+='1등 확률 : '+Math.floor(one/all*100000000)/1000000+"%\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000)/1000000+"%\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000)/1000000+"%\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000)/1000000+"%\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000)/1000000+"%";
+	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
+	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
+	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
+	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")";
 	r.replier.reply(result);
 }
 
