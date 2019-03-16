@@ -333,8 +333,8 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 			r.msg = '';
 		}
 		var reactiontime = new Date().getTime();
-		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) - 350 > 0) ){
-			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room) - 350)/1000 +'초');
+		if(Flag.get('react', r.room) == 1 && r.msg == '.' && (reactiontime - Flag.get('reactstarttime', r.room) - 410 > 0) ){
+			r.replier.reply(r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room) - 410)/1000 +'초');
 			Flag.set('react', r.room, 0); 
 			T.interrupt(reactionspeed);
 			break;
