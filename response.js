@@ -270,12 +270,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
+        /*
         if (room == 'test' || room == '시립대 봇제작방') {
         	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
         		Flag.set('reactionroom', room, room);
         		Flag.get('reactionspeed', room).start();
         	}
-        }
+        }*/
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
@@ -328,7 +329,7 @@ function func(r) {
     }
 }
 
-
+/*
 Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 	while(1){
 		if(Flag.get('react', r.room) == 0 && Flag.get('reactionroom', r.room) != 0){
@@ -357,7 +358,7 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 		}
 		java.lang.Thread.sleep(5);
 	}
-})
+})*/
 
 function randomnumber(r){
 	var num1 = Number(r.msg.split(' ')[1]);
