@@ -388,6 +388,10 @@ function randomnumber(r){
 }
 
 function baseball(r){
+	if(Flag.get('supposelist', r.room) == 0 && r.msg == '!힌트' ){
+		r.replier.reply('힌트를 쓰려면 9턴이 지나야 합니다.');
+		return;
+	}
 	if(Flag.get('supposelist', r.room) != 0){
 		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 8 ){
 			var str = '';
@@ -402,10 +406,10 @@ function baseball(r){
 			var rand = Math.floor(Math.random()*4);
 			var answer = ['_','_','_','_'];
 			answer[rand] = Flag.get('answer', r.room)[rand];
-			r.replier.reply('Hint!\n'+str+'\n'+answer.join(''));
+			r.replier.reply('Hint!\n'+str+'\n'+answer.join(' '));
 			return;
 		} else if(r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 < 9){
-			r.replier.reply('힌트를 쓰려면 '+ (8 - Number(Flag.get('supposelist', r.room).split('\n').length)) + '턴이 지나야 합니다.');
+			r.replier.reply('힌트를 쓰려면 '+ (10 - Number(Flag.get('supposelist', r.room).split('\n').length))  + '턴이 지나야 합니다.');
 			return;
 		}
 	}
