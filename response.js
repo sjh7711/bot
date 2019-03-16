@@ -341,6 +341,8 @@ var reactionspeed = T.register("reactionSpeed",()=>{
 		}
 		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 5000){
 			r.replier.reply('5초가 지났습니다. 게임이 끝났습니다.')
+			Flag.set('react', r.room, 0); 
+			T.interrupt(reactionspeed);
 			break;
 		}
 		java.lang.Thread.sleep(10);
