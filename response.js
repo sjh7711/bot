@@ -387,7 +387,7 @@ function randomnumber(r){
 }
 
 function baseball(r){
-	if(Flag.get('supposelist', r.room).split('\n').length-1 > 9 && r.msg == '!힌트' ){
+	if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 9 ){
 		var str = '';
 		for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 			if(Flag.get('baseball', r.room)[i] == r.sender){
