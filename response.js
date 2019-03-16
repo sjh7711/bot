@@ -396,7 +396,7 @@ function baseball(r){
 		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 8 ){
 			var str = '';
 			for(var i=0;i<Flag.get('baseball', r.room).length;i++){
-				if(Flag.get('baseball', r.room)[i] == r.sender){
+				if(Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender){
 					str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
 					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-500;
 					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
