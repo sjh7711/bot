@@ -335,7 +335,7 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 			r.msg = '';
 		}
 		var reactiontime = new Date().getTime();
-		if(Flag.get('react', r.room) == 1 && r.msg == '.' && && Flag.get('reactionroom', r.room) != 0 && (reactiontime - Flag.get('reactstarttime', r.room) - 410 > 0) ){
+		if(Flag.get('react', r.room) == 1 && r.msg == '.' && Flag.get('reactionroom', r.room) != 0 && (reactiontime - Flag.get('reactstarttime', r.room) - 410 > 0) ){
 			Api.replyRoom(Flag.get('reactionroom', r.room), r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room) - 410)/1000 +'초');
 			Flag.set('react', r.room, 0); 
 			Flag.set('reactionspeed', r.room, 0)
