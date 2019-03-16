@@ -692,7 +692,7 @@ function weather(r){
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "통영시 무전동";
-			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'|| r.room == '시립대 단톡방'){
+			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'|| r.room == '시립대 단톡방'){
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=09230104';
 				check = link2.indexOf('weather');
 				where = "서울시립대";
@@ -894,7 +894,7 @@ var WCC = T.register("weatherClockCheck",()=>{
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨', room : '시립대 자취생 생정',replier:{reply:function(msg){
+			r={msg : '!날씨', room : '시립대 자취생 생정',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
@@ -1776,26 +1776,26 @@ function clear(r, name, num) {
 */
 
 /*
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
                 add(r, "menu", "메뉴", 0);
             }
         }
         //메뉴동의합의
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (this["flag" + room][0] == 1) {
                 agree(r, "menu", "메뉴", 0);
             }
         }
 
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (msg.indexOf("!식당추가 ") == 0 || msg.indexOf("!ㅅㄷㅊㄱ ") == 0) {
                 add(r, "res", "식당", 1);
             }
         }
 		
         //식당동의합의
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
+        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
             if (this["flag" + room][1] == 1) {
                 agree(r, "res", "식당", 1);
             }
