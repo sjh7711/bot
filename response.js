@@ -94,11 +94,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!당첨\n";
         
-        if (msg == "!역대로또"){
+        if (msg == "!로또통계"){
         	bestlotto(r);
         	return;
         }
-        str += "!역대로또\n";
+        str += "!로또통계\n";
         
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
@@ -233,6 +233,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(reload());
         		return;
         	}str += "!로딩\n";
+        	
+        	if (msg == "!올로또통계"){
+            	allbestlotto(r);
+            	return;
+            }str += "!올로또통계\n";
         }
         
         str += "!상태\n";
@@ -295,6 +300,8 @@ function func(r) {
         r.replier.reply("로또번호를 추천해줍니다. [!당첨]으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "당첨") {
         r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. [!당첨 닉네임] 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
+    } else if (r.msg.split(" ")[1] == "로또통계") {
+        r.replier.reply("지금까지 뽑았던 로또의 당첨내역을 모두 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "메뉴") {
         r.replier.reply("먹을 음식을 추천해 줍니다. [!메뉴 3]과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "식당") {
@@ -1325,6 +1332,27 @@ function recom(r, name) { //name : DB이름
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
+}
+
+function allbestlotto(r) {
+	var result = "명예의 전당"+es+"\n";
+	var temp = D.selectForArray('lottoresult', null, 'count > 2 and room=?', [r.room], {orderBy:"class asc"});
+	var all = D.selectForArray('lottoresult', null, 'room=?', [r.room], {orderBy:"class asc"}).length;
+	var five = D.selectForArray('lottoresult', null, 'count == 3 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var four = D.selectForArray('lottoresult', null, 'count == 4 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var three = D.selectForArray('lottoresult', null, 'count == 5 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var two = D.selectForArray('lottoresult', null, 'count == 7 and room=?', [r.room], {orderBy:"class asc"}).length;
+	var one = D.selectForArray('lottoresult', null, 'count == 6 and room=?', [r.room], {orderBy:"class asc"}).length;
+	for(var i=0; i<temp.length; i++){
+		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+	}
+	result+='로또 뽑은 횟수 : '+all+'\n'
+	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
+	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
+	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
+	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")";
+	r.replier.reply(result);
 }
 
 function bestlotto(r) {
