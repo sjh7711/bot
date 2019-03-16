@@ -1303,7 +1303,7 @@ function recom(r, name) { //name : DB이름
 }
 
 function bestlotto(r) {
-	var result = '';
+	var result = "명예의 전당\n"+es+"\n";
 	var temp = D.selectForArray('lottoresult', null, 'count > 2 ', null , {orderBy:"class asc"});
 	var all = D.selectForArray('lottoresult', null, null ,null ,{orderBy:"class asc"}).length;
 	var five = D.selectForArray('lottoresult', null, 'count == 3', null, {orderBy:"class asc"}).length;
