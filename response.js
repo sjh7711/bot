@@ -651,7 +651,7 @@ function saveImage(r){
 	if(r.sender == '_(≥∇≤)ノ🎓'){
 		r.sender = '이모티콘';
 	}
-	file = 'storage/emulated/0/kbot/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
+	file = 'storage/emulated/0/FTP/'+r.sender+"."+r.room+"-"+time().year+"."+time().month+"."+time().date+time().day+" "+time().hour+"."+time().minute+"."+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
 	Api.replyRoom('test', 'image save succes\n'+r.sender+' / '+r.room+'\n'+time().now);
 }
