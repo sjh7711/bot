@@ -1266,21 +1266,19 @@ function allchat(r) {
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
 				return;
 			} else if(temp1.length > 0){
-				if(0 < temp1*1 && temp1*1 < 17 ) {
-					num = temp1*1;
-					if(tempchat.length<temp1*1){
-						num = templeng;
-					}
+				num = temp1*1;
+				if(tempchat.length<temp1*1){
+					num = templeng;
 				}
+			
 	    	}
 	    }else{
 	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg' ]);
 			var templeng = tempchat.length;
-			if (0 < temp1*1 && temp1*1 < 17) {
-				num = Math.floor( temp1*1 );
-				if( templeng < temp1*1){
-					num = templeng;
-				}
+			num = Math.floor( temp1*1 );
+			if( templeng < temp1*1){
+				num = templeng;
+				
 			} else {
 			    if(6 > templeng){
 					num = templeng;
@@ -1292,13 +1290,11 @@ function allchat(r) {
 		if(flag==1){
 			temp[0]=temp2+"님의 채팅내역\n길이:"+num+"\n"; 
 		}
-	    if (0 < num && num < 17) {
-	        for (var i = tempchat.length - num; i < tempchat.length; i++) {
-	        	if( i - tempchat.length + num == 2){
-	        		temp.push(tempchat[i].join(" | ")+es);
-	        	} else {
-	        		temp.push(tempchat[i].join(" | "));
-	        	}
+	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
+	        if( i - tempchat.length + num == 2){
+	        	temp.push(tempchat[i].join(" | ")+es);
+	        } else {
+	        	temp.push(tempchat[i].join(" | "));
 	        }
 	    }
 	    r.replier.reply(temp.join("\n"));
