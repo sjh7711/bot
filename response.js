@@ -1201,6 +1201,7 @@ function recentchat(r) {
 	    if( temp2.length > 0 ){
 	    	var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
 	    	var templeng = tempchat.length;
+	    	tempchat = tempchat.slice(templeng-16, templeng);
 	    	flag = 1;
 	    	if(templeng==0){
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
@@ -1216,6 +1217,7 @@ function recentchat(r) {
 	    }else{
 	    	var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 			var templeng = tempchat.length;
+			tempchat = tempchat.slice(templeng-16, templeng);
 			if (0 < temp1*1 && temp1*1 < 17) {
 				num = Math.floor( temp1*1 );
 				if( templeng < temp1*1){
@@ -1233,8 +1235,8 @@ function recentchat(r) {
 			temp[0]=temp2+"님의 채팅내역\n"; 
 		}
 	    if (0 < num && num < 17) {
-	        for (var i = tempchat.length - num; i < tempchat.length; i++) {
-	        	if( i - tempchat.length + num == 2){
+	        for (var i = 0; i < num; i++) {
+	        	if( num == 2){
 	        		temp.push(tempchat[i].join(" | ")+es);
 	        	} else {
 	        		temp.push(tempchat[i].join(" | "));
@@ -1261,6 +1263,7 @@ function allchat(r) {
 	    if( temp2.length > 0 ){
 	    	var tempchat = D.selectForArray('chatdb', ['time', 'room', 'msg'] , 'name=?', [temp2]);
 	    	var templeng = tempchat.length;
+	    	tempchat = tempchat.slice(templeng-1000, templeng);
 	    	flag = 1;
 	    	if(templeng==0){
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
@@ -1273,8 +1276,9 @@ function allchat(r) {
 			
 	    	}
 	    }else{
-	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg' ]);
+	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg']).slice(0,1000);
 			var templeng = tempchat.length;
+			tempchat = tempchat.slice(templeng-1000, templeng);
 			if( temp1.length > 0){
 				num = Math.floor( temp1*1 );
 				if( templeng < temp1*1){
@@ -1292,8 +1296,8 @@ function allchat(r) {
 		if(flag==1){
 			temp[0]=temp[0]+temp2+"님의 채팅내역\n"; 
 		}
-	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
-	        if( i - tempchat.length + num == 2){
+	    for (var i = 0; i < num; i++) {
+	        if( num == 2){
 	        	temp.push(tempchat[i].join(" | ")+es);
 	        } else {
 	        	temp.push(tempchat[i].join(" | "));
