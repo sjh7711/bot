@@ -920,7 +920,7 @@ function weather(r){
 }
 var WCC = T.register("weatherClockCheck",()=>{
 	while(true){
-		if( 7 == new Date().getHours() ){
+		if( 6 == new Date().getHours() ){
 			r={msg : '!날씨', room : '푸드마켓',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
@@ -1236,7 +1236,7 @@ function recentchat(r) {
 		}
 	    if (0 < num && num < 17) {
 	        for (var i = 0; i < num; i++) {
-	        	if( num == 2){
+	        	if( i == 2 ){
 	        		temp.push(tempchat[i].join(" | ")+es);
 	        	} else {
 	        		temp.push(tempchat[i].join(" | "));
@@ -1297,7 +1297,7 @@ function allchat(r) {
 			temp[0]=temp[0]+temp2+"님의 채팅내역\n"; 
 		}
 	    for (var i = 0; i < num; i++) {
-	        if( num == 2){
+	        if( i == 2){
 	        	temp.push(tempchat[i].join(" | ")+es);
 	        } else {
 	        	temp.push(tempchat[i].join(" | "));
