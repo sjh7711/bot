@@ -1197,46 +1197,47 @@ function recentchat(r) {
 	    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
 	    var num = 6;
 	    var flag = 0;
-	    	
-	    var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
-		var templeng = tempchat.length;
-	    if(6 > templeng){
-			num = templeng;
-		}
 	    
-		if(temp1.length > 0 &&  temp2.length > 0){
-			var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
-			var templeng = tempchat.length;
-			if(templeng==0){
-				r.replier.reply(temp2+"의 채팅이 없습니다.");
-				return;
-			} else {
-				if(0 < temp1*1 && temp1*1 < 17 ) {
-					var num = temp1*1;
-					if(tempchat.length<temp1*1){
-						num = templeng;
+	    if( temp2.length > 0 ){
+	    	if(temp1.length > 0){
+	    		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+		    	var templeng = tempchat.length;
+				if(templeng==0){
+					r.replier.reply(temp2+"의 채팅이 없습니다.");
+					return;
+				} else {
+					if(0 < temp1*1 && temp1*1 < 17 ) {
+						var num = temp1*1;
+						if(tempchat.length<temp1*1){
+							num = templeng;
+						}
 					}
+					flag = 1;
 				}
-				flag = 1;
-			}
-		} else if (0 < temp1*1 && temp1*1 < 17) {
+	    	} else {
+	    		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+				var templeng = tempchat.length;
+				if(templeng==0){
+					r.replier.reply(temp2+"의 채팅이 없습니다.");
+					return;
+				} else {
+					flag = 1;
+				}
+	    	}
+	    }else if (0 < temp1*1 && temp1*1 < 17) {
 			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 			var templeng = tempchat.length;
 			var num = Math.floor( temp1*1 );
 			if(tempchat.length<temp1*1){
 				num = templeng;
 			}
-		} else if(temp2.length > 0) {
-			var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+		} else {
+			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 			var templeng = tempchat.length;
-			if(templeng==0){
-				r.replier.reply(temp2+"의 채팅이 없습니다.");
-				return;
-			} else {
-				flag = 1;
+		    if(6 > templeng){
+				num = templeng;
 			}
 		}
-		
 		
 		var temp = [];
 		if(flag==1){
