@@ -1276,7 +1276,7 @@ function allchat(r) {
 			
 	    	}
 	    }else{
-	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg']).slice(0,1000);
+	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg']);
 			var templeng = tempchat.length;
 			tempchat = tempchat.slice(templeng-1000, templeng);
 			if( temp1.length > 0){
