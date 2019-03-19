@@ -1290,7 +1290,7 @@ function allchat(r) {
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
 		if(flag==1){
-			temp[0]=temp[0]+temp2+"님의 채팅내역\n; 
+			temp[0]=temp[0]+temp2+"님의 채팅내역\n"; 
 		}
 	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
 	        if( i - tempchat.length + num == 2){
