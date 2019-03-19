@@ -1259,7 +1259,7 @@ function allchat(r) {
 	    var flag = 0;
 	    
 	    if( temp2.length > 0 ){
-	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'msg'] , 'name=?', [temp2]);
+	    	var tempchat = D.selectForArray('chatdb', ['time', 'room', 'msg'] , 'name=?', [temp2]);
 	    	var templeng = tempchat.length;
 	    	flag = 1;
 	    	if(templeng==0){
@@ -1275,10 +1275,11 @@ function allchat(r) {
 	    }else{
 	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg' ]);
 			var templeng = tempchat.length;
-			num = Math.floor( temp1*1 );
-			if( templeng < temp1*1){
-				num = templeng;
-				
+			if( temp1.length > 0){
+				num = Math.floor( temp1*1 );
+				if( templeng < temp1*1){
+					num = templeng;
+				}
 			} else {
 			    if(6 > templeng){
 					num = templeng;
@@ -1287,8 +1288,9 @@ function allchat(r) {
 		}
 		
 		var temp = [];
+		temp[0]='길이:'+num+'\n';
 		if(flag==1){
-			temp[0]=temp2+"님의 채팅내역\n길이:"+num+"\n"; 
+			temp[0]=temp[0]+temp2+"님의 채팅내역\n; 
 		}
 	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
 	        if( i - tempchat.length + num == 2){
