@@ -1259,53 +1259,46 @@ function allchat(r) {
 	    var flag = 0;
 	    
 	    if( temp2.length > 0 ){
-	    	if(temp1.length > 0){
-	    		var tempchat = D.selectForArray('chatdb', ['time','room', 'msg'] , 'name=?', [temp2]);
-		    	var templeng = tempchat.length;
-				if(templeng==0){
-					r.replier.reply(temp2+"의 채팅이 없습니다.");
-					return;
-				} else {
-					var num = temp1*1;
+	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'msg'] , 'name=?', [temp2]);
+	    	var templeng = tempchat.length;
+	    	flag = 1;
+	    	if(templeng==0){
+				r.replier.reply(temp2+"의 채팅이 없습니다.");
+				return;
+			} else if(temp1.length > 0){
+				if(0 < temp1*1 && temp1*1 < 17 ) {
+					num = temp1*1;
 					if(tempchat.length<temp1*1){
 						num = templeng;
 					}
-					flag = 1;
-				}
-	    	} else {
-	    		var tempchat = D.selectForArray('chatdb', ['time','room', 'msg'] , 'name=?', [temp2]);
-				var templeng = tempchat.length;
-				if(templeng==0){
-					r.replier.reply(temp2+"의 채팅이 없습니다.");
-					return;
-				} else {
-					flag = 1;
 				}
 	    	}
-	    }else if (temp1.length > 0 ) {
-			var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg' ]);
+	    }else{
+	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg' ]);
 			var templeng = tempchat.length;
-			var num = Math.floor( temp1*1 );
-			if(tempchat.length<temp1*1){
-				num = templeng;
-			}
-		} else {
-			var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg' ]);
-			var templeng = tempchat.length;
-		    if(6 > templeng){
-				num = templeng;
+			if (0 < temp1*1 && temp1*1 < 17) {
+				num = Math.floor( temp1*1 );
+				if( templeng < temp1*1){
+					num = templeng;
+				}
+			} else {
+			    if(6 > templeng){
+					num = templeng;
+				}
 			}
 		}
 		
 		var temp = [];
 		if(flag==1){
-			temp[0]=temp2+"님의 채팅내역\n길이:"+templeng+"\n"; 
+			temp[0]=temp2+"님의 채팅내역\n길이:"+num+"\n"; 
 		}
-	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
-	       if( i - tempchat.length + num == 2){
-	        	temp.push(tempchat[i].join(" | ")+es);
-	        } else {
-	        	temp.push(tempchat[i].join(" | "));
+	    if (0 < num && num < 17) {
+	        for (var i = tempchat.length - num; i < tempchat.length; i++) {
+	        	if( i - tempchat.length + num == 2){
+	        		temp.push(tempchat[i].join(" | ")+es);
+	        	} else {
+	        		temp.push(tempchat[i].join(" | "));
+	        	}
 	        }
 	    }
 	    r.replier.reply(temp.join("\n"));
