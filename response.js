@@ -1271,7 +1271,7 @@ function allchat(r) {
 	    
 	    if( temp2.length > 0 ){
 	    	if(temp1.length > 0){
-	    		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+	    		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=?', [temp2]);
 		    	var templeng = tempchat.length;
 				if(templeng==0){
 					r.replier.reply(temp2+"의 채팅이 없습니다.");
@@ -1286,7 +1286,7 @@ function allchat(r) {
 					flag = 1;
 				}
 	    	} else {
-	    		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
+	    		var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=?', [temp2]);
 				var templeng = tempchat.length;
 				if(templeng==0){
 					r.replier.reply(temp2+"의 채팅이 없습니다.");
@@ -1296,14 +1296,14 @@ function allchat(r) {
 				}
 	    	}
 	    }else if (temp1.length > 0 ) {
-			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
+			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
 			var templeng = tempchat.length;
 			var num = Math.floor( temp1*1 );
 			if(tempchat.length<temp1*1){
 				num = templeng;
 			}
 		} else {
-			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
+			var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ]);
 			var templeng = tempchat.length;
 		    if(6 > templeng){
 				num = templeng;
@@ -1316,10 +1316,9 @@ function allchat(r) {
 		}
 	    for (var i = tempchat.length - num; i < tempchat.length; i++) {
 	       if( i - tempchat.length + num == 2){
-	        		temp.push(tempchat[i].join(" | ")+es);
-	        	} else {
-	        		temp.push(tempchat[i].join(" | "));
-	        	}
+	        	temp.push(tempchat[i].join(" | ")+es);
+	        } else {
+	        	temp.push(tempchat[i].join(" | "));
 	        }
 	    }
 	    r.replier.reply(temp.join("\n"));
