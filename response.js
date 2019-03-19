@@ -1297,12 +1297,12 @@ function allchat(r) {
 			temp[0]=temp[0]+temp2+"님의 채팅내역\n"; 
 		}
 		for (var i = tempchat.length - num; i < tempchat.length; i++) {
-		       if( i - tempchat.length + num == 2){
-		        	temp.push(tempchat[i].join(" | ")+es);
-		        } else {
-		        	temp.push(tempchat[i].join(" | "));
-		        }
+		    if( i - tempchat.length + num == 2){
+		        temp.push(tempchat[i].join(" | ")+es);
+		    } else {
+		        temp.push(tempchat[i].join(" | "));
 		    }
+		}
 		r.replier.reply(temp.join("\n"));
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
