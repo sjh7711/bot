@@ -1277,11 +1277,9 @@ function allchat(r) {
 					r.replier.reply(temp2+"의 채팅이 없습니다.");
 					return;
 				} else {
-					if(0 < temp1*1 && temp1*1 < 17 ) {
-						var num = temp1*1;
-						if(tempchat.length<temp1*1){
-							num = templeng;
-						}
+					var num = temp1*1;
+					if(tempchat.length<temp1*1){
+						num = templeng;
 					}
 					flag = 1;
 				}
