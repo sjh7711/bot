@@ -1201,7 +1201,6 @@ function recentchat(r) {
 	    if( temp2.length > 0 ){
 	    	var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
 	    	var templeng = tempchat.length;
-	    	tempchat = tempchat.slice(templeng-16, templeng);
 	    	flag = 1;
 	    	if(templeng==0){
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
@@ -1217,7 +1216,6 @@ function recentchat(r) {
 	    }else{
 	    	var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
 			var templeng = tempchat.length;
-			tempchat = tempchat.slice(templeng-16, templeng);
 			if (0 < temp1*1 && temp1*1 < 17) {
 				num = Math.floor( temp1*1 );
 				if( templeng < temp1*1){
@@ -1263,7 +1261,6 @@ function allchat(r) {
 	    if( temp2.length > 0 ){
 	    	var tempchat = D.selectForArray('chatdb', ['time', 'room', 'msg'] , 'name=?', [temp2]);
 	    	var templeng = tempchat.length;
-	    	tempchat = tempchat.slice(templeng-1000, templeng);
 	    	flag = 1;
 	    	if(templeng==0){
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
@@ -1278,7 +1275,6 @@ function allchat(r) {
 	    }else{
 	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg']);
 			var templeng = tempchat.length;
-			tempchat = tempchat.slice(templeng-1000, templeng);
 			if( temp1.length > 0){
 				num = Math.floor( temp1*1 );
 				if( templeng < temp1*1){
