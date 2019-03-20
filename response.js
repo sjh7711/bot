@@ -920,7 +920,7 @@ function weather(r){
 }
 var WCC = T.register("weatherClockCheck",()=>{
 	while(true){
-		if( 6 == new Date().getHours() ){
+		if( 7 == new Date().getHours() ){
 			r={msg : '!날씨', room : '푸드마켓',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
