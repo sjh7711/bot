@@ -763,9 +763,9 @@ function weather(r){
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		where = name[targetNum].substr(3);
 		        	}
-				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1 ex)읍내면, 북극
+				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1 ex)읍내면, 북극, 와룡, 영산
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
-		        	if(String(temp).indexOf('wrap_cont') == -1){//와룡 , 영산
+		        	if(String(temp).indexOf('addressColl') > -1){//와룡 , 영산
 		        		var name = [];
 		        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
 		        		var i = 1;
