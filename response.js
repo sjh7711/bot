@@ -766,23 +766,30 @@ function weather(r){
 				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1 ex)읍내면, 북극, 와룡, 영산
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){//와룡 , 영산
-		        		var name = [];
-		        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
-		        		var i = 1;
-		        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text()));
-		        		var msg;
-			        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
-			        	msg=input.getMsg()*1;
-			        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
-			        		var targetNum=msg-1;
-			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+		        		if(String(temp).indexOf('지번주소') > -1){
+		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span').select('span').text();
+		        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name+"+날씨").get();
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-			        		check = link2.indexOf('weather');
-			        		where = name[targetNum].substr(3) ;
-			        	}else{
-			        		r.replier.reply("검색이 불가능합니다.");
-			        		return;
-			        	}
+			        		where = want;
+		        		}else{
+		        			var name = [];
+			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
+			        		var i = 1;
+			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text()));
+			        		var msg;
+				        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
+				        	msg=input.getMsg()*1;
+				        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+				        		var targetNum=msg-1;
+				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				        		check = link2.indexOf('weather');
+				        		where = name[targetNum].substr(3) ;
+				        	}else{
+				        		r.replier.reply("검색이 불가능합니다.");
+				        		return;
+				        	}
+		        		}
 		        	}else{//읍내면 , 북극
 		        		temp=temp.select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 			        	var i = 0;
