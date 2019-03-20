@@ -149,7 +149,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (room == '푸드마켓' || room =='test'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
         	str += "!명단\n"
-        	if(msg.indexOf("!업무")==0 || msg.indexOf("!ㅇㅁ")==0){banklist(r); return;}
+        	if(msg.indexOf("!업무")==0 || msg.indexOf("!ㅇㅁ")==0){foodbank(r); return;}
         	str += "!업무\n"
         } 
 
