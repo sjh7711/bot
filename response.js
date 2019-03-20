@@ -771,6 +771,7 @@ function weather(r){
 		        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name+"+날씨").get();
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        		where = want;
+			        		check = link2.indexOf('weather');
 		        		}else{
 		        			var name = [];
 			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
