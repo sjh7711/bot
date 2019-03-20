@@ -829,6 +829,7 @@ function weather(r){
 			        	}
 		        	}
 				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2 ex) 독도
+					var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 					if(String(temp).indexOf('addressColl') > -1){
 						var name = [];
 		        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
