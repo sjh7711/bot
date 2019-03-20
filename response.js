@@ -860,8 +860,6 @@ function weather(r){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
-		        } else if(link2.indexOf('https://m.search.naver.com/search.naver?')==0){
-		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
 		        }
 			}
 
