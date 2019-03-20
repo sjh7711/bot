@@ -1084,6 +1084,35 @@ function banklist(r){
 		}
 }
 
+function foodbank(r){
+	try{
+		var name = r.msg.split(" ")[1];
+		var phone = r.msg.split(" ")[2];
+		var cmd = r.msg.split("!업무")[1].split(" ")[0];
+		if(typeof name == 'string'){
+			var temp=D.selectForArray('foodbank',null,'name like ?','%'+name+'%');
+			for(var i=0;i<temp.length;i++){
+				temp[i]=temp[i].join(" : ")
+				if(i==3){
+					temp[2]=temp[2]+es;
+				}
+			}
+			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+		} else {
+			var temp=D.selectForArray('bankls');
+			for(var i=0;i<temp.length;i++){
+				temp[i]=temp[i].join(" : ")
+				if(i==3){
+					temp[2]=temp[2]+es;
+				}
+			}
+			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+		}
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
+}
+
 
 //추첨기
 function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3]==0 -> 추첨이 시작함 // flag[2]==1&&flag[3]==1 -> 추첨인원 모집  // flag[2]==0&&flag[3] ==1 -> 당첨자 발표
@@ -1511,7 +1540,7 @@ function notice(r){
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get();
 	    	
-	    	var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, '\n').replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, ' ').trim().replace(/^ +/gm,"").replace(/\n\n\n/g, '\n').replace(/\n\n\n/g, '\n');
+	    	var text = String(subdoc.select("div.contents").select("div.content").toArray()[0]).replace(/<br>/g, '\n').replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, ' ').trim().replace(/^ +/gm,"").replace(/\n\n\n/g, '\n').replace(/\n\n\n/g, '\n');
 	    	var repl = subdoc.select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
 	    	r.replier.reply(docnum+" : "+doctitle+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
@@ -1578,7 +1607,7 @@ function noticecheck(){
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get();
 	    	
-	    	var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, '\n').replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, ' ').trim().replace(/^ +/gm,"").replace(/\n\n\n/g, '\n').replace(/\n\n\n/g, '\n');
+	    	var text = String(subdoc.select("div.contents").select("div.content").toArray()[0]).replace(/<br>/g, '\n').replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, ' ').trim().replace(/^ +/gm,"").replace(/\n\n\n/g, '\n').replace(/\n\n\n/g, '\n');
 	    	var repl = subdoc.select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n");
 	    	
 			Api.replyRoom("test","새공지!\n"+docnum[wantnum]+" : "+doctitle[wantnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
