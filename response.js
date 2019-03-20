@@ -835,18 +835,23 @@ function weather(r){
 		        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
 		        		var i = 1;
 		        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text()));
-		        		var msg;
-			        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
-			        	msg=input.getMsg()*1;
-			        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
-			        		var targetNum=msg-1;
-			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
-			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-			        		check = link2.indexOf('weather');
-			        		where = name[targetNum].substr(3) ;
-			        	}else{
+		        		if(name.length==1){
+		        			var targetNum=0;
+		        		}else if (name.length>1){
+		        			var msg;
+				        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
+				        	msg=input.getMsg()*1;
+				        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+				        		var targetNum=msg-1;
+				        	}
+		        		} else{
 			        		r.replier.reply("검색이 불가능합니다.");
 			        		return;
+			        	}
+			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].split('. ')[1]+"+날씨").get();
+			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        	check = link2.indexOf('weather');
+			        	where = name[targetNum].split('. ')[1];
 			        	}
 	        		} else {
 	        			temp=temp.select('span.f_etit').text();
