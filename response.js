@@ -764,44 +764,64 @@ function weather(r){
 		        		where = name[targetNum].substr(3);
 		        	}
 				} else if (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn'){ //네이버에 날씨검색이 바로 안될 때 1 ex)읍내면, 북극
-		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
-		        	var i = 0;
-		        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
-		        	if(name.length == 0){
-		        		r.replier.reply("검색이 불가능합니다.");
-		        		return;
-		        	}
-		        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
-		        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
-		        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
-		        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("가 ")+1)});
-		        	var msg;
-		        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
-		        	msg=input.getMsg()*1;
-		        	if(!isNaN(msg) && msg>=1 && msg<=name.length ){
-		        		var targetNum=msg-1;
-		        		var wantplace="";
-		        		if( loc[targetNum].length > 0){
-		        			wantplace=loc[targetNum];
-		        		} else if (loc1[targetNum].length > 0){
-		        			wantplace = loc1[targetNum];
-		        		} else if(loc2[targetNum].length > 0){
-		        			wantplace = loc2[targetNum];
-		        		} else if(loc3[targetNum].length > 0){
-		        			wantplace = loc3[targetNum];
-		        		}
-		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
-		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		        		where = name[targetNum].substr(3) ;
-		        		check = link2.indexOf('weather');
-		        		if(check == -1){
-		        			r.replier.reply("검색이 불가능합니다.");
-							return;
-		        		}
+		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
+		        	if(String(temp).indexOf('wrap_cont') == -1){//와룡 , 영산
+		        		var name = [];
+		        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
+		        		var i = 1;
+		        		name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text()));
+		        		var msg;
+			        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
+			        	msg=input.getMsg()*1;
+			        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+			        		var targetNum=msg-1;
+			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        		check = link2.indexOf('weather');
+			        		where = name[targetNum].substr(3) ;
+			        	}else{
+			        		r.replier.reply("검색이 불가능합니다.");
+			        		return;
+			        	}
+		        	}else{//읍내면 , 북극
+		        		temp.select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
+			        	var i = 0;
+			        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
+			        	if(name.length == 0){
+			        		r.replier.reply("검색이 불가능합니다.");
+			        		return;
+			        	}
+			        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
+			        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
+			        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
+			        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("가 ")+1)});
+			        	var msg;
+			        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
+			        	msg=input.getMsg()*1;
+			        	if(!isNaN(msg) && msg>=1 && msg<=name.length ){
+			        		var targetNum=msg-1;
+			        		var wantplace="";
+			        		if( loc[targetNum].length > 0){
+			        			wantplace=loc[targetNum];
+			        		} else if (loc1[targetNum].length > 0){
+			        			wantplace = loc1[targetNum];
+			        		} else if(loc2[targetNum].length > 0){
+			        			wantplace = loc2[targetNum];
+			        		} else if(loc3[targetNum].length > 0){
+			        			wantplace = loc3[targetNum];
+			        		}
+			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        		where = name[targetNum].substr(3) ;
+			        		check = link2.indexOf('weather');
+			        		if(check == -1){
+			        			r.replier.reply("검색이 불가능합니다.");
+								return;
+			        		}
+			        	}
 		        	}
 				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2 ex) 독도
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
-		        	
 		        	var wantplace="";
 		        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 		        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
@@ -840,6 +860,8 @@ function weather(r){
 		        		r.replier.reply("검색이 불가능합니다.");
 		        		return;
 		        	}
+		        } else if(link2.indexOf('https://m.search.naver.com/search.naver?')==0){
+		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
 		        }
 			}
 
