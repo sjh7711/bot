@@ -749,7 +749,7 @@ function weather(r){
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	    		var	check = link2.indexOf('weather');
 	    		where = want; // 지역명
-	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
+	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=날씨+"+want).get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
 	    		if ( temp.length > 1 || (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn')){ //네이버에 날씨검색이 바로 안될 때 1
 	    			if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때 ex) 고성, 광주
@@ -758,7 +758,7 @@ function weather(r){
 	    			}
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){
-		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56 
+		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56, 중림로 10
 		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
 		        			var wantplace="";
 			        		var temp = name;
@@ -775,7 +775,7 @@ function weather(r){
 			        		} else if(loc3.length > 0){
 			        			wantplace = loc3;
 			        		}
-				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        	check = link2.indexOf('weather');
 				        	where = name;
@@ -796,7 +796,7 @@ function weather(r){
 				        	msg=input.getMsg()*1;
 				        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 				        		var targetNum=msg-1;
-				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        		check = link2.indexOf('weather');
 				        		where = name[targetNum].substr(3) ;
@@ -832,7 +832,7 @@ function weather(r){
 			        		} else if(loc3[targetNum].length > 0){
 			        			wantplace = loc3[targetNum];
 			        		}
-			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        		where = name[targetNum].substr(3) ;
 			        		check = link2.indexOf('weather');
@@ -877,7 +877,7 @@ function weather(r){
 		        		} else if(loc3.length > 0){
 		        			wantplace = loc3;
 		        		}
-			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        	check = link2.indexOf('weather');
 			        	where = name[targetNum].split('. ')[1];
@@ -897,7 +897,7 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
