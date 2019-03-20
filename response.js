@@ -791,7 +791,7 @@ function weather(r){
 				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        	check = link2.indexOf('weather');
-				        	where = name;
+				        	where = want;
 				        	if(check == -1 || String(temp).length == 0){
 			        			r.replier.reply("검색이 불가능합니다.");
 								return;
@@ -812,7 +812,7 @@ function weather(r){
 				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        		check = link2.indexOf('weather');
-				        		where = name[targetNum].substr(3) ;
+				        		where = name[targetNum].substr(3);
 				        	}else{
 				        		r.replier.reply("검색이 불가능합니다.");
 				        		return;
