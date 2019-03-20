@@ -863,7 +863,7 @@ function weather(r){
 		        		} else if(loc3.length > 0){
 		        			wantplace = loc3;
 		        		}
-			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="++wantplace+"+날씨").get();
+			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
 			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        	check = link2.indexOf('weather');
 			        	where = name[targetNum].split('. ')[1];
