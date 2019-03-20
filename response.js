@@ -767,7 +767,7 @@ function weather(r){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){//와룡 , 영산
 		        		if(String(temp).indexOf('지번주소') > -1){
-		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span').select('span').text();
+		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
 		        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name+"+날씨").get();
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        		where = want;
