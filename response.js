@@ -848,14 +848,8 @@ function weather(r){
 			        		r.replier.reply("검색이 불가능합니다.");
 			        		return;
 			        	}
-			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].split('. ')[1]+"+날씨").get();
-			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-			        	check = link2.indexOf('weather');
-			        	where = name[targetNum].split('. ')[1];
-			        	}
-	        		} else {
-	        			temp=temp.select('span.f_etit').text();
-			        	var wantplace="";
+		        		var wantplace="";
+		        		var temp = name[targetNum].split('. ')[1];;
 			        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 			        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
 			        	var loc2 = temp.substr(0, temp.lastIndexOf("동 ")+1);  //각 이름들의 주소
@@ -869,14 +863,17 @@ function weather(r){
 		        		} else if(loc3.length > 0){
 		        			wantplace = loc3;
 		        		}
-			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
-		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
-		        		where = want;
-		        		check = link2.indexOf('weather');
-		        		if(check == -1 || String(temp).length == 0){
+			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="++wantplace+"+날씨").get();
+			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        	check = link2.indexOf('weather');
+			        	where = name[targetNum].split('. ')[1];
+			        	if(check == -1 || String(temp).length == 0){
 		        			r.replier.reply("검색이 불가능합니다.");
 							return;
 		        		}
+	        		} else{
+		        		r.replier.reply("검색이 불가능합니다.");
+		        		return;
 	        		}
 		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
