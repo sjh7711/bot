@@ -904,7 +904,7 @@ function weather(r){
 						res += String(wet[i]).extension(" ", 2)+"   ";
 						res += String(wind[i]).extension(" ",2)+"\n";
 						//res += String(direction[i]).extension("   ",3)+" ";
-						if(i==5){
+						if(i==6){
 							res +=es;
 						}
 					}
