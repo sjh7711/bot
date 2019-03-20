@@ -760,6 +760,7 @@ function weather(r){
 		        	if(String(temp).indexOf('addressColl') > -1){
 		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56, 중림로 10
 		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
+		        			var name1 = temp.select('div.mg_cont.clear').select('div.wrap_tit').select('span.f_etit').text();
 		        			var wantplace="";
 			        		var temp = name;
 				        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
@@ -774,6 +775,18 @@ function weather(r){
 			        			wantplace = loc2;
 			        		} else if(loc3.length > 0){
 			        			wantplace = loc3;
+			        		} else {
+			        			var temp = name1;
+					        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
+					        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
+					        	var loc2 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+					        	if( loc.length > 0){
+				        			wantplace=loc;
+				        		} else if (loc1.length > 0){
+				        			wantplace = loc1;
+				        		} else if(loc2.length > 0){
+				        			wantplace = loc2;
+				        		}
 			        		}
 				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
