@@ -752,6 +752,10 @@ function weather(r){
 	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
 	    		if ( temp.length > 1 || (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn')){ //네이버에 날씨검색이 바로 안될 때 1
+	    			if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때 ex) 고성, 광주
+			        	var i=0; //name의 번호에 필요
+			        	var navername = temp.map(v=> (1+i++) +". "+ v.text()); //장소명들
+	    			}
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){
 		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56 
@@ -775,15 +779,18 @@ function weather(r){
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        	check = link2.indexOf('weather');
 				        	where = name;
-				        	if(check == -1){
+				        	if(check == -1 || String(temp).length == 0){
 			        			r.replier.reply("검색이 불가능합니다.");
 								return;
 			        		}
-		        		}else{//와룡 , 영산 , 같은 주소가 여러군데 일 때  중구
+		        		}else{//와룡, 영산, 같은 주소가 여러군데 일 때  중구
 		        			var name = [];
 			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
 			        		var i = 1;
 			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text()));
+			        		if(navername.length > name.length){
+			        			name = navername;
+			        		}
 			        		var msg;
 				        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 				        	msg=input.getMsg()*1;
