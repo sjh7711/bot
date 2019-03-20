@@ -784,7 +784,7 @@ function weather(r){
 			        		return;
 			        	}
 		        	}else{//읍내면 , 북극
-		        		temp.select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
+		        		temp=temp.select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 			        	var i = 0;
 			        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
 			        	if(name.length == 0){
