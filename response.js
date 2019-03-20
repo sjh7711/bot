@@ -849,7 +849,7 @@ function weather(r){
 			        		return;
 			        	}
 	        		} else {
-	        			var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get().select('span.f_etit').text();
+	        			temp=temp.select('span.f_etit').text();
 			        	var wantplace="";
 			        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 			        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
