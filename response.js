@@ -238,10 +238,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		return;
         	}str += "!로딩\n";
         	
-        	if (msg == "!올로또통계"){
+        	if (msg == "!모든로또통계"){
             	allbestlotto(r);
             	return;
-            }str += "!올로또통계\n";
+            }str += "!모든로또통계\n";
         }
         
         str += "!상태\n";
@@ -1052,15 +1052,7 @@ function famous(r){
 function banklist(r){
 	try{
 		var name = r.msg.split(" ")[1];
-		var phone = r.msg.split(" ")[2];
-		var cmd = r.msg.split("!명단")[1].split(" ")[0];
-		if(typeof name == 'string' && typeof cmd == '추가' && typeof phone == 'string'){
-			D.insert("bankls", {name :name, phone:phone});
-			r.replier.reply(D.selectForString('bankls'));
-		}else if(typeof name == 'string' && typeof cmd == '삭제'){
-			D.delete("bankls", "name=?", [name]);
-			r.replier.reply(D.selectForString('bankls'));
-		} else if(typeof name == 'string'){
+		if(typeof name == 'string'){
 			var temp=D.selectForArray('bankls',null,'name like ?','%'+name+'%');
 			for(var i=0;i<temp.length;i++){
 				temp[i]=temp[i].join(" : ")
@@ -1087,26 +1079,14 @@ function banklist(r){
 function foodbank(r){
 	try{
 		var name = r.msg.split(" ")[1];
-		var phone = r.msg.split(" ")[2];
-		var cmd = r.msg.split("!업무")[1].split(" ")[0];
 		if(typeof name == 'string'){
-			var temp=D.selectForArray('foodbank',null,'name like ?','%'+name+'%');
-			for(var i=0;i<temp.length;i++){
-				temp[i]=temp[i].join(" : ")
-				if(i==3){
-					temp[2]=temp[2]+es;
-				}
-			}
-			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+			var temp=D.selectForString('foodbank',null,'name like ? or manager like ? or tel like ? or phone like ? or fax like ? or email like ? or addr like ?', ['%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%']);
+			var str = temp.map(v=>v[0]+'\n\n'+v[1]+'\n\n번호 : '+v[2]+'\n\n휴대폰 : '+v[3]+'\n\n팩스 : '+v[4]+'\n\n'+v[5]+'\n\n'+v[6]  ).join('\n-----------------\n');
+			r.replier.reply(str);
 		} else {
-			var temp=D.selectForArray('bankls');
-			for(var i=0;i<temp.length;i++){
-				temp[i]=temp[i].join(" : ")
-				if(i==3){
-					temp[2]=temp[2]+es;
-				}
-			}
-			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+			var temp=D.selectForString('foodbank',null,'name like ? or manager like ? or tel like ? or phone like ? or fax like ? or email like ? or addr like ?', ['%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%']);
+			var str = temp.map(v=>v[0]+'\n\n'+v[1]+'\n\n번호 : '+v[2]+'\n\n휴대폰 : '+v[3]+'\n\n팩스 : '+v[4]+'\n\n'+v[5]+'\n\n'+v[6]  ).join('\n-----------------\n');
+			r.replier.reply(str);
 		}
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
@@ -1117,8 +1097,6 @@ function foodbank(r){
 //추첨기
 function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3]==0 -> 추첨이 시작함 // flag[2]==1&&flag[3]==1 -> 추첨인원 모집  // flag[2]==0&&flag[3] ==1 -> 당첨자 발표
 	try{
-		
-		
 		if ((Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) && r.msg == '!추첨'){
 			r.replier.reply('현재 추첨이 진행중입니다.')
 		}
