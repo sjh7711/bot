@@ -805,7 +805,7 @@ function weather(r){
 				        		} else if(loc2.length > 0){
 				        			wantplace = loc2;
 				        		} else if(loc3.length > 0){
-				        			wantplace = loc2;
+				        			wantplace = loc3;
 				        		}
 			        		}
 				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
