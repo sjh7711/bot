@@ -749,13 +749,18 @@ function weather(r){
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	    		var	check = link2.indexOf('weather');
 	    		where = want; // 지역명
-	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="+want+"+날씨").get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
+	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=날씨+"+want).get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
 	    		if ( temp.length > 1 || (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn')){ //네이버에 날씨검색이 바로 안될 때 1
+	    			if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때 ex) 고성, 광주
+			        	var i=0; //name의 번호에 필요
+			        	var navername = temp.map(v=> (1+i++) +". "+ v.text()); //장소명들
+	    			}
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){
-		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56 
+		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56, 중림로 10
 		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
+		        			var name1 = temp.select('div.mg_cont.clear').select('div.wrap_tit').select('span.f_etit').text();
 		        			var wantplace="";
 			        		var temp = name;
 				        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
@@ -771,29 +776,46 @@ function weather(r){
 			        			wantplace = loc2;
 			        		} else if(loc3.length > 0){
 			        			wantplace = loc3;
+			        		} else {
+			        			var temp = name1;
+					        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
+					        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
+					        	var loc2 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+					        	if( loc.length > 0){
+				        			wantplace=loc;
+				        		} else if (loc1.length > 0){
+				        			wantplace = loc1;
+				        		} else if(loc2.length > 0){
+				        			wantplace = loc2;
+				        		}
 			        		}
-				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        	check = link2.indexOf('weather');
-				        	where = name;
+				        	where = want;
 				        	if(check == -1 || String(temp).length == 0){
 			        			r.replier.reply("검색이 불가능합니다.");
 								return;
 			        		}
-		        		}else{//와룡 , 영산 , 같은 주소가 여러군데 일 때  중구
+		        		}else{//와룡, 영산, 같은 주소가 여러군데 일 때  중구
 		        			var name = [];
 			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
 			        		var i = 1;
 			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text()));
+			        		if(navername != undefined){
+			        			if(navername.length > name.length){
+				        			name = navername;
+				        		}
+			        		}
 			        		var msg;
 				        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 				        	msg=input.getMsg()*1;
 				        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 				        		var targetNum=msg-1;
-				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        		check = link2.indexOf('weather');
-				        		where = name[targetNum].substr(3) ;
+				        		where = name[targetNum].substr(3);
 				        	}else{
 				        		r.replier.reply("검색이 불가능합니다.");
 				        		return;
@@ -826,7 +848,7 @@ function weather(r){
 			        		} else if(loc3[targetNum].length > 0){
 			        			wantplace = loc3[targetNum];
 			        		}
-			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        		where = name[targetNum].substr(3) ;
 			        		check = link2.indexOf('weather');
@@ -871,7 +893,7 @@ function weather(r){
 		        		} else if(loc3.length > 0){
 		        			wantplace = loc3;
 		        		}
-			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+wantplace+"+날씨").get();
+			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        	check = link2.indexOf('weather');
 			        	where = name[targetNum].split('. ')[1];
@@ -891,7 +913,7 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+name[targetNum].substr(3)+"+날씨").get();
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
