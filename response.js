@@ -759,34 +759,51 @@ function weather(r){
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){
 		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56, 중림로 10
-		        			var name = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
+		        			var name0 = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
 		        			var name1 = temp.select('div.mg_cont.clear').select('div.wrap_tit').select('span.f_etit').text();
-		        			var wantplace="";
-			        		var temp = name;
-				        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
-				        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
-				        	var loc2 = temp.substr(0, temp.lastIndexOf("동 ")+1);  //각 이름들의 주소
-				        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);
-				        	if( loc.length > 0){
-			        			wantplace=loc;
-			        		} else if (loc1.length > 0){
-			        			wantplace = loc1;
-			        		} else if(loc2.length > 0){
-			        			wantplace = loc2;
-			        		} else if(loc3.length > 0){
-			        			wantplace = loc3;
-			        		} else {
-			        			var temp = name1;
+		        			var name2 = temp.select('div.mg_cont.clear').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text());
+		        			if(name2.length > 0){
+		        				var name = [];
+		        				var i = 1;
+		        				name.push('1. ' + name1);
+		        				name.concat(name2);
+		        				var msg;
+					        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
+					        	msg=input.getMsg()*1;
+					        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+					        		var targetNum=msg-1;
+					        		var want = name[targetNum].split('. ')[1];
+					        		var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
+					        		var name0 = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
+				        			var name1 = temp.select('div.mg_cont.clear').select('div.wrap_tit').select('span.f_etit').text();
+					        	}
+				        		var wantplace="";
+				        		var temp = name0;
 					        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 					        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
-					        	var loc2 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+					        	var loc2 = temp.substr(0, temp.lastIndexOf("동 ")+1);  //각 이름들의 주소
+					        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);
 					        	if( loc.length > 0){
 				        			wantplace=loc;
 				        		} else if (loc1.length > 0){
 				        			wantplace = loc1;
 				        		} else if(loc2.length > 0){
 				        			wantplace = loc2;
-				        		}
+				        		} else if(loc3.length > 0){
+				        			wantplace = loc3;
+				        		} else {
+				        			var temp = name1;
+						        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
+						        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
+						        	var loc2 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+						        	if( loc.length > 0){
+					        			wantplace=loc;
+					        		} else if (loc1.length > 0){
+					        			wantplace = loc1;
+					        		} else if(loc2.length > 0){
+					        			wantplace = loc2;
+					        		}
+			        			}
 			        		}
 				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
