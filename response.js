@@ -816,7 +816,7 @@ function weather(r){
 				        		var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 					        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
 					        	var loc2 = temp.substr(0, temp.lastIndexOf("동 ")+1);  //각 이름들의 주소
-					        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);s
+					        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);
 				        		if( loc.length > 0){
 				        			wantplace=loc;
 				        		} else if (loc1.length > 0){
