@@ -761,10 +761,10 @@ function weather(r){
 		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56, 중림로 10
 		        			var name0 = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
 		        			var name1 = temp.select('div.mg_cont.clear').select('div.wrap_tit').select('span.f_etit').text();
+		        			var i = 1;
 		        			var name2 = temp.select('div.mg_cont.clear').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text());
 		        			if(name2.length > 0){
 		        				var name = [];
-		        				var i = 1;
 		        				name.push('1. ' + name1);
 		        				name = name.concat(name2);
 		        				var msg;
