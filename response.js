@@ -766,7 +766,7 @@ function weather(r){
 		        				var name = [];
 		        				var i = 1;
 		        				name.push('1. ' + name1);
-		        				name.concat(name2);
+		        				name = name.concat(name2);
 		        				var msg;
 					        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 					        	msg=input.getMsg()*1;
