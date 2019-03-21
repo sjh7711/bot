@@ -1161,7 +1161,7 @@ function famous(r){
 		var url = undefined;
 		url = org.jsoup.Jsoup.connect(firsturl).get().select('a.btn_sort');
 		if(url.toArray()[0] == undefined){
-			r.replier.reply("실제로 있는 지역을 입력하세요.");
+			r.replier.reply("검색 결과가 없습니다.");
 		}else{
 			url = url.get(1).attr("abs:href");
 			var doc = org.jsoup.Jsoup.connect(url).get();
