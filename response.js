@@ -797,11 +797,14 @@ function weather(r){
 					        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 					        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
 					        	var loc2 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+					        	var loc3 = temp.substr(0, temp.lastIndexOf("시 ")+1);
 					        	if( loc.length > 0){
 				        			wantplace=loc;
 				        		} else if (loc1.length > 0){
 				        			wantplace = loc1;
 				        		} else if(loc2.length > 0){
+				        			wantplace = loc2;
+				        		} else if(loc3.length > 0){
 				        			wantplace = loc2;
 				        		}
 			        		}
