@@ -762,6 +762,7 @@ function weather(r){
 				        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
 				        	var loc2 = temp.substr(0, temp.lastIndexOf("동 ")+1);  //각 이름들의 주소
 				        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);
+				        	var loc4 = temp.substr(0, temp.lastIndexOf("리 ")+1);
 				        	if( loc.length > 0){
 			        			wantplace=loc;
 			        		} else if (loc1.length > 0){
@@ -775,7 +776,7 @@ function weather(r){
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        	check = link2.indexOf('weather');
 				        	where = name;
-				        	if(check == -1){
+				        	if(check == -1 || String(temp).length == 0){
 			        			r.replier.reply("검색이 불가능합니다.");
 								return;
 			        		}
