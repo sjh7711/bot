@@ -383,7 +383,7 @@ function deleteimage(r){
 	var temp = java.io.File("/sdcard/FTP").listFiles();
 	var delist = [];
 	for(i=0;i<temp.length;i++){
-		if(String(temp[i]).indexOf(r.msg.split(' ')[1])>-1) {
+		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
 			File(temp[i]).delete();
 			delist.push(temp[i]);
 		}
