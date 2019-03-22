@@ -215,7 +215,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		return;
         	}str += "!파일목록\n";
         	
-        	if(msg == "!사진" || Flag.get('image', r.room) == 1){
+        	if(msg.indexOf("!사진")==0 || Flag.get('image', r.room) == 1){
         		loadimage(r);
         	}
         	
