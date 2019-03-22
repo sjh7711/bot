@@ -195,14 +195,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(room=='test'){
         	
         	if (msg.indexOf("!파일삭제")==0){
-        		var temp = java.io.File("/sdcard/FTP").listFiles();
-        		for(i=0;i<temp.length;i++){
-        			if(String(temp[i]).indexOf(msg.split(' ')[1])>-1) {
-        				File(temp[i]).delete();
-        				replier.reply(temp[i]+' 삭제 완료');
-        			}
-        		}
-        		return;
+        		deleteimage(r);
         	}str += "!파일삭제\n";
         	
         	if (msg == "!방"){
@@ -380,10 +373,22 @@ function loadimage(r){
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
-			r.replier.reply('click!' +es+ 'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
+			r.replier.reply(es+'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
 			Flag.set('image', r.room, 0);
 		}
 	}
+}
+
+function deleteimage(r){
+	var temp = java.io.File("/sdcard/FTP").listFiles();
+	var delist = [];
+	for(i=0;i<temp.length;i++){
+		if(String(temp[i]).indexOf(r.msg.split(' ')[1])>-1) {
+			File(temp[i]).delete();
+			delist.push(temp[i]);
+		}
+	}
+	r.replier.reply(delist.join('\n')+' 삭제 완료');
 }
 
 function inform(r){
