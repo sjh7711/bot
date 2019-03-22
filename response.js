@@ -215,7 +215,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		return;
         	}str += "!파일목록\n";
         	
-        	if(msg == "!사진"){
+        	if(msg == "!사진" || Flag.get('image', r.room) == 1){
         		loadimage(r);
         	}
         	
@@ -366,7 +366,7 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 function loadimage(r){
 	if(Flag.get('image', r.room)==0){
 		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-		if(r.msg.substr(3).length > 0){
+		if(r.msg.substr(4).length > 0){
 			var temp = [];
 			for(i=0;i<Flag.get('imagelist', r.room).length;i++){
 				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.split(' ')[1])>-1) {
@@ -380,7 +380,7 @@ function loadimage(r){
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
-			r.replier.reply('click!'+es+'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
+			r.replier.reply('click!' +es+ 'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
 			Flag.set('image', r.room, 0);
 		}
 	}
