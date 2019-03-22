@@ -1,5 +1,4 @@
-﻿//소스불러오기및 리로딩//기타
-var reloadcheck = 0;
+﻿var reloadcheck = 0;
 function reload() {
 	try {
 		reloadcheck = 1;
@@ -49,10 +48,8 @@ Flag=(function(){
 	})();
 function blankFunc(r){
 }
-
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	
 	if(reloadcheck == 1){
 		return;
 	}
@@ -177,19 +174,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
         	
         	if(msg == '!정보'){
-        		if(D.selectForArray('baseball',null,'name=? and room=?',[sender, room])!=undefined){
-        			var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[sender, room]));
-        			var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[sender, room]));
-        			replier.reply(sender+'님의 정보'
-        			+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
-        			+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room])
-        			+'\n전적 : '+wincount+'승 / '+losecount+'패'
-        			+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
-        			return;
-        		}else {
-        			replier.reply('알 수 없습니다.');
-        			return;
-        		}
+        		inform(r);
         	}
         	
         	if(msg == '!랭킹'){
@@ -210,7 +195,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(room=='test'){
         	
         	if (msg.indexOf("!파일삭제")==0){
-        		var temp = java.io.File("/sdcard/ipdisk").listFiles();
+        		var temp = java.io.File("/sdcard/FTP").listFiles();
         		for(i=0;i<temp.length;i++){
         			if(String(temp[i]).indexOf(msg.split(' ')[1])>-1) {
         				File(temp[i]).delete();
@@ -226,9 +211,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!방\n";
         	
         	if(msg == "!파일목록"){
-        		replier.reply(File("/sdcard/ipdisk").listFiles().slice().join('\n'));
+        		replier.reply(File("/sdcard/FTP").listFiles().slice().join('\n'));
         		return;
         	}str += "!파일목록\n";
+        	
+        	if(msg == "!사진"){
+        		loadimage(r);
+        	}
         	
         	if(msg =="!쓰레드"){
         		replier.reply(T.getThreadList().join('\n'));
@@ -373,6 +362,35 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 		java.lang.Thread.sleep(5);
 	}
 })*/
+
+function loadimage(r){
+	if(Flag.get('image', r.room)==0){
+		var i = 1;
+		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles().map(v=> (i++)+'. ' + v));
+		r.replier.reply('번호를 선택하세요.\n'+Flag.get('imagelist', r.room).join('\n'));
+		Flag.set('image', r.room, 1);
+	} else {
+		if(!isNaN(r.msg)){
+			r.replier.reply('click!'+es+'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1]));
+		}
+	}
+}
+
+function inform(r){
+	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
+		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
+		var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room]));
+		r.replier.reply(r.sender+'님의 정보'
+		+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
+		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room])
+		+'\n전적 : '+wincount+'승 / '+losecount+'패'
+		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
+		return;
+	}else {
+		r.replier.reply('알 수 없습니다.');
+		return;
+	}
+}
 
 function randomnumber(r){
 	var num1 = Number(r.msg.split(' ')[1]);
@@ -651,7 +669,6 @@ function baseball(r){
 		}
 	}
 }
-
 
 function saveImage(r){
 	if(r.sender == '_(≥∇≤)ノ🎓'){
