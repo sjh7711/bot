@@ -364,26 +364,26 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 })*/
 
 function loadimage(r){
-    if(Flag.get('image', r.room)==0){
-        Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-        if(r.msg.substr(3).length > 0){
-            var temp = [];
-            for(i=0;i<Flag.get('imagelist', r.room).length;i++){
-                if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.split(' ')[1])>-1) {
-                    temp.push(Flag.get('imagelist', r.room)[i]);
-                }
-            }
-            Flag.set('imagelist', r.room, temp);
-        }
-        var i = 1;
-        r.replier.reply('번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
-        Flag.set('image', r.room, 1);
-    } else {
-        if(!isNaN(r.msg)){
-            r.replier.reply('click!'+es+'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ));
-            Flag.set('image', r.room, 0);
-        }
-    }
+	if(Flag.get('image', r.room)==0){
+		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
+		if(r.msg.substr(3).length > 0){
+			var temp = [];
+			for(i=0;i<Flag.get('imagelist', r.room).length;i++){
+				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.split(' ')[1])>-1) {
+					temp.push(Flag.get('imagelist', r.room)[i]);
+				}
+			}
+			Flag.set('imagelist', r.room, temp);
+		}
+		var i = 1;
+		r.replier.reply('번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+		Flag.set('image', r.room, 1);
+	} else {
+		if(!isNaN(r.msg)){
+			r.replier.reply('click!'+es+'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
+			Flag.set('image', r.room, 0);
+		}
+	}
 }
 
 function inform(r){
