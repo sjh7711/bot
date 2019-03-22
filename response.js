@@ -369,7 +369,7 @@ function loadimage(r){
 		if(r.msg.substr(4).length > 0){
 			var temp = [];
 			for(i=0;i<Flag.get('imagelist', r.room).length;i++){
-				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.split(' ')[1])>-1) {
+				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
 					temp.push(Flag.get('imagelist', r.room)[i]);
 				}
 			}
