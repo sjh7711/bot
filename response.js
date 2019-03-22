@@ -388,7 +388,7 @@ function deleteimage(r){
 			delist.push(temp[i]);
 		}
 	}
-	r.replier.reply(delist.join('\n')+' 삭제 완료');
+	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
 }
 
 function inform(r){
