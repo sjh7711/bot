@@ -204,7 +204,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!방\n";
         	
         	if(msg == "!파일목록"){
-        		replier.reply(File("/sdcard/FTP").listFiles().slice().join('\n'));
+        		replier.reply('파일 개수 : '+File("/sdcard/FTP").listFiles().length +'\n' + File("/sdcard/FTP").listFiles().slice().join('\n'));
         		return;
         	}str += "!파일목록\n";
         	
