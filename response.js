@@ -373,7 +373,7 @@ function loadimage(r){
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
-			r.replier.reply(es+'data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
+			r.replier.reply('data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
 			Flag.set('image', r.room, 0);
 		}
 	}
