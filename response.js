@@ -192,7 +192,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         str+="!주사위\n";
     	
         
-        if(room=='test' || room=='시립대 봇제작방'){
+        if(room=='test'){
         	
         	if (msg.indexOf("!파일삭제")==0){
         		deleteimage(r);
