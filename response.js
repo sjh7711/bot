@@ -368,7 +368,7 @@ function loadimage(r){
 		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
 		if(r.msg.substr(4).length > 0){
 			var temp = [];
-			for(i=0;i<Flag.get('imagelist', r.room).length;i++){
+			for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
 				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
 					temp.push(Flag.get('imagelist', r.room)[i]);
 				}
