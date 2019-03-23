@@ -373,7 +373,7 @@ function loadimage(r){
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
-			r.replier.reply('data:image/jpeg;base64,'+read64(Flag.get('imagelist', r.room)[Number(r.msg)-1] ) );
+			r.replier.reply('ftp://sjh7711.iptime.org:2223/0/FTP/'+.substr(12));
 			Flag.set('image', r.room, 0);
 		}
 	}
