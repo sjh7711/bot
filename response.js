@@ -396,8 +396,8 @@ function inform(r){
 		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
 		var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room]));
 		r.replier.reply(r.sender+'님의 정보'
-		+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
-		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[sender, room])
+		+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
+		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])
 		+'\n전적 : '+wincount+'승 / '+losecount+'패'
 		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
 		return;
