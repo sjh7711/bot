@@ -1115,7 +1115,7 @@ var WCC = T.register("weatherClockCheck",()=>{
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨 대연동', room : '오버워치',replier:{reply:function(msg){
+			r={msg : '!날씨 부산 대연동', room : '오버워치',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
