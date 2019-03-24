@@ -114,7 +114,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!맛집\n"
         	
-        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' || room =='시립대 단톡방') {
+        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' ) {//|| room =='시립대 단톡방'
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
             str += "!최근채팅\n";
         }
@@ -167,6 +167,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	
         	if( msg == "!전적초기화" && D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) > -1){
         		D.update('baseball', {point : 100000, win : 0, lose : 0, solowin : 0}, 'name=? and room=?', [sender, room] );
+        		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
+        		return;
         	}
         	
         	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
@@ -355,6 +357,10 @@ Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
 		java.lang.Thread.sleep(5);
 	}
 })*/
+
+function blackjack(r){
+	
+}
 
 function loadimage(r){
 	if(Flag.get('image', r.room)==0){
