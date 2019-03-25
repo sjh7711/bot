@@ -32,9 +32,11 @@ var T = require("ThreadManager.js");
 var I = require("Interactive.js");
 File = java.io.File;
 var es=String.fromCharCode(8237).repeat(500);
-var weiredstring1=String.fromCharCode(8203);
-var weiredstring2=String.fromCharCode(160);
-var weiredstring3=String.fromCharCode(8237);
+var weiredstring1=String.fromCharCode(8203);//공백
+var weiredstring2=String.fromCharCode(160);//띄워쓰기로
+var weiredstring3=String.fromCharCode(8237);//공백
+var weiredstring4=String.fromCharCode(8197);//띄워쓰기로
+
 Flag=(function(){
 	   var list={};
 	   var Flag={};
@@ -61,8 +63,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
 	
-	//r = { replier: replier, msg: msg.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), " "),
-	//	sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), " "), room: room , imageDB : imageDB};
+	r = { replier: replier, msg: msg.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), " ").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "),
+		sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room , imageDB : imageDB};
 	
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
