@@ -312,7 +312,7 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "건의") {
         r.replier.reply("건의를 받습니다. [!건의 건의내용] 으로 입력하면 됩니다.");
     } else if (r.msg.split(" ")[1] == "추첨") {
-        r.replier.reply("[!추첨]을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 숫자만 입력하면 됩니다. 입력 후에는 누구든지 참가 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 [!마감 ]을 입력하면 당첨자가 바로 발표됩니다.\n추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 [!추첨]이 입력된 후 90초 이후엔 [!추첨종료]로 종료가 가능합니다.");
+        r.replier.reply("[!추첨]을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 숫자만 입력하면 됩니다. 입력 후에는 누구든지 [참가] 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 [!마감 ]을 입력하면 당첨자가 바로 발표됩니다.\n추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 [!추첨]이 입력된 후 90초 이후엔 [!추첨종료]로 종료가 가능합니다.");
     } else if (r.msg.split(" ")[1] == "명단") {
         r.replier.reply("푸드뱅크 명단을 보여줍니다. [!명단 만월] 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n[!명단추가 복지센터 055645XXXX] 처럼 입력하면 추가되고 [!명단삭제 복지센터] 처럼 입력하면 목록이 삭제됩니다. 삭제할 땐 반드시 제대로 된 기관명을 입력해야합니다.");
     } else if (r.msg.split(" ")[1] == "맛집") {
@@ -339,7 +339,7 @@ function func(r) {
 function blackjack(r){
 	if( r.msg == '!블랙잭'){
 		if(Flag.get('bstart', r.room) == 0 && Flag.get('bstart1', r.room) == 0 &&  Flag.get('bstart2', r.room) ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
-			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
 			Flag.set('blackjacktime', r.room, new Date().getTime());
 			Flag.set("bsuggest", r.room, r.sender);
 			Flag.set("bstart", r.room, 1);
@@ -438,7 +438,7 @@ function baseball(r){
 
 	if( r.msg == '!야구'){
 		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000  ){
-			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			r.replier.reply('게임을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
 			Flag.set('baseballtime', r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
@@ -1287,7 +1287,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 		
 		if(Flag.get("selsender", r.room) == r.sender && r.msg < 5 && 0 < r.msg && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 0){
 			Flag.set("selnum", r.room , r.msg)
-			r.replier.reply(Flag.get("selnum", r.room)+"명을 뽑습니다. 참여할 사람은 '참가' 를 입력해주세요. 추첨을 제안한 사람이 !마감 을 입력하면 마감됩니다. 90초 이후엔 누구든 !마감으로 마감할 수 있습니다.");
+			r.replier.reply(Flag.get("selnum", r.room)+"명을 뽑습니다. 참여할 사람은 [참가] 를 입력해주세요. 추첨을 제안한 사람이 [!마감] 을 입력하면 마감됩니다. 90초 이후엔 누구든 [!마감]으로 마감할 수 있습니다.");
 			Flag.set("sel1", r.room, 1);
 		}
 		
