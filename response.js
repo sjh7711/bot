@@ -140,9 +140,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!공지\n";
         }
         
-        if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
-        str += "!추첨\n";
-
         if (room == '푸드마켓' || room =='test'){
         	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
         	str += "!명단\n"
@@ -166,33 +163,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }
         str += '!블랙잭\n';
-        
-        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' ){
-        	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
-        		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
-        	}
-        	
-        	if( msg == "!전적초기화" && D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) > -1){
-        		D.update('baseball', {point : 100000, win : 0, lose : 0, solowin : 0}, 'name=? and room=?', [sender, room] );
-        		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
-        		return;
-        	}
-        	
-        	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
-            	baseball(r);
-            }
-        	
-        	if(msg == '!정보'){
-        		inform(r);
-        	}
-        	
-        	if(msg == '!랭킹'){
-        		var i = 1;
-        		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
-        		return;
-        	}
-        }
-        str += '!야구\n';
         
         if(msg.indexOf('!주사위') == 0){
         	randomnumber(r);
@@ -277,13 +247,35 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
-        /*
-        if (room == 'test' || room == '시립대 봇제작방') {
-        	if (msg =="!반응속도" || msg =="!ㅂㅇㅅㄷ") {
-        		Flag.set('reactionroom', room, room);
-        		Flag.get('reactionspeed', room).start();
+        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' ){
+        	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
+        		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
         	}
-        }*/
+        	
+        	if( msg == "!전적초기화" && D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) > -1){
+        		D.update('baseball', {point : 100000, win : 0, lose : 0, solowin : 0}, 'name=? and room=?', [sender, room] );
+        		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
+        		return;
+        	}
+        	
+        	if (msg == "!야구" || msg == "!ㅇㄱ" || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
+            	baseball(r);
+            }
+        	
+        	if(msg == '!정보'){
+        		inform(r);
+        	}
+        	
+        	if(msg == '!랭킹'){
+        		var i = 1;
+        		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
+        		return;
+        	}
+        }
+        str += '!야구\n';
+        
+        if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
+        str += "!추첨\n";
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
@@ -340,20 +332,42 @@ function func(r) {
 }
 
 function blackjack(r){
-	if( r.msg == '!야구'){
-		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000  ){
-			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
-			Flag.set('baseballtime', r.room, new Date().getTime());
-			Flag.set("start", r.room, 1);
-			Flag.set("suggest", r.room, r.sender);
+	if( r.msg == '!블랙잭'){
+		if(Flag.get('bstart', r.room) == 0 && Flag.get('bstart1', r.room) == 0 &&  Flag.get('bstart2', r.room) ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
+			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			Flag.set('blackjacktime', r.room, new Date().getTime());
+			Flag.set("bstart", r.room, 1);
 			var temp = [r.sender];
-			Flag.set("baseball", r.room , temp);
-			r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
-		}else if( Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
-			r.replier.reply('포인트가 부족합니다. 닉네임을 바꾸세요.')
+			Flag.set("blackjack", r.room , temp);
+			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
+		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
+			r.replier.reply('포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.')
 		}
 		else {
 			r.replier.reply('게임이 진행중입니다.');
+			return;
+		}
+	}
+	
+	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){
+        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){//||
+            var temp = Flag.get('baseball', r.room);
+            temp.push(r.sender);
+            Flag.set("baseball", r.room , temp);
+            r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
+        } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
+        	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
+        	return;
+        }
+    }
+	
+	if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
+		if(Flag.get('baseball', r.room).length > 0 ){
+			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다. 4자리 숫자만 입력하세요.');
+			Flag.set('start', r.room, 0);
+			Flag.set('start1', r.room, 1);
+		} else{
+			r.replier.reply('아무도 참여하지 않았습니다.');
 			return;
 		}
 	}
@@ -1301,7 +1315,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 				r.replier.reply(r.sender+'님은 '+(90000 - (temp - Flag.get('seltime', r.room)))/1000 + "초 뒤에 마감이 가능합니다. 현재는 추첨을 제안한 사람만 마감이 가능합니다.");
 	    	} else {
 	    		Flag.set("sel0", r.room, 0);
-	    		if(Flag.get('sellist', r.room).length == 0){
+	    		if(Flag.get('sellist', r.room) == 0){
 		    		r.replier.reply('아무도 참가하지 않았습니다.');
 		    		Flag.set("sel1", r.room, 0);
 			    	Flag.set("selnum", r.room, -1);
@@ -1312,7 +1326,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 	    	}
 		} else if(r.msg == '!마감' && r.sender == Flag.get("selsender", r.room) && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 1){
 			Flag.set("sel0", r.room, 0);
-			if(Flag.get('sellist', r.room).length == 0){
+			if(Flag.get('sellist', r.room) == 0){
 	    		r.replier.reply('아무도 참가하지 않았습니다.');
 	    		Flag.set("sel1", r.room, 0);
 		    	Flag.set("selnum", r.room, -1);
