@@ -235,10 +235,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
         
-        if(room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'){
+        if(room =='test' || room =='시립대 봇제작방'){
         	if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
         		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
         	}
+        	
+        	if (msg == "!블랙잭" || msg == "!ㅂㄹㅈ" || Flag.get('bstart', r.room) == 1 || Flag.get('bstart1', r.room) == 1 ||  Flag.get('bstart2', r.room) ==  1 ){
+            	blackjack(r);
+            }
+        	
         	str += '!블랙잭\n';
         }
         
@@ -336,12 +341,13 @@ function blackjack(r){
 		if(Flag.get('bstart', r.room) == 0 && Flag.get('bstart1', r.room) == 0 &&  Flag.get('bstart2', r.room) ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
 			Flag.set('blackjacktime', r.room, new Date().getTime());
+			Flag.set("bsuggest", r.room, r.sender);
 			Flag.set("bstart", r.room, 1);
 			var temp = [r.sender];
 			Flag.set("blackjack", r.room , temp);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
-			r.replier.reply('포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.')
+			r.replier.reply('포인트가 부족합니다.')
 		}
 		else {
 			r.replier.reply('게임이 진행중입니다.');
@@ -350,25 +356,22 @@ function blackjack(r){
 	}
 	
 	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){
-        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){//||
-            var temp = Flag.get('baseball', r.room);
+        if( Flag.get('blackjack', r.room).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
+            var temp = Flag.get('blackjack', r.room);
             temp.push(r.sender);
-            Flag.set("baseball", r.room , temp);
-            r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
-        } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
-        	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
+            Flag.set("blackjack", r.room , temp);
+            r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
+        } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
+        	r.replier.reply('돈이 부족합니다.');
         	return;
         }
     }
 	
-	if ( Flag.get("start", r.room) == 1 && (Flag.get('baseball', r.room).length == 3 || (r.msg == '시작' && Flag.get('suggest', r.room) ==r.sender)) ){
-		if(Flag.get('baseball', r.room).length > 0 ){
-			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다. 4자리 숫자만 입력하세요.');
-			Flag.set('start', r.room, 0);
-			Flag.set('start1', r.room, 1);
-		} else{
-			r.replier.reply('아무도 참여하지 않았습니다.');
-			return;
+	if ( Flag.get("bstart", r.room) == 1 && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
+		if(Flag.get('blackjack', r.room).length > 0 ){
+			r.replier.reply(Flag.get('blackjack', r.room).length+'명이 참가했습니다. 게임을 시작합니다.');
+			Flag.set('bstart', r.room, 0);
+			Flag.set('bstart1', r.room, 1);
 		}
 	}
 }
@@ -458,7 +461,7 @@ function baseball(r){
             Flag.set("baseball", r.room , temp);
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
         } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
-        	r.replier.reply('포인트가 부족합니다. 새로운 닉네임으로 오세요.');
+        	r.replier.reply('포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.');
         	return;
         }
     }
@@ -468,9 +471,6 @@ function baseball(r){
 			r.replier.reply(Flag.get('baseball', r.room).length+'명이 참가했습니다. 게임을 시작합니다. 4자리 숫자만 입력하세요.');
 			Flag.set('start', r.room, 0);
 			Flag.set('start1', r.room, 1);
-		} else{
-			r.replier.reply('아무도 참여하지 않았습니다.');
-			return;
 		}
 	}
 	
