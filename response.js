@@ -326,7 +326,7 @@ function func(r) {
 [참가] 를 입력하면 참가가 가능하고 [!야구] 를 외친 사람이 [시작] 이라고 입력하면 게임을 시작합니다.\n\
 참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지 않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
 [1246]이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
-단서를 통해 정답인 1325를 맞추면 됩니다. 참가비는 1000point입니다. 1000point아래로 내려가면 다른 닉네임으로 오시면 됩니다.\n\
+단서를 통해 정답인 1325를 맞추면 됩니다. 참가비는 1000point입니다. 1000point아래로 내려가면 별도의 안내가 있을 예정입니다.\n\
 최대 3인까지 가능하며 혼자서도 가능하지만 전적은 기록되지 않습니다.\n\
 [!정보]를 통해 자신의 각종 정보를 확인할 수 있습니다.\n\
 [!랭킹]을 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.\n\
@@ -340,85 +340,26 @@ function func(r) {
 }
 
 function blackjack(r){
-	
-}
-
-function loadimage(r){
-	if(Flag.get('image', r.room)==0){
-		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-		if(r.msg.substr(4).length > 0){
-			var temp = [];
-			for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
-					temp.push(Flag.get('imagelist', r.room)[i]);
-				}
-			}
-			Flag.set('imagelist', r.room, temp);
+	if( r.msg == '!야구'){
+		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000  ){
+			r.replier.reply('게임을 시작합니다. 참여할 사람은 참가 를 입력해주세요.');
+			Flag.set('baseballtime', r.room, new Date().getTime());
+			Flag.set("start", r.room, 1);
+			Flag.set("suggest", r.room, r.sender);
+			var temp = [r.sender];
+			Flag.set("baseball", r.room , temp);
+			r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
+		}else if( Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
+			r.replier.reply('포인트가 부족합니다. 닉네임을 바꾸세요.')
 		}
-		var i = 1;
-		r.replier.reply('번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
-		Flag.set('image', r.room, 1);
-	} else {
-		if(!isNaN(r.msg)){
-			r.replier.reply('ftp://sjh7711.iptime.org:2223/0/FTP/'+String(Flag.get('imagelist', r.room)[Number(r.msg)-1]).substr(12));
-			Flag.set('image', r.room, 0);
+		else {
+			r.replier.reply('게임이 진행중입니다.');
+			return;
 		}
 	}
 }
 
-function deleteimage(r){
-	var temp = java.io.File("/sdcard/FTP").listFiles();
-	var delist = [];
-	for(i=0;i<temp.length;i++){
-		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
-			File(temp[i]).delete();
-			delist.push(temp[i]);
-		}
-	}
-	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
-}
 
-function inform(r){
-	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
-		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
-		var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room]));
-		r.replier.reply(r.sender+'님의 정보'
-		+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
-		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])
-		+'\n전적 : '+wincount+'승 / '+losecount+'패'
-		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
-		return;
-	}else {
-		r.replier.reply('알 수 없습니다.');
-		return;
-	}
-}
-
-function randomnumber(r){
-	var num1 = Number(r.msg.split(' ')[1]);
-	var num2 = Number(r.msg.split(' ')[2]);
-	if(num1 < 0 || num2 < 0 ){
-		r.replier.reply('양수만 입력하세요');
-		return;
-	}
-	if (isNaN(num1) && isNaN(num2)){
-		num2=100;
-		num1=1;
-	}
-	if (!isNaN(num1) && isNaN(num2)){
-		num2=num1;
-		num1=1;
-	}
-	if(num2==num1){
-		r.replier.reply(num1);
-		return;
-	}
-	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2)){
-		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
-	} else {
-		r.replier.reply('잘못 입력했습니다.');
-	}
-}
 
 function baseball(r){
 	if(Flag.get('supposelist', r.room) == 0 && r.msg == '!힌트' && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
@@ -488,7 +429,7 @@ function baseball(r){
 			Flag.set("baseball", r.room , temp);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
 		}else if( Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
-			r.replier.reply('포인트가 부족합니다. 닉네임을 바꾸세요.')
+			r.replier.reply('포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.')
 		}
 		else {
 			r.replier.reply('게임이 진행중입니다.');
@@ -669,6 +610,83 @@ function baseball(r){
 				}
 			}
 		}
+	}
+}
+
+function loadimage(r){
+	if(Flag.get('image', r.room)==0){
+		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
+		if(r.msg.substr(4).length > 0){
+			var temp = [];
+			for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
+				if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
+					temp.push(Flag.get('imagelist', r.room)[i]);
+				}
+			}
+			Flag.set('imagelist', r.room, temp);
+		}
+		var i = 1;
+		r.replier.reply('번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+		Flag.set('image', r.room, 1);
+	} else {
+		if(!isNaN(r.msg)){
+			r.replier.reply('ftp://sjh7711.iptime.org:2223/0/FTP/'+String(Flag.get('imagelist', r.room)[Number(r.msg)-1]).substr(12));
+			Flag.set('image', r.room, 0);
+		}
+	}
+}
+
+function deleteimage(r){
+	var temp = java.io.File("/sdcard/FTP").listFiles();
+	var delist = [];
+	for(i=0;i<temp.length;i++){
+		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
+			File(temp[i]).delete();
+			delist.push(temp[i]);
+		}
+	}
+	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
+}
+
+function inform(r){
+	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
+		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
+		var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room]));
+		r.replier.reply(r.sender+'님의 정보'
+		+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
+		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])
+		+'\n전적 : '+wincount+'승 / '+losecount+'패'
+		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
+		return;
+	}else {
+		r.replier.reply('알 수 없습니다.');
+		return;
+	}
+}
+
+function randomnumber(r){
+	var num1 = Number(r.msg.split(' ')[1]);
+	var num2 = Number(r.msg.split(' ')[2]);
+	if(num1 < 0 || num2 < 0 ){
+		r.replier.reply('양수만 입력하세요');
+		return;
+	}
+	if (isNaN(num1) && isNaN(num2)){
+		num2=100;
+		num1=1;
+	}
+	if (!isNaN(num1) && isNaN(num2)){
+		num2=num1;
+		num1=1;
+	}
+	if(num2==num1){
+		r.replier.reply(num1);
+		return;
+	}
+	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2)){
+		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
+	} else {
+		r.replier.reply('잘못 입력했습니다.');
 	}
 }
 
