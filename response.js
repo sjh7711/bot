@@ -170,7 +170,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		return;
         	}str += "!방\n";
         	
-        	if(msg == "!파일목록"){
+        	if(msg.indexOf("!파일목록")==0){
         		checkimage(r);
         		return;
         	}str += "!파일목록\n";
