@@ -629,10 +629,10 @@ function baseball(r){
 
 function checkimage(r){
 	Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-	if(r.msg.substr(2).length > 0){
+	if(r.msg.substr(6).length > 0){
 		var temp = [];
 		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(2))>-1) {
+			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
 				temp.push(Flag.get('imagelist', r.room)[i]);
 			}
 		}
