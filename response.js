@@ -36,7 +36,7 @@ var weiredstring1=String.fromCharCode(8203);//공백
 var weiredstring2=String.fromCharCode(160);//띄워쓰기로
 var weiredstring3=String.fromCharCode(8237);//공백
 var weiredstring4=String.fromCharCode(8197);//띄워쓰기로
-
+var statustime = 0;
 Flag=(function(){
 	   var list={};
 	   var Flag={};
@@ -56,7 +56,7 @@ function blankFunc(r){
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(msg=='!상태'){
-		var temptime = new Date().getTime();
+		statustime = new Date().getTime();
 	}
 	
 	if(reloadcheck == 1){
@@ -797,7 +797,7 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n"+"반응 속도 : "+((new Date().getTime())-temptime)/1000+'초';
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n"+"반응 속도 : "+((new Date().getTime())-statustime)/1000+'초';
 	r.replier.reply(batteryStatusStr);
 }
 
