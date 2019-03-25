@@ -638,8 +638,7 @@ function checkimage(r){
 		}
 		Flag.set('imagelist', r.room, temp);
 	}
-	var i = 1;
-	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).join('\n'));
 }
 
 function loadimage(r){
