@@ -55,6 +55,10 @@ function blankFunc(r){
 }
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	if(msg=='!상태'){
+		var temptime = Date().getTime();
+	}
+	
 	if(reloadcheck == 1){
 		return;
 	}
@@ -153,11 +157,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	str += "!업무\n"
         } 
 
-        if (msg == "!상태"){
-        	checkstatus(r);
-        	return;
-        }
-        
         if(msg.indexOf('!주사위') == 0){
         	randomnumber(r);
         	return;
@@ -206,7 +205,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }str += "!모든로또통계\n";
         }
         
-        str += "!상태\n";
+        
 
         if (msg.indexOf('!건의 ')==0){
         	if(msg.substr(4).length < 3){
@@ -287,6 +286,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
             return;
         }
+        
+        if (msg == "!상태"){
+        	checkstatus(r);
+        	return;
+        }
+        str += "!상태\n";
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
@@ -792,7 +797,7 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%" 
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n"+"반응 속도 : "+((new Date().getTime())-temptime)/1000+'초';
 	r.replier.reply(batteryStatusStr);
 }
 
