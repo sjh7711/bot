@@ -56,7 +56,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	I.run(room, sender, msg);
 	
-	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
+	r = { replier: replier, msg: msg.replace(new RegExp(x, "gi"), "").replace(new RegExp(y, "gi"), ""), sender: sender.replace(new RegExp(x, "gi"), "").replace(new RegExp(y, "gi"), ""), room: room , imageDB : imageDB};
 	
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
