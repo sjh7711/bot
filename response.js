@@ -56,7 +56,7 @@ function blankFunc(r){
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(msg=='!상태'){
-		var temptime = Date().getTime();
+		var temptime = new Date().getTime();
 	}
 	
 	if(reloadcheck == 1){
