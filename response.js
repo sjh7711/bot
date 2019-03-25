@@ -150,19 +150,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg == "!상태"){
         	checkstatus(r);
         	return;
-        } 
-        
-        if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구'  ) && msg == "!야구" ) || msg == "!야구방"  ){
-    		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
-    		return;
-    	}
-        
-        if(room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'){
-        	if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
-        		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
-        	}
         }
-        str += '!블랙잭\n';
         
         if(msg.indexOf('!주사위') == 0){
         	randomnumber(r);
@@ -232,12 +220,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
-        
-        if (msg == "!기능") {
-            replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
-            return;
-        }
-        
+
         if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다 "+es+'\n'+str);
             return;
@@ -246,6 +229,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if(imageDB.getImage() != null){
     		saveImage(r);
     	}
+        
+        if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구'  ) && msg == "!야구" ) || msg == "!야구방"  ){
+    		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
+    		return;
+    	}
+        
+        if(room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'){
+        	if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
+        		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
+        	}
+        	str += '!블랙잭\n';
+        }
         
         if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' ){
         	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
@@ -271,11 +266,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
         		return;
         	}
+        	str += '!야구\n';
         }
-        str += '!야구\n';
         
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
+        
+        if (msg == "!기능") {
+            replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
+            return;
+        }
         
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
