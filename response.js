@@ -160,6 +160,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
         
+        if(room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방'){
+        	if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
+        		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
+        	}
+        }
+        str += '!블랙잭\n';
+        
         if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' ){
         	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
         		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
@@ -218,6 +225,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(T.getThreadList().join('\n'));
         		return;
         	}str += "!쓰레드\n";
+        	
+        	if(msg=="!디비"){
+        		replier.reply(D.selectForString("sqlite_master"));
+        		return;
+        	}str += "!디비\n"
         	
         	if(msg =="!로딩"){
         		replier.reply(reload());
@@ -326,37 +338,6 @@ function func(r) {
     	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
     }
 }
-
-/*
-Flag.set('reactionspeed', r.room, r.room) = T.register("reactionSpeed",()=>{
-	while(1){
-		if(Flag.get('react', r.room) == 0 && Flag.get('reactionroom', r.room) != 0){
-			Api.replyRoom(Flag.get('reactionroom', r.room),"8초안에 반응속도 확인을 시작합니다. 먼저 . 을 입력하는 사람이 이깁니다.");
-			var rand = 1+Math.floor(Math.random() * 7000);
-			java.lang.Thread.sleep(rand);
-			Api.replyRoom(Flag.get('reactionroom', r.room),'시작!');
-			Flag.set('react', r.room, 1);
-			Flag.set('reactstarttime', r.room, new Date().getTime());
-			r.msg = '';
-		}
-		var reactiontime = new Date().getTime();
-		if(Flag.get('react', r.room) == 1 && r.msg == '.' && Flag.get('reactionroom', r.room) != 0 && (reactiontime - Flag.get('reactstarttime', r.room) - 410 > 0) ){
-			Api.replyRoom(Flag.get('reactionroom', r.room), r.sender+"님의 반응 속도 : "+ (reactiontime - Flag.get('reactstarttime', r.room) - 410)/1000 +'초');
-			Flag.set('react', r.room, 0); 
-			Flag.set('reactionspeed', r.room, 0)
-			T.interrupt(reactionspeed);
-			break;
-		}
-		if( new Date().getTime() - Flag.get('reactstarttime', r.room) > 5000 && Flag.get('reactionroom', r.room) != 0){
-			Api.replyRoom(Flag.get('reactionroom', r.room), '5초가 지났습니다. 게임이 끝났습니다.')
-			Flag.set('react', r.room, 0); 
-			Flag.set('reactionspeed', r.room, 0)
-			T.interrupt(reactionspeed);
-			break;
-		}
-		java.lang.Thread.sleep(5);
-	}
-})*/
 
 function blackjack(r){
 	
@@ -1385,7 +1366,7 @@ function recentchat(r) {
 				}
 	    	}
 	    }else{
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg' ] , 'room=?', r.room);
+	    	var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg'], 'room=?', r.room);
 			var templeng = tempchat.length;
 			if (0 < temp1*1 && temp1*1 < 17) {
 				num = Math.floor( temp1*1 );
