@@ -171,7 +171,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!방\n";
         	
         	if(msg == "!파일목록"){
-        		replier.reply('파일 개수 : '+File("/sdcard/FTP").listFiles().length +'\n' + File("/sdcard/FTP").listFiles().slice().join('\n'));
+        		checkimage(r);
         		return;
         	}str += "!파일목록\n";
         	
@@ -627,6 +627,21 @@ function baseball(r){
 	}
 }
 
+function checkimage(r){
+	Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
+	if(r.msg.substr(2).length > 0){
+		var temp = [];
+		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
+			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(2))>-1) {
+				temp.push(Flag.get('imagelist', r.room)[i]);
+			}
+		}
+		Flag.set('imagelist', r.room, temp);
+	}
+	var i = 1;
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+}
+
 function loadimage(r){
 	if(Flag.get('image', r.room)==0){
 		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
@@ -640,7 +655,7 @@ function loadimage(r){
 			Flag.set('imagelist', r.room, temp);
 		}
 		var i = 1;
-		r.replier.reply('번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
