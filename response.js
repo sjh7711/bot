@@ -61,8 +61,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	I.run(room, sender, msg);
 	
-	r = { replier: replier, msg: msg, sender: sender, room: room , imageDB : imageDB};
-	
 	r = { replier: replier, msg: msg.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), " ").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "),
 		sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room , imageDB : imageDB};
 	
