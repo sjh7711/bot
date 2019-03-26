@@ -27,6 +27,21 @@ function reload() {
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
+
+function reload1() {
+	try {
+		reloadcheck = 1;
+		var Timer = new Date();
+	    T.interrupt();
+	    Api.reload();
+	    var time = (new Date() - Timer) / 1000;
+	    reloadcheck = 0;
+	    return "reloading 완료 / " + time + "s";
+	}catch (e){
+		Api.replyRoom('test', e + "\n" + e.stack);
+	}
+}
+
 var D = require("DBManager.js")("D");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
@@ -198,6 +213,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(reload());
         		return;
         	}str += "!로딩\n";
+        	
+        	if(msg =="!로드"){
+        		replier.reply(reload1());
+        		return;
+        	}
         	
         	if (msg == "!모든로또통계"){
             	allbestlotto(r);
