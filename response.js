@@ -417,7 +417,7 @@ function blackjack(r){
 	
 	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
 		if( r.msg == '힛' && Flag.get('blackjack', r.room).indexOf(r.sender) > -1 ) {
-			var num = Flag.get('blackjack', r.room).indexOf(r.sender);
+			var num = Flag.get('blackjack', r.room).indexOf(r.sender)+1;
 			var temp = Flag.get('P'+num, r.room);
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			temp.push(Flag.get('cards', r.room).splice(rand,1));
