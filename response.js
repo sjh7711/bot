@@ -415,7 +415,7 @@ function blackjack(r){
 		}
 	}
 	
-	if((  Flag.get('bstart1', r.room)==1) ){
+	if( Flag.get('bstart1', r.room)==1 ){
 		if( r.msg == '힛' ) {
 			var num = Flag.get('blackjack', r.room).indexOf(r.sender);
 			var temp = Flag.get('P'+num, r.room);
@@ -424,6 +424,7 @@ function blackjack(r){
 			Flag.set('P'+num, r.room, temp);
 			r.replier.reply(Flag.get('blackjack', r.room)[num]+'의 패 : ' + Flag.get('P'+num, r.room).join(' | '));
 		}
+		
 	}
 }
 
