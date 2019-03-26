@@ -397,7 +397,7 @@ function blackjack(r){
 			Flag.set('cards', r.room, cards);
 			
 			
-			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length + 1 ; i++)){
+			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length + 1) ; i++){
 				var temp = [];
 				for( var j = 0 ; j < 2 ; j++){
 					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
