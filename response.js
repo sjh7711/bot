@@ -351,11 +351,11 @@ function blackjack(r){
 	if( r.msg == '!블랙잭'){
 		if(Flag.get('bstart', r.room) == 0 && Flag.get('bstart1', r.room) == 0 &&  Flag.get('bstart2', r.room) ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
-			Flag.set('blackjacktime', r.room, new Date().getTime());
-			Flag.set("bsuggest", r.room, r.sender);
-			Flag.set("bstart", r.room, 1);
+			Flag.set('blackjacktime', r.room, new Date().getTime());//시작시간
+			Flag.set("bsuggest", r.room, r.sender);//시작을 제안한사람
+			Flag.set("bstart", r.room, 1);//참여모집
 			var temp = [r.sender];
-			Flag.set("blackjack", r.room , temp);
+			Flag.set("blackjack", r.room , temp);//참가한사람
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
@@ -366,9 +366,9 @@ function blackjack(r){
 		}
 	}
 	
-	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){
+	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){//참가모집중
         if( Flag.get('blackjack', r.room).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
-            var temp = Flag.get('blackjack', r.room);
+            var temp = Flag.get('blackjack', r.room);//참가한사람
             temp.push(r.sender);
             Flag.set("blackjack", r.room , temp);
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
@@ -381,9 +381,41 @@ function blackjack(r){
 	if ( Flag.get("bstart", r.room) == 1 && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
 		if(Flag.get('blackjack', r.room).length > 0 ){
 			r.replier.reply(Flag.get('blackjack', r.room).length+'명이 참가했습니다. 게임을 시작합니다.');
+			var figure = ['♣','♠','♦','♥'];
+			var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
+			var temp = [];
+			var cards = [];
+			for(var i = 0 ; i< 4 ; i++){
+				for(var j = 0 ; j < 13 ; j++){
+					temp.push(figure[i]+' '+num[j]);
+				}
+			}
+			for(var i = 0 ; i < 52 ; i++){
+				var rand = Math.floor(Math.random()*temp.length);
+				cards.push(temp.splice(rand,1));
+			}
+			Flag.set('cards', r.room, cards);
+			
+			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length + 1 ; i++){
+				var temp = [];
+				for( var j = 0 ; j < 2 ; j++){
+					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+					temp.push(Flag.get('cards', r.room).splice(rand,1));
+				}
+				Flag.set('P'+i, r.room, temp);
+			}
+			
+			r.replier.reply('딜러의 패 : ' + Flag.get('P0', r.room)[0] + ' | ? ');
+			for(var i = 1 ; i < (Flag.get('blackjack', r.room).length + 1; i++){
+				r.replier.reply(Flag.get('blackjack', r.room)[i]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
+			}
 			Flag.set('bstart', r.room, 0);
-			Flag.set('bstart1', r.room, 1);
+			Flag.set('bstart1', r.room, 1);//게임시작
 		}
+	}
+	
+	if( Flag.get('bstart1', r.room)==1) && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender))){
+		
 	}
 }
 
@@ -1801,24 +1833,6 @@ var NC = T.register("noticeCheck",()=>{
 		noticecheck();
 	}
 }).start();
-
-
-function readFile() {
-    var filedir = new java.io.File("/proc/stat");
-    try {
-        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
-        var readStr = "";
-        var str = null;
-        while (((str = br.readLine()) != null)) {
-            readStr += str + "\n";
-        }
-        br.close();
-        return readStr.trim();
-    }
-    catch (e) {
-    	Api.replyRoom('test',e+"\n"+e.stack);
-    }
-}
 
 
 //time
