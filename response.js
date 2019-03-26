@@ -412,12 +412,18 @@ function blackjack(r){
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
-			
 		}
 	}
 	
-	if((  Flag.get('bstart1', r.room)==1) && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
-		
+	if((  Flag.get('bstart1', r.room)==1) ){
+		if( r.msg == '힛' ) {
+			var num = Flag.get('blackjack', r.room).indexOf(r.sender)+1;
+			var temp = Flag.get('P'+num, r.room);
+			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+			temp.push(Flag.get('cards', r.room).splice(rand,1));
+			Flag.set('P'+num, r.room, temp);
+			r.replier.reply(Flag.get('blackjack', r.room)[num]+'의 패 : ' + Flag.get('P'+num, r.room).join(' | '));
+		}
 	}
 }
 
