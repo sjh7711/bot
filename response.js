@@ -396,6 +396,7 @@ function blackjack(r){
 			}
 			Flag.set('cards', r.room, cards);
 			
+			/*
 			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length + 1 ; i++){
 				var temp = [];
 				for( var j = 0 ; j < 2 ; j++){
@@ -407,10 +408,11 @@ function blackjack(r){
 			
 			r.replier.reply('딜러의 패 : ' + Flag.get('P0', r.room)[0] + ' | ? ');
 			for(var i = 1 ; i < (Flag.get('blackjack', r.room).length + 1; i++){
-				r.replier.reply(Flag.get('blackjack', r.room)[i]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
+				r.replier.reply(Flag.get('blackjack', r.room)[i-1]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
+			*/
 		}
 	}
 	
