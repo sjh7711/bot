@@ -423,7 +423,7 @@ function blackjack(r){
 			temp.push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('P'+num, r.room, temp);
 			r.replier.reply(Flag.get('blackjack', r.room)[num]+'의 패 : ' + Flag.get('P'+num, r.room).join(' | '));
-			var temp = Flag.get('P'+num, r.room).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1')split('|');
+			var temp = Flag.get('P'+num, r.room).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
 			var sum=0;
 			for(var i = 0 ; i< temp.length ; i++ ){
 				sum += temp[i];
