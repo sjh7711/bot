@@ -396,7 +396,7 @@ function blackjack(r){
 			}
 			Flag.set('cards', r.room, cards);
 			
-			/*
+			
 			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length + 1 ; i++){
 				var temp = [];
 				for( var j = 0 ; j < 2 ; j++){
@@ -412,11 +412,11 @@ function blackjack(r){
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
-			*/
+			
 		}
 	}
 	
-	if( Flag.get('bstart1', r.room)==1) && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender))){
+	if((  Flag.get('bstart1', r.room)==1) && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
 		
 	}
 }
