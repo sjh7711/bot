@@ -407,7 +407,7 @@ function blackjack(r){
 			}
 			
 			r.replier.reply('딜러의 패 : ' + Flag.get('P0', r.room)[0] + ' | ? ');
-			for(var i = 1 ; i < (Flag.get('blackjack', r.room).length + 1; i++){
+			for(var i = 1 ; i < (Flag.get('blackjack', r.room).length + 1) ; i++){
 				r.replier.reply(Flag.get('blackjack', r.room)[i-1]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
 			}
 			Flag.set('bstart', r.room, 0);
