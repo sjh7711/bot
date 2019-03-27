@@ -1,4 +1,4 @@
-﻿var reloadcheck = 0;
+var reloadcheck = 0;
 function reload() {
 	try {
 		reloadcheck = 1;
@@ -27,6 +27,21 @@ function reload() {
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
+
+function reload1() {
+	try {
+		reloadcheck = 1;
+		var Timer = new Date();
+	    T.interrupt();
+	    Api.reload();
+	    var time = (new Date() - Timer) / 1000;
+	    reloadcheck = 0;
+	    return "reloading 완료 / " + time + "s";
+	}catch (e){
+		Api.replyRoom('test', e + "\n" + e.stack);
+	}
+}
+
 var D = require("DBManager.js")("D");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
@@ -198,6 +213,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		replier.reply(reload());
         		return;
         	}str += "!로딩\n";
+        	
+        	if(msg =="!로드"){
+        		replier.reply(reload1());
+        		return;
+        	}
         	
         	if (msg == "!모든로또통계"){
             	allbestlotto(r);
@@ -396,8 +416,14 @@ function blackjack(r){
 			}
 			Flag.set('cards', r.room, cards);
 			
+			var temp = [];
+			for( var j = 0 ; j < 2 ; j++){
+				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+				temp.push(Flag.get('cards', r.room).splice(rand,1));
+			}
+			Flag.set('PD', r.room, temp);
 			
-			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length + 1) ; i++){
+			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length) ; i++){
 				var temp = [];
 				for( var j = 0 ; j < 2 ; j++){
 					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
@@ -406,9 +432,9 @@ function blackjack(r){
 				Flag.set('P'+i, r.room, temp);
 			}
 			
-			r.replier.reply('딜러의 패 : ' + Flag.get('P0', r.room)[0] + ' | ? ');
-			for(var i = 1 ; i < (Flag.get('blackjack', r.room).length + 1) ; i++){
-				r.replier.reply(Flag.get('blackjack', r.room)[i-1]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
+			r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0] + ' | ? ');
+			for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
+				r.replier.reply(Flag.get('blackjack', r.room)[i]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
@@ -416,26 +442,27 @@ function blackjack(r){
 	}
 	
 	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
-		if( r.msg == '힛' ) {
+		if( r.msg == '힛' && Flag.get('blackjack', r.room).indexOf(r.sender) > -1 ) {
 			var num = Flag.get('blackjack', r.room).indexOf(r.sender);
 			var temp = Flag.get('P'+num, r.room);
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			temp.push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('P'+num, r.room, temp);
 			r.replier.reply(Flag.get('blackjack', r.room)[num]+'의 패 : ' + Flag.get('P'+num, r.room).join(' | '));
-			var temp = Flag.get('P'+num, r.room).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1')split('|');
+			var temp = Flag.get('P'+num, r.room).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
 			var sum=0;
 			for(var i = 0 ; i< temp.length ; i++ ){
 				sum += temp[i];
 				if(sum > 21){
 					r.replier.reply(Flag.get('blackjack', r.room)[num]+'님은 게임에서 패하셨습니다.');
-					Flag.get('blackjack', r.room).pop(num);
+					Flag.get('blackjack', r.room).splice(num,1);
+					Flag.set('P'+i, r.room, temp);//dddd
 					return;
 				}
 			}
 		}
 		
-		if( r.msg == '스탠드' || r.msg == '스테이' ){
+		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room).indexOf(r.sender) > -1){
 			if(Flag.get('stay', r.room) == 0 ){
 				var temp = [];
 			} else {
@@ -443,14 +470,10 @@ function blackjack(r){
 			}
 			temp.push(Flag.get('blackjack', r.room)[Flag.get('blackjack', r.room).indexOf(r.sender)]);
 			Flag.set('stay', r.room, temp);
+			r.replier.reply(Flag.get('stay', r.room)[Flag.get('stay', r.room).indexOf(r.sender)]+'님은 스테이했습니다.');
 		}
 	}
 }
-
-
-
-
-
 
 function baseball(r){
 	if(Flag.get('supposelist', r.room) == 0 && r.msg == '!힌트' && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
