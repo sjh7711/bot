@@ -415,7 +415,7 @@ function blackjack(r){
 		}
 	}
 	
-	if( Flag.get('bstart1', r.room)==1 ){
+	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
 		if( r.msg == '힛' ) {
 			var num = Flag.get('blackjack', r.room).indexOf(r.sender);
 			var temp = Flag.get('P'+num, r.room);
@@ -423,10 +423,32 @@ function blackjack(r){
 			temp.push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('P'+num, r.room, temp);
 			r.replier.reply(Flag.get('blackjack', r.room)[num]+'의 패 : ' + Flag.get('P'+num, r.room).join(' | '));
+			var temp = Flag.get('P'+num, r.room).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1')split('|');
+			var sum=0;
+			for(var i = 0 ; i< temp.length ; i++ ){
+				sum += temp[i];
+				if(sum > 21){
+					r.replier.reply(Flag.get('blackjack', r.room)[num]+'님은 게임에서 패하셨습니다.');
+					Flag.get('blackjack', r.room).pop(num);
+					return;
+				}
+			}
 		}
 		
+		if( r.msg == '스탠드' || r.msg == '스테이' ){
+			if(Flag.get('stay', r.room) == 0 ){
+				var temp = [];
+			} else {
+				temp = Flag.get('stay', r.room);
+			}
+			temp.push(Flag.get('blackjack', r.room)[Flag.get('blackjack', r.room).indexOf(r.sender)]);
+			Flag.set('stay', r.room, temp);
+		}
 	}
 }
+
+
+
 
 
 
