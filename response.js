@@ -374,9 +374,9 @@ function blackjack(r){
 			Flag.set('blackjacktime', r.room, new Date().getTime());//시작시간
 			Flag.set("bsuggest", r.room, r.sender);//시작을 제안한사람
 			Flag.set("bstart", r.room, 1);//참여모집
-			var temp = [r.sender];
+			var temp = [[r.sender]];
 			Flag.set("blackjack", r.room , temp);//참가한사람
-			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
+			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 1명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
 		}
@@ -389,7 +389,7 @@ function blackjack(r){
 	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){//참가모집중
         if( Flag.get('blackjack', r.room).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
             var temp = Flag.get('blackjack', r.room);//참가한사람
-            temp.push(r.sender);
+            temp.push([r.sender]);
             Flag.set("blackjack", r.room , temp);
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
         } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
@@ -423,40 +423,47 @@ function blackjack(r){
 			}
 			Flag.set('PD', r.room, temp);
 			
+			var temp = Flag.get('blackjack', r.room);
 			for( var i = 0 ; i < (Flag.get('blackjack', r.room).length) ; i++){
-				var temp = [];
 				for( var j = 0 ; j < 2 ; j++){
 					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-					temp.push(Flag.get('cards', r.room).splice(rand,1));
+					temp[i].push(Flag.get('cards', r.room).splice(rand,1));
 				}
-				Flag.set('P'+i, r.room, temp);
 			}
+			Flag.set('blackjack', r.room, temp);
 			
 			r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0] + ' | ? ');
+			
+			var temp=Flag.get('blackjack', r.room);
 			for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
-				r.replier.reply(Flag.get('blackjack', r.room)[i]+'의 패 : ' + Flag.get('P'+i, r.room).join(' | '));
+				r.replier.reply(temp[i].splice(0,1)+'의 패 : ' + temp[i].join(' | '));
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
 		}
 	}
 	
+	var num = -1;
+	for( var i = 0 ; i < (Flag.get('blackjack', r.room).length) ; i++){
+		if(Flag.get('blackjack', r.room)[i][0] == r.sender){
+			var num = i;
+		}
+	}
+	
 	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
-		if( r.msg == '힛' && Flag.get('blackjack', r.room).indexOf(r.sender) > -1 ) {
-			var num = Flag.get('blackjack', r.room).indexOf(r.sender);
-			var temp = Flag.get('P'+num, r.room);
+		if( r.msg == '힛' && num != -1 ) {
+			var temp = Flag.get('blackjack', r.room);
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-			temp.push(Flag.get('cards', r.room).splice(rand,1));
-			Flag.set('P'+num, r.room, temp);
-			r.replier.reply(Flag.get('blackjack', r.room)[num]+'의 패 : ' + Flag.get('P'+num, r.room).join(' | '));
-			var temp = Flag.get('P'+num, r.room).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
-			var sum=0;
+			temp[num].push(Flag.get('cards', r.room).splice(rand,1));
+			Flag.set('blackjack', r.room, temp);
+			r.replier.reply(temp[num].splice(0,1)+'의 패 : ' + temp[num].join(' | '));
+			var temp = temp[num].join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
+			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
 				sum += temp[i];
 				if(sum > 21){
-					r.replier.reply(Flag.get('blackjack', r.room)[num]+'님은 게임에서 패하셨습니다.');
+					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님은 게임에서 패하셨습니다.');
 					Flag.get('blackjack', r.room).splice(num,1);
-					Flag.set('P'+i, r.room, temp);//dddd
 					return;
 				}
 			}
@@ -468,9 +475,9 @@ function blackjack(r){
 			} else {
 				temp = Flag.get('stay', r.room);
 			}
-			temp.push(Flag.get('blackjack', r.room)[Flag.get('blackjack', r.room).indexOf(r.sender)]);
+			temp.push(Flag.get('blackjack', r.room)[num]);
 			Flag.set('stay', r.room, temp);
-			r.replier.reply(Flag.get('stay', r.room)[Flag.get('stay', r.room).indexOf(r.sender)]+'님은 스테이했습니다.');
+			r.replier.reply(r.sender+'님은 스테이했습니다.');
 		}
 	}
 }
