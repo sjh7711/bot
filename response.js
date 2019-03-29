@@ -436,7 +436,7 @@ function blackjack(r){
 			
 			var temp=Flag.get('blackjack', r.room);
 			for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
-				r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].join(' | '));
+				r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].slice(1).join(' | '));
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
