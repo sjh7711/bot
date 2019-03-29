@@ -434,9 +434,9 @@ function blackjack(r){
 			
 			r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0] + ' | ? ');
 			
-			var temp=Flag.get('blackjack', r.room).slice();
+			var temp=Flag.get('blackjack', r.room);
 			for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
-				r.replier.reply(temp[i].splice(0,1)+'의 패 : ' + temp[i].join(' | '));
+				r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].join(' | '));
 			}
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
@@ -456,7 +456,7 @@ function blackjack(r){
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			temp[num].push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('blackjack', r.room, temp);
-			r.replier.reply(temp[num].splice(0,1)+'의 패 : ' + temp[num].join(' | '));
+			r.replier.reply(temp[num].slice(0,1)+'의 패 : ' + temp[num].join(' | '));
 			var temp = temp[num].join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
 			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
