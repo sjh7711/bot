@@ -475,7 +475,7 @@ function blackjack(r){
 			} else {
 				temp = Flag.get('stay', r.room);
 			}
-			temp.push(Flag.get('blackjack', r.room)[num].splice(num, 1));
+			temp.push(Flag.get('blackjack', r.room).splice(num, 1));
 			Flag.set('stay', r.room, temp);
 			r.replier.reply(r.sender+'님은 스테이했습니다.');
 		}
