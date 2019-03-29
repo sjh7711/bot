@@ -460,7 +460,7 @@ function blackjack(r){
 			var temp = temp[num].slice(1).join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
 			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
-				sum += temp[i];
+				sum += Number(temp[i]);
 				if(sum > 21){
 					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님은 게임에서 패하셨습니다.');
 					//Flag.get('blackjack', r.room).splice(num,1);
