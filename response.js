@@ -376,7 +376,7 @@ function blackjack(r){
 			Flag.set("bstart", r.room, 1);//참여모집
 			var temp = [[r.sender]];
 			Flag.set("blackjack", r.room , temp);//참가한사람
-			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 1명');
+			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
 		}
