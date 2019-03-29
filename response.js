@@ -463,7 +463,7 @@ function blackjack(r){
 				sum += Number(temp[i]);
 				if(sum > 21){
 					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님은 게임에서 패하셨습니다.');
-					//Flag.get('blackjack', r.room).splice(num,1);
+					Flag.get('blackjack', r.room).splice(num,1);
 					return;
 				}
 			}
@@ -475,7 +475,7 @@ function blackjack(r){
 			} else {
 				temp = Flag.get('stay', r.room);
 			}
-			temp.push(Flag.get('blackjack', r.room)[num]);
+			temp.push(Flag.get('blackjack', r.room)[num].splice(num, 1));
 			Flag.set('stay', r.room, temp);
 			r.replier.reply(r.sender+'님은 스테이했습니다.');
 		}
