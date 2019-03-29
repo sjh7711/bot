@@ -469,7 +469,7 @@ function blackjack(r){
 			}
 		}
 		
-		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room).indexOf(r.sender) > -1){
+		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room)[num][0]==r.sender ){
 			if(Flag.get('stay', r.room) == 0 ){
 				var temp = [];
 			} else {
