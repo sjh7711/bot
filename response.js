@@ -456,7 +456,7 @@ function blackjack(r){
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			temp[num].push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('blackjack', r.room, temp);
-			r.replier.reply(temp[num].slice(0,1)+'의 패 : ' + temp[num].join(' | '));
+			r.replier.reply(temp[num].slice(0,1)+'의 패 : ' + temp[num].slice(1).join(' | '));
 			var temp = temp[num].join('|').replace(/♣ /g,'').replace(/♠ /g,'').replace(/♦ /g,'').replace(/♥ /g,'').replace(/K/g, '10').replace(/Q/g, '10').replace(/J/g, '10').replace(/A/g, '1').split('|');
 			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
