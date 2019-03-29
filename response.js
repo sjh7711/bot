@@ -446,7 +446,7 @@ function blackjack(r){
 	var num = -1;
 	for( var i = 0 ; i < (Flag.get('blackjack', r.room).length) ; i++){
 		if(Flag.get('blackjack', r.room)[i][0] == r.sender){
-			var num = i;
+			num = i;
 		}
 	}
 	
