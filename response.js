@@ -104,7 +104,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         str += "!날씨\n"
         
-		if (msg == "!로또" || msg == "!ㄹㄸ" ) {
+		if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
             lotto(r);
             return;
         } 
@@ -1695,7 +1695,7 @@ function lotto(r) {
 		if( r.msg.substr(4) > 0 ){
 			cycle = Number(r.msg.substr(4))
 		}
-		for(var i = 0 ; i< cycle; i++){
+		for(var i = 0 ; i < cycle; i++){
 			var templotto = []; //로또번호 담길곳
 		    for (var i = 0; i < 100; i++) {
 		        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
