@@ -1692,10 +1692,10 @@ function bestlotto(r) {
 function lotto(r) {
 	try{
 		var cycle = 1;
-		if( r.msg.substr(4) > 0 ){
+		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 11 ){
 			cycle = Number(r.msg.substr(4))
 		}
-		for(var i = 0 ; i < cycle; i++){
+		for(var j = 0 ; j < cycle; j++){
 			var templotto = []; //로또번호 담길곳
 		    for (var i = 0; i < 100; i++) {
 		        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
