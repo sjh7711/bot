@@ -1692,7 +1692,7 @@ function bestlotto(r) {
 function lotto(r) {
 	try{
 		var cycle = 1;
-		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 11 ){
+		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
 			cycle = Number(r.msg.substr(4))
 		}
 		for(var j = 0 ; j < cycle; j++){
