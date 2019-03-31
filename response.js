@@ -425,6 +425,7 @@ function blackjack(r){
 			
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
+			Flag.set('bcount', r.room, 0)
 			r.replier.reply(Flag.get('blackjack', r.room).length+'명이 참가했습니다. 게임을 시작합니다. 배팅액을 정해주세요.');
 		}
 	}
@@ -438,8 +439,7 @@ function blackjack(r){
 		}
 	}//플레이어목록에 있는 번호
 	
-	var bcount = 0;//batting count
-	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
+	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 && Flag.get('bcount', r.room) < Flag.get('pcount', r.room) ){
 		if( !isNaN(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && Flag.get('blackjack', r.room)[num][0] == r.sender && Flag.get('blackjack', r.room)[num][1] == undefined ){
 			var temp = Flag.get('blackjack', r.room);
 			temp[num].push(Number(r.msg));
@@ -449,10 +449,10 @@ function blackjack(r){
 			}
 			Flag.set('blackjack', r.room, temp);
 		}
-		bcount += 1;
+		Flag.set('bcount', r.room, Flag.get('bcount', r.room)+1);
 	}
 	
-	if(bcount == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
+	if(Flag.get('bcount', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
 		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0] + ' | ? ');
 		var temp=Flag.get('blackjack', r.room);
 		for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
