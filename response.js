@@ -387,7 +387,7 @@ function blackjack(r){
 	}
 	
 	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){//참가모집중
-        if( Flag.get('blackjack', r.room).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
+        if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
             var temp = Flag.get('blackjack', r.room);//참가한사람
             temp.push([r.sender]);
             Flag.set("blackjack", r.room , temp);
@@ -440,7 +440,7 @@ function blackjack(r){
 	
 	var bcount = 0;//batting count
 	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
-		if( !isNum(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && Flag.get('blackjack', r.room)[num][0] == r.sender && Flag.get('blackjack', r.room)[num][1] == undefined ){
+		if( !isNaN(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && Flag.get('blackjack', r.room)[num][0] == r.sender && Flag.get('blackjack', r.room)[num][1] == undefined ){
 			var temp = Flag.get('blackjack', r.room);
 			temp[num].push(Number(r.msg));
 			for( var j = 0 ; j < 2 ; j++){
