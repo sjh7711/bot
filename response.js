@@ -1120,7 +1120,7 @@ function weather(r){
 							return;
 		        		}
 	        		}
-		        } /*else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
+		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
 	    			var msg;
@@ -1133,7 +1133,7 @@ function weather(r){
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
-		        }*/
+		        }
 			}
 			
 			if(link2.indexOf('regionCode')==-1){
