@@ -448,8 +448,8 @@ function blackjack(r){
 				temp[num].push(Flag.get('cards', r.room).splice(rand,1));
 			}
 			Flag.set('blackjack', r.room, temp);
+			Flag.set('bcount', r.room, Flag.get('bcount', r.room)+1);
 		}
-		Flag.set('bcount', r.room, Flag.get('bcount', r.room)+1);
 	}
 	
 	if(Flag.get('bcount', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
