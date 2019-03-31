@@ -1002,7 +1002,7 @@ function weather(r){
 		        			var name = [];
 			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
 			        		var i = 1;
-			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text().replace('..', '')));
+			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text().replace('..', '')+' '));
 			        		if(navername != undefined){
 			        			if(navername.length > name.length){
 				        			name = navername;
