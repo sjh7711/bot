@@ -1044,9 +1044,6 @@ function weather(r){
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 				        		check = link2.indexOf('weather');
 				        		where = name[targetNum].substr(3);
-				        	}else{
-				        		r.replier.reply("검색이 불가능합니다.");
-				        		return;
 				        	}
 		        		}
 		        	}else{//읍내면 , 북극
@@ -1080,10 +1077,6 @@ function weather(r){
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 			        		where = name[targetNum].substr(3) ;
 			        		check = link2.indexOf('weather');
-			        		if(check == -1){
-			        			r.replier.reply("검색이 불가능합니다.");
-								return;
-			        		}
 			        	}
 		        	}
 				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2 ex) 독도, 죽림리
@@ -1102,10 +1095,7 @@ function weather(r){
 				        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 				        		var targetNum=msg-1;
 				        	}
-		        		} else{
-			        		r.replier.reply("검색이 불가능합니다.");
-			        		return;
-			        	}
+		        		}
 		        		var wantplace="";
 		        		var temp = name[targetNum].split('. ')[1];
 			        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
@@ -1129,9 +1119,6 @@ function weather(r){
 		        			r.replier.reply("검색이 불가능합니다.");
 							return;
 		        		}
-	        		} else{
-		        		r.replier.reply("검색이 불가능합니다.");
-		        		return;
 	        		}
 		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
@@ -1145,11 +1132,13 @@ function weather(r){
 		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
-		        	}else{
-		        		r.replier.reply("검색이 불가능합니다.");
-		        		return;
 		        	}
 		        }
+			}
+			
+			if(link2.indexOf('regionCode')==-1){
+				r.replier.reply("검색이 불가능합니다.");
+        		return;
 			}
 
 			
