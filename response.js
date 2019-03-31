@@ -398,8 +398,6 @@ function blackjack(r){
         }
     }
 	
-	
-	var pcount=0;
 	if ( Flag.get("bstart", r.room) == 1 && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
 		if(Flag.get('blackjack', r.room).length > 0 ){
 			pcount = Flag.get('blackjack', r.room).length;
@@ -416,14 +414,15 @@ function blackjack(r){
 				var rand = Math.floor(Math.random()*temp.length);
 				cards.push(temp.splice(rand,1));
 			}
-			Flag.set('cards', r.room, cards);
+			Flag.set('cards', r.room, cards);//카드셔플
 			
 			var temp = [];
 			for( var j = 0 ; j < 2 ; j++){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				temp.push(Flag.get('cards', r.room).splice(rand,1));
 			}
-			Flag.set('PD', r.room, temp);
+			Flag.set('PD', r.room, temp);//딜러패
+			
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
 			r.replier.reply(Flag.get('blackjack', r.room).length+'명이 참가했습니다. 게임을 시작합니다. 배팅액을 정해주세요.');
@@ -437,7 +436,7 @@ function blackjack(r){
 				num = i;
 			}
 		}
-	}
+	}//플레이어목록에 있는 번호
 	
 	var bcount = 0;//batting count
 	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
@@ -453,15 +452,18 @@ function blackjack(r){
 		bcount += 1;
 	}
 	
-	if(bcount == pcount){
+	if(bcount == pcount && Flag.get('bstart1', r.room)==1){
 		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0] + ' | ? ');
 		var temp=Flag.get('blackjack', r.room);
 		for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
 			r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].slice(2).join(' | '));
 		}
+		
+		Flag.set('bstart1', r.room, 0);
+		Flag.set('bstart2', r.room, 1);//게임시작
 	}
 	
-	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
+	if( Flag.get('bstart2', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
 		if( r.msg == '힛' && num != -1 ) {
 			var temp = Flag.get('blackjack', r.room);
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
