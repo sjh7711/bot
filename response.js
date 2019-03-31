@@ -412,7 +412,7 @@ function blackjack(r){
 			}
 			for(var i = 0 ; i < 52 ; i++){
 				var rand = Math.floor(Math.random()*temp.length);
-				cards.push(temp.splice(rand,1));
+				cards.push(temp[rand]);
 			}
 			Flag.set('cards', r.room, cards);//카드셔플
 			
