@@ -478,7 +478,6 @@ function blackjack(r){
 					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님은 게임에서 패하셨습니다.\n'+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [Flag.get('blackjack', r.room)[num][0], r.room] ))+' → ');
 					var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 					D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-					pcount-=1;
 					Flag.get('blackjack', r.room).splice(num,1);
 					return;
 				}
@@ -497,7 +496,7 @@ function blackjack(r){
 		}
 	}
 	
-	if( Flag.get('stay', r.room).length == pcount  ){
+	if( Flag.get('stay', r.room).length == Flag.get('pcount', r.room)  ){
 		
 	}
 }
