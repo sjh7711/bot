@@ -1028,7 +1028,7 @@ function weather(r){
 				        		} else if(loc3.length > 0){
 				        			wantplace = loc3;
 				        		} else {
-				        			var temp = name1;
+				        			var temp = name[targetNum].substr(3);
 						        	var loc = temp.substr(0, temp.lastIndexOf("면 ")+1);
 						        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
 						        	var loc2 = temp.substr(0, temp.lastIndexOf("구 ")+1);
