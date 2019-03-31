@@ -400,7 +400,7 @@ function blackjack(r){
 	
 	if ( Flag.get("bstart", r.room) == 1 && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
 		if(Flag.get('blackjack', r.room).length > 0 ){
-			pcount = Flag.get('blackjack', r.room).length;
+			Flag.set('pcount', r.room, Flag.get('blackjack', r.room).length);
 			var figure = ['♣','♠','♦','♥'];
 			var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
 			var temp = [];
@@ -452,7 +452,7 @@ function blackjack(r){
 		bcount += 1;
 	}
 	
-	if(bcount == pcount && Flag.get('bstart1', r.room)==1){
+	if(bcount == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
 		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0] + ' | ? ');
 		var temp=Flag.get('blackjack', r.room);
 		for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
