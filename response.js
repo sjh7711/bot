@@ -387,7 +387,7 @@ function blackjack(r){
 	}
 	
 	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){//참가모집중
-        if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
+        if( Flag.get('blackjack', r.room).slice().map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
             var temp = Flag.get('blackjack', r.room);//참가한사람
             temp.push([r.sender]);
             Flag.set("blackjack", r.room , temp);
