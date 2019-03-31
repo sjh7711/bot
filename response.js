@@ -509,7 +509,7 @@ function blackjack(r){
 	}
 	
 	if( Flag.get('endp', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart2', r.room)==1 ){
-		r.replier.reply('게임이 끝났습니다. 기다려주세요.');
+		r.replier.reply('게임이 끝났습니다.');
 		while(1){
 			var temp = Flag.get('PD', r.room).slice().map(v=>v[1]);
 			for(var i = 0 ; i< temp.length ; i++ ){
@@ -530,14 +530,11 @@ function blackjack(r){
 			}
 		}
 		
-		for(var i = 0 ; i < Flag.get('burst', r.room).length ; i++){
-			
-		}
+		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room).map(v=>v.join(' ')).join(' | '));
 		
-		for(var i = 0 ; i < Flag.get('stay', r.room).length ; i++){
-			
-		}
+		var str = "";
 		
+		Flag.set('bstart2', r.room, 0);
 		r.replier.reply('게임 결과를 발표합니다.');
 	}
 	
