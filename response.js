@@ -487,7 +487,7 @@ function blackjack(r){
 					if(Flag.get('stay', r.room) == 0 ){
 						var temp = [];
 					} else {
-						temp = Flag.get('stay', r.room);
+						temp = Flag.get('burst', r.room);
 					}
 					temp.push(Flag.get('blackjack', r.room).splice(num, 1));
 					Flag.set('burst', r.room, temp);
