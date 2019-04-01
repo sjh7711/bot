@@ -571,7 +571,7 @@ function blackjack(r){
 					}
 				if( sum > dealersum ){
 					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
-				} else if (sum =< dealersum){
+				} else if (sum <= dealersum){
 					str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n';
 				}
 			}
