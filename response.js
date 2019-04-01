@@ -455,7 +455,7 @@ function blackjack(r){
 	}
 	
 	if(Flag.get('bcount', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
-		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0].map(v=>v[0].join(' ')) + ' | ? ');
+		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0].map(v=>v[0].join(' ')) + ' | ');
 		var temp=Flag.get('blackjack', r.room);
 		for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
 			r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].slice(2).map(v=>v[0].join(' ')).join(' | '));
