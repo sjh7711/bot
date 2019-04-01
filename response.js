@@ -455,7 +455,7 @@ function blackjack(r){
 	}
 	
 	if(Flag.get('bcount', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
-		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0].map(v=>v.join(' ')) + ' | ');
+		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0].map(v=>v.join(' ')) + ' | ? ' );
 		var temp=Flag.get('blackjack', r.room);
 		for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
 			r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].slice(2).map(v=>v[0].join(' ')).join(' | '));
@@ -472,15 +472,16 @@ function blackjack(r){
 			temp[num].push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('blackjack', r.room, temp);
 			r.replier.reply(temp[num].slice(0,1)+'의 패 : ' + temp[num].slice(2).map(v=>v[0].join(' ')).join(' | '));
-			var temp = temp[num].slice(2).map(v=>v[1]);
+			var temp = temp[num].slice(2).map(v=>v[0][1]);
 			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
 				if(temp[i] == 'A'){
-					temp[i] = 1;
+					sum += 1;
 				} else if( isNaN(temp[i])){
-					temp[i] = 10;
+					sum += 10;
+				} else {
+					sum += Number(temp[i]);
 				}
-				sum += Number(temp[i]);
 				if(sum > 21){
 					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 버스트.');
 					if(Flag.get('stay', r.room) == 0 ){
@@ -511,7 +512,7 @@ function blackjack(r){
 	if( Flag.get('endp', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart2', r.room)==1 ){
 		r.replier.reply('게임이 끝났습니다.');
 		while(1){
-			var temp = Flag.get('PD', r.room).slice().map(v=>v[1]);
+			var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 			for(var i = 0 ; i< temp.length ; i++ ){
 				if(temp[i] == 'A'){
 					temp[i] = 1;
@@ -530,12 +531,11 @@ function blackjack(r){
 			}
 		}
 		
-		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room).map(v=>v.join(' ')).join(' | '));
+		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') );
 		
 		var str = "";
 		
 		Flag.set('bstart2', r.room, 0);
-		r.replier.reply('게임 결과를 발표합니다.');
 	}
 	
 	
