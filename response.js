@@ -485,11 +485,11 @@ function blackjack(r){
 				if(sum > 21){
 					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 버스트.');
 					if(Flag.get('stay', r.room) == 0 ){
-						var temp = [];
+						var temp=Flag.get('blackjack', r.room).splice(num, 1);
 					} else {
-						temp = Flag.get('burst', r.room);
+						var temp = Flag.get('burst', r.room);
+						temp.push(Flag.get('blackjack', r.room).splice(num, 1));
 					}
-					temp.push(Flag.get('blackjack', r.room).splice(num, 1));
 					Flag.set('burst', r.room, temp);
 					Flag.set('endp', r.room, Flag.get('endp', r.room)+1 );
 				}
@@ -499,11 +499,11 @@ function blackjack(r){
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room)[num][0]==r.sender ){
 			r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 스테이.');
 			if(Flag.get('stay', r.room) == 0 ){
-				var temp = [];
+				var temp = Flag.get('blackjack', r.room).splice(num, 1);
 			} else {
-				temp = Flag.get('stay', r.room);
+				var temp = Flag.get('stay', r.room);
+				temp.push(Flag.get('blackjack', r.room).splice(num, 1));
 			}
-			temp.push(Flag.get('blackjack', r.room).splice(num, 1));
 			Flag.set('stay', r.room, temp);
 			Flag.set('endp', r.room, Flag.get('endp', r.room)+1 );
 		}
