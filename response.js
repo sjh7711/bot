@@ -513,6 +513,7 @@ function blackjack(r){
 		r.replier.reply('게임이 끝났습니다.');
 		while(1){
 			var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
+			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
 				if(temp[i] == 'A'){
 					temp[i] = 1;
