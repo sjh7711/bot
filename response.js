@@ -422,7 +422,7 @@ function blackjack(r){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				temp.push(Flag.get('cards', r.room).splice(rand,1));
 			}
-			Flag.set('PD', r.room, temp);//딜러패
+			Flag.set('PD', r.room, temp);//딜러카드
 			
 			Flag.set('bstart', r.room, 0);
 			Flag.set('bstart1', r.room, 1);//게임시작
@@ -455,10 +455,10 @@ function blackjack(r){
 	}
 	
 	if(Flag.get('bcount', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
-		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room)[0].map(v=>v.join(' ')) + ' | ? ' );
+		r.replier.reply('딜러의 카드 : ' + Flag.get('PD', r.room)[0].map(v=>v.join(' ')) + ' | ? ' );
 		var temp=Flag.get('blackjack', r.room);
 		for(var i = 0 ; i < (Flag.get('blackjack', r.room).length ) ; i++){
-			r.replier.reply(temp[i].slice(0,1)+'의 패 : ' + temp[i].slice(2).map(v=>v[0].join(' ')).join(' | '));
+			r.replier.reply(temp[i].slice(0,1)+'의 카드 : ' + temp[i].slice(2).map(v=>v[0].join(' ')).join(' | '));
 		}
 		Flag.set('bstart1', r.room, 0);
 		Flag.set('bstart2', r.room, 1);//게임시작
@@ -471,7 +471,7 @@ function blackjack(r){
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			temp[num].push(Flag.get('cards', r.room).splice(rand,1));
 			Flag.set('blackjack', r.room, temp);
-			r.replier.reply(temp[num].slice(0,1)+'의 패 : ' + temp[num].slice(2).map(v=>v[0].join(' ')).join(' | '));
+			r.replier.reply(temp[num].slice(0,1)+'의 카드 : ' + temp[num].slice(2).map(v=>v[0].join(' ')).join(' | '));
 			var temp = temp[num].slice(2).map(v=>v[0][1]);
 			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
@@ -577,7 +577,7 @@ function blackjack(r){
 			}
 		}
 		
-		r.replier.reply('딜러의 패를  공개합니다.\n' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
+		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
 		
 		
 		Flag.set('bstart2', r.room, 0);
