@@ -547,33 +547,41 @@ function blackjack(r){
 		}
 		
 		if( dealersum > 21 ){
-			for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
-				str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'
+			if( Flag.get('burst', r.room) != 0 ){
+				for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
+					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n';
+				}
 			}
-			for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
-				str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'
+			if( Flag.get('stay', r.room) != 0 ){
+				for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
+					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
+				}
 			}
 		} else if( dealersum < 22 ){
-			for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
-				str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'
-			}
-			var temp = Flag.get('stay', r.room);
-			for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
-				var temp = temp[i].slice(2).map(v=>v[0][1]);
-				var sum = 0;
-				for(var i = 0 ; i< temp.length ; i++ ){
-					if(temp[i] == 'A'){
-						sum += 1;
-					} else if( isNaN(temp[i])){
-						sum += 10;
-					} else {
-						sum += Number(temp[i]);
-					}
+			if( Flag.get('burst', r.room) != 0 ){
+				for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
+					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'
 				}
-				if( sum > dealersum ){
-					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
-				} else if (sum <= dealersum){
-					str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n';
+			}
+			if( Flag.get('stay', r.room) != 0 ){
+				var temp = Flag.get('stay', r.room);
+				for(var i = 0; i < Flag.get('stay', r.room).length ; i++){				
+					var temp = temp[i].slice(2).map(v=>v[0][1]);
+					var sum = 0;
+					for(var i = 0 ; i< temp.length ; i++ ){
+						if(temp[i] == 'A'){
+							sum += 1;
+						} else if( isNaN(temp[i])){
+							sum += 10;
+						} else {
+							sum += Number(temp[i]);
+						}
+					}
+					if( sum > dealersum ){
+						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
+					} else if (sum <= dealersum){
+						str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n';
+					}
 				}
 			}
 		}
