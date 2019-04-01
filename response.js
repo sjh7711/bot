@@ -538,53 +538,83 @@ function blackjack(r){
 		
 		var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 		var dealersum = 0 ;
-		for(var i = 0 ; i< temp.length ; i++ ){
-			if(temp[i] == 'A'){
-				dealersum += 1;
-			} else if( isNaN(temp[i])){
+		for(var j = 0 ; j< temp.length ; j++ ){
+			if( !isNaN(temp[j]) ){
+				dealersum += Number(temp[j]);
+			} else if( isNaN(temp[j]) && temp[j] != 'A' ){
 				dealersum += 10;
 			} else {
-				dealersum += Number(temp[i]);
+				for(k=0; k<temp.length; k++) {
+					if(a[k] == 1) if(dealersum < 11) {a[k] = 11; break}
+				}
 			}
 		}
+		
+		if( Flag.get('stay', r.room) != 0){
+			var temp = Flag.get('stay', r.room);
+			for(var i = 0 ;i < Flag.get('stay', r.room).length ; i ++ ){
+				var temp = temp[i].slice(2).map(v=>v[0][1]);
+				var sum = 0;
+				for(var j = 0 ; j< temp.length ; j++ ){
+					if( !isNaN(temp[j]) ){
+						sum += Number(temp[j]);
+					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
+						sum += 10;
+					} else {
+						for(k=0; k<temp.length; k++) {
+							if(a[k] == 1) if(sum < 11) {a[k] = 11; break}
+						}
+					}
+				}
+				Flag.set('stay', r.room, Flag.get('stay', r.room)[i].push(sum));
+			}
+		}
+		
+		if( Flag.get('burst', r.room) != 0){
+			var temp = Flag.get('burst', r.room);
+			for(var i = 0 ;i < Flag.get('burst', r.room).length ; i ++ ){
+				var temp = temp[i].slice(2).map(v=>v[0][1]);
+				var sum = 0;
+				for(var j = 0 ; j< temp.length ; j++ ){
+					if( !isNaN(temp[j]) ){
+						sum += Number(temp[j]);
+					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
+						sum += 10;
+					} else {
+						for(k=0; k<temp.length; k++) {
+							if(a[k] == 1) if(sum < 11) {a[k] = 11; break}
+						}
+					}
+				}
+				Flag.set('burst', r.room, Flag.get('burst', r.room)[i].push(sum));
+			}
+		}
+		
+		
 		
 		if( dealersum > 21 ){
 			if( Flag.get('burst', r.room) != 0 ){
 				for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
-					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n';
+					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.'+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length]+'\n';
 				}
 			}
 			if( Flag.get('stay', r.room) != 0 ){
 				for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
-					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
+					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.'+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length]+'\n';
 				}
 			}
 		} else if( dealersum < 22 ){
 			if( Flag.get('burst', r.room) != 0 ){
 				for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
-					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'
+					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.'+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length]+'\n'
 				}
 			}
 			if( Flag.get('stay', r.room) != 0 ){
-				var temp = Flag.get('stay', r.room);
 				for(var i = 0; i < Flag.get('stay', r.room).length ; i++){				
-					var temp = temp[i].slice(2).map(v=>v[0][1]);
-					var sum = 0;
-					for(var j = 0 ; j< temp.length ; j++ ){
-						if( !isNaN(temp[i]) ){
-							sum += Number(temp[i]);
-						} else if( isNaN(temp[i]) && temp[i] != 'A' ){
-							sum += 10;
-						} else {
-							for(k=0; k<temp.length; k++) {
-								if(a[k] == 1) if(sum < 11) {a[k] = 11; break}
-							}
-						}
-					}
-					if( sum > dealersum ){
-						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
-					} else if (sum <= dealersum){
-						str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n';
+					if( Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length] > dealersum ){
+						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.'+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length]+'\n';
+					} else {
+						str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.'+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length]+'\n';
 					}
 				}
 			}
