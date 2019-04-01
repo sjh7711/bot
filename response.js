@@ -510,17 +510,17 @@ function blackjack(r){
 	}
 	
 	if( Flag.get('endp', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart2', r.room)==1 ){
-		r.replier.reply('게임이 끝났습니다.');
 		while(1){
 			var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 			var sum = 0;
 			for(var i = 0 ; i< temp.length ; i++ ){
 				if(temp[i] == 'A'){
-					temp[i] = 1;
+					sum += 1;
 				} else if( isNaN(temp[i])){
-					temp[i] = 10;
+					sum += 10;
+				} else {
+					sum += Number(temp[i]);
 				}
-				sum += Number(temp[i]);
 			}
 			if(sum < 17){
 				var temp = Flag.get('PD', r.room);
@@ -532,9 +532,55 @@ function blackjack(r){
 			}
 		}
 		
-		r.replier.reply('딜러의 패 : ' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') );
+		var str = '';
 		
-		var str = "";
+		var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
+		var dealersum = 0 ;
+		for(var i = 0 ; i< temp.length ; i++ ){
+			if(temp[i] == 'A'){
+				dealersum += 1;
+			} else if( isNaN(temp[i])){
+				dealersum += 10;
+			} else {
+				dealersum += Number(temp[i]);
+			}
+		}
+		
+		if( dealersum > 21 ){
+			for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
+				str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'
+			}
+			for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
+				str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'
+			}
+		} else if( dealersum < 22 ){
+			for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
+				str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'
+			}
+			var temp = Flag.get('stay', r.room);
+			for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
+				var temp = temp[i].slice(2).map(v=>v[0][1]);
+				var sum = 0;
+				for(var i = 0 ; i< temp.length ; i++ ){
+					if(temp[i] == 'A'){
+						sum += 1;
+					} else if( isNaN(temp[i])){
+						sum += 10;
+					} else {
+						sum += Number(temp[i]);
+					}
+				if( sum > dealersum ){
+					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
+				} else if (sum == dealersum){
+					str += Flag.get('stay', r.room)[i][0]+'님은 비겼습니다.\n';
+				} else {
+					str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n';
+				}
+			}
+		}
+		
+		r.replier.reply('게임이 끝났습니다.\n딜러의 패 : ' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
+		
 		
 		Flag.set('bstart2', r.room, 0);
 	}
