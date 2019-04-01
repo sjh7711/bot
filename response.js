@@ -571,15 +571,13 @@ function blackjack(r){
 					}
 				if( sum > dealersum ){
 					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n';
-				} else if (sum == dealersum){
-					str += Flag.get('stay', r.room)[i][0]+'님은 비겼습니다.\n';
-				} else {
+				} else if (sum =< dealersum){
 					str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n';
 				}
 			}
 		}
 		
-		r.replier.reply('게임이 끝났습니다.\n딜러의 패 : ' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
+		r.replier.reply('딜러의 패를  공개합니다.\n' + Flag.get('PD', r.room).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
 		
 		
 		Flag.set('bstart2', r.room, 0);
