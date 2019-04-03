@@ -509,8 +509,7 @@ function blackjack(r){
 			var sum = 0;
 			if( Flag.get('PD', r.room) != 0){
 				for(var i in temp ){
-					var sum = 0;
-					for(var j = 0 ; j< temp.length ; j++ ){
+					for(var j in temp){
 						if( !isNaN(temp[j]) ){
 							sum += Number(temp[j]);
 						} else if( isNaN(temp[j]) && temp[j] != 'A' ){
@@ -519,13 +518,13 @@ function blackjack(r){
 					}
 				}
 				for( var i in temp ) {
-					if(a[i] == 'A') {
-						if(sum < 11) {
-							a[i] = 11;
+					if(temp[i] == 'A') {
+						if(sum <= 11) {
+							sum += 11;
 							break;
 						}
 					}  else {
-						a[i] = 1;
+						sum += 1;
 					}
 				}
 			}
@@ -547,7 +546,7 @@ function blackjack(r){
 		if( Flag.get('PD', r.room) != 0){
 			var temp = Flag.get('PD', r.room);
 			for(var i in temp ){
-				for(var j = 0 ; j< temp.length ; j++ ){
+				for(var j in temp ){
 					if( !isNaN(temp[j]) ){
 						sum += Number(temp[j]);
 					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
@@ -556,8 +555,8 @@ function blackjack(r){
 				}
 			}
 			for( var i in temp ) {
-				if(a[i] == 'A') {
-					if(sum < 11) {
+				if(temp[i] == 'A') {
+					if(sum <= 11) {
 						sum += 11;
 						break;
 					}
@@ -573,7 +572,7 @@ function blackjack(r){
 			var sum = 0;
 			for(var i in temp ){
 				var temp = temp[i].slice(2).map(v=>v[0][1]);
-				for(var j = 0 ; j< temp.length ; j++ ){
+				for(var j in temp ){
 					if( !isNaN(temp[j]) ){
 						sum += Number(temp[j]);
 					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
@@ -582,8 +581,8 @@ function blackjack(r){
 				}
 			}
 			for( var i in temp ) {
-				if(a[i] == 'A') {
-					if(sum < 11) {
+				if(temp[i] == 'A') {
+					if(sum <= 11) {
 						sum += 11;
 						break;
 					}
@@ -599,7 +598,7 @@ function blackjack(r){
 			var sum = 0;
 			for(var i in temp ){
 				var temp = temp[i].slice(2).map(v=>v[0][1]);\
-				for(var j = 0 ; j< temp.length ; j++ ){
+				for(var j in temp ){
 					if( !isNaN(temp[j]) ){
 						sum += Number(temp[j]);
 					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
@@ -608,8 +607,8 @@ function blackjack(r){
 				}
 			}
 			for( var i in temp ) {
-				if(a[i] == 'A') {
-					if(sum < 11) {
+				if(temp[i] == 'A') {
+					if(sum <= 11) {
 						sum += 11;
 						break;
 					}
@@ -624,23 +623,23 @@ function blackjack(r){
 		
 		if( dealersum > 21 ){
 			if( Flag.get('burst', r.room) != 0 ){
-				for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
+				for(var i in Flag.get('burst', r.room)){
 					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.'+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length]+'\n';
 				}
 			}
 			if( Flag.get('stay', r.room) != 0 ){
-				for(var i = 0; i < Flag.get('stay', r.room).length ; i++){
+				for(var i in Flag.get('stay', r.room)){
 					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.'+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length]+'\n';
 				}
 			}
 		} else if( dealersum < 22 ){
 			if( Flag.get('burst', r.room) != 0 ){
-				for(var i = 0; i < Flag.get('burst', r.room).length ; i++){
+				for(var i in Flag.get('burst', r.room)){
 					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.'+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length]+'\n'
 				}
 			}
 			if( Flag.get('stay', r.room) != 0 ){
-				for(var i = 0; i < Flag.get('stay', r.room).length ; i++){				
+				for(var i in Flag.get('stay', r.room)){				
 					if( Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length] > dealersum ){
 						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.'+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length]+'\n';
 					} else {
