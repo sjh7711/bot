@@ -597,7 +597,7 @@ function blackjack(r){
 			var temp = Flag.get('burst', r.room);
 			var sum = 0;
 			for(var i in temp ){
-				var temp = temp[i].slice(2).map(v=>v[0][1]);\
+				var temp = temp[i].slice(2).map(v=>v[0][1]);
 				for(var j in temp ){
 					if( !isNaN(temp[j]) ){
 						sum += Number(temp[j]);
