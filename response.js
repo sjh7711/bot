@@ -474,19 +474,33 @@ function blackjack(r){
 			r.replier.reply(temp[num].slice(0,1)+'의 카드 : ' + temp[num].slice(2).map(v=>v[0].join(' ')).join(' | '));
 			var temp = temp[num].slice(2).map(v=>v[0][1]);
 			var sum = 0;
-			for( var i in temp){
-				
-				if(sum > 21){
-					r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 버스트.');
-					if(Flag.get('stay', r.room) == 0 ){
-						var temp=Flag.get('blackjack', r.room).splice(num, 1);
-					} else {
-						var temp = Flag.get('burst', r.room);
-						temp.push(Flag.get('blackjack', r.room).splice(num, 1));
-					}
-					Flag.set('burst', r.room, temp);
-					Flag.set('endp', r.room, Flag.get('endp', r.room)+1 );
+			for(var j in temp){
+				if( !isNaN(temp[j]) ){
+					sum += Number(temp[j]);
+				} else if( isNaN(temp[j]) && temp[j] != 'A' ){
+					sum += 10;
 				}
+			}	
+			for( var i in temp ) {
+				if(temp[i] == 'A') {
+					if(sum <= 11) {
+						sum += 11;
+						break;
+					}
+				}  else {
+					sum += 1;
+				}
+			}
+			if(sum > 21){
+				r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 버스트.');
+				if(Flag.get('stay', r.room) == 0 ){
+					var temp=Flag.get('blackjack', r.room).splice(num, 1);
+				} else {
+					var temp = Flag.get('burst', r.room);
+					temp.push(Flag.get('blackjack', r.room).splice(num, 1));
+				}
+				Flag.set('burst', r.room, temp);
+				Flag.set('endp', r.room, Flag.get('endp', r.room)+1 );
 			}
 		}
 		
