@@ -646,7 +646,7 @@ function blackjack(r){
 			}
 		}
 		
-		
+
 		
 		if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] > 21 ){
 			if( Flag.get('burst', r.room) != 0 ){
