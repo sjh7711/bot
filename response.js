@@ -2095,12 +2095,6 @@ own=function(obj){
 	return Object.getOwnPropertyNames(Api);
 	}
 
-String.prototype.rmspace=function(){
-	return this.toString().replace(/^\s*/,"").replace(/\s*$/,"");
-}
-String.prototype.rmtag=function(){
-	return this.toString().replace(/<[^>]+>/g,"");
-}
 String.prototype.replaceAmp=function(){
 	var res=this.toString();
 	var tmp;
@@ -2146,27 +2140,7 @@ String.prototype.replaces=function(target){
 String.prototype.encoding=function(){
    return this.replace(/\\u([\da-fA-F]{4})/g,(m,p1)=>String.fromCharCode(parseInt(p1,16)));
 }
-String.prototype.URLEncode=function(){
-	 return java.net.URLEncoder.encode(this.toString(),"UTF-8");
-}
-String.prototype.XMLEncode=function(){
-	var res=""
-	for(var i=0;i<this.toString().length;i++){
-		res+="&#x"+java.lang.String.format("%04x",java.lang.Integer(this.toString().charCodeAt(i)))+";";
-	}
-	return res;
-}
-String.prototype.qtmark=function(){
-	return this.toString().replace(/'/g,"''");
-}
-String.prototype.cut=function (line) {
-    var str = this.toString();
-    str = str.split("\n");
-    //str[line - 1] += Array(500).join(String.fromCharCode(8237));
-    str[line - 1] += String.fromCharCode(8237).repeat(500);
-    str = str.join("\n");
-    return str;
-}
+
 String.prototype.받침=function(){
 	var lastCharCode=this.toString().charCodeAt(this.toString().length-1);
 	if(lastCharCode>="가".charCodeAt(0) && lastCharCode<="힣".charCodeAt(0)){
@@ -2190,13 +2164,7 @@ String.prototype.을를=function(){
 String.prototype.조사=function(받침있음, 받침없음){
 	return this.toString().받침() ? this.toString()+받침있음 : this.toString()+받침없음;
 }
-String.getRandomLowerCase=function(len){
-	len = len||1;
-	if(len<0) return false;
-	var res="";
-	for(var i=0;i<len;i++) res+=String.fromCharCode(97+Math.floor(Math.random()*26));
-	return res;
-}
+
 String.format=function(str,arg){
 	if(str.charAt(str.length-1).toLowerCase()=='d') return String(new java.lang.String.format(str,new java.lang.Integer(arg)));
 	return String(new java.lang.String.format(str,arg));	
@@ -2209,121 +2177,4 @@ String.prototype.extensionRight=function(char,length){
 	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
 	return this.toString()+char.repeat(addLength);
 }
-Date.prototype.toDateString=function(sep){
-	sep = (sep==undefined) ? '-' : sep;
-	return String(this.getFullYear()).extension("0",4)+sep+String(this.getMonth()+1).extension("0",2)+sep+String(this.getDate()).extension("0",2);
-}
-Date.prototype.toTimeString=function(sep){
-	sep = (sep==undefined) ? ':' : sep;
-		return String(this.getHours()).extension("0",2)+sep+String(this.getMinutes()).extension("0",2)+sep+String(this.getSeconds()).extension("0",2);
-}
-
-
-//안쓰는변수
-/*
-var menuagreebot = 0; //메뉴추가동의 인원수
-var resagreebot = 0; //식당추가동의 인원수
-var menuoppbot = 0; //메뉴추가반대 인원수
-var resoppbot = 0; //식당추가반대 인원수
-var flagmenubot; //추가심사중인 메뉴
-var flagresbot; //추가심사중인 식당
-var sendermenubot = []; //메뉴추가에 동의한 사람
-var senderresbot = []; //식당추가에 동의한 사람
-/*
-
-//안쓰는함수
-/*
-//리스트에 추가하기
-function add(r, name, name1, num) { // name : DB 이름 / num : flag number
-    var temp = r.msg.split(" ")[1];
-    var list = D.selectForArray(name);
-    if (D.selectForArray(name, null, "name=?", [temp]).length == 0) {
-    	Api.replyRoom("recom", r.sender+" : "+name1+"건의 : "+temp);
-        r.replier.reply(temp.이가() + " 건의되었습니다.");
-        if (this["flag" + r.room][num] == 1 ) {
-            r.replier.reply("진행중인 합의가 있습니다. 건의만 됩니다.");
-        }
-        if (this["flag" + r.room][num] == 0 ) {
-            r.replier.reply(name1+"찬성을 3명이 입력하면 리스트에 추가되고 "+name1+"반대를 3명이 입력하면 기각됩니다. 투표는 1회만 가능합니다.");
-            this["flag" + name + r.room] = temp;
-            this["flag" + r.room][num] = 1;
-        }
-    } else {
-        r.replier.reply(temp.은는() + " 이미있는 " + name1 + "입니다.");
-    }
-}
-
-//리스트 추가 다수 동의
-function agree(r, name, name1, num) { //name : DB 이름("menu", "res"...) / name1 : DB의 한글이름("메뉴", "식당"..) / num : flag number
-    list = D.selectForArray(name);
-    if (r.msg == name1+'찬성') {
-        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
-            this[name + "agree" + r.room] += 1;
-            r.replier.reply(name1+"찬성 : "+this[name + "agree" + r.room] + "/3");
-            this["sender" + name + r.room].push(r.sender);
-        }
-    } else if (r.msg == name1+'반대') {
-        if (this["sender" + name + r.room].indexOf(r.sender) == -1) {
-            this[name + "opp" + r.room] += 1;
-            r.replier.reply(name1+"반대 : "+this[name + "opp" + r.room] + "/3");
-            this["sender" + name + r.room].push(r.sender);
-        }
-    }
-    if (this[name + "agree" + r.room] == 3) {
-        var temp = this["flag" + name + r.room];
-        D.insert(name, { name: temp });
-        r.replier.reply(name1 + "에 " + this["flag" + name + r.room].이가() + " 추가되었습니다.");
-        clear(r, name, num);
-    } else if (this[name + "opp" + r.room] == 3) {
-    	r.replier.reply(this["flag" + name + r.room].이가() + " 반대되었습니다.");
-    	clear(r, name, num);
-    }
-}
-
-//추가 초기화함수
-function clear(r, name, num) {
-    this["flag" + r.room][num] = 0;
-    this["sender" + name + r.room] = undefined;
-    this["flag" + name + r.room] = undefined;
-    this[name + "agree" + r.room] = 0;
-    this[name + "opp" + r.room] = 0;
-}
-*/
-
-/*
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
-            if (msg.indexOf("!메뉴추가 ") == 0 || msg.indexOf("!ㅁㄴㅊㄱ ") == 0) {
-                add(r, "menu", "메뉴", 0);
-            }
-        }
-        //메뉴동의합의
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
-            if (this["flag" + room][0] == 1) {
-                agree(r, "menu", "메뉴", 0);
-            }
-        }
-
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
-            if (msg.indexOf("!식당추가 ") == 0 || msg.indexOf("!ㅅㄷㅊㄱ ") == 0) {
-                add(r, "res", "식당", 1);
-            }
-        }
-		
-        //식당동의합의
-        if (room == 'test' || room == '시립대 봇제작방' || room == '시립대 자취생 생정' || room == '시립대 전전컴 톡방') {
-            if (this["flag" + room][1] == 1) {
-                agree(r, "res", "식당", 1);
-            }
-        }
-*/
-
-/*
-    if (r.msg.split(" ")[1] == "식당추가") {
-        r.replier.reply("시립대 주변의 추가되었으면하는 식당을 추천해주세요. 3명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!식당추가 789비어");
-    }
-if (r.msg.split(" ")[1] == "메뉴추가") {
-        r.replier.reply("추가되었으면하는 음식을 추천해주세요. 3명의 합의가 있으면 바로 추가 될 수 있습니다.\nex)!메뉴추가 메뉴이름");
-    }
-    */
-
 
