@@ -521,6 +521,8 @@ function blackjack(r){
 					if(sum <= 11) {
 						temp[i] = 11; 
 						break;
+					}else {
+						temp[j] = 1; 
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -555,6 +557,8 @@ function blackjack(r){
 					if(sum <= 11) {
 						temp[i] = 11; 
 						break;
+					}else {
+						temp[j] = 1; 
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -580,6 +584,8 @@ function blackjack(r){
 						if(sum <= 11) {
 							temp[j] = 11; 
 							break;
+						}else {
+							temp[j] = 1; 
 						}
 					} else if ( isNaN(temp[j])){
 						temp[j] = 10; 
@@ -606,6 +612,8 @@ function blackjack(r){
 						if(sum <= 11) {
 							temp[j] = 11; 
 							break;
+						} else {
+							temp[j] = 1; 
 						}
 					} else if ( isNaN(temp[j])){
 						temp[j] = 10; 
