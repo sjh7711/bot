@@ -474,19 +474,12 @@ function blackjack(r){
 			r.replier.reply(temp[num].slice(0,1)+'의 카드 : ' + temp[num].slice(2).map(v=>v[0].join(' ')).join(' | '));
 			var temp = temp[num].slice(2).map(v=>v[0][1]);
 			var sum = 0;
-			for(var j in temp){
-				if( !isNaN(temp[j]) ){
-					sum += Number(temp[j]);
-				} else if( isNaN(temp[j]) && temp[j] != 'A' ){
+			for(var i in temp){
+				if( !isNaN(temp[i]) ){
+					sum += Number(temp[i]);
+				} else if( isNaN(temp[i]) && temp[i] != 'A' ){
 					sum += 10;
-				}
-			}	
-			for( var i in temp ) {
-				if(temp[i] == 'A') {
-					if(sum <= 11) {
-						sum += 11;
-					}
-				}  else if ( temp[i] == 'A' ) {
+				} else if ( temp[i] != 'A' ){
 					sum += 1;
 				}
 			}
@@ -520,25 +513,22 @@ function blackjack(r){
 		while(1){
 			var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 			var sum = 0;
-			if( Flag.get('PD', r.room) != 0){
-				for(var i in temp ){
-					for(var j in temp){
-						if( !isNaN(temp[j]) ){
-							sum += Number(temp[j]);
-						} else if( isNaN(temp[j]) && temp[j] != 'A' ){
-							sum += 10;
-						}
+			for(var i in temp) {
+				sum+=temp[i]
+			}
+			for(var i in temp) {
+				if(temp[i] == 'A'){
+					if(sum <= 11) {
+						temp[i] = 11; 
+						break;
 					}
+				} else if ( isNaN(temp[i])){
+					temp[i] = 10; 
 				}
-				for( var i in temp ) {
-					if(temp[i] == 'A') {
-						if(sum <= 11) {
-							sum += 11;
-						}
-					}  else {
-						sum += 1;
-					}
-				}
+			}
+			var sum = 0;
+			for(var i in temp) {
+				sum+=temp[i]
 			}
 			
 			if(sum < 17){
@@ -556,76 +546,77 @@ function blackjack(r){
 		var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 		var sum = 0;
 		if( Flag.get('PD', r.room) != 0){
-			var temp = Flag.get('PD', r.room);
-			for(var i in temp ){
-				for(var j in temp ){
-					if( !isNaN(temp[j]) ){
-						sum += Number(temp[j]);
-					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
-						sum += 10;
+			var sum = 0;
+			for(var i in temp) {
+				sum+=temp[i]
+			}
+			for(var i in temp) {
+				if(temp[i] == 'A'){
+					if(sum <= 11) {
+						temp[i] = 11; 
+						break;
 					}
+				} else if ( isNaN(temp[i])){
+					temp[i] = 10; 
 				}
 			}
-			for( var i in temp ) {
-				if(temp[i] == 'A') {
-					if(sum <= 11) {
-						sum += 11;
-					}
-				}  else {
-					sum += 1;
-				}
+			var sum = 0;
+			for(var i in temp) {
+				sum+=temp[i]
 			}
 			Flag.set('PD', r.room, Flag.get('PD', r.room).push(sum));
 		}
 		
 		if( Flag.get('stay', r.room) != 0){
 			var temp = Flag.get('stay', r.room);
-			var sum = 0;
-			for(var i in temp ){
+			for(var i in Flag.get('stay', r.room) ){
 				var temp = temp[i].slice(2).map(v=>v[0][1]);
-				for(var j in temp ){
-					if( !isNaN(temp[j]) ){
-						sum += Number(temp[j]);
-					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
-						sum += 10;
+				var sum = 0;
+				for(var j in temp) {
+					sum+=temp[j]
+				}
+				for(var j in temp) {
+					if(temp[j] == 'A'){
+						if(sum <= 11) {
+							temp[j] = 11; 
+							break;
+						}
+					} else if ( isNaN(temp[j])){
+						temp[j] = 10; 
 					}
 				}
-			}
-			for( var i in temp ) {
-				if(temp[i] == 'A') {
-					if(sum <= 11) {
-						sum += 11;
-					}
-				}  else {
-					sum += 1;
+				var sum = 0;
+				for(var j in temp) {
+					sum+=temp[j];
 				}
+				Flag.set('stay', r.room, Flag.get('stay', r.room)[i].push(sum));
 			}
-			Flag.set('stay', r.room, Flag.get('stay', r.room).push(sum));
 		}
 		
 		if( Flag.get('burst', r.room) != 0){
 			var temp = Flag.get('burst', r.room);
-			var sum = 0;
-			for(var i in temp ){
+			for(var i in Flag.get('burst', r.room) ){
 				var temp = temp[i].slice(2).map(v=>v[0][1]);
-				for(var j in temp ){
-					if( !isNaN(temp[j]) ){
-						sum += Number(temp[j]);
-					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
-						sum += 10;
+				var sum = 0;
+				for(var j in temp) {
+					sum+=temp[j]
+				}
+				for(var j in temp) {
+					if(temp[j] == 'A'){
+						if(sum <= 11) {
+							temp[j] = 11; 
+							break;
+						}
+					} else if ( isNaN(temp[j])){
+						temp[j] = 10; 
 					}
 				}
-			}
-			for( var i in temp ) {
-				if(temp[i] == 'A') {
-					if(sum <= 11) {
-						sum += 11;
-					}
-				}  else {
-					sum += 1;
+				var sum = 0;
+				for(var j in temp) {
+					sum+=temp[j];
 				}
+				Flag.set('burst', r.room, Flag.get('burst', r.room)[i].push(sum));
 			}
-			Flag.set('burst', r.room, Flag.get('burst', r.room).push(sum));
 		}
 		
 		
