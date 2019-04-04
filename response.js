@@ -630,7 +630,7 @@ function blackjack(r){
 		
 		
 		
-		if( dealersum > 21 ){
+		if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length] > 21 ){
 			if( Flag.get('burst', r.room) != 0 ){
 				for(var i in Flag.get('burst', r.room)){
 					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.'+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length]+'\n';
@@ -641,7 +641,7 @@ function blackjack(r){
 					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.'+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length]+'\n';
 				}
 			}
-		} else if( dealersum < 22 ){
+		} else if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length] < 22 ){
 			if( Flag.get('burst', r.room) != 0 ){
 				for(var i in Flag.get('burst', r.room)){
 					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.'+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length]+'\n'
