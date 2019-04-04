@@ -517,12 +517,11 @@ function blackjack(r){
 				sum+=temp[i]
 			}
 			for(var i in temp) {
-				if(temp[i] == 'A'){
+				if(temp[j] == 'A'){
+					temp[j] = 1; 
 					if(sum <= 11) {
-						temp[i] = 11; 
+						temp[j] = 11; 
 						break;
-					}else {
-						temp[j] = 1; 
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -553,12 +552,11 @@ function blackjack(r){
 				sum+=temp[i]
 			}
 			for(var i in temp) {
-				if(temp[i] == 'A'){
+				if(temp[j] == 'A'){
+					temp[j] = 1; 
 					if(sum <= 11) {
-						temp[i] = 11; 
+						temp[j] = 11; 
 						break;
-					}else {
-						temp[j] = 1; 
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -581,11 +579,10 @@ function blackjack(r){
 				}
 				for(var j in temp) {
 					if(temp[j] == 'A'){
+						temp[j] = 1; 
 						if(sum <= 11) {
 							temp[j] = 11; 
 							break;
-						}else {
-							temp[j] = 1; 
 						}
 					} else if ( isNaN(temp[j])){
 						temp[j] = 10; 
@@ -609,11 +606,10 @@ function blackjack(r){
 				}
 				for(var j in temp) {
 					if(temp[j] == 'A'){
+						temp[j] = 1; 
 						if(sum <= 11) {
 							temp[j] = 11; 
 							break;
-						} else {
-							temp[j] = 1; 
 						}
 					} else if ( isNaN(temp[j])){
 						temp[j] = 10; 
