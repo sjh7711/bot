@@ -564,7 +564,7 @@ function blackjack(r){
 			for(var i in temp) {
 				sum+=temp[i]
 			}
-			Flag.set('PD', r.room, Flag.get('PD', r.room).push(sum));
+			Flag.get('PD', r.room).push(sum);
 		}
 		
 		if( Flag.get('stay', r.room) != 0){
@@ -589,7 +589,7 @@ function blackjack(r){
 				for(var j in temp) {
 					sum+=temp[j];
 				}
-				Flag.set('stay', r.room, Flag.get('stay', r.room)[i].push(sum));
+				Flag.get('stay', r.room)[i].push(sum);
 			}
 		}
 		
@@ -615,7 +615,7 @@ function blackjack(r){
 				for(var j in temp) {
 					sum+=temp[j];
 				}
-				Flag.set('burst', r.room, Flag.get('burst', r.room)[i].push(sum));
+				Flag.get('burst', r.room)[i].push(sum);
 			}
 		}
 		
