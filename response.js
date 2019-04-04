@@ -676,7 +676,7 @@ function blackjack(r){
 			}
 		}
 		
-		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-2).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
+		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-1).map(v=>v[0].join(' ')).join(' | ') +'\n'+str );
 		
 		
 		Flag.set('bstart2', r.room, 0);
