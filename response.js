@@ -475,12 +475,12 @@ function blackjack(r){
 			var temp = temp[num].slice(2).map(v=>v[0][1]);
 			var sum = 0;
 			for(var i in temp){
-				if( !isNaN(temp[i]) ){
-					sum += Number(temp[i]);
-				} else if( isNaN(temp[i]) && temp[i] != 'A' ){
+				if( temp[i] == 'A' ){
+					sum += 1
+				} else if( isNaN(temp[i])){
 					sum += 10;
-				} else if ( temp[i] != 'A' ){
-					sum += 1;
+				} else {
+					sum += Number(temp[i]);
 				}
 			}
 			if(sum > 21){
@@ -513,13 +513,13 @@ function blackjack(r){
 		while(1){
 			var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 			var sum = 0;
-			for(var i in temp) {
-				if( !isNaN(temp[i]) ){
-					sum += Number(temp[i]);
-				} else if( isNaN(temp[i]) && temp[i] != 'A' ){
+			for(var i in temp){
+				if( temp[i] == 'A' ){
+					sum += 1
+				} else if( isNaN(temp[i])){
 					sum += 10;
-				} else if ( temp[i] != 'A' ){
-					sum += 1;
+				} else {
+					sum += Number(temp[i]);
 				}
 			}
 			for(var i in temp) {
@@ -553,13 +553,13 @@ function blackjack(r){
 		var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
 		if( Flag.get('PD', r.room) != 0){
 			var sum = 0;
-			for(var i in temp) {
-				if( !isNaN(temp[i]) ){
-					sum += Number(temp[i]);
-				} else if( isNaN(temp[i]) && temp[i] != 'A' ){
+			for(var i in temp){
+				if( temp[i] == 'A' ){
+					sum += 1
+				} else if( isNaN(temp[i])){
 					sum += 10;
-				} else if ( temp[i] != 'A' ){
-					sum += 1;
+				} else {
+					sum += Number(temp[i]);
 				}
 			}
 			for(var i in temp) {
@@ -585,13 +585,13 @@ function blackjack(r){
 			for(var i in Flag.get('stay', r.room) ){
 				var temp = temp[i].slice(2).map(v=>v[0][1]);
 				var sum = 0;
-				for(var j in temp) {
-					if( !isNaN(temp[j]) ){
-						sum += Number(temp[j]);
-					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
+				for(var j in temp){
+					if( temp[j] == 'A' ){
+						sum += 1
+					} else if( isNaN(temp[j])){
 						sum += 10;
-					} else if ( temp[j] != 'A' ){
-						sum += 1;
+					} else {
+						sum += Number(temp[j]);
 					}
 				}
 				for(var j in temp) {
@@ -618,13 +618,13 @@ function blackjack(r){
 			for(var i in Flag.get('burst', r.room) ){
 				var temp = temp[i].slice(2).map(v=>v[0][1]);
 				var sum = 0;
-				for(var j in temp) {
-					if( !isNaN(temp[j]) ){
-						sum += Number(temp[j]);
-					} else if( isNaN(temp[j]) && temp[j] != 'A' ){
+				for(var j in temp){
+					if( temp[j] == 'A' ){
+						sum += 1
+					} else if( isNaN(temp[j])){
 						sum += 10;
-					} else if ( temp[j] != 'A' ){
-						sum += 1;
+					} else {
+						sum += Number(temp[j]);
 					}
 				}
 				for(var j in temp) {
