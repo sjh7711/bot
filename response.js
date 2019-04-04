@@ -485,9 +485,8 @@ function blackjack(r){
 				if(temp[i] == 'A') {
 					if(sum <= 11) {
 						sum += 11;
-						break;
 					}
-				}  else {
+				}  else if ( temp[i] == 'A' ) {
 					sum += 1;
 				}
 			}
@@ -535,7 +534,6 @@ function blackjack(r){
 					if(temp[i] == 'A') {
 						if(sum <= 11) {
 							sum += 11;
-							break;
 						}
 					}  else {
 						sum += 1;
@@ -572,7 +570,6 @@ function blackjack(r){
 				if(temp[i] == 'A') {
 					if(sum <= 11) {
 						sum += 11;
-						break;
 					}
 				}  else {
 					sum += 1;
@@ -598,7 +595,6 @@ function blackjack(r){
 				if(temp[i] == 'A') {
 					if(sum <= 11) {
 						sum += 11;
-						break;
 					}
 				}  else {
 					sum += 1;
@@ -624,7 +620,6 @@ function blackjack(r){
 				if(temp[i] == 'A') {
 					if(sum <= 11) {
 						sum += 11;
-						break;
 					}
 				}  else {
 					sum += 1;
