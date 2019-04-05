@@ -676,26 +676,26 @@ function blackjack(r){
 		if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] > 21 ){
 			if( Flag.get('burst', r.room) != 0 ){
 				for(var i in Flag.get('burst', r.room)){
-					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('burst', r.room)[0].slice(2,Flag.get('burst', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '));+' ('+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length-1]+')\n';
+					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('burst', r.room)[0].slice(2,Flag.get('burst', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '))+' ('+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length-1]+')\n';
 				}
 			}
 			if( Flag.get('stay', r.room) != 0 ){
 				for(var i in Flag.get('stay', r.room)){
-					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '));+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
+					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '))+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
 				}
 			}
 		} else if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] < 22 ){
 			if( Flag.get('burst', r.room) != 0 ){
 				for(var i in Flag.get('burst', r.room)){
-					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('burst', r.room)[0].slice(2,Flag.get('burst', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '));+' ('+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length-1]+')\n';
+					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('burst', r.room)[0].slice(2,Flag.get('burst', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '))+' ('+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length-1]+')\n';
 				}
 			}
 			if( Flag.get('stay', r.room) != 0 ){
 				for(var i in Flag.get('stay', r.room)){				
 					if( Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1] > Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] ){
-						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '));+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
+						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '))+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
 					} else {
-						str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '));+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
+						str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | '))+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
 					}
 				}
 			}
