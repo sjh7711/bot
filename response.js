@@ -704,11 +704,12 @@ function blackjack(r){
 		
 		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-1).map(v=>v[0].join(' ')).join(' | ') +' ('+Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1]+')\n'+str );
 
+		/*
 		Flag.set('bstart2', r.room, 0);
 		Flag.set('blackjack', r.room, 0);
 		Flag.set('burst', r.room, 0);
 		Flag.set('stay', r.room, 0);
-		Flag.set('PD', r.room, 0);
+		Flag.set('PD', r.room, 0);*/
 	}
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
