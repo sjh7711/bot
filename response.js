@@ -102,8 +102,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	weather(r);
         	return;
         }
-        str += "!날씨\n"
+        str += "!날씨\n";
         
+        
+        if (msg == "!로또통계"){
+        	bestlotto(r);
+        	return;
+    	}
+        str += "!로또통계\n";
+            
+            
 		if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
             lotto(r);
             return;
@@ -116,11 +124,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!당첨\n";
         
-        if (msg == "!로또통계"){
-        	bestlotto(r);
-        	return;
-        }
-        str += "!로또통계\n";
+        
         
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
@@ -382,8 +386,14 @@ function blackjack(r){
 			Flag.set('blackjacktime', r.room, new Date().getTime());//시작시간
 			Flag.set("bsuggest", r.room, r.sender);//시작을 제안한사람
 			Flag.set("bstart", r.room, 1);//참여모집
-			var temp = [[r.sender]];
-			Flag.set("blackjack", r.room , temp);//참가한사람
+			var temp = [];
+			Flag.set("blackjack", r.room , temp);
+			var temp = {
+					name : [r.sender],
+					card : [],
+					sum : 0
+			}
+			Flag.get("blackjack", r.room).push(temp);//참가한사람
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
@@ -395,10 +405,13 @@ function blackjack(r){
 	}
 	
 	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){//참가모집중
-        if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//||
-            var temp = Flag.get('blackjack', r.room);//참가한사람
-            temp.push([r.sender]);
-            Flag.set("blackjack", r.room , temp);
+        if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//
+        	var temp = {
+					name : [r.sender],
+					card : [],
+					sum : 0
+			}
+            Flag.get("blackjack", r.room).push(temp);
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
         } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
         	r.replier.reply('돈이 부족합니다.');
@@ -709,7 +722,8 @@ function blackjack(r){
 		Flag.set('blackjack', r.room, 0);
 		Flag.set('burst', r.room, 0);
 		Flag.set('stay', r.room, 0);
-		Flag.set('PD', r.room, 0);*/
+		Flag.set('PD', r.room, 0);
+		*/
 	}
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
