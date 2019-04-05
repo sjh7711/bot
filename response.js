@@ -542,6 +542,7 @@ function blackjack(r){
 			for(var i in temp){
 				if( temp[i] == 'A' ){
 					sum += 1
+				} else if( isNaN(temp[i])){
 					sum += 10;
 				} else {
 					sum += Number(temp[i]);
