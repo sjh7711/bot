@@ -486,6 +486,21 @@ function blackjack(r){
 					sum += Number(temp[i]);
 				}
 			}
+			for(var i in temp) {
+				if(temp[i] == 'A'){
+					temp[i] = 1; 
+					if(sum <= 11) {
+						temp[i] = 11; 
+						break;
+					}
+				} else if ( isNaN(temp[i])){
+					temp[i] = 10; 
+				}
+			}
+			var sum = 0;
+			for(var i in temp) {
+				sum+=temp[i]
+			}
 			if(sum > 21){
 				r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 버스트.');
 				if(Flag.get('stay', r.room) == 0 ){
