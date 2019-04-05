@@ -368,15 +368,15 @@ function func(r) {
 }
 
 function blackjack(r){
-	if( r.msg == '!블랙잭'){
-		if( (Flag.get('bstart', r.room) == 1 || Flag.get('bstart1', r.room) == 1 ||  Flag.get('bstart2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
-			Flag.set('bstart', r.room, 0);
-			Flag.set('bstart1', r.room, 0);
-			Flag.set('bstart2', r.room, 0);
-			r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
-			return;
-		}
-		
+	if( (Flag.get('bstart', r.room) == 1 || Flag.get('bstart1', r.room) == 1 ||  Flag.get('bstart2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
+		Flag.set('bstart', r.room, 0);
+		Flag.set('bstart1', r.room, 0);
+		Flag.set('bstart2', r.room, 0);
+		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+		return;
+	}
+	
+	if( r.msg == '!블랙잭'){s
 		if(Flag.get('bstart', r.room) == 0 && Flag.get('bstart1', r.room) == 0 &&  Flag.get('bstart2', r.room) ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
 			Flag.set('blackjacktime', r.room, new Date().getTime());//시작시간
