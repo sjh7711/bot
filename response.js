@@ -581,7 +581,7 @@ function blackjack(r){
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
-					sum += 1
+					sum += 1;
 				} else if( isNaN(temp[i])){
 					sum += 10;
 				} else {
@@ -595,13 +595,13 @@ function blackjack(r){
 						temp[i] = 11; 
 						break;
 					}
-				} else if ( isNaN(temp[i])){
+				} else if ( isNaN(temp[i]) ){
 					temp[i] = 10; 
 				}
 			}
 			var sum = 0;
 			for(var i in temp) {
-				sum+=temp[i]
+				sum+=temp[i];
 			}
 			Flag.get('PD', r.room).push(sum);
 		}
