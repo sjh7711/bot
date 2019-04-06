@@ -372,36 +372,29 @@ function func(r) {
 }
 
 function blackjack(r){
-	if( (Flag.get('gameflag', r.room).start == 1 || Flag.get('gameflag', r.room).start1 == 1 || Flag.get('gameflag', r.room).start2 ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
-		var gameflag = {
+	if( (Flag.get('gameinfo', r.room).start == 1 || Flag.get('gameinfo', r.room).start1 == 1 || Flag.get('gameinfo', r.room).start2 ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
+		var gameinfo = {
 				start : 0,
 				start1 : 0,
 				start2 : 0,
 				suggest : '',
 				starttime : '',
 			}
-		Flag.set("gameflag", r.room , gameflag);
+		Flag.set("gameinfo", r.room , gameinfo);
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 		return;
 	}
 	
 	if( r.msg == '!블랙잭'){
-		if(Flag.get('gameflag', r.room).start == 0 && Flag.get('gameflag', r.room).start1 == 0 &&  Flag.get('gameflag', r.room).start2 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
+		if(Flag.get('gameinfo', r.room).start == 0 && Flag.get('gameinfo', r.room).start1 == 0 &&  Flag.get('gameinfo', r.room).start2 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
-			var gameflag = {
-					start : 1,
-					start1 : 0,
-					start2 : 0,
-					suggest : r.sender,
-					starttime : new Date().getTime(),
+			var gameinfo = Flag.get('gameinfo', r.room);
+			gameinfo.player = {
+					name : [r.sender],
+					card : [],
+					sum : 0
 				}
-			Flag.set("gameflag", r.room , gameflag);
-			var temp = [{
-				name : [r.sender],
-				card : [],
-				sum : 0
-			}];
-			Flag.set("blackjack", r.room , temp);
+			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
@@ -412,9 +405,9 @@ function blackjack(r){
 		}
 	}
 	
-	if (r.msg == '참가' && Flag.get('gameflag', r.room).start == 1 ){//참가모집중
+	if (r.msg == '참가' && Flag.get('gameinfo', r.room).start == 1 ){//참가모집중
         if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//
-        	var temp = {
+        	var player = {
 					name : [r.sender],
 					card : [],
 					sum : 0
