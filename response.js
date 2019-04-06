@@ -1909,7 +1909,7 @@ function bestlotto(r) {
 function lotto(r) {
 	try{
 		var cycle = 1;
-		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
+		if( r.room !='test' && r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
 			cycle = Number(r.msg.substr(4));
 		}
 		for(var j = 0 ; j < cycle; j++){
@@ -1941,7 +1941,7 @@ function lotto(r) {
 			
 		    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 		}
-		if( r.room =='test' && r.msg.substr(4) > 45 && r.msg.substr(4) < 1000 ){
+		if( r.room =='test' && r.msg.substr(4) > 0 && r.msg.substr(4) < 1000 ){
 			cycle = Number(r.msg.substr(4));
 			for(var j = 0 ; j < cycle; j++){
 				var templotto = []; //로또번호 담길곳
