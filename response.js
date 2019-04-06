@@ -1,28 +1,30 @@
 var reloadcheck = 0;
-function reload() {
+function reload(r) {
 	try {
-		reloadcheck = 1;
-		var Timer = new Date();
-	    file = "storage/emulated/0/kbot/response.js";
-	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
-	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
-	    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
-	    str = "";
-	    tmp = null;
-	    while ((tmp = br.readLine()) != null) {
-	        str += tmp + "\n";
-	    }
-	    var filedir = new java.io.File(file);
-	    var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-	    bw.write(str.toString());
-	    bw.close();
-	    var time = (new Date() - Timer) / 1000;
-	    Api.replyRoom('test', "파일저장 완료 / " + time + "s");
-	    T.interrupt();
-	    Api.reload();
-	    var time = (new Date() - Timer) / 1000;
-	    reloadcheck = 0;
-	    return "reloading 완료 / " + time + "s";
+		if(r.sender == '봇배우는배주현' || r.sender == 'test'){
+			reloadcheck = 1;
+			var Timer = new Date();
+		    file = "storage/emulated/0/kbot/response.js";
+		    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
+		    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
+		    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
+		    str = "";
+		    tmp = null;
+		    while ((tmp = br.readLine()) != null) {
+		        str += tmp + "\n";
+		    }
+		    var filedir = new java.io.File(file);
+		    var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
+		    bw.write(str.toString());
+		    bw.close();
+		    var time = (new Date() - Timer) / 1000;
+		    Api.replyRoom('test', "파일저장 완료 / " + time + "s");
+		    T.interrupt();
+		    Api.reload();
+		    var time = (new Date() - Timer) / 1000;
+		    reloadcheck = 0;
+		    return "reloading 완료 / " + time + "s";
+		}
 	}catch (e){
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
@@ -214,7 +216,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!디비\n"
         	
         	if(msg =="!로딩"){
-        		replier.reply(reload());
+        		replier.reply(reload(r));
         		return;
         	}str += "!로딩\n";
         	
