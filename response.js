@@ -372,28 +372,36 @@ function func(r) {
 }
 
 function blackjack(r){
-	if( (Flag.get('bstart', r.room) == 1 || Flag.get('bstart1', r.room) == 1 ||  Flag.get('bstart2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
-		Flag.set('bstart', r.room, 0);
-		Flag.set('bstart1', r.room, 0);
-		Flag.set('bstart2', r.room, 0);
+	if( (Flag.get('gameflag', r.room).start == 1 || Flag.get('gameflag', r.room).start1 == 1 || Flag.get('gameflag', r.room).start2 ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
+		var gameflag = {
+				start : 0,
+				start1 : 0,
+				start2 : 0,
+				suggest : '',
+				starttime : '',
+			}
+		Flag.set("gameflag", r.room , gameflag);
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 		return;
 	}
 	
 	if( r.msg == '!블랙잭'){
-		if(Flag.get('bstart', r.room) == 0 && Flag.get('bstart1', r.room) == 0 &&  Flag.get('bstart2', r.room) ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
+		if(Flag.get('gameflag', r.room).start == 0 && Flag.get('gameflag', r.room).start1 == 0 &&  Flag.get('gameflag', r.room).start2 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
-			Flag.set('blackjacktime', r.room, new Date().getTime());//시작시간
-			Flag.set("bsuggest", r.room, r.sender);//시작을 제안한사람
-			Flag.set("bstart", r.room, 1);//참여모집
-			var temp = [];
+			var gameflag = {
+					start : 1,
+					start1 : 0,
+					start2 : 0,
+					suggest : r.sender,
+					starttime : new Date().getTime(),
+				}
+			Flag.set("gameflag", r.room , gameflag);
+			var temp = [{
+				name : [r.sender],
+				card : [],
+				sum : 0
+			}];
 			Flag.set("blackjack", r.room , temp);
-			var temp = {
-					name : [r.sender],
-					card : [],
-					sum : 0
-			}
-			Flag.get("blackjack", r.room).push(temp);//참가한사람
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
@@ -404,7 +412,7 @@ function blackjack(r){
 		}
 	}
 	
-	if (r.msg == '참가' && Flag.get("bstart", r.room) == 1 ){//참가모집중
+	if (r.msg == '참가' && Flag.get('gameflag', r.room).start == 1 ){//참가모집중
         if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//
         	var temp = {
 					name : [r.sender],
@@ -1902,7 +1910,10 @@ function lotto(r) {
 	try{
 		var cycle = 1;
 		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
-			cycle = Number(r.msg.substr(4))
+			cycle = Number(r.msg.substr(4));
+		}
+		if( r.room =='test' && r.msg.substr(4) > 0 && r.msg.substr(4) < 1000 ){
+			cycle = Number(r.msg.substr(4));
 		}
 		for(var j = 0 ; j < cycle; j++){
 			var templotto = []; //로또번호 담길곳
