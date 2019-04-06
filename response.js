@@ -1909,8 +1909,10 @@ function bestlotto(r) {
 function lotto(r) {
 	try{
 		var cycle = 1;
-		if( r.room !='test' && r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
+		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
 			cycle = Number(r.msg.substr(4));
+			var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+			var num = raw.select('h4').text().split('회')[0]*1+1;
 			for(var j = 0 ; j < cycle; j++){
 				var templotto = []; //로또번호 담길곳
 			    for (var i = 0; i < 100; i++) {
@@ -1923,9 +1925,6 @@ function lotto(r) {
 			        }
 			    }
 			    r.replier.reply(templotto.sort(compare).join(", "));
-			    
-				var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-				var num = raw.select('h4').text().split('회')[0]*1+1;
 				
 				var today = new Date();
 				var year   = today.getFullYear();
@@ -1941,8 +1940,10 @@ function lotto(r) {
 			    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 			}
 		}
-		if( r.room =='test' && r.msg.substr(4) > 0 && r.msg.substr(4) < 1000 ){
+		if( r.room =='test' && r.msg.substr(4) > 5 && r.msg.substr(4) < 1001 ){
 			cycle = Number(r.msg.substr(4));
+			var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+			var num = raw.select('h4').text().split('회')[0]*1+1;
 			for(var j = 0 ; j < cycle; j++){
 				var templotto = []; //로또번호 담길곳
 			    for (var i = 0; i < 100; i++) {
@@ -1955,9 +1956,6 @@ function lotto(r) {
 			        }
 			    }
 			    
-				var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-				var num = raw.select('h4').text().split('회')[0]*1+1;
-				
 				var today = new Date();
 				var year   = today.getFullYear();
 				var month  = today.getMonth() + 1;
