@@ -1973,7 +1973,7 @@ function lotto(r) {
 
 function flottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var lastnum = raw.select('h4').text().split('회')[0]+1;
+	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
