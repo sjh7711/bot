@@ -758,7 +758,7 @@ function youtube(r) {
 			return;
 		}
 	}
-	r.replier.reply(link[1].split('|')[0]);
+	r.replier.reply(link[0].split('|')[0]);
 }
 
 function jfla(r){
