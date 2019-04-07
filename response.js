@@ -751,8 +751,14 @@ function blackjack(r){
 
 function youtube(r) {
 	search_word = r.msg.substr(5);
-	var link=link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').select('h3.yt-lockup-title').select('a').attr("abs:href");
-	r.replier.reply(link);
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').toArray().map(v=>v.select('h3.yt-lockup-title').select('a').attr("abs:href") +'|'+v.select('div.yt-lockup-byline').select('span').toString().indexOf('인증됨'));
+	for(var i in link){
+		if(Number(link[i].split('|')[1])>-1){
+			r.replier.reply(link[i].split('|')[0]);
+			return;
+		}
+	}
+	r.replier.reply(link[1].split('|')[0]);
 }
 
 function jfla(r){
