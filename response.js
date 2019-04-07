@@ -112,13 +112,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
     	}
         str += "!로또통계\n";
-            
+           
+        if (msg.indexOf("!궁금해") == 0) {
+            flottocheck(r);
+            return;
+        } 
             
 		if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
             lotto(r);
             return;
         } 
-        str += "!로또 / "
+        str += "!로또 / ";
 
         if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
             lottocheck(r);
@@ -1969,6 +1973,51 @@ function lotto(r) {
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
+}
+
+function flottocheck(r) {
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var lastnum = raw.select('h4').text().split('회')[0]+1;
+	var win = raw.select('p').get(1).text().split(" ").slice();
+	var bonus = raw.select('p').get(2).text();
+	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
+	var lottodata = D.selectForArray('lotto',null,'num=? and sender ', [lastnum, r.sender]);
+	var failcount=0;
+	var str='';
+	for(var i=0;i<lottodata.length;i++){
+		var count = 0;
+		for(var j=0;j<6;j++){
+			for(var k=0;k<6;k++){
+				if(lottodata[i][j+8]==win[k]){
+					count+=1;
+					break;
+				}
+			}
+			if(count == 5){
+				for(var k=0;k<6;k++){
+					if(lottodata[i][j+8]==bonus){
+						count+=2;
+						break;
+					}	
+				}
+			}
+		}
+		lottodata[i].push(count);
+		if(count==0||count==1||count==2){
+			failcount += 1;
+		}else if(count==3){
+			str+= '5등'+lottodata[i].join('/')+'\n';
+		}else if(count==4){
+			str+= '4등'+lottodata[i].join('/')+'\n';
+		}else if(count==5){
+			str+= '3등'+lottodata[i].join('/')+'\n';
+		}else if(count==7){
+			str+= '2등'+lottodata[i].join('/')+'\n';
+		}else if(count==6){
+			str+= '1등'+lottodata[i].join('/')+'\n';
+		}
+	}
+	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str);
 }
 
 function lottocheck(r) {
