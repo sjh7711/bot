@@ -2002,10 +2002,15 @@ function flottocheck(r) {
 	var lottodata = D.selectForArray('lotto',null,'num=? and sender=?', [lastnum, r.sender]);
 	var failcount=0;
 	var str1='1등\n';
+	var first = 0;
 	var str2='2등\n';
+	var second = 0;
 	var str3='3등\n';
+	var third = 0;
 	var str4='4등\n';
+	var fourth = 0;
 	var str5='5등\n';
+	var fifth = 0;
 	for(var i=0;i<lottodata.length;i++){
 		var count = 0;
 		for(var j=0;j<6;j++){
@@ -2028,17 +2033,39 @@ function flottocheck(r) {
 			failcount += 1;
 		}else if(count==3){
 			str5+= '5등 '+lottodata[i].join('/')+'\n';
+			fifth += 1;
 		}else if(count==4){
 			str4+= '4등 '+lottodata[i].join('/')+'\n';
+			fourth += 1;
 		}else if(count==5){
 			str3+= '3등 '+lottodata[i].join('/')+'\n';
+			third += 1;
 		}else if(count==7){
 			str2+= '2등 '+lottodata[i].join('/')+'\n';
+			second += 1;
 		}else if(count==6){
 			str1+= '1등 '+lottodata[i].join('/')+'\n';
+			first += 1;
 		}
 	}
-	r.replier.reply('개수 : '+lottodata.length+'\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str1+'\n'+str2+'\n'+str3+'\n'+str4+'\n'+str5+'\n'+'\n꽝 개수 : '+failcount);
+	
+	var all = lottodata.length;
+	var result = '';
+	result+='1등 확률 : '+Math.floor(first/all*100000000000)/1000000000+"%("+first+")"+"\n";
+	result+='2등 확률 : '+Math.floor(second/all*100000000000)/1000000000+"%("+second+")"+"\n";
+	result+='3등 확률 : '+Math.floor(third/all*100000000000)/1000000000+"%("+third+")"+"\n";
+	result+='4등 확률 : '+Math.floor(fourth/all*100000000000)/1000000000+"%("+fourth+")"+"\n";
+	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")";
+	
+	
+	r.replier.reply('개수 : '+lottodata.length+'\n'+result+'\n\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n\n\
+			1등 개수 : '+first+'\n'+str1+'\n'+
+			'2등 개수 : '+second+'\n'+str2+'\n'+
+			'3등 개수 : '+third+'\n'+str3+'\n'+
+			'4등 개수 : '+fourth+'\n'+str4+'\n'+
+			'5등 개수 : '+fifth+'\n'+str5+'\n'+
+			'\n꽝 개수 : '+failcount+'\n'+
+			);
 }
 
 function lottocheck(r) {
