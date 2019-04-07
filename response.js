@@ -164,11 +164,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             return;
         }
         str += "!오버워치\n";
-        
-        if (room == 'test' || room == '시립대 봇제작방') {
-            if (msg.indexOf("!예정기능") == 0 || msg.indexOf("!ㅇㅈㄱㄴ") == 0) {replier.reply(D.selectForArray('willdo').join("\n")); return;}
-            str += "!예정기능\n";
-        }
+
         
         if (room == 'test' || room == '푸드마켓' || room == '시립대 봇제작방') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r); return;}
