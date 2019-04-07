@@ -1971,6 +1971,17 @@ function lotto(r) {
 		}
 }
 
+function youtubemv(r) {
+	search_word = r.msg.substr(5);
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+' MV').get().select('h3.yt-lockup-title').get(0).select('a').attr("abs:href");
+	r.replier.reply(link);
+}
+
+function jfla(r){
+	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href")+'\n').join('\n')
+	r.replier.reply('JFla 최신 곡'+es+'\n'+list);
+}
+
 function flottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
