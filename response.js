@@ -2032,19 +2032,19 @@ function flottocheck(r) {
 		if(count==0||count==1||count==2){
 			failcount += 1;
 		}else if(count==3){
-			str5+= '5등 '+lottodata[i].join('/')+'\n';
+			str5+= lottodata[i].join('/')+'\n';
 			fifth += 1;
 		}else if(count==4){
-			str4+= '4등 '+lottodata[i].join('/')+'\n';
+			str4+= lottodata[i].join('/')+'\n';
 			fourth += 1;
 		}else if(count==5){
-			str3+= '3등 '+lottodata[i].join('/')+'\n';
+			str3+= lottodata[i].join('/')+'\n';
 			third += 1;
 		}else if(count==7){
-			str2+= '2등 '+lottodata[i].join('/')+'\n';
+			str2+= lottodata[i].join('/')+'\n';
 			second += 1;
 		}else if(count==6){
-			str1+= '1등 '+lottodata[i].join('/')+'\n';
+			str1+= lottodata[i].join('/')+'\n';
 			first += 1;
 		}
 	}
@@ -2059,7 +2059,7 @@ function flottocheck(r) {
 	
 	
 	r.replier.reply('개수 : '+lottodata.length+'\n'+result+'\n\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n\n\
-			1등 개수 : '+first+'\n'+str1+'\n'+
+1등 개수 : '+first+'\n'+str1+'\n'+
 			'2등 개수 : '+second+'\n'+str2+'\n'+
 			'3등 개수 : '+third+'\n'+str3+'\n'+
 			'4등 개수 : '+fourth+'\n'+str4+'\n'+
