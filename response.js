@@ -2001,15 +2001,15 @@ function flottocheck(r) {
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 	var lottodata = D.selectForArray('lotto',null,'num=? and sender=? and room=?', [lastnum, r.sender, r.room]);
 	var failcount=0;
-	var str1='1등\n';
+	var str1='\n';
 	var first = 0;
-	var str2='2등\n';
+	var str2='\n';
 	var second = 0;
-	var str3='3등\n';
+	var str3='\n';
 	var third = 0;
-	var str4='4등\n';
+	var str4='\n';
 	var fourth = 0;
-	var str5='5등\n';
+	var str5='\n';
 	var fifth = 0;
 	for(var i=0;i<lottodata.length;i++){
 		var count = 0;
