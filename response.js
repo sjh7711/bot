@@ -2032,19 +2032,19 @@ function flottocheck(r) {
 		if(count==0||count==1||count==2){
 			failcount += 1;
 		}else if(count==3){
-			str5+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+' '+lottodata[i].slice(8,14).join(' ')+'\n';
+			str5+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+'\n | '+lottodata[i].slice(8,14).join(' ')+'\n';
 			fifth += 1;
 		}else if(count==4){
-			str4+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+' '+lottodata[i].slice(8,14).join(' ')+'\n';
+			str4+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+'\n | '+lottodata[i].slice(8,14).join(' ')+'\n';
 			fourth += 1;
 		}else if(count==5){
-			str3+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+' '+lottodata[i].slice(8,14).join(' ')+'\n';
+			str3+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+'\n | '+lottodata[i].slice(8,14).join(' ')+'\n';
 			third += 1;
 		}else if(count==7){
-			str2+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+' '+lottodata[i].slice(8,14).join(' ')+'\n';
+			str2+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+'\n | '+lottodata[i].slice(8,14).join(' ')+'\n';
 			second += 1;
 		}else if(count==6){
-			str1+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+' '+lottodata[i].slice(8,14).join(' ')+'\n';
+			str1+= lottodata[i].slice(2,5).join('.')+' '+lottodata[i].slice(5,7).join(':')+'\n | '+lottodata[i].slice(8,14).join(' ')+'\n';
 			first += 1;
 		}
 	}
