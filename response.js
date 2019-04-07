@@ -1999,7 +1999,7 @@ function flottocheck(r) {
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
-	var lottodata = D.selectForArray('lotto',null,'num=? and sender=?', [lastnum, r.sender]);
+	var lottodata = D.selectForArray('lotto',null,'num=? and sender=? and room=?', [lastnum, r.sender, r.room]);
 	var failcount=0;
 	var str1='1등\n';
 	var first = 0;
