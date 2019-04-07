@@ -2064,7 +2064,7 @@ function flottocheck(r) {
 			'3등 개수 : '+third+'\n'+str3+'\n'+
 			'4등 개수 : '+fourth+'\n'+str4+'\n'+
 			'5등 개수 : '+fifth+'\n'+str5+'\n'+
-			'\n꽝 개수 : '+failcount+'\n'+
+			'\n꽝 개수 : '+failcount+'\n'
 			);
 }
 
