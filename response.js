@@ -130,7 +130,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!당첨\n";
         
+        if(msg.indexOf('!유튜브')==0){
+        	youtubemv(r);
+        	return;
+        }
+        str += "!유튜브";
         
+        if(msg.indexOf('!제이플라')==0){
+        	jfla(r);
+        	return;
+        }
+        str += "!제이플라";
         
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
