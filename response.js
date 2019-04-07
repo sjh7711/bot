@@ -148,7 +148,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         str += "!맛집\n";
         
         if(msg.indexOf('!유튜브')==0){
-        	youtubemv(r);
+        	youtube(r);
         	return;
         }
         str += "!유튜브\n";
@@ -356,7 +356,7 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "식당") {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "유튜브") {
-        r.replier.reply("[!유튜브 노래이름] 과 같이 검색하면 유튜브 뮤비 링크를 보여줍니다.");
+        r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다.");
     } else if (r.msg.split(" ")[1] == "제이플라") {
         r.replier.reply("최신 제이플라 노래를 보여줍니다.");
     } else if (r.msg.split(" ")[1] == "공지") {
@@ -1989,9 +1989,9 @@ function lotto(r) {
 		}
 }
 
-function youtubemv(r) {
+function youtube(r) {
 	search_word = r.msg.substr(5);
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+' MV').get().select('h3.yt-lockup-title').get(0).select('a').attr("abs:href");
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('h3.yt-lockup-title').get(0).select('a').attr("abs:href");
 	r.replier.reply(link);
 }
 
