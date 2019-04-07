@@ -2012,7 +2012,7 @@ function flottocheck(r) {
 			str+= '1등'+lottodata[i].join('/')+'\n';
 		}
 	}
-	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str+'\n'+failcount);
+	r.replier.reply('개수 : '+lottodata.length+'\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str+'\n'+failcount);
 }
 
 function lottocheck(r) {
