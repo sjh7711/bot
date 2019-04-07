@@ -749,6 +749,18 @@ function blackjack(r){
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
 
+function youtube(r) {
+	search_word = r.msg.substr(5);
+	var link=link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').select('h3.yt-lockup-title').select('a').attr("abs:href");
+	r.replier.reply(link);
+}
+
+function jfla(r){
+	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href"));
+	r.replier.reply(list[0]);
+	r.replier.reply('더보기'+es+'\n'+list.slice(1).join('\n'));
+}
+
 function baseball(r){
 	if(Flag.get('supposelist', r.room) == 0 && r.msg == '!힌트' && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
 		r.replier.reply('힌트를 쓰려면 8턴이 지나야 합니다.');
@@ -1987,18 +1999,6 @@ function lotto(r) {
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
-}
-
-function youtube(r) {
-	search_word = r.msg.substr(5);
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('h3.yt-lockup-title').get(0).select('a').attr("abs:href");
-	r.replier.reply(link);
-}
-
-function jfla(r){
-	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href"));
-	r.replier.reply(list[0]);
-	r.replier.reply('더보기'+es+'\n'+list.slice(1).join('\n'));
 }
 
 function flottocheck(r) {
