@@ -1990,7 +1990,7 @@ function youtubemv(r) {
 function jfla(r){
 	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href"));
 	r.replier.reply(list[0]);
-	r.replier.reply('더보기'+es+'\n'+list.slice(1).join('\n\n'));
+	r.replier.reply('더보기'+es+'\n'+list.slice(1).join('\n'));
 }
 
 function flottocheck(r) {
@@ -2001,7 +2001,11 @@ function flottocheck(r) {
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 	var lottodata = D.selectForArray('lotto',null,'num=? and sender=?', [lastnum, r.sender]);
 	var failcount=0;
-	var str='';
+	var str1='1등\n';
+	var str2='2등\n';
+	var str3='3등\n';
+	var str4='4등\n';
+	var str5='5등\n';
 	for(var i=0;i<lottodata.length;i++){
 		var count = 0;
 		for(var j=0;j<6;j++){
@@ -2023,18 +2027,18 @@ function flottocheck(r) {
 		if(count==0||count==1||count==2){
 			failcount += 1;
 		}else if(count==3){
-			str+= '5등'+lottodata[i].join('/')+'\n';
+			str5+= '5등 '+lottodata[i].join('/')+'\n';
 		}else if(count==4){
-			str+= '4등'+lottodata[i].join('/')+'\n';
+			str4+= '4등 '+lottodata[i].join('/')+'\n';
 		}else if(count==5){
-			str+= '3등'+lottodata[i].join('/')+'\n';
+			str3+= '3등 '+lottodata[i].join('/')+'\n';
 		}else if(count==7){
-			str+= '2등'+lottodata[i].join('/')+'\n';
+			str2+= '2등 '+lottodata[i].join('/')+'\n';
 		}else if(count==6){
-			str+= '1등'+lottodata[i].join('/')+'\n';
+			str1+= '1등 '+lottodata[i].join('/')+'\n';
 		}
 	}
-	r.replier.reply('개수 : '+lottodata.length+'\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str+'\n'+failcount);
+	r.replier.reply('개수 : '+lottodata.length+'\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str1+'\n'+str2+'\n'+str3+'\n'+str4+'\n'+str5+'\n'+'\n꽝 개수 : '+failcount);
 }
 
 function lottocheck(r) {
