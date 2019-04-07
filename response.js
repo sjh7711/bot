@@ -1988,8 +1988,9 @@ function youtubemv(r) {
 }
 
 function jfla(r){
-	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href")+'\n').join('\n')
-	r.replier.reply('JFla 최신 곡'+es+'\n'+list);
+	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href"));
+	r.replier.reply(list[0]);
+	r.replier.reply('더보기'+es+'\n'+list.slice(1).join('\n\n'));
 }
 
 function flottocheck(r) {
