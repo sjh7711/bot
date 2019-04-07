@@ -1998,7 +1998,6 @@ function flottocheck(r) {
 				}
 			}
 		}
-		lottodata[i].push(count);
 		if(count==0||count==1||count==2){
 			failcount += 1;
 		}else if(count==3){
@@ -2013,7 +2012,7 @@ function flottocheck(r) {
 			str+= '1등'+lottodata[i].join('/')+'\n';
 		}
 	}
-	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str);
+	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n'+str+'\n'+failcount);
 }
 
 function lottocheck(r) {
