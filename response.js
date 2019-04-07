@@ -2058,7 +2058,7 @@ function flottocheck(r) {
 	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")";
 	
 	
-	r.replier.reply('개수 : '+lottodata.length+'\n'+result+'\n\n'+r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n\n'+es+
+	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?\n\n개수 : '+lottodata.length+'\n'+result+'\n\n'+es+
 			'1등 개수 : '+first+'\n'+str1+'\n'+
 			'2등 개수 : '+second+'\n'+str2+'\n'+
 			'3등 개수 : '+third+'\n'+str3+'\n'+
