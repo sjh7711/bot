@@ -129,19 +129,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             return;
         } 
         str += "!당첨\n";
-        
-        if(msg.indexOf('!유튜브')==0){
-        	youtubemv(r);
-        	return;
-        }
-        str += "!유튜브";
-        
-        if(msg.indexOf('!제이플라')==0){
-        	jfla(r);
-        	return;
-        }
-        str += "!제이플라";
-        
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
             return;
@@ -157,7 +144,20 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	famous(r);
         	return;
         } 
-        str += "!맛집\n"
+        str += "!맛집\n";
+        
+        if(msg.indexOf('!유튜브')==0){
+        	youtubemv(r);
+        	return;
+        }
+        str += "!유튜브\n";
+        
+        if(msg.indexOf('!제이플라')==0){
+        	jfla(r);
+        	return;
+        }
+        str += "!제이플라\n";
+        	
         	
         if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' ) {//|| room =='시립대 단톡방'
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
@@ -352,6 +352,10 @@ function func(r) {
         r.replier.reply("먹을 음식을 추천해 줍니다. [!메뉴 3]과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "식당") {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
+    } else if (r.msg.split(" ")[1] == "유튜브") {
+        r.replier.reply("[!유튜브 노래이름] 과 같이 검색하면 유튜브 뮤비 링크를 보여줍니다.");
+    } else if (r.msg.split(" ")[1] == "제이플라") {
+        r.replier.reply("최신 제이플라 노래를 보여줍니다.");
     } else if (r.msg.split(" ")[1] == "공지") {
         r.replier.reply("최근 5개의 공지를 띄워줍니다. [!공지 15] 과 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다. 해당 공지의 번호를 [!공지 823] 이렇게 입력하시면 내용과 댓글을 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "날씨") {
