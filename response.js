@@ -1960,6 +1960,7 @@ function lotto(r) {
 			            break;
 			        }
 			    }
+			    templotto.sort(compare);
 			    
 				var today = new Date();
 				var year   = today.getFullYear();
