@@ -759,7 +759,19 @@ function blackjack(r){
 
 function music(r) {
 	var rand = Math.floor(Math.random()*100);
-	var search_word = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0])[rand];
+	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
+	var search_word = list[rand];
+	if(r.msg == '!노래 힙합'){
+		var trash = org.jsoup.Jsoup.connect('https://music.bugs.co.kr/genre/chart/kpop/rnh/total/day').get().select('p.title').toArray().map(v=>v.text());
+		while(1){
+			if(trash.indexOf(search_word)>-1){
+				rand = Math.floor(Math.random()*100);
+				search_word = list[rand];
+			} else {
+				break;
+			}
+		}
+	}
 	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').toArray().map(v=>v.select('h3.yt-lockup-title').select('a').attr("abs:href"));
 	r.replier.reply(link[0]);
 	return;
