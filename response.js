@@ -147,7 +147,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!맛집\n";
         
-        if(msg.indexOf('!유튜브')==0){
+        if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0){
         	youtube(r);
         	return;
         }
@@ -751,6 +751,9 @@ function blackjack(r){
 
 function youtube(r) {
 	search_word = r.msg.substr(5);
+	if(r.msg.split(' ')[0]=='!yt'){
+		search_word = r.msg.substr(4);
+	}
 	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').toArray().map(v=>v.select('h3.yt-lockup-title').select('a').attr("abs:href") +'|'+v.select('div.yt-lockup-byline').select('span').toString().indexOf('인증됨'));
 	for(var i in link){
 		if(Number(link[i].split('|')[1])>-1){
