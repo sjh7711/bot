@@ -153,7 +153,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         str += "!유튜브 / ";
         
-        if(msg=='!노래'){
+        if(msg=='!노래'||msg=='!노래 힙'){
         	music(r);
         	return;
         }
@@ -761,7 +761,7 @@ function music(r) {
 	var rand = Math.floor(Math.random()*100);
 	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
 	var search_word = list[rand];
-	if(r.msg == '!노래 힙합'){
+	if(r.msg == '!노래 힙'){
 		var trash = org.jsoup.Jsoup.connect('https://music.bugs.co.kr/genre/chart/kpop/rnh/total/day').get().select('p.title').toArray().map(v=>v.text());
 		while(1){
 			if(trash.indexOf(search_word)>-1){
