@@ -1078,7 +1078,7 @@ function loadimage(r){
 	} else {
 		if(!isNaN(r.msg)){
 			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
-			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]).split(' ')[1] ));
+			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
 			Flag.set('image', r.room, 0);
 		}
 	}
