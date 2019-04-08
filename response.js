@@ -1067,13 +1067,18 @@ function loadimage(r){
 				temp.push(Flag.get('imagelist', r.room)[i]);
 			}
 		}
+		if(temp.length == 0){
+			r.replier.reply('검색결과가 없습니다.');
+			return;
+		}
 		Flag.set('imagelist', r.room, temp);
 		var i = 1;
 		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
-			r.replier.reply('ftp://sjh7711.iptime.org:2223/0/FTP/'+String(Flag.get('imagelist', r.room)[Number(r.msg)-1]).substr(12));
+			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
+			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]).split(' ')[1] ));
 			Flag.set('image', r.room, 0);
 		}
 	}
