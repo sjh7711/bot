@@ -764,7 +764,7 @@ function music(r) {
 	if(r.msg == '!노래 힙'){
 		var trash = org.jsoup.Jsoup.connect('https://music.bugs.co.kr/genre/chart/kpop/rnh/total/day').get().select('p.title').toArray().map(v=>String(v.text()));
 		while(1){
-			if(trash.indexOf(search_word)>-1){
+			if(trash.indexOf(String(search_word))>-1){
 				rand = Math.floor(Math.random()*100);
 				search_word = list[rand];
 			} else {
