@@ -151,7 +151,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	youtube(r);
         	return;
         }
-        str += "!유튜브\n";
+        str += "!유튜브 / ";
+        
+        if(msg=='!노래'){
+        	music(r);
+        	return;
+        }
+        str += "!노래 / ";
         
         if(msg.indexOf('!제이플라')==0){
         	jfla(r);
@@ -357,6 +363,8 @@ function func(r) {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "유튜브") {
         r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다.");
+    } else if (r.msg.split(" ")[1] == "노래") {
+        r.replier.reply("벅스 TOP100 중 한 곡을 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "제이플라") {
         r.replier.reply("최신 제이플라 노래를 보여줍니다.");
     } else if (r.msg.split(" ")[1] == "공지") {
@@ -749,8 +757,20 @@ function blackjack(r){
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
 
+function music(r) {
+	var rand = Math.floor(Math.random()*100);
+	var search_word = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0])[rand];
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word).get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').toArray().map(v=>v.select('h3.yt-lockup-title').select('a').attr("abs:href") +'|'+v.select('div.yt-lockup-byline').select('span').toString().indexOf('인증됨'));
+	for(var i in link){
+		if(Number(link[i].split('|')[1])>-1){
+			r.replier.reply(link[i].split('|')[0]);
+			return;
+		}
+	}
+	r.replier.reply(link[0].split('|')[0]);
+}
 function youtube(r) {
-	search_word = r.msg.substr(5);
+	var search_word = r.msg.substr(5);
 	if(r.msg.split(' ')[0]=='!yt'){
 		search_word = r.msg.substr(4);
 	}
