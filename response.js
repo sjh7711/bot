@@ -762,7 +762,7 @@ function music(r) {
 	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
 	var search_word = list[rand];
 	if(r.msg == '!노래 힙'){
-		var trash = org.jsoup.Jsoup.connect('https://music.bugs.co.kr/genre/chart/kpop/rnh/total/day').get().select('p.title').toArray().map(v=>v.text());
+		var trash = org.jsoup.Jsoup.connect('https://music.bugs.co.kr/genre/chart/kpop/rnh/total/day').get().select('p.title').toArray().map(v=>String(v.text()));
 		while(1){
 			if(trash.indexOf(search_word)>-1){
 				rand = Math.floor(Math.random()*100);
