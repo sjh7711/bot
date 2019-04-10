@@ -170,7 +170,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!제이플라\n";
         }
         	
-        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' || room = '현호,조홍준,박세현,김광호,형지') {//|| room =='시립대 단톡방'
+        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' || room == '현호,조홍준,박세현,김광호,형지') {//|| room =='시립대 단톡방'
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
             str += "!최근채팅\n";
         }
