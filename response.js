@@ -132,14 +132,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!당첨\n";
         }
         
-        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
+        if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0) {
             recom(r, "menu");
             return;
         } 
-        str += "!메뉴 / "
+        str += "!메뉴 / ";
 
         if (!(room == '푸드마켓' || room == '오버워치')) {
-            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0|| msg.indexOf("!식당추천") == 0|| msg.indexOf("!ㅅㄷㅊㅊ") == 0) {recom(r, "res"); return;}
+            if (msg.indexOf("!식당") == 0 || msg.indexOf("!ㅅㄷ") == 0) {recom(r, "res"); return;}
             str += "!식당 / "
         } 
         
@@ -181,20 +181,22 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!전체채팅\n";
         }
         
-        if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
-            overwatch(r);
-            return;
+        if (room != '시립대 자취생 생정'){
+        	if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
+                overwatch(r);
+                return;
+            }
+            str += "!오버워치\n";
         }
-        str += "!오버워치\n";
 
         
         if (room == 'test' || room == '푸드마켓') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r); return;}
             str += "!공지 / ";
             if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
-        	str += "!명단 / "
+        	str += "!명단 / ";
         	if(msg.indexOf("!업무")==0 || msg.indexOf("!ㅇㅁ")==0){foodbank(r); return;}
-        	str += "!업무\n"
+        	str += "!업무\n";
         }
 
         if(msg.indexOf('!주사위') == 0){
@@ -769,13 +771,13 @@ function blackjack(r){
 		
 		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-1).map(v=>v[0].join(' ')).join(' | ') +' ('+Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1]+')\n'+str );
 
-		/*
+		ㄴ
 		Flag.set('bstart2', r.room, 0);
 		Flag.set('blackjack', r.room, 0);
 		Flag.set('burst', r.room, 0);
 		Flag.set('stay', r.room, 0);
 		Flag.set('PD', r.room, 0);
-		*/
+		
 	}
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
