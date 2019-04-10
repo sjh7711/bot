@@ -143,30 +143,33 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!식당 / "
         } 
         
-        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
-        	famous(r);
-        	return;
-        } 
-        str += "!맛집\n";
-        
-        if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0){
-        	youtube(r);
-        	return;
+        if(room != '시립대 자취생 생정'){
+        	if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
+            	famous(r);
+            	return;
+            } 
+            str += "!맛집\n";
         }
-        str += "!유튜브 / ";
         
-        if(msg=='!노래'||msg=='!노래 힙'){
-        	music(r);
-        	return;
+        if(room != '시립대 자취생 생정'){
+        	if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0){
+            	youtube(r);
+            	return;
+            }
+            str += "!유튜브 / ";
+            
+            if(msg=='!노래'||msg=='!노래 힙'){
+            	music(r);
+            	return;
+            }
+            str += "!노래 / ";
+            
+            if(msg.indexOf('!제이플라')==0){
+            	jfla(r);
+            	return;
+            }
+            str += "!제이플라\n";
         }
-        str += "!노래 / ";
-        
-        if(msg.indexOf('!제이플라')==0){
-        	jfla(r);
-        	return;
-        }
-        str += "!제이플라\n";
-        	
         	
         if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' ) {//|| room =='시립대 단톡방'
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
@@ -396,6 +399,7 @@ function func(r) {
     }
 }
 
+/*
 function blackjack(r){
 	
 	var gameinfo = Flag.get('gameinfo', r.room);
@@ -776,6 +780,8 @@ function blackjack(r){
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
+
+*/
 
 function music(r) {
 	var rand = Math.floor(Math.random()*100);
