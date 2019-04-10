@@ -106,30 +106,32 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         str += "!날씨\n";
         
-        
-        if (msg == "!로또통계"){
-        	bestlotto(r);
-        	return;
-    	}
-        str += "!로또통계 / ";
-           
-        if (msg.indexOf("!행복회로") == 0) {
-            flottocheck(r);
-            return;
-        } 
-        str += "!행복회로 / ";
-            
-		if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
-            lotto(r);
-            return;
-        } 
-        str += "!로또 / ";
+        if(room != "시립대 자취생 생정"){
+        	if (msg == "!로또통계"){
+            	bestlotto(r);
+            	return;
+        	}
+            str += "!로또통계 / ";
+               
+            if (msg.indexOf("!행복회로") == 0) {
+                flottocheck(r);
+                return;
+            } 
+            str += "!행복회로 / ";
+                
+    		if (msg.indexOf("!로또") == 0 || msg.indexOf("!ㄹㄸ") == 0) {
+                lotto(r);
+                return;
+            } 
+            str += "!로또 / ";
 
-        if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
-            lottocheck(r);
-            return;
-        } 
-        str += "!당첨\n";
+            if (msg.indexOf("!당첨") == 0 || msg.indexOf("!ㄷㅊ") == 0) {
+                lottocheck(r);
+                return;
+            } 
+            str += "!당첨\n";
+        }
+        
         if (msg.indexOf("!메뉴") == 0 || msg.indexOf("!ㅁㄴ") == 0|| msg.indexOf("!메뉴추천") == 0|| msg.indexOf("!ㅁㄴㅊㅊ") == 0) {
             recom(r, "menu");
             return;
@@ -173,8 +175,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (room == 'test') {
             if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r); return;}
-            str += "!전체채팅\n"
-        } 
+            str += "!전체채팅\n";
+        }
         
         if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
             overwatch(r);
@@ -183,17 +185,14 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         str += "!오버워치\n";
 
         
-        if (room == 'test' || room == '푸드마켓' || room == '시립대 봇제작방') {
+        if (room == 'test' || room == '푸드마켓') {
             if (msg.indexOf("!공지") == 0 || msg.indexOf("!ㄱㅈ") == 0) { notice(r); return;}
-            str += "!공지\n";
-        }
-        
-        if (room == '푸드마켓' || room =='test'){
-        	if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
-        	str += "!명단\n"
+            str += "!공지 / ";
+            if(msg.indexOf("!명단")==0 || msg.indexOf("!ㅁㄷ")==0){banklist(r); return;}
+        	str += "!명단 / "
         	if(msg.indexOf("!업무")==0 || msg.indexOf("!ㅇㅁ")==0){foodbank(r); return;}
         	str += "!업무\n"
-        } 
+        }
 
         if(msg.indexOf('!주사위') == 0){
         	randomnumber(r);
@@ -203,7 +202,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	
         
         if(room=='test'){
-        	
         	if (msg.indexOf("!파일삭제")==0){
         		deleteimage(r);
         	}str += "!파일삭제\n";
@@ -270,7 +268,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
 
         if (msg=="/기능") {
-            replier.reply("!기능으로 작동합니다 "+es+'\n'+str);
+            replier.reply("!기능으로 작동합니다 "+es+'\n'+str+'\n자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
         } 
         
@@ -288,7 +286,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
         	}
         	
-        	if (msg == "!블랙잭" || msg == "!ㅂㄹㅈ" || Flag.get('bstart', r.room) == 1 || Flag.get('bstart1', r.room) == 1 ||  Flag.get('bstart2', r.room) ==  1 ){
+        	if (msg == "!블랙잭" || msg == "!ㅂㄹㅈ"){
             	blackjack(r);
             }
         	
@@ -326,7 +324,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         str += "!추첨\n";
         
         if (msg == "!기능") {
-            replier.reply(str+es+"\n설명이 필요하면 !기능 오버워치 처럼 입력하세요.\n초성만 입력해도 기능이 작동합니다"); 
+            replier.reply(str+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
         }
         
@@ -399,28 +397,49 @@ function func(r) {
 }
 
 function blackjack(r){
-	if( (Flag.get('gameinfo', r.room).start == 1 || Flag.get('gameinfo', r.room).start1 == 1 || Flag.get('gameinfo', r.room).start2 ==  1) && r.msg == '!강제종료' && Flag.get('blackjack', r.room).length > 0 ){
+	
+	var gameinfo = Flag.get('gameinfo', r.room);
+	
+	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!강제종료' ){
 		var gameinfo = {
 				start : 0,
 				start1 : 0,
 				start2 : 0,
-				suggest : '',
-				starttime : '',
-			}
+				start3 : 0
+		};
 		Flag.set("gameinfo", r.room , gameinfo);
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 		return;
 	}
 	
 	if( r.msg == '!블랙잭'){
-		if(Flag.get('gameinfo', r.room).start == 0 && Flag.get('gameinfo', r.room).start1 == 0 &&  Flag.get('gameinfo', r.room).start2 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
+		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
-			var gameinfo = Flag.get('gameinfo', r.room);
-			gameinfo.player = {
-					name : [r.sender],
+			var gameinfo = {
+					suggest : r.sender,
+					starttime : new Date().getTime(),
+					playerlist = [],
+					betlist = [],
+					burstcount : 0,
+					staycount : 0,
+					start : 1,
+					start1 : 0,
+					start2 : 0,
+					start3 : 0,
+			};
+			gameinfo.dealer = {
 					card : [],
 					sum : 0
-				}
+			};
+			gameinfo.playerlist.push(r.sender);
+			gameinfo.player0 = {
+					name : r.sender,
+					card : [],
+					bet : 0,
+					sum : 0,
+					splitcount : 0,
+					insurance : 0
+			};
 			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
 		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
@@ -432,14 +451,30 @@ function blackjack(r){
 		}
 	}
 	
-	if (r.msg == '참가' && Flag.get('gameinfo', r.room).start == 1 ){//참가모집중
-        if( Flag.get('blackjack', r.room).map(v=>v[0]).indexOf(r.sender)==-1 && Flag.get('blackjack', r.room).length < 3 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){//
-        	var player = {
-					name : [r.sender],
-					card : [],
-					sum : 0
-			}
-            Flag.get("blackjack", r.room).push(temp);
+	if (r.msg == '참가' && &&  gameinfo.start == 1 ){//참가모집중
+        if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){
+        	if(gameinfo.playercount == 1 && gameinfo.player0.name[0] != r.sender ){
+    			gameinfo.playerlist.push(r.sender);
+        		gameinfo.player1 = {
+    					name : r.sender,
+    					card : [],
+    					bet : 0,
+    					sum : 0,
+    					splitcount : 0,
+    					insurance : 0
+    					
+    				}
+        	} else if ( gameinfo.player0.name[0] != r.sender && gameinfo.player1.name[0] != r.sender) {
+    			gameinfo.playerlist.push(r.sender);
+        		gameinfo.player2 = {
+    					name : r.sender,
+    					card : [],
+    					bet : 0,
+    					sum : 0,
+    					splitcount : 0,
+    					insurance : 0
+    				}
+        	}
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
         } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
         	r.replier.reply('돈이 부족합니다.');
@@ -447,59 +482,44 @@ function blackjack(r){
         }
     }
 	
-	if ( Flag.get("bstart", r.room) == 1 && (Flag.get('blackjack', r.room).length == 3 || (r.msg == '시작' && Flag.get('bsuggest', r.room) ==r.sender)) ){
-		if(Flag.get('blackjack', r.room).length > 0 ){
-			Flag.set('pcount', r.room, Flag.get('blackjack', r.room).length);
-			var figure = ['♣','♠','♦','♥'];
-			var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
-			var temp = [];
-			var cards = [];
-			for(var i = 0 ; i< 4 ; i++){
-				for(var j = 0 ; j < 13 ; j++){
-					temp.push([figure[i], num[j]]);
-				}
+	if ( gameinfo.start == 1 && gameinfo.playerlist.length == 3 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 ) ){
+		var figure = ['♣','♠','♦','♥'];
+		var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
+		var temp = [];
+		var cards = [];
+		for(var i = 0 ; i< 4 ; i++){
+			for(var j = 0 ; j < 13 ; j++){
+				temp.push([figure[i], num[j]]);
 			}
-			for(var i = 0 ; i < 52 ; i++){
-				var rand = Math.floor(Math.random()*temp.length);
-				cards.push(temp[rand]);
-				temp.splice(rand, 1);
-			}
-			Flag.set('cards', r.room, cards);//카드셔플
-			
-			var temp = [];
-			for( var j = 0 ; j < 2 ; j++){
-				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				temp.push(Flag.get('cards', r.room).splice(rand,1));
-			}
-			Flag.set('PD', r.room, temp);//딜러카드
-			
-			Flag.set('bstart', r.room, 0);
-			Flag.set('bstart1', r.room, 1);//게임시작
-			Flag.set('bcount', r.room, 0);
-			r.replier.reply(Flag.get('pcount', r.room)+'명이 참가했습니다. 게임을 시작합니다. 1만원 이상 50만원 이하로 배팅액을 정해주세요.');
 		}
-	}
+		for(var i = 0 ; i < 52 ; i++){
+			var rand = Math.floor(Math.random()*temp.length);
+			cards.push(temp[rand]);
+			temp.splice(rand, 1);
+		}
+		Flag.set('cards', r.room, cards);//카드셔플
 		
-	if( Flag.get('bstart1', r.room)==1 || Flag.get('bstart2', r.room)==1){
-		var num = -1;
-		for( var i in Flag.get('blackjack', r.room)){
-			if(Flag.get('blackjack', r.room)[i][0] == r.sender){
-				num = i;
-			}
+		for( var j = 0 ; j < 2 ; j++){
+			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+			gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1));
 		}
-	}//플레이어목록에 있는 번호
+		
+		gameinfo.start = 0;
+		gameinfo.start1 = 1;
+		r.replier.reply(gameinfo.playerlist.length+'명이 참가했습니다. 게임을 시작합니다. 1만원 이상 50만원 이하로 배팅액을 정해주세요.');	
+	}
 	
-	if( Flag.get('bstart1', r.room)==1 && Flag.get('blackjack', r.room).length > 0 && Flag.get('bcount', r.room) < Flag.get('pcount', r.room) ){
-		if( !isNaN(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && Flag.get('blackjack', r.room)[num][0] == r.sender && Flag.get('blackjack', r.room)[num][1] == undefined ){
-			var temp = Flag.get('blackjack', r.room);
-			temp[num].push(Number(r.msg));
+	var num = gameinfo.playerlist.indexOf(r.sender);
+	
+	if( gameinfo.start1 == 1 && gameinfo.playerbetcount < gameinfo.playercount ){
+		if( !isNaN(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
 			for( var j = 0 ; j < 2 ; j++){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				temp[num].push(Flag.get('cards', r.room).splice(rand,1));
+				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1));
 			}
-			Flag.set('blackjack', r.room, temp);
-			r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님이 '+Flag.get('blackjack', r.room)[num][1]+'원을 배팅했습니다.');
-			Flag.set('bcount', r.room, Flag.get('bcount', r.room)+1);
+			gameinfo['player'+num].bet = Number(r.msg);
+			r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅했습니다.');
+			gameinfo.bet
 		}
 	}
 	
