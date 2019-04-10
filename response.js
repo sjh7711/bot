@@ -143,13 +143,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!식당 / "
         } 
         
-        if(room != '시립대 자취생 생정'){
-        	if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
-            	famous(r);
-            	return;
-            } 
-            str += "!맛집\n";
-        }
+
+        if(msg.indexOf("!맛집")==0 || msg.indexOf("!ㅁㅈ")==0){
+        	famous(r);
+        	return;
+        } 
+        str += "!맛집\n";	
         
         if(room != '시립대 자취생 생정'){
         	if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0){
