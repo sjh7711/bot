@@ -150,7 +150,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         str += "!맛집\n";	
         
-        if(room != '시립대 자취생 생정'){
+        if(room != '시립대 자취생 생정'){
         	if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0){
             	youtube(r);
             	return;
@@ -180,7 +180,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!전체채팅\n";
         }
         
-        if (room != '시립대 자취생 생정'){
+        if (room != '시립대 자취생 생정'){
         	if (msg.indexOf("!오버워치") == 0 || msg.indexOf("!ㅇㅂㅇㅊ") == 0) {
                 overwatch(r);
                 return;
