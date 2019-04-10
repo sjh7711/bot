@@ -186,6 +186,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 return;
             }
             str += "!오버워치\n";
+            
+            if(msg.indexOf('!주사위') == 0){
+            	randomnumber(r);
+            	return;
+            }
+            str+="!주사위\n";
         }
 
         
@@ -197,13 +203,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	if(msg.indexOf("!업무")==0 || msg.indexOf("!ㅇㅁ")==0){foodbank(r); return;}
         	str += "!업무\n";
         }
-
-        if(msg.indexOf('!주사위') == 0){
-        	randomnumber(r);
-        	return;
-        }
-        str+="!주사위\n";
-    	
         
         if(room=='test'){
         	if (msg.indexOf("!파일삭제")==0){
