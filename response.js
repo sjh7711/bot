@@ -1718,7 +1718,7 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 			Flag.set("sel0", r.room, 1);
 		}
 		
-		if(Flag.get("selsender", r.room) == r.sender && r.msg < 5 && 0 < r.msg && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 0){
+		if(Flag.get("selsender", r.room) == r.sender && r.msg < 6 && 0 < r.msg && Flag.get("sel0", r.room) == 1 && Flag.get("sel1", r.room) == 0){
 			Flag.set("selnum", r.room , r.msg)
 			r.replier.reply(Flag.get("selnum", r.room)+"명을 뽑습니다. 참여할 사람은 [참가] 를 입력해주세요. 추첨을 제안한 사람이 [!마감] 을 입력하면 마감됩니다. 90초 이후엔 누구든 [!마감]으로 마감할 수 있습니다.");
 			Flag.set("sel1", r.room, 1);
