@@ -170,7 +170,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!제이플라\n";
         }
         	
-        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' ) {//|| room =='시립대 단톡방'
+        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' || room = '현호,조홍준,박세현,김광호,형지') {//|| room =='시립대 단톡방'
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
             str += "!최근채팅\n";
         }
@@ -279,7 +279,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
-        if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구'  ) && msg == "!야구" ) || msg == "!야구방"  ){
+        if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='현호,조홍준,박세현,김광호,형지'  ) && msg == "!야구" ) || msg == "!야구방"  ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
@@ -296,7 +296,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	str += '!블랙잭\n';
         }
         
-        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' ){
+        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='현호,조홍준,박세현,김광호,형지' ){
         	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
         		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
         	}
@@ -523,22 +523,23 @@ function blackjack(r){
 			}
 			gameinfo['player'+num].bet = Number(r.msg);
 			r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅했습니다.');
-			gameinfo.bet
+			gameinfo.betlist.push(r.sender);
 		}
 	}
 	
-	if(Flag.get('bcount', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart1', r.room)==1){
-		r.replier.reply('딜러의 카드 : ' + Flag.get('PD', r.room)[0].map(v=>v.join(' ')) + ' | ? ' );
-		var temp=Flag.get('blackjack', r.room);
-		for( var i in Flag.get('blackjack', r.room)){
-			r.replier.reply(temp[i].slice(0,1)+'의 카드 : ' + temp[i].slice(2).map(v=>v[0].join(' ')).join(' | '));
+	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
+		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
+		for( var j in gameinfo.playerlist){
+			for( var i in gameinfo['player'+j].card ){
+				r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+j].card.map(v=>v.join(' ')).join(' | '));
+			}
 		}
-		Flag.set('bstart1', r.room, 0);
-		Flag.set('bstart2', r.room, 1);//게임시작
-		Flag.set('endp', r.room, 0);
+		
+		gameinfo.start1 = 0;
+		gameinfo.start2 = 1;
 	}
 	
-	if( Flag.get('bstart2', r.room)==1 && Flag.get('blackjack', r.room).length > 0 ){
+	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
 		if( r.msg == '스플릿'){
 			
 		}
@@ -767,20 +768,11 @@ function blackjack(r){
 			}
 		}
 		
-		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-1).map(v=>v[0].join(' ')).join(' | ') +' ('+Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1]+')\n'+str );
-
-		ㄴ
-		Flag.set('bstart2', r.room, 0);
-		Flag.set('blackjack', r.room, 0);
-		Flag.set('burst', r.room, 0);
-		Flag.set('stay', r.room, 0);
-		Flag.set('PD', r.room, 0);
-		
+		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-1).map(v=>v[0].join(' ')).join(' | ') +' ('+Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1]+')\n'+str );		
 	}
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
-
 */
 
 function music(r) {
