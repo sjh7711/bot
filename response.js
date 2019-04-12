@@ -170,7 +170,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!제이플라\n";
         }
         	
-        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' || room == '현호,조홍준,박세현,김광호,형지') {//|| room =='시립대 단톡방'
+        if (room == '시립대 전전컴 톡방' || room=='test' || room=='시립대 봇제작방' || room == '단톡방') {//|| room =='시립대 단톡방'
             if (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!ㅊㄱㅊㅌ") == 0) { recentchat(r); return;}
             str += "!최근채팅\n";
         }
@@ -279,7 +279,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		saveImage(r);
     	}
         
-        if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='현호,조홍준,박세현,김광호,형지'  ) && msg == "!야구" ) || msg == "!야구방"  ){
+        if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='단톡방'  ) && msg == "!야구" ) || msg == "!야구방"  ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
@@ -296,7 +296,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	str += '!블랙잭\n';
         }
         
-        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='현호,조홍준,박세현,김광호,형지' ){
+        if(  room =='test' || room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='단톡방' ){
         	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
         		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
         	}
