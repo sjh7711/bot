@@ -2213,7 +2213,7 @@ function lottocheck(r) {
 				}
 			}
 			if(fail.length > 50000){
-				r.replier.reply(result+'\n'+fail.substr(0,50000));
+				r.replier.reply(result);
 			} else {
 				r.replier.reply(result+'\n'+fail);
 			}
