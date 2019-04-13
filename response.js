@@ -2211,17 +2211,17 @@ function lottocheck(r) {
 		}
 		
 		for(var i=0; i<temp.length; i++){
-			if( lottodata[i][14] < 3){
+			if( temp[i][14] < 3){
 				fail+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
-			} else if (lottodata[i][14] == 3) {
+			} else if (temp[i][14] == 3) {
 				fifth+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
-			} else if (lottodata[i][14] == 4) {
+			} else if (temp[i][14] == 4) {
 				fourth+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
-			} else if (lottodata[i][14] == 5) {
+			} else if (temp[i][14] == 5) {
 				third+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
-			} else if (lottodata[i][14] == 6) {
+			} else if (temp[i][14] == 6) {
 				first+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
-			} else if (lottodata[i][14] == 7) {
+			} else if (temp[i][14] == 7) {
 				second+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
