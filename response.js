@@ -2212,7 +2212,12 @@ function lottocheck(r) {
 					result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
 				}
 			}
-			r.replier.reply(result+'\n'+fail);
+			if(fail.length > 50000){
+				r.replier.reply(result+'\n'+fail.substr(0,50000));
+			} else {
+				r.replier.reply(result+'\n'+fail);
+			}
+			
 		}
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
