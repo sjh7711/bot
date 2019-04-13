@@ -1319,7 +1319,7 @@ function weather(r){
 			        		}
 		        		}else{//와룡, 영산, 같은 주소가 여러군데 일 때  중구
 		        			var name = [];
-			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text());
+			        		name.push('1. '+temp.select('div.mg_cont.clear.admin_area').select('div.wrap_tit').select('span').text()+' ');
 			        		var i = 1;
 			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text().replace('..', '')+' '));
 			        		if(navername != undefined){
