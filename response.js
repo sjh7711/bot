@@ -1073,7 +1073,7 @@ function checkimage(r){
 	}
 	Flag.set('imagelist', r.room, temp);
 	var i = 1;
-	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v.substr(12)).join('\n'));
 }
 
 function loadimage(r){
@@ -1091,7 +1091,7 @@ function loadimage(r){
 		}
 		Flag.set('imagelist', r.room, temp);
 		var i = 1;
-		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v).join('\n'));
+		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v.substr(12)).join('\n'));
 		Flag.set('image', r.room, 1);
 	} else {
 		if(!isNaN(r.msg)){
