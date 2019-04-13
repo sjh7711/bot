@@ -2124,15 +2124,16 @@ function flottocheck(r) {
 	if(all == 0){
 		r.replier.reply('로또를 뽑은 뒤 다시 시도하세요.');
 	}
-	var result = '저번 주 당첨 번호\n'+win.join(' ')+'\n\n';
+	var result = '';
 	result+='1등 확률 : '+Math.floor(first/all*100000000000)/1000000000+"%("+first+")"+"\n";
 	result+='2등 확률 : '+Math.floor(second/all*100000000000)/1000000000+"%("+second+")"+"\n";
 	result+='3등 확률 : '+Math.floor(third/all*100000000000)/1000000000+"%("+third+")"+"\n";
 	result+='4등 확률 : '+Math.floor(fourth/all*100000000000)/1000000000+"%("+fourth+")"+"\n";
-	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")";
+	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")"+'\n\n'+es;
+	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
 	
 	
-	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑은거라면?(개수 : '+lottodata.length+')\n'+result+'\n\n'+es+
+	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑혔다면?(개수 : '+lottodata.length+')\n'+result+
 			'1등 개수 : '+first+'\n'+str1+'\n'+
 			'2등 개수 : '+second+'\n'+str2+'\n'+
 			'3등 개수 : '+third+'\n'+str3+'\n'+
