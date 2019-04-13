@@ -2123,6 +2123,7 @@ function flottocheck(r) {
 	var all = lottodata.length;
 	if(all == 0){
 		r.replier.reply('로또를 뽑은 뒤 다시 시도하세요.');
+		return;
 	}
 	var result = '';
 	result+='1등 확률 : '+Math.floor(first/all*100000000000)/1000000000+"%("+first+")"+"\n";
