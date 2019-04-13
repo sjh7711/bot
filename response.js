@@ -1957,15 +1957,16 @@ function allbestlotto(r) {
 	var three = D.selectForArray('lottoresult', null, 'count == 5 ',null,  {orderBy:"class asc"}).length;
 	var two = D.selectForArray('lottoresult', null, 'count == 7 ',null,  {orderBy:"class asc"}).length;
 	var one = D.selectForArray('lottoresult', null, 'count == 6', null, {orderBy:"class asc"}).length;
-	for(var i=0; i<temp.length; i++){
-		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
-	}
-	result+='로또 뽑은 횟수 : '+all+'\n'
+	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+"\n"+es;
+	
+	for(var i=0; i<temp.length; i++){
+		result+= temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+	}
 	r.replier.reply(result);
 }
 
@@ -1978,15 +1979,16 @@ function bestlotto(r) {
 	var three = D.selectForArray('lottoresult', null, 'count == 5 and room=?', [r.room], {orderBy:"class asc"}).length;
 	var two = D.selectForArray('lottoresult', null, 'count == 7 and room=?', [r.room], {orderBy:"class asc"}).length;
 	var one = D.selectForArray('lottoresult', null, 'count == 6 and room=?', [r.room], {orderBy:"class asc"}).length;
-	for(var i=0; i<temp.length; i++){
-		result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
-	}
-	result+='로또 뽑은 횟수 : '+all+'\n'
+	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+"\n"+es;
+	
+	for(var i=0; i<temp.length; i++){
+		result+= temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+	}
 	r.replier.reply(result);
 }
 
@@ -2185,40 +2187,51 @@ function lottocheck(r) {
 			}
 		}
 		
-		var temp = D.selectForArray('lottoresult',null,'room=? and num=?', [r.room, lastnum]);
 		var result=date+" "+lastnum+"회차\n당첨번호 : "+win.join(' ')+"/"+bonus+"\n\n"+es;
-		var fail = ''
-		if ( temp.length == 0 ){
-			r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
-		} else if ( typeof r.msg.split(" ")[1] != 'undefined' ) { 
-			var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room , r.sender]);
+		var fail = '';
+		
+		var first = '';
+		var second = '';
+		var third = '';
+		var fourth = '';
+		var fifth = '';
+		
+		if( r.msg == "!당첨"){
+			var temp = D.selectForArray('lottoresult',null,'room=? and num=?', [r.room, lastnum]);
 			if ( temp.length == 0 ){
-				r.replier.reply(result+r.msg.split(" ")[1]+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
-			}else{
-				for(var i=0; i<temp.length; i++){
-					if(lottodata[i][14] < 3){
-						fail+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
-					} else {
-						result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
-					}
-				}
-				r.replier.reply(result);
+				r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
+				return;
 			}
-		} else{
-			for(var i=0; i<temp.length; i++){
-				if(lottodata[i][14] < 3){
-					fail+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
-				} else {
-					result+=temp[i][1]+"|생성:"+temp[i][2]+"."+temp[i][3]+"."+temp[i][4]+" "+temp[i][5]+":"+temp[i][6]+" \n"+temp[i][8]+" "+temp[i][9]+" "+temp[i][10]+" "+temp[i][11]+" "+temp[i][12]+" "+temp[i][13]+" | "+temp[i][15]+"\n\n";
-				}
+		} else if ( r.msg.substr(4).length > 0){
+			var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room , r.msg.substr(4)]);
+			if ( temp.length == 0 ){
+				r.replier.reply(result+r.msg.substr(4)+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
+				return;
 			}
-			if(fail.length > 50000){
-				r.replier.reply(result);
-			} else {
-				r.replier.reply(result+'\n'+fail);
-			}
-			
 		}
+		
+		for(var i=0; i<temp.length; i++){
+			if( lottodata[i][14] < 3){
+				fail+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+			} else if (lottodata[i][14] == 3) {
+				fifth+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+			} else if (lottodata[i][14] == 4) {
+				fourth+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+			} else if (lottodata[i][14] == 5) {
+				third+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+			} else if (lottodata[i][14] == 6) {
+				first+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+			} else if (lottodata[i][14] == 7) {
+				second+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+			} 
+		}
+		
+		if(fail.length > 50000){
+			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'\n'+first+'\n'+second+'\n'+third+'\n'+fourth+'\n'+fifth+'\n');
+		} else {
+			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'\n'+first+'\n'+second+'\n'+third+'\n'+fourth+'\n'+fifth+'\n'+'\n\n'+fail);
+		}
+		
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
