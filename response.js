@@ -1965,7 +1965,7 @@ function allbestlotto(r) {
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+"\n"+es;
 	
 	for(var i=0; i<temp.length; i++){
-		result+= temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
 	}
 	r.replier.reply(result);
 }
@@ -1987,7 +1987,7 @@ function bestlotto(r) {
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+"\n"+es;
 	
 	for(var i=0; i<temp.length; i++){
-		result+= temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
 	}
 	r.replier.reply(result);
 }
@@ -2147,9 +2147,9 @@ function lottocheck(r) {
 		var bonus = raw.select('p').get(2).text();
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 
-		var temp=D.selectForArray('lottoresult','num');
+		var temp=D.selectForArray('lottoresult', 'num', "num=?", [lastnum]).length;
 		
-		if(temp[temp.length-1]!=lastnum*1){
+		if(temp == 0 ){
 			var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
 			for(var i=0;i<lottodata.length;i++){
 				var count = 0;
@@ -2212,24 +2212,24 @@ function lottocheck(r) {
 		
 		for(var i=0; i<temp.length; i++){
 			if( temp[i][14] < 3){
-				fail+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+				fail+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} else if (temp[i][14] == 3) {
-				fifth+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+				fifth+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} else if (temp[i][14] == 4) {
-				fourth+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+				fourth+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} else if (temp[i][14] == 5) {
-				third+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+				third+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} else if (temp[i][14] == 6) {
-				first+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+				first+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} else if (temp[i][14] == 7) {
-				second+=temp[i][1]+"|생성:"+temp.slice(2,5).join('.')+" "+temp.slice(5,7).join(':')+" \n"+temp.slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
+				second+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
-		
+		result = result+'\n'+first+'\n'+second+'\n'+third+'\n'+fourth+'\n'+fifth+'\n';
 		if(fail.length > 50000){
-			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'\n'+first+'\n'+second+'\n'+third+'\n'+fourth+'\n'+fifth+'\n');
+			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result);
 		} else {
-			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'\n'+first+'\n'+second+'\n'+third+'\n'+fourth+'\n'+fifth+'\n'+'\n\n'+fail);
+			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'\n\n'+fail);
 		}
 		
 	}catch(e){
