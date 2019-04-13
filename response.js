@@ -2187,7 +2187,7 @@ function lottocheck(r) {
 			}
 		}
 		
-		var result=date+" "+lastnum+"회차\n당첨번호 : "+win.join(' ')+"/"+bonus+"\n"+es;
+		var result=date+" "+lastnum+"회차\n당첨번호 : "+win.join(' ')+"/"+bonus+"\n";
 		var fail = '';
 		
 		var first = '';
@@ -2225,11 +2225,11 @@ function lottocheck(r) {
 				second+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
-		result = result+'\n1등\n'+first+'\n2등\n'+second+'\n3등\n'+third+'\n4등\n'+fourth+'\n5등\n'+fifth;
+		result = result+'뽑은 개수 : '+temp.length+es+'\n1등\n'+first+'\n2등\n'+second+'\n3등\n'+third+'\n4등\n'+fourth+'\n5등\n'+fifth;
 		if(fail.length > 50000){
-			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result);
+			r.replier.reply(result);
 		} else {
-			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'꽝\n'+fail);
+			r.replier.reply(result+'꽝\n'+fail);
 		}
 		
 	}catch(e){
