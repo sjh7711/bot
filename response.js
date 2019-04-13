@@ -2225,11 +2225,11 @@ function lottocheck(r) {
 				second+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
-		result = result+'\n1등\n'+first+'\n2등\n'+second+'\n3등\n'+third+'\n4등\n'+fourth+'\n5등\n'+fifth+'\n';
+		result = result+'\n1등\n'+first+'\n2등\n'+second+'\n3등\n'+third+'\n4등\n'+fourth+'\n5등\n'+fifth;
 		if(fail.length > 50000){
 			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result);
 		} else {
-			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'\n꽝\n'+fail);
+			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result+'꽝\n'+fail);
 		}
 		
 	}catch(e){
