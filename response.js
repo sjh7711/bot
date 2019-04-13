@@ -1159,7 +1159,7 @@ function randomnumber(r){
 function saveImage(r){
 	file = 'storage/emulated/0/FTP/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'image save succes\n'+r.sender+' / '+r.room+'\n'+time().now);
+	Api.replyRoom('test', 'image save success\n'+r.sender+' / '+r.room+'\n'+time().now);
 }
 //new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
 //File = new java.io.file
