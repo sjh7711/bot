@@ -2225,7 +2225,7 @@ function lottocheck(r) {
 				second+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
-		result = result+'\n'+first+'\n'+second+'\n'+third+'\n'+fourth+'\n'+fifth+'\n';
+		result = result+'\n1등 : '+first+'\n2등 : '+second+'\n3등 : '+third+'\n4등 : '+fourth+'\n5등 : '+fifth+'\n';
 		if(fail.length > 50000){
 			r.replier.reply('뽑은 개수 : '+temp.length+'\n'+result);
 		} else {
