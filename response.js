@@ -1255,7 +1255,7 @@ function weather(r){
 	    		if ( temp.length > 1 || (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn')){ //네이버에 날씨검색이 바로 안될 때 1
 	    			if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때 ex) 고성, 광주
 			        	var i=0; //name의 번호에 필요
-			        	var navername = temp.map(v=> (1+i++) +". "+ v.text()); //장소명들
+			        	var navername = temp.map(v=> (1+i++) +". "+ v.text()+' '); //장소명들
 	    			}
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){
@@ -1338,7 +1338,8 @@ function weather(r){
 					        	var loc1 = temp.substr(0, temp.lastIndexOf("읍 ")+1);
 					        	var loc2 = temp.substr(0, temp.lastIndexOf("동 ")+1);  //각 이름들의 주소
 					        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);
-					        	var loc4 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+					        	var loc4 = temp.substr(0, temp.lastIndexOf("군 ")+1);
+					        	var loc5 = temp.substr(0, temp.lastIndexOf("구 ")+1);
 				        		if( loc.length > 0){
 				        			wantplace=loc;
 				        		} else if (loc1.length > 0){
@@ -1349,6 +1350,8 @@ function weather(r){
 				        			wantplace = loc3;
 				        		} else if(loc4.length > 0){
 				        			wantplace = loc4;
+				        		} else if(loc5.length > 0){
+				        			wantplace = loc5;
 				        		}
 				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
