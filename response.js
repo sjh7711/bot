@@ -2133,7 +2133,7 @@ function flottocheck(r) {
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
 	
 	
-	r.replier.reply(r.sender+'님이 이번주에 뽑은 번호가 저번주에 뽑혔다면?(개수 : '+lottodata.length+')\n'+result+
+	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result+
 			'1등 개수 : '+first+'\n'+str1+'\n'+
 			'2등 개수 : '+second+'\n'+str2+'\n'+
 			'3등 개수 : '+third+'\n'+str3+'\n'+
