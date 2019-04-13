@@ -1233,7 +1233,7 @@ function checkstatus(r){
 }
 
 function weather(r){
-	I.register("weatherSelect",r.room,r.sender,function(input){
+	I.register(r.room,r.sender,function(input){
 		try{
 			var want = r.msg.substr(4);
 			var link1 = ""; // 날씨 검색화면
