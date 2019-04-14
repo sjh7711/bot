@@ -192,11 +192,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             	return;
             }
             str+="!주사위\n";
-            
-            if ( msg.indexOf("!포토") == 0){
-            	googleimage(r);
-            }
-            str+="!포토\n";
         }
         
        
@@ -1123,13 +1118,13 @@ function loadimage(r){
 		}
 	}
 }
-
+/*
 function googleimage(r){
 	var raw = org.jsoup.Jsoup.connect('https://www.google.com/search?q='+r.msg.substr(4)+'&tbm=isch&sa=X&ved=0ahUKEwiOifW47s_hAhWmGqYKHTRJC7QQ_AUIDigB&biw=1562&bih=776').get();
 	var link=JSON.parse(raw.select('div.rg_meta.notranslate').get(0).text()).ou;
 	r.replier.reply(link);
 }
-
+*/
 function deleteimage(r){
 	var temp = java.io.File("/sdcard/FTP").listFiles();
 	var delist = [];
