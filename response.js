@@ -196,6 +196,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             if ( msg.indexOf("!포토") == 0){
             	googleimage(r);
             }
+            str+="!포토\n";
         }
         
        
@@ -408,6 +409,8 @@ function func(r) {
 [!야구방]을 통해 야구 전용방에 들어갈 수 있습니다.')
     } else if (r.msg.split(" ")[1] == "주사위"){
     	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
+    } else if (r.msg.split(" ")[1] == "포토"){
+    	r.replier.reply("[!포토 사진이름]으로 검색하면 구글 이미지 검색 첫번째 사진을 보여줍니다.");
     }
 }
 
