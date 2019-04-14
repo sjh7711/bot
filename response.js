@@ -1102,6 +1102,9 @@ function loadimage(r){
 			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
 			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
 			Flag.set('image', r.room, 0);
+		} else {
+			r.replier.reply('숫자를 입력하세요.');
+			Flag.set('image', r.room, 0);
 		}
 	}
 }
