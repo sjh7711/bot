@@ -192,7 +192,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             	return;
             }
             str+="!주사위\n";
+            
+            if ( msg.indexOf("!포토") == 0){
+            	googleimage(r);
+            }
         }
+        
+       
 
         
         if (room == 'test' || room == '푸드마켓') {
