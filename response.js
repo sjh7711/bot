@@ -326,6 +326,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
         
+        if(msg =="/채굴" ||msg =="/채광" ||msg =="!채굴" ||msg =="!채광" ){
+        	if(Math.floor(Math.random()*100) < 10){
+        		replier.reply("System : "+sender+"의 포인트 "+Math.floor(Math.random()*40)+" 증가!");
+        	}
+        }
+        
         if (msg == "!기능") {
             replier.reply(str+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
@@ -1107,6 +1113,10 @@ function loadimage(r){
 			Flag.set('image', r.room, 0);
 		}
 	}
+}
+
+function googleimage(r){
+	org.jsoup.Jsoup
 }
 
 function deleteimage(r){
