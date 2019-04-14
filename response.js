@@ -1083,7 +1083,7 @@ function checkimage(r){
 	}
 	Flag.set('imagelist', r.room, temp);
 	var i = 1;
-	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + v.substr(12)).join('\n'));
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
 }
 
 function loadimage(r){
