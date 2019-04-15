@@ -330,7 +330,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if(msg =="/채굴" ||msg =="/채광" ||msg =="!채굴" ||msg =="!채광"||msg =="/개굴"||msg =="!개굴" ){
         	if(Math.floor(Math.random()*100) < 16){
-        		replier.reply("System : "+sender+"의 포인트 "+10+Number(Math.floor(Math.random()*25))+" 증가!");
+        		replier.reply("System : "+sender+"의 포인트 "+Number(10)+Number(Math.floor(Math.random()*25))+" 증가!");
         	}
         }
         
