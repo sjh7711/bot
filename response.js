@@ -804,8 +804,8 @@ function music(r) {
 			break;
 		}
 	}
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').toArray().map(v=>v.select('h3.yt-lockup-title').select('a').attr("abs:href"));
-	r.replier.reply(link[0]);
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
+	r.replier.reply(link);
 	return;
 }
 function youtube(r) {
@@ -813,12 +813,12 @@ function youtube(r) {
 	if(r.msg.split(' ')[0]=='!yt'){
 		search_word = r.msg.substr(4);
 	}
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').toArray().map(v=>v.select('h3.yt-lockup-title').select('a').attr("abs:href"));
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
 	if(link.length == 0 ){
 		r.replier.reply('검색결과가 없습니다.');
 		return;
 	}
-	r.replier.reply(link[0]);
+	r.replier.reply(link);
 	return;
 }
 
