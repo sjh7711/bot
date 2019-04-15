@@ -813,7 +813,7 @@ function youtube(r) {
 	if(r.msg.split(' ')[0]=='!yt'){
 		search_word = r.msg.substr(4);
 	}
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAMSAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
 	if(link.length == 0 ){
 		r.replier.reply('검색결과가 없습니다.');
 		return;
