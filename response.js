@@ -328,9 +328,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
         
-        if(msg =="/채굴" ||msg =="/채광" ||msg =="!채굴" ||msg =="!채광" ){
-        	if(Math.floor(Math.random()*100) < 10){
-        		replier.reply("System : "+sender+"의 포인트 "+Math.floor(Math.random()*40)+" 증가!");
+        if(msg =="/채굴" ||msg =="/채광" ||msg =="!채굴" ||msg =="!채광"||msg =="/개굴"||msg =="!개굴" ){
+        	if(Math.floor(Math.random()*100) < 16){
+        		replier.reply("System : "+sender+"의 포인트 "+10+Math.floor(Math.random()*25)+" 증가!");
         	}
         }
         
