@@ -334,6 +334,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         }
         
+        if(room =='시립대 전전컴 톡방'){
+        	if(Math.floor(Math.random()*1000) < 3){
+        		replier.reply("System : "+sender+"의 포인트 "+Number(10+Math.floor(Math.random()*25))+" 증가!");
+        	}
+        }
+        
         if (msg == "!기능") {
             replier.reply(str+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
