@@ -1918,7 +1918,7 @@ function recentchat(r) {
 function allchat(r) { 
 	try{
 		var temp = r.msg.substr(5);
-		var temp1 = '';
+		var temp1 = r.msg.substr(5);
 		var temp2 = '';
 		var temp3 = '';
 		if(temp.indexOf(',')>0){
