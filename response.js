@@ -1933,10 +1933,10 @@ function allchat(r) {
 	    var list = [];
 	    var list1 = '';
 	    var list2 = ['time', 'msg'];
-	    if (temp2.length == 0){
+	    if (temp2 != ''){
 	    	list2.push('name');
 	    }
-	    if (temp3.length == 0){
+	    if (temp3 != ''){
 	    	list2.push('room');
 	    } 
 	    
