@@ -1909,13 +1909,16 @@ function recentchat(r) {
 function allchat(r) { 
 	try{
 		var temp = r.msg.substr(5);
-		var temp1 = 12;
+		var temp1 = '';
 		var temp2 = '';
 		var temp3 = '';
 		if(r.msg.indexOf(',')>0){
 			var temp1 = temp.split(',')[0]; // 개수
 			var temp2 = temp.split(',')[1]; // 이름
 			var temp3 = temp.split(',')[2]; // 방
+		}
+		if(temp1==''){
+			temp1=12;
 		}
 	    
 	    var list = [];
