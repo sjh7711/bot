@@ -382,7 +382,7 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "식당") {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "유튜브") {
-        r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다.");
+        r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다. [!유투브] 나 [!yt]도 작동합니다. !로 시작하면 관련성이 가장 높은 영상을 보여주고 [/유튜브 제목] 과 같이 검색하면 조회수가 가장 높은 영상을 보여줍니다.");
     } else if (r.msg.split(" ")[1] == "노래") {
         r.replier.reply("벅스 TOP100 중 한 곡을 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "제이플라") {
@@ -813,28 +813,18 @@ function music(r) {
 	r.replier.reply(link);
 	return;
 }
-function youtube(r) {
+function youtube(r) {//조회수
 	var search_word = r.msg.substr(5);
 	if(r.msg.split(' ')[0]=='!yt'){
 		search_word = r.msg.substr(4);
 	}
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAMSAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
-	if(String(link).length == 0 ){//CAASAhAB : 관련성  CAMSAhAB : 조회수
-		r.replier.reply('검색결과가 없습니다.');
-		return;
+	if(r.msg[0] == '!'){//관련성
+		var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
+	} else if (r.msg[0] == '/'){//조회수
+		var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAMSAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
+		
 	}
-	var link=link.get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
-	r.replier.reply(link);
-	return;
-}
-
-function youtube1(r) {
-	var search_word = r.msg.substr(5);
-	if(r.msg.split(' ')[0]=='!yt'){
-		search_word = r.msg.substr(4);
-	}
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
-	if(String(link).length == 0 ){//CAASAhAB : 관련성  CAMSAhAB : 조회수
+	if(String(link).length == 0 ){//CAASAhAB : 관련성  //CAMSAhAB : 조회수
 		r.replier.reply('검색결과가 없습니다.');
 		return;
 	}
