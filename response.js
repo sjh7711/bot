@@ -1919,6 +1919,7 @@ function recentchat(r) {
 function allchat(r) { 
 	try{
 		var temp1 = r.msg.substr(5); // 개수
+		var temp3 = '';
 	    if(temp1.length!=0){
 	    	temp1 = temp1.split(" ")[0];
 	    	if(temp1.length){
@@ -1927,7 +1928,7 @@ function allchat(r) {
 	    }
 	    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
 	    if(r.msg.indexOf(',') > 0){
-	    	var temp3 = r.msg.split(',')[1];//방
+	    	temp3 = r.msg.split(',')[1];//방
 	    }
 	    
 	    var num = 6;
