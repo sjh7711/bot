@@ -1939,7 +1939,7 @@ function allchat(r) {
 	    	}
 	    	list.push(temp3);
 	    } else {
-	    	list2.push('room');'
+	    	list2.push('room');
 	    }
 	    
 	    if ( list.length > 0 ){
