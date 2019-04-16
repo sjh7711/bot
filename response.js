@@ -157,6 +157,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
             str += "!유튜브 / ";
             
+            if(msg.indexOf('/유튜브')==0 || msg.indexOf('/유투브')==0){
+            	youtube1(r);
+            	return;
+            }
+            
             if(msg=='!노래'||msg=='!노래 힙'){
             	music(r);
             	return;
@@ -814,6 +819,21 @@ function youtube(r) {
 		search_word = r.msg.substr(4);
 	}
 	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAMSAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
+	if(String(link).length == 0 ){//CAASAhAB : 관련성  CAMSAhAB : 조회수
+		r.replier.reply('검색결과가 없습니다.');
+		return;
+	}
+	var link=link.get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
+	r.replier.reply(link);
+	return;
+}
+
+function youtube1(r) {
+	var search_word = r.msg.substr(5);
+	if(r.msg.split(' ')[0]=='!yt'){
+		search_word = r.msg.substr(4);
+	}
+	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
 	if(String(link).length == 0 ){//CAASAhAB : 관련성  CAMSAhAB : 조회수
 		r.replier.reply('검색결과가 없습니다.');
 		return;
