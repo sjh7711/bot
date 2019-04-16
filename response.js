@@ -1932,16 +1932,17 @@ function allchat(r) {
 	    
 	    var list = [];
 	    var list1 = '';
-	    var list2 = ['time', 'msg'];
+	    var list2 = ['time'];
 	    if (temp2 != ''){
 	    	list2.push('name');
 	    }
 	    if (temp3 != ''){
 	    	list2.push('room');
-	    } 
+	    }
+	    list2.push('msg');
 	    
 	    if (temp2 != ''){
-	    	list1 += 'name=?';
+	    	list1 += 'name=? ';
 	    } 
 	    if (temp3 != ''){
 	    	if(list1.length>0){
