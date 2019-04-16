@@ -1908,15 +1908,15 @@ function recentchat(r) {
 
 function allchat(r) { 
 	try{
-		var temp1 = r.msg.split(',')[1]; // 개수
-		var temp2 = r.msg.split(',')[2]; // 이름
-		var temp3 = r.msg.split(',')[3]; // 방
-		
-		if(temp1==''){
-			temp1=12;
+		var r.msg = r.msg.substr(5);
+		var temp1 = 12;
+		var temp2 = '';
+		var temp3 = '';
+		if(r.msg.indexOf(',')>0){
+			var temp1 = r.msg.split(',')[0]; // 개수
+			var temp2 = r.msg.split(',')[1]; // 이름
+			var temp3 = r.msg.split(',')[2]; // 방
 		}
-	    var flag1 = 0;
-	    var flag2 = 0;
 	    
 	    var list = [];
 	    var list1 = '';
@@ -1947,7 +1947,7 @@ function allchat(r) {
 				}
 	    	}
 	    } else{
-	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg']);
+	    	var tempchat = D.selectForArray('chatdb', ['time', 'room', 'name', 'msg']);
 			var templeng = tempchat.length;
 			var num = temp1*1;
 			if(templeng < num){
