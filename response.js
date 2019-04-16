@@ -329,13 +329,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         str += "!추첨\n";
         
         if(msg =="/채굴" ||msg =="/채광" ||msg =="!채굴" ||msg =="!채광"||msg =="/개굴"||msg =="!개굴"||msg =="/구걸"||msg =="!구걸" ){
-        	if(Math.floor(Math.random()*100) < 4){
+        	if(Math.floor(Math.random()*100) < 3){
         		replier.reply("System : "+sender+"의 포인트 "+Number(10+Math.floor(Math.random()*25))+" 증가!");
         	}
         }
         
         if(room =='시립대 전전컴 톡방'){
-        	if(Math.floor(Math.random()*1000) < 2){
+        	if(Math.floor(Math.random()*10000) < 5){
         		replier.reply("System : "+sender+"의 포인트 "+Number(10+Math.floor(Math.random()*25))+" 증가!");
         	}
         }
