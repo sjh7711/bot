@@ -1923,10 +1923,13 @@ function allchat(r) {
 	    
 	    var list = [];
 	    var list1 = '';
+	    var list2 = ['time', 'msg'];
 	    
 	    if (temp2 != ''){
 	    	list1 += 'name=?';
 	    	list.push(temp2);
+	    } else {
+	    	list2.push('name');
 	    }
 	    if (temp3 != ''){
 	    	if(list1.length>0){
@@ -1935,10 +1938,12 @@ function allchat(r) {
 	    		list1 += 'room=?';
 	    	}
 	    	list.push(temp3);
+	    } else {
+	    	list2.push('room');'
 	    }
 	    
 	    if ( list.length > 0 ){
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , list1, list);
+	    	var tempchat = D.selectForArray('chatdb', list2 , list1, list);
 	    	var templeng = tempchat.length;
 	    	if(templeng==0){
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
