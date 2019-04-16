@@ -1943,6 +1943,7 @@ function allchat(r) {
 	    
 	    if (temp2 != ''){
 	    	list1 += 'name=? ';
+	    	list.push(temp2);
 	    } 
 	    if (temp3 != ''){
 	    	if(list1.length>0){
