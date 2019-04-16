@@ -182,9 +182,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 
         if (room == 'test' || room == '시립대 봇제작방') {
         	if (room == '시립대 봇제작방'){
-        		if( msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방') ){
-        			allchat(r);
-        			return;
+        		if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0){
+        			if( msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방') ){
+            			allchat(r);
+            			return;
+            		}
         		}
         	} else {
         		if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r); return;}
