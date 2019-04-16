@@ -1908,84 +1908,62 @@ function recentchat(r) {
 
 function allchat(r) { 
 	try{
-		var temp1 = r.msg.substr(5); // 개수
-		var temp3 = '';
-	    if(temp1.length!=0){
-	    	temp1 = temp1.split(" ")[0];
-	    	if(temp1.length){
-	    		temp1 = 12;
-	    	}
+		var temp1 = r.msg.split(',')[1]; // 개수
+		var temp2 = r.msg.split(',')[2]; // 이름
+		var temp3 = r.msg.split(',')[3]; // 방
+		
+		if(temp1==''){
+			temp1=12;
+		}
+	    var flag1 = 0;
+	    var flag2 = 0;
+	    
+	    var list = [];
+	    var list1 = '';
+	    
+	    if (temp2 != ''){
+	    	list1 += 'name=?';
+	    	list.push(temp2);
 	    }
-	    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
-	    if(r.msg.indexOf(',') > 0){
-	    	temp3 = r.msg.split(',')[1];//방
+	    if (temp3 != ''){
+	    	if(list1.length>0){
+	    		list1 += 'and room=?';
+	    	} else{
+	    		list1 += 'room=?';
+	    	}
+	    	list.push(temp3);
 	    }
 	    
-	    var num = 6;
-	    var flag = 0;
-	    
-	    if ( temp3.length > 0 && temp2.length > 0){
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, temp3]);
+	    if ( list.length > 0 ){
+	    	var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , list1, list);
 	    	var templeng = tempchat.length;
-	    	flag = 2;
 	    	if(templeng==0){
 				r.replier.reply(temp2+"의 채팅이 없습니다.");
 				return;
-			} else if(temp1.length > 0){
-				num = temp1*1;
-				if(tempchat.length<temp1*1){
+			} else {
+				var num = temp1*1;
+				if(templeng < num){
 					num = templeng;
 				}
 	    	}
-	    } else if(temp3.length > 0 ){
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg'] , 'room=?', [temp3]);
-	    	var templeng = tempchat.length;
-	    	flag = 3;
-	    	if(templeng==0){
-				r.replier.reply(temp2+"의 채팅이 없습니다.");
-				return;
-			} else if(temp1.length > 0){
-				num = temp1*1;
-				if(tempchat.length<temp1*1){
-					num = templeng;
-				}
-	    	}
-	    } else if( temp2.length > 0 ){
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'room', 'msg'] , 'name=?', [temp2]);
-	    	var templeng = tempchat.length;
-	    	flag = 1;
-	    	if(templeng==0){
-				r.replier.reply(temp2+"의 채팅이 없습니다.");
-				return;
-			} else if(temp1.length > 0){
-				num = temp1*1;
-				if(tempchat.length<temp1*1){
-					num = templeng;
-				}
-	    	}
-	    }else{
+	    } else{
 	    	var tempchat = D.selectForArray('chatdb', ['time','room', 'name', 'msg']);
 			var templeng = tempchat.length;
-			if( temp1.length > 0){
-				num = Math.floor( temp1*1 );
-				if( templeng < temp1*1){
-					num = templeng;
-				}
-			} else {
-			    if(6 > templeng){
-					num = templeng;
-				}
+			var num = temp1*1;
+			if(templeng < num){
+				num = templeng;
 			}
 		}
 		
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
-		if(flag==1){
-			temp[0]=temp[0]+temp2+"님의 채팅내역\n"; 
-		} else if(flag==2){
-			temp[0]=temp[0]+temp2+"님의 채팅내역("+temp3+")\n"; 
-		} else if(flag==3){
-			temp[0]=temp[0]+temp3+"방의 채팅내역\n"; 
+		if(temp2 != ''){
+			temp[0]=temp[0]+temp2+"의 채팅"; 
+		}
+		if(temp3 != ''){
+			temp[0]=temp[0]+"("+temp3+")\n"; 
+		} else {
+			temp[0]=temp[0]+"\n"; 
 		}
 		for (var i = tempchat.length - num; i < tempchat.length; i++) {
 		    if( i - tempchat.length + num == 2){
