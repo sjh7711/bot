@@ -1924,13 +1924,16 @@ function allchat(r) {
 	    var list = [];
 	    var list1 = '';
 	    var list2 = ['time', 'msg'];
+	    if (temp2.length == 0){
+	    	list2.push('name');
+	    }
+	    if (temp3.length == 0){
+	    	list2.push('room');
+	    } 
 	    
 	    if (temp2 != ''){
 	    	list1 += 'name=?';
-	    	list.push(temp2);
-	    } else {
-	    	list2.push('name');
-	    }
+	    } 
 	    if (temp3 != ''){
 	    	if(list1.length>0){
 	    		list1 += 'and room=?';
@@ -1938,8 +1941,6 @@ function allchat(r) {
 	    		list1 += 'room=?';
 	    	}
 	    	list.push(temp3);
-	    } else {
-	    	list2.push('room');
 	    }
 	    
 	    if ( list.length > 0 ){
