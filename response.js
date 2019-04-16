@@ -1912,7 +1912,7 @@ function allchat(r) {
 		var temp1 = '';
 		var temp2 = '';
 		var temp3 = '';
-		if(r.msg.indexOf(',')>0){
+		if(temp.indexOf(',')>0){
 			var temp1 = temp.split(',')[0]; // 개수
 			var temp2 = temp.split(',')[1]; // 이름
 			var temp3 = temp.split(',')[2]; // 방
@@ -1947,7 +1947,7 @@ function allchat(r) {
 	    	var tempchat = D.selectForArray('chatdb', list2 , list1, list);
 	    	var templeng = tempchat.length;
 	    	if(templeng==0){
-				r.replier.reply(temp2+"의 채팅이 없습니다.");
+				r.replier.reply("검색된 내용이 없습니다.");
 				return;
 			} else {
 				var num = temp1*1;
