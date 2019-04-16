@@ -180,9 +180,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             str += "!최근채팅\n";
         }
 
-        if (room == 'test') {
-            if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r); return;}
-            str += "!전체채팅\n";
+        if (room == 'test' || room == '시립대 봇제작방') {
+        	if (room == '시립대 봇제작방'){
+        		if( msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방') ){
+        			allchat(r);
+        			return;
+        		}
+        	} else {
+        		if (msg.indexOf("!전체채팅") == 0 || msg.indexOf("!ㅈㅊㅊㅌ") == 0) { allchat(r); return;}
+                str += "!전체채팅\n";
+        	}
         }
         
         if (room != '시립대 자취생 생정'){
@@ -1946,7 +1953,7 @@ function allchat(r) {
 	    if ( list.length > 0 ){
 	    	var tempchat = D.selectForArray('chatdb', list2 , list1, list);
 	    	var templeng = tempchat.length;
-	    	if(templeng==0){
+	    	if(templeng == 0){
 				r.replier.reply("검색된 내용이 없습니다.");
 				return;
 			} else {
