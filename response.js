@@ -1928,6 +1928,7 @@ function allchat(r) {
 	    var list = [];
 	    var list1 = '';
 	    var list2 = ['time'];
+	    var list3 = '';
 	    if (temp2 == ''){
 	    	list2.push('name');
 	    }
@@ -1939,37 +1940,32 @@ function allchat(r) {
 	    if (temp2 != ''){
 	    	list1 += 'name=? ';
 	    	list.push(temp2);
+	    	list3 += 'name=\'' + temp2 + '\'';
 	    } 
 	    if (temp3 != ''){
 	    	if(list1 != ''){
 	    		list1 += 'and room=?';
+	    		list3 += 'and room=\'' + temp3 + '\'';
 	    	} else{
 	    		list1 += 'room=?';
+	    		list3 += 'room=\'' + temp3 + '\'';
 	    	}
 	    	list.push(temp3);
 	    }
 	    
-	    if ( list.length > 0 ){
-	    	var tempchat = D.selectForArray('chatdb', list2 , list1, list);
-	    	var templeng = tempchat.length;
-	    	if(templeng == 0){
-				r.replier.reply("검색된 내용이 없습니다.");
-				return;
-			} else {
-				var num = temp1*1;
-				if(templeng < num){
-					num = templeng;
-				}
-	    	}
-	    } else{
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'room', 'name', 'msg']);
-			var templeng = tempchat.length;
+	    var templeng = D.selectForArray('chatdb', list2 , list1, list).length;
+	    if(templeng == 0){
+			r.replier.reply("검색된 내용이 없습니다.");
+			return;
+		} else {
 			var num = temp1*1;
 			if(templeng < num){
 				num = templeng;
 			}
-		}
-		
+    	}
+	    
+	    var tempchat = D.rawQuery("SELECT * FROM chatdb WHERE "+ list3 +" limit" + num +" offset " + templeng - num -1 )
+    	
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
 		if(temp2 != ''){
@@ -1980,14 +1976,15 @@ function allchat(r) {
 		} else {
 			temp[0]=temp[0]+"\n"; 
 		}
-		for (var i = tempchat.length - num; i < tempchat.length; i++) {
-		    if( i - tempchat.length + num == 2){
-		        temp.push(tempchat[i].join(" | ")+es);
-		    } else {
-		        temp.push(tempchat[i].join(" | "));
-		    }
+		
+		
+		for (var i in tempchat) {
+			temp.push(tempchat[i].join(" | "));
 		}
-		r.replier.reply(temp.join("\n"));
+		if (tempchat.length > 3){
+			temp[2] += es;
+		}
+		r.replier.reply(tempchat.join("\n"));
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
