@@ -1941,7 +1941,7 @@ function allchat(r) {
 	    	list.push(temp2);
 	    } 
 	    if (temp3 != ''){
-	    	if(list1.length>0){
+	    	if(list1 != ''){
 	    		list1 += 'and room=?';
 	    	} else{
 	    		list1 += 'room=?';
