@@ -151,16 +151,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         str += "!맛집\n";	
         
         if(room != '시립대 자취생 생정'){
-        	if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0){
+        	if(msg.indexOf('!유튜브')==0 || msg.indexOf('!유투브')==0 || msg.indexOf('!yt')==0 || msg.indexOf('/유튜브')==0 || msg.indexOf('/유투브')==0){
             	youtube(r);
             	return;
             }
             str += "!유튜브 / ";
-            
-            if(msg.indexOf('/유튜브')==0 || msg.indexOf('/유투브')==0){
-            	youtube1(r);
-            	return;
-            }
             
             if(msg=='!노래'||msg=='!노래 힙'){
             	music(r);
