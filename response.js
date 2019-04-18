@@ -58,11 +58,20 @@ function blankFunc(r){
 }
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	
+	if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
+
+	if(imageDB.getImage() != null){
+		saveImage(r);
+	}
+	
 	if( !(msg.substr[0] == '!' || msg.substr[0] == '/' || msg.substr[0] == ']' ) || reloadcheck == 1 ){
 		return;
 	}
 	
 	I.run(room, sender, msg);
+	
+	
 	
 	r = { replier: replier, msg: msg, sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room.replace(new RegExp(weiredstring2, "gi"), " ") , imageDB : imageDB};
 	
@@ -248,16 +257,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             return;
         } 
         
-        if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
-
         if (msg=="/기능") {
             replier.reply("!기능으로 작동합니다 "+es+'\n'+str+'\n자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
         } 
-        
-        if(imageDB.getImage() != null){
-    		saveImage(r);
-    	}
         
         if( ( !(room =='test' ||  room =='시립대 봇제작방' || room =='시립대 단톡방' || room =='BASEBALL' || room =='오버워치' || room =='공익' || room =='시립대 전전컴 톡방' || room =='짱구' || room =='단톡방'  ) && msg == "!야구" ) || msg == "!야구방"  ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
@@ -1888,7 +1891,7 @@ function recentchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
+	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num - 1) )
 		
 	    var temp = [];
 		if(temp2 != ''){
@@ -1965,7 +1968,7 @@ function allchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
+	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num -1) )
     	
 		var temp = [];
 	    temp[0]='길이:'+num+'\n';
