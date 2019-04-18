@@ -1863,7 +1863,7 @@ function recentchat(r) {
 		if(temp1==''){
 			temp1 = 6;
 		}
-		if(!isNaN(temp)){
+		if( 0 < Number(temp) && 16 > Number(temp) ){
 			temp1 = temp;
 		}
 	    
@@ -1931,7 +1931,7 @@ function allchat(r) {
 		if(temp1==''){
 			temp1 = 12;
 		}
-		if(!isNaN(temp)){
+		if(Number(temp)>0){
 			temp1 = temp;
 		}
 	    
