@@ -1964,7 +1964,7 @@ function allchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT * FROM chatdb WHERE "+ list3 +" limit " + num +" offset " + String(templeng - num -1) )
+	    var tempchat = D.rawQuery("SELECT * FROM chatdb WHERE "+ list3 +" limit " + num +" offset " + String(templeng - num) )
     	
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
@@ -1979,7 +1979,7 @@ function allchat(r) {
 		
 		
 		for (var i in tempchat) {
-			temp.push(tempchat[i].join(" | "));
+			temp.push(tempchat[i].map(v=>v.join('|')));
 		}
 		if (tempchat.length > 3){
 			temp[2] += es;
