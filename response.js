@@ -65,7 +65,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		saveImage(r);
 	}
 	
-	if( !(msg.substr[0] == '!' || msg.substr[0] == '/' || msg.substr[0] == ']' ) || reloadcheck == 1 ){
+	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ) || reloadcheck == 1 ){
 		return;
 	}
 	
