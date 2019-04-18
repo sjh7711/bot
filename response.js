@@ -1910,7 +1910,7 @@ function recentchat(r) {
 			temp.push(tempchat[i].join(' | '));
 		}
 		if (tempchat.length > 3){
-			temp[3] += es;
+			temp[2] += es;
 		}
 		r.replier.reply(temp.join("\n"));
 	}catch(e){
