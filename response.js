@@ -1852,56 +1852,51 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 //최근채팅
 function recentchat(r) {
 	try{
-		var temp1 = r.msg.substr(5); // 개수
-	    if(temp1.length!=0){
-	    	temp1 = temp1.split(" ")[0];
-	    }
-	    var temp2 = r.msg.substr(r.msg.split(" ")[0].length+1);//닉
+		var temp = r.msg.substr(5);
+		var temp1 = '';//개수
+		var temp2 = '';//이름
+		if(temp.length > 0 && temp.indexOf(' ') <= 2){
+			temp1 = temp.split(' ')[0];
+		}
+	    var temp2 = r.msg.substr(r.msg.indexOf(' ')+1);//닉
 	    var num = 6;
-	    var flag = 0;
 	    
-	    if( temp2.length > 0 ){
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'msg'] , 'name=? and room=?', [temp2, r.room]);
-	    	var templeng = tempchat.length;
-	    	flag = 1;
-	    	if(templeng==0){
-				r.replier.reply(temp2+"의 채팅이 없습니다.");
-				return;
-			} else if(temp1.length > 0){
-				if(0 < temp1*1 && temp1*1 < 17 ) {
-					num = temp1*1;
-					if(tempchat.length<temp1*1){
-						num = templeng;
-					}
-				}
-	    	}
-	    }else{
-	    	var tempchat = D.selectForArray('chatdb', ['time', 'name', 'msg'], 'room=?', r.room);
-			var templeng = tempchat.length;
-			if (0 < temp1*1 && temp1*1 < 17) {
-				num = Math.floor( temp1*1 );
-				if( templeng < temp1*1){
-					num = templeng;
-				}
-			} else {
-			    if(6 > templeng){
-					num = templeng;
-				}
+	    var list = [r.room];
+	    var list1 = 'room=?';
+	    var list2 = ['time'];
+	    var list3 = '';
+	    if (temp2 == ''){
+	    	list.push(temp2);
+	    	list1 += ' and name=?';
+	    	list2.push('name');
+	    	list3 += 'WHERE name=\'' + temp2 + '\'';
+	    }
+	    list2.push('msg');
+	    
+	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
+	    if(templeng == 0){
+			r.replier.reply("검색된 내용이 없습니다.");
+			return;
+		} else {
+			var num = temp1*1;
+			if(templeng < num){
+				num = templeng;
 			}
+    	}
+	    
+	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
+		
+	    var temp = [];
+		temp[0]='길이:'+num+'\n';
+		if(temp2 != ''){
+			temp[0]=temp[0]+temp2+"의 채팅"; 
 		}
 		
-		var temp = [];
-		if(flag==1){
-			temp[0]=temp2+"님의 채팅내역\n"; 
+		for (var i in tempchat) {
+			temp.push(tempchat[i].join(' | '));
 		}
-		if (0 < num && num < 17) {
-	        for (var i = tempchat.length - num; i < tempchat.length; i++) {
-	        	if( i - tempchat.length + num == 2){
-	        		temp.push(tempchat[i].join(" | ")+es);
-	        	} else {
-	        		temp.push(tempchat[i].join(" | "));
-	        	}
-		    }
+		if (tempchat.length > 3){
+			temp[3] += es;
 		}
 		r.replier.reply(temp.join("\n"));
 	}catch(e){
@@ -1930,19 +1925,13 @@ function allchat(r) {
 	    var list2 = ['time'];
 	    var list3 = '';
 	    if (temp2 == ''){
+	    	list.push(temp2);
+	    	list1 += 'name=? ';
 	    	list2.push('name');
+	    	list3 += 'WHERE name=\'' + temp2 + '\'';
 	    }
 	    if (temp3 == ''){
 	    	list2.push('room');
-	    }
-	    list2.push('msg');
-	    
-	    if (temp2 != ''){
-	    	list1 += 'name=? ';
-	    	list.push(temp2);
-	    	list3 += 'WHERE name=\'' + temp2 + '\'';
-	    } 
-	    if (temp3 != ''){
 	    	if(list1 != ''){
 	    		list1 += 'and room=?';
 	    		list3 += 'and room=\'' + temp3 + '\'';
@@ -1952,6 +1941,7 @@ function allchat(r) {
 	    	}
 	    	list.push(temp3);
 	    }
+	    list2.push('msg');
 	    
 	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
 	    if(templeng == 0){
@@ -1976,7 +1966,6 @@ function allchat(r) {
 		} else {
 			temp[0]=temp[0]+"\n"; 
 		}
-		
 		
 		for (var i in tempchat) {
 			temp.push(tempchat[i].join(' | '));
