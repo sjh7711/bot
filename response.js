@@ -1863,7 +1863,7 @@ function recentchat(r) {
 		if(temp1==''){
 			temp1 = 6;
 		}
-		if( 0 < Number(temp) && 17 > Number(temp) ){
+		if( 0 < Number(temp) ){
 			temp1 = temp;
 		}
 	    
@@ -1889,7 +1889,11 @@ function recentchat(r) {
 			r.replier.reply("검색된 내용이 없습니다.");
 			return;
 		} else {
-			var num = Number(temp1);
+			if ( 0 < temp1 && 17 > temp1){
+				var num = Number(temp1);
+			} else {
+				var num = 6;
+			}
 			if(templeng < num){
 				num = templeng;
 			}
