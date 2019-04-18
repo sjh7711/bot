@@ -1865,12 +1865,12 @@ function recentchat(r) {
 	    var list = [r.room];
 	    var list1 = 'room=?';
 	    var list2 = ['time'];
-	    var list3 = '';
+	    var list3 = 'WHERE room='+r.room;
 	    if (temp2 == ''){
 	    	list.push(temp2);
 	    	list1 += ' and name=?';
 	    	list2.push('name');
-	    	list3 += 'WHERE name=\'' + temp2 + '\'';
+	    	list3 += ' and name=\'' + temp2 + '\'';
 	    }
 	    list2.push('msg');
 	    
