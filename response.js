@@ -1979,12 +1979,12 @@ function allchat(r) {
 		
 		
 		for (var i in tempchat) {
-			temp.push(tempchat[i].map(v=>v.join('|')));
+			temp.push(tempchat[i].join(' | '));
 		}
 		if (tempchat.length > 3){
 			temp[2] += es;
 		}
-		r.replier.reply(tempchat.join("\n"));
+		r.replier.reply(temp.join("\n"));
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
