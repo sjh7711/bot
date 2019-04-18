@@ -1853,11 +1853,18 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 function recentchat(r) {
 	try{
 		var temp = r.msg.substr(5);
-		var temp1 = 6;//개수
+		var temp1 = '';//개수
 		var temp2 = '';//이름
 		if(temp.length > 0 && temp.indexOf(' ') <= 2){
 			temp1 = temp.split(' ')[0];
 			temp2 = temp.substr(temp.indexOf(' ')+1);//닉
+		}
+		
+		if(temp1==''){
+			temp1 = 6;
+		}
+		if(!isNaN(temp)){
+			temp1 = temp;
 		}
 	    
 	    var num = 6;
@@ -1875,7 +1882,7 @@ function recentchat(r) {
 	    
 	    if (temp2 != ''){
 	    	list1 += ' and name=?';
-	    	list2.push('name');
+	    	list.push(temp2);
 	    	list3 += ' and name=\'' + temp2 + '\'';
 	    }
 	    
