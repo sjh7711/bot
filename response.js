@@ -1940,7 +1940,7 @@ function allchat(r) {
 	    if (temp2 != ''){
 	    	list1 += 'name=? ';
 	    	list.push(temp2);
-	    	list3 += 'name=\'' + temp2 + '\'';
+	    	list3 += 'WHERE name=\'' + temp2 + '\'';
 	    } 
 	    if (temp3 != ''){
 	    	if(list1 != ''){
@@ -1948,7 +1948,7 @@ function allchat(r) {
 	    		list3 += 'and room=\'' + temp3 + '\'';
 	    	} else{
 	    		list1 += 'room=?';
-	    		list3 += 'room=\'' + temp3 + '\'';
+	    		list3 += 'WHERE room=\'' + temp3 + '\'';
 	    	}
 	    	list.push(temp3);
 	    }
@@ -1964,7 +1964,7 @@ function allchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT * FROM chatdb WHERE "+ list3 +" limit " + num +" offset " + String(templeng - num) )
+	    var tempchat = D.rawQuery("SELECT * FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
     	
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
