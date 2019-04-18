@@ -1863,7 +1863,7 @@ function recentchat(r) {
 		if(temp1==''){
 			temp1 = 6;
 		}
-		if( 0 < Number(temp) && 16 > Number(temp) ){
+		if( 0 < Number(temp) && 17 > Number(temp) ){
 			temp1 = temp;
 		}
 	    
