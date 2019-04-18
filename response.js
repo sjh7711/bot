@@ -1953,7 +1953,7 @@ function allchat(r) {
 	    	list.push(temp3);
 	    }
 	    
-	    var templeng = D.selectForArray('chatdb', list2 , list1, list).length;
+	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
 	    if(templeng == 0){
 			r.replier.reply("검색된 내용이 없습니다.");
 			return;
@@ -1964,7 +1964,7 @@ function allchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT * FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
+	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
     	
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
