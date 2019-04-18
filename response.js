@@ -1922,9 +1922,9 @@ function allchat(r) {
 			var temp3 = temp.split(',')[2]; // 방
 		}
 		if(temp1==''){
-			temp1=12;
+			temp1 = 12;
 		}
-		if(r.msg.indexOf(' ')==-1){
+		if(!isNaN(temp)){
 			temp1 = temp;
 		}
 	    
@@ -1970,6 +1970,7 @@ function allchat(r) {
 	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
     	
 		var temp = [];
+	    temp[0]='길이:'+num+'\n';
 		if(temp2 != ''){
 			temp[0]=temp[0]+temp2+"의 채팅"; 
 		}
@@ -1983,7 +1984,7 @@ function allchat(r) {
 			temp.push(tempchat[i].join(' | '));
 		}
 		if (tempchat.length > 3){
-			temp[2] += es;
+			temp[3] += es;
 		}
 		r.replier.reply(temp.join("\n"));
 	}catch(e){
