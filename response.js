@@ -1916,7 +1916,7 @@ function allchat(r) {
 		var temp1 = '';
 		var temp2 = '';
 		var temp3 = '';
-		if(temp.indexOf(',')>0){
+		if(temp.indexOf(',')>-1){
 			var temp1 = temp.split(',')[0]; // 개수
 			var temp2 = temp.split(',')[1]; // 이름
 			var temp3 = temp.split(',')[2]; // 방
