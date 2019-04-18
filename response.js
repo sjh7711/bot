@@ -18,27 +18,13 @@ function reload(r) {
 		    bw.write(str.toString());
 		    bw.close();
 		    var time = (new Date() - Timer) / 1000;
-		    Api.replyRoom('test', "파일저장 완료 / " + time + "s");
+		    r.replier.reply("파일저장 완료 / " + time + "s");
 		    T.interrupt();
 		    Api.reload();
 		    var time = (new Date() - Timer) / 1000;
 		    reloadcheck = 0;
-		    return "reloading 완료 / " + time + "s";
+		    r.replier.reply("reloading 완료 / " + time + "s");
 		}
-	}catch (e){
-		Api.replyRoom('test', e + "\n" + e.stack);
-	}
-}
-
-function reload1() {
-	try {
-		reloadcheck = 1;
-		var Timer = new Date();
-	    T.interrupt();
-	    Api.reload();
-	    var time = (new Date() - Timer) / 1000;
-	    reloadcheck = 0;
-	    return "reloading 완료 / " + time + "s";
 	}catch (e){
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
@@ -72,18 +58,13 @@ function blankFunc(r){
 }
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
-	if(msg=='!상태'){
-		statustime = new Date().getTime();
-	}
-	
-	if(reloadcheck == 1){
+	if( !(msg.substr[0] == '!' || msg.substr[0] == '/' || msg.substr[0] == ']' ) || reloadcheck == 1 ){
 		return;
 	}
 	
 	I.run(room, sender, msg);
 	
-	r = { replier: replier, msg: msg.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), " ").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "),
-		sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room.replace(new RegExp(weiredstring2, "gi"), " ") , imageDB : imageDB};
+	r = { replier: replier, msg: msg, sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room.replace(new RegExp(weiredstring2, "gi"), " ") , imageDB : imageDB};
 	
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
@@ -91,15 +72,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 				replier.reply(eval(msg.substring(1)));
 			} catch (e) {replier.reply(e + "\n" + e.stack);}
 		}
+		
+		try {
+			blankFunc(r);
+		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
 	
-	try {
-		blankFunc(r);
-	} catch (e) {replier.reply(e + "\n" + e.stack);}
-
+	var str = "";
 	
 	try {
-		var str = "";
 		if (msg.indexOf("!날씨") == 0 || msg.indexOf("!ㄴㅆ") == 0 ) {
         	weather(r);
         	return;
@@ -221,7 +202,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!파일삭제\n";
         	
         	if (msg == "!방"){
-        		replier.reply(Api.getRoomList().slice().join('\n'));
+        		room(r);
         		return;
         	}str += "!방\n";
         	
@@ -235,22 +216,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}
         	
         	if(msg =="!쓰레드"){
-        		replier.reply(T.getThreadList().join('\n'));
+        		thread(r);
         		return;
         	}str += "!쓰레드\n";
         	
         	if(msg=="!디비"){
-        		replier.reply(D.selectForString("sqlite_master"));
+        		db(r);
         		return;
         	}str += "!디비\n"
         	
         	if(msg =="!로딩"){
-        		replier.reply(reload(r));
-        		return;
-        	}str += "!로딩\n";
-        	
-        	if(msg =="!로드"){
-        		replier.reply(reload1());
+        		reload(r);
         		return;
         	}
         	
@@ -263,14 +239,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
 
         if (msg.indexOf('!건의 ')==0){
-        	if(msg.substr(4).length < 3){
-        		replier.reply("건의가 너무 짧습니다.");
-        		return;
-        	}else{
-        		Api.replyRoom('추천/건의', room+" : "+sender+" : "+msg.substr(4));
-        		replier.reply(sender+"님의 건의가 접수되었습니다.");
-        		return;
-        	}
+        	suggestion(r);
         }
         str += "!건의\n";
 
@@ -336,18 +305,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if (msg =="!ㅊㅊ"|| msg == "!추첨" || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {sel(r); return;}
         str += "!추첨\n";
-        
-        if(msg =="/채굴" ||msg =="/채광" ||msg =="!채굴" ||msg =="!채광"||msg =="/개굴"||msg =="!개굴"||msg =="/구걸"||msg =="!구걸" ){
-        	if(Math.floor(Math.random()*100) < 3){
-        		replier.reply("System : "+sender+"의 포인트 "+Number(10+Math.floor(Math.random()*25))+" 증가!");
-        	}
-        }
-        
-        if(room =='시립대 전전컴 톡방'){
-        	if(Math.floor(Math.random()*10000) < 5){
-        		replier.reply("System : "+sender+"의 포인트 "+Number(10+Math.floor(Math.random()*25))+" 증가!");
-        	}
-        }
         
         if (msg == "!기능") {
             replier.reply(str+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
@@ -422,6 +379,26 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "포토"){
     	r.replier.reply("[!포토 사진이름]으로 검색하면 구글 이미지 검색 첫번째 사진을 보여줍니다.");
     }
+}
+function thread(r){
+	r.replier.reply(T.getThreadList().join('\n'));
+}
+
+function db(r){
+	r.replier.reply(D.selectForString("sqlite_master"));
+}
+
+function room(r){
+	r.replier.reply(Api.getRoomList().slice().join('\n'));
+}
+
+function suggestion(r){
+	if(msg.substr(4).length < 3){
+		r.replier.reply("건의가 너무 짧습니다.");
+	}else{
+		Api.replyRoom('test', room+" : "+sender+" : "+msg.substr(4));
+		r.replier.reply(sender+"님의 건의가 접수되었습니다.");
+	}
 }
 
 /*
@@ -1201,7 +1178,7 @@ function randomnumber(r){
 function saveImage(r){
 	file = 'storage/emulated/0/FTP/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
 	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'image save success\n'+r.sender+' / '+r.room+'\n'+time().now);
+	Api.replyRoom('test', 'saveimage/'+r.sender+'/'+r.room);
 }
 //new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
 //File = new java.io.file
@@ -1619,6 +1596,18 @@ var WCC = T.register("weatherClockCheck",()=>{
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨 진해 석동', room : '오버워치',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨 공릉동', room : '단톡방',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨', room : '단톡방',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
