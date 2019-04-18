@@ -1914,7 +1914,7 @@ function recentchat(r) {
 function allchat(r) { 
 	try{
 		var temp = r.msg.substr(5);
-		var temp1 = r.msg.substr(5);
+		var 
 		var temp2 = '';
 		var temp3 = '';
 		if(temp.indexOf(',')>0){
@@ -1924,6 +1924,9 @@ function allchat(r) {
 		}
 		if(temp1==''){
 			temp1=12;
+		}
+		if(r.msg.indexOf(' ')==-1){
+			temp1 = temp;
 		}
 	    
 	    var list = [];
@@ -1968,7 +1971,6 @@ function allchat(r) {
 	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
     	
 		var temp = [];
-		temp[0]='길이:'+num+'\n';
 		if(temp2 != ''){
 			temp[0]=temp[0]+temp2+"의 채팅"; 
 		}
