@@ -1867,8 +1867,6 @@ function recentchat(r) {
 			temp1 = temp;
 		}
 	    
-	    var num = 6;
-	    
 	    var list = [r.room];
 	    var list1 = 'room=?';
 	    var list2 = ['time'];
