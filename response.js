@@ -1879,7 +1879,7 @@ function recentchat(r) {
 			r.replier.reply("검색된 내용이 없습니다.");
 			return;
 		} else {
-			var num = temp1*1;
+			var num = Number(temp1);
 			if(templeng < num){
 				num = templeng;
 			}
