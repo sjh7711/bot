@@ -1901,7 +1901,7 @@ function recentchat(r) {
 		
 	    var temp = [];
 		if(temp2 != ''){
-			temp[0]=temp[0]+temp2+"의 채팅"; 
+			temp[0]=temp2+"의 채팅"; 
 		}
 		
 		for (var i in tempchat) {
