@@ -1865,14 +1865,19 @@ function recentchat(r) {
 	    var list = [r.room];
 	    var list1 = 'room=?';
 	    var list2 = ['time'];
-	    var list3 = 'WHERE room='+r.room;
+	    var list3 = 'WHERE room=\''+r.room+'\'';
+	    
 	    if (temp2 == ''){
-	    	list.push(temp2);
+	    	list2.push('name');
+	    }
+	    list2.push('msg');
+	    
+	    
+	    if (temp2 != ''){
 	    	list1 += ' and name=?';
 	    	list2.push('name');
 	    	list3 += ' and name=\'' + temp2 + '\'';
 	    }
-	    list2.push('msg');
 	    
 	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
 	    if(templeng == 0){
@@ -1926,13 +1931,19 @@ function allchat(r) {
 	    var list2 = ['time'];
 	    var list3 = '';
 	    if (temp2 == ''){
-	    	list.push(temp2);
-	    	list1 += 'name=? ';
 	    	list2.push('name');
-	    	list3 += 'WHERE name=\'' + temp2 + '\'';
 	    }
 	    if (temp3 == ''){
 	    	list2.push('room');
+	    }
+	    list2.push('msg');
+	    
+	    if (temp2 != ''){
+	    	list1 += 'name=? ';
+	    	list.push(temp2);
+	    	list3 += 'WHERE name=\'' + temp2 + '\'';
+	    }
+	    if (temp3 != ''){
 	    	if(list1 != ''){
 	    		list1 += 'and room=?';
 	    		list3 += 'and room=\'' + temp3 + '\'';
@@ -1942,7 +1953,6 @@ function allchat(r) {
 	    	}
 	    	list.push(temp3);
 	    }
-	    list2.push('msg');
 	    
 	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
 	    if(templeng == 0){
