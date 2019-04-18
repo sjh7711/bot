@@ -1855,7 +1855,7 @@ function recentchat(r) {
 		var temp = r.msg.substr(5);
 		var temp1 = '';//개수
 		var temp2 = '';//이름
-		if(temp.length > 0 && temp.indexOf(' ') <= 2){
+		if(temp.length > 0 && temp.indexOf(' ') > -1 && temp.indexOf(' ') <= 2){
 			temp1 = temp.split(' ')[0];
 			temp2 = temp.substr(temp.indexOf(' ')+1);//닉
 		}
