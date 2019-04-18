@@ -1964,7 +1964,7 @@ function allchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT * FROM chatdb WHERE "+ list3 +" limit" + num +" offset " + templeng - num -1 )
+	    var tempchat = D.rawQuery("SELECT * FROM chatdb WHERE "+ list3 +" limit " + num +" offset " + String(templeng - num -1) )
     	
 		var temp = [];
 		temp[0]='길이:'+num+'\n';
