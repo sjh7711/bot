@@ -96,7 +96,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		}
 	}
 	
-	var work = controlPanel[feature][r.room.replace(/ /g, '_')];
+	var work = -1;
+	work = controlPanel[feature][room.replace(/ /g, '_')];
 	
 	I.run(room, sender, msg);
 	
