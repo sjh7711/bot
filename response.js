@@ -1,4 +1,9 @@
 var reloadcheck = 0;
+var D = require("DBManager.js")("D");
+var T = require("ThreadManager.js");
+var I = require("Interactive.js");
+var control = D.selectForArray('control').map(v=>v[0]);
+var controlPanel = D.selectForObject('control');
 function reload(r) {
 	try {
 		if(r.sender == '봇배우는배주현' || r.sender == 'test'){
@@ -32,9 +37,6 @@ function reload(r) {
 	}
 }
 
-var D = require("DBManager.js")("D");
-var T = require("ThreadManager.js");
-var I = require("Interactive.js");
 File = java.io.File;
 var es=String.fromCharCode(8237).repeat(500);
 var weiredstring1=String.fromCharCode(8203);//공백
@@ -56,9 +58,7 @@ Flag=(function(){
 	   }
 	   return Flag;
 	})();
-function blankFunc(r){
-}
-
+function blankFunc(r){}
 function controlreload(r){
 	control = D.selectForArray('control').map(v=>v[0]);
 	controlPanel = D.selectForObject('control');
