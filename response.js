@@ -65,7 +65,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		saveImage(r);
 	}
 	
-	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ) || reloadcheck == 1 ){
+	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" ) || reloadcheck == 1 || !isNaN(msg) ){
 		return;
 	}
 	
@@ -1233,7 +1233,6 @@ function readFile() {
 }
 
 function checkstatus(r){
-	var reaction = ((new Date().getTime())-statustime)/1000;
 	var bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
 	var temperature = bm.getIntExtra("temperature",0)/10 + '℃'
 	var level = bm.getIntExtra("level",0) + "%"
@@ -1250,7 +1249,7 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n반응 속도 : "+reaction+'초';
+	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%";
 	r.replier.reply(batteryStatusStr);
 }
 
