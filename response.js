@@ -131,11 +131,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
     	
-    	if ((msg == "!추첨" && work == 1) || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {
-        	sel(r); 
-        	return;
-        }
-        
         if (msg.indexOf("!메뉴") == 0 && work == 1) {
             recom(r, "menu");
             return;
@@ -226,6 +221,31 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
     	
+    	if (msg.indexOf("!기능 ") == 0 ) {
+            func(r);
+            return;
+        } 
+        
+        if (msg=="/기능") {
+            replier.reply("!기능으로 작동합니다 "+es+'\n자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
+            return;
+        } 
+        
+        if (msg == "!기능") {
+            replier.reply(es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
+            return;
+        }
+        
+        if (msg == "!상태"){
+        	checkstatus(r);
+        	return;
+        }
+    	
+    	if ( (msg == "!추첨" && work == 1) || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {
+        	sel(r); 
+        	return;
+        }
+    	
         /*if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1 ){
     		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
     	}*/
@@ -264,26 +284,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
     	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        
-        if (msg.indexOf("!기능 ") == 0 ) {
-            func(r);
-            return;
-        } 
-        
-        if (msg=="/기능") {
-            replier.reply("!기능으로 작동합니다 "+es+'\n자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
-            return;
-        } 
-        
-        if (msg == "!기능") {
-            replier.reply(es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
-            return;
-        }
-        
-        if (msg == "!상태"){
-        	checkstatus(r);
-        	return;
-        }
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
