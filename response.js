@@ -74,6 +74,19 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		return;
 	}
 	
+	if (room == 'test' || room == '시립대 봇제작방') {
+		if (msg.indexOf("]") == 0) {
+			try {
+				replier.reply(eval(msg.substring(1)));
+				return;
+			} catch (e) {replier.reply(e + "\n" + e.stack);}
+		}
+		
+		try {
+			blankFunc(r);
+		} catch (e) {replier.reply(e + "\n" + e.stack);}
+	}
+	
 	var feature = -1;
 	
 	for(var i in control){
@@ -86,18 +99,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	var work = controlPanel[feature][r.room.replace(/ /g, '_')];
 	
 	I.run(room, sender, msg);
-	
-	if (room == 'test' || room == '시립대 봇제작방') {
-		if (msg.indexOf("]") == 0) {
-			try {
-				replier.reply(eval(msg.substring(1)));
-			} catch (e) {replier.reply(e + "\n" + e.stack);}
-		}
-		
-		try {
-			blankFunc(r);
-		} catch (e) {replier.reply(e + "\n" + e.stack);}
-	}
 	
 	try {
 		if ( msg.indexOf("!날씨") == 0 && work == 1 ) {
