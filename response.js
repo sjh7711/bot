@@ -65,7 +65,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		saveImage(r);
 	}
 	
-	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" ) || reloadcheck == 1 || !isNaN(msg) ){
+	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" || !isNaN(msg)) || reloadcheck == 1 ||  ){
 		return;
 	}
 	
