@@ -88,7 +88,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	var feature = -1;
-	
 	for(var i in control){
 		if( msg.indexOf(control[i]) == 0 ){
 			feature = i;
@@ -96,8 +95,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		}
 	}
 	
-	var work = -1;
-	work = controlPanel[feature][room.replace(/ /g, '_')];
+	if(feature != -1){
+		var work = controlPanel[feature][room.replace(/ /g, '_')];
+	}
+	
 	
 	I.run(room, sender, msg);
 	
