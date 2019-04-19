@@ -147,7 +147,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             }
             str += "!유튜브 / ";
             
-            if(msg=='!노래'||msg=='!노래 힙'){
+            if(msg=='!노래'){
             	music(r);
             	return;
             }
@@ -211,7 +211,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	}str += "!파일삭제\n";
         	
         	if (msg == "!방"){
-        		room(r);
+        		checkroom(r);
         		return;
         	}str += "!방\n";
         	
@@ -391,7 +391,7 @@ function db(r){
 	r.replier.reply(D.selectForString("sqlite_master"));
 }
 
-function room(r){
+function checkroom(r){
 	r.replier.reply(Api.getRoomList().slice().join('\n'));
 }
 
