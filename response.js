@@ -59,6 +59,8 @@ function blankFunc(r){
 //--------------------------------------------------------------------Response-------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
+	r = { replier: replier, msg: msg, sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room.replace(new RegExp(weiredstring2, "gi"), " ") , imageDB : imageDB};
+	
 	if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
 
 	if(imageDB.getImage() != null){
@@ -70,10 +72,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	I.run(room, sender, msg);
-	
-	
-	
-	r = { replier: replier, msg: msg, sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room.replace(new RegExp(weiredstring2, "gi"), " ") , imageDB : imageDB};
 	
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
