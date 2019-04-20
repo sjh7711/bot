@@ -244,6 +244,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 	str1 += featureList[i] + ' / ';
                 }
         	}
+        	str += '\n';
         	str1 = str1.split(' / \n').join('\n');
             replier.reply("!기능으로 작동합니다 "+es+'\n'+str1+'자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
@@ -267,9 +268,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 	str1 += featureList[i] + ' / ';
                 }
         	}
+        	str += '\n';
         	str1 = str1.split(' / \n').join('\n');
         	replier.reply(str1+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
+        }
+        
+        if (msg == "!기능리로드" && work == 1){
+        	controlReload(r);
+        }
+        
+        if (msg.indexOf("!온오프")==0 && work == 1){
+        	controlEdit(r);
         }
         
         if (msg == "!상태"){
@@ -386,26 +396,33 @@ function func(r) {
 function controlReload(r){
 	control = D.selectForArray('control').map(v=>v[0]);
 	controlPanel = D.selectForObject('control');
+	r.replier.reply('기능 리로드 완료');
 }
 
 function controlEdit(r){
 	controlPanel = D.selectForObject('control');
 	control = D.selectForArray('control').map(v=>v[0]);
 	
+	var temp = msg.split(',');
 	var feature = -1;
 	for(var i in control){
-		if( msg.indexOf(control[i]) == 0 ){
+		if( temp[1].indexOf(control[i]) == 0 ){
 			feature = i;
 			break;
 		}
 	}
 	
 	if(feature != -1){
-		var work = controlPanel[feature][room.replace(/ /g, '_')];
+		var tempf = controlPanel[feature];
+		if( temp[3] == 'on' ){
+			tempf[temp[2].replace(/ /g, '_')] = 1;
+		} else if ( temp[3] == 'off' ){
+			tempf[temp[2].replace(/ /g, '_')] = 0;
+		}
+		D.update("control", tempf , "name=?", [control[feature]]);
 	}
-	
-	
-	r.replier.reply("")
+	controlReload(r);
+	r.replier.reply("수정 완료");
 }
 
 function thread(r){
@@ -421,10 +438,10 @@ function checkroom(r){
 }
 
 function suggestion(r){
-	if(msg.substr(4).length < 3){
+	if(r.msg.substr(4).length < 3){
 		r.replier.reply("건의가 너무 짧습니다.");
 	}else{
-		Api.replyRoom('test', room+" : "+sender+" : "+msg.substr(4));
+		Api.replyRoom('test', room+" : "+sender+" : "+r.msg.substr(4));
 		r.replier.reply(sender+"님의 건의가 접수되었습니다.");
 	}
 }
