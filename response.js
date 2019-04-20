@@ -23,14 +23,14 @@ function reload(r) {
 		    bw.write(str.toString());
 		    bw.close();
 		    var time = (new Date() - Timer) / 1000;
-		    r.replier.reply("파일저장 완료 / " + time + "s" + '\n' + time().now);
+		    r.replier.reply("파일저장 완료 / " + time + "s\n" + new Date() );
 		    T.interrupt();
 		    Api.reload();
 		    var time = (new Date() - Timer) / 1000;
 		    reloadcheck = 0;
 		    control = D.selectForArray('control').map(v=>v[0]);
 		    controlPanel = D.selectForObject('control');
-		    r.replier.reply("reloading 완료 / " + time + "s" + '\n' + time().now);
+		    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
 		}
 	}catch (e){
 		Api.replyRoom('test', e + "\n" + e.stack);
