@@ -23,14 +23,14 @@ function reload(r) {
 		    bw.write(str.toString());
 		    bw.close();
 		    var time = (new Date() - Timer) / 1000;
-		    r.replier.reply("파일저장 완료 / " + time + "s");
+		    r.replier.reply("파일저장 완료 / " + time + "s" + '\n' + time().now);
 		    T.interrupt();
 		    Api.reload();
 		    var time = (new Date() - Timer) / 1000;
 		    reloadcheck = 0;
 		    control = D.selectForArray('control').map(v=>v[0]);
 		    controlPanel = D.selectForObject('control');
-		    r.replier.reply("reloading 완료 / " + time + "s");
+		    r.replier.reply("reloading 완료 / " + time + "s" + '\n' + time().now);
 		}
 	}catch (e){
 		Api.replyRoom('test', e + "\n" + e.stack);
@@ -441,8 +441,8 @@ function suggestion(r){
 	if(r.msg.substr(4).length < 3){
 		r.replier.reply("건의가 너무 짧습니다.");
 	}else{
-		Api.replyRoom('test', r.room+" : "+sender+" : "+r.msg.substr(4));
-		r.replier.reply(sender+"님의 건의가 접수되었습니다.");
+		Api.replyRoom('test', r.room+" : "+r.sender+" : "+r.msg.substr(4));
+		r.replier.reply(r.sender+"님의 건의가 접수되었습니다.");
 	}
 }
 
