@@ -234,11 +234,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         		}
         	}
         	var str1='';
+        	var j = 1;
         	for(var i in featureList) {
-        		if( str.indexOf(featureList[i]) > -1 ) {
-        			str1 += featureList[i] + '\n';
-        		} 
+                if( str.indexOf(featureList[i]) > -1 ) {
+                	if( Math.floor( str1.length / 20) == j){
+                		str1 += '\n';
+                		j+=1;
+                	}
+                	str1 += featureList[i] + ' / ';
+                }
         	}
+        	str1 = str1.split(' / \n').join('\n');
             replier.reply("!기능으로 작동합니다 "+es+'\n'+str1+'자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
         } 
@@ -253,14 +259,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	var str1='';
         	var j = 1;
         	for(var i in featureList) {
-        		if( str.indexOf(featureList[i]) > -1 ) {
-        			if((str1.length / 15)==j){
-        				str1 += '\n';
-        				j+=1;
-        			}
-        			str1 += featureList[i] + ' / ';
-        		} 
+                if( str.indexOf(featureList[i]) > -1 ) {
+                	if( Math.floor( str1.length / 20) == j){
+                		str1 += '\n';
+                		j+=1;
+                	}
+                	str1 += featureList[i] + ' / ';
+                }
         	}
+        	str1 = str1.split(' / \n').join('\n');
         	replier.reply(str1+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
         }
