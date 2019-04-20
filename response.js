@@ -59,6 +59,7 @@ Flag=(function(){
 	   return Flag;
 	})();
 function blankFunc(r){}
+var featureList = ['!날씨', '!로또통계', '!행복회로','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -226,12 +227,36 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if (msg=="/기능") {
-            replier.reply("!기능으로 작동합니다 "+es+'\n자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
+        	var str='';
+        	for(var i in control) {
+        		if(controlPanel[i][room.replace(/ /g, '_')] ==1) {
+        			str += control[i] + '  ' ;
+        		}
+        	}
+        	var str1='';
+        	for(var i in featureList) {
+        		if( str.indexOf(featureList[i]) > -1 ) {
+        			str1 += featureList[i] + '\n';
+        		} 
+        	}
+            replier.reply("!기능으로 작동합니다 "+es+'\n'+str1+'자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
         } 
         
         if (msg == "!기능") {
-            replier.reply(es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
+        	var str='';
+        	for(var i in control) {
+        		if(controlPanel[i][room.replace(/ /g, '_')] ==1) {
+        			str += control[i] + '  ' ;
+        		}
+        	}
+        	var str1='';
+        	for(var i in featureList) {
+        		if( str.indexOf(featureList[i]) > -1 ) {
+        			str1 += featureList[i] + '\n';
+        		} 
+        	}
+        	replier.reply(str1+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
         }
         
