@@ -441,7 +441,7 @@ function suggestion(r){
 	if(r.msg.substr(4).length < 3){
 		r.replier.reply("건의가 너무 짧습니다.");
 	}else{
-		Api.replyRoom('test', room+" : "+sender+" : "+r.msg.substr(4));
+		Api.replyRoom('test', r.room+" : "+sender+" : "+r.msg.substr(4));
 		r.replier.reply(sender+"님의 건의가 접수되었습니다.");
 	}
 }
