@@ -59,10 +59,6 @@ Flag=(function(){
 	   return Flag;
 	})();
 function blankFunc(r){}
-function controlreload(r){
-	control = D.selectForArray('control').map(v=>v[0]);
-	controlPanel = D.selectForObject('control');
-}
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -98,7 +94,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if(feature != -1){
 		var work = controlPanel[feature][room.replace(/ /g, '_')];
 	}
-	
 	
 	I.run(room, sender, msg);
 	
@@ -148,7 +143,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         } 
         
-        if((msg.indexOf('!유튜브')==0 || msg.indexOf('/유튜브')==0 )&& work == 1){
+        if((msg.indexOf('!유튜브')==0 || msg.indexOf('/유튜브')==0 ) && work == 1){
         	youtube(r);
         	return;
         }
@@ -170,6 +165,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if (msg.indexOf("!전체채팅") == 0 && work == 1) {
         	if (room == '시립대 봇제작방' && msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방')){
+        	} else if (room == 'test'){
+        	} else {
         		return;
         	}
         	allchat(r);
@@ -243,7 +240,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
     	
-    	if ( (msg == "!추첨" && work == 1) || Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1) {
+    	if ( (msg == "!추첨" && work == 1) || ( Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1 ) && ( !isNaN(msg) || msg == '참가' || msg == '!마감' ) ) {
         	sel(r); 
         	return;
         }
@@ -266,7 +263,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
     	
-    	if ((msg == "!야구" && work == 1) || Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1 ){
+    	if ((msg == "!야구" && work == 1) || ( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && ( !isNaN(msg) || msg == '참가' || msg == '!강제종료' || msg == '!힌트' || msg == '!패스') ) ){
         	baseball(r);
         }
     	
@@ -311,7 +308,7 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "식당") {
         r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "유튜브") {
-        r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다. [!유투브] 나 [!yt]도 작동합니다. !로 시작하면 관련성이 가장 높은 영상을 보여주고 [/유튜브 제목] 과 같이 검색하면 조회수가 가장 높은 영상을 보여줍니다.");
+        r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다. 기본값은 관련성이 가장 높은 영상이지만 원하는 영상이 나오지 않을 경우 [/유튜브 제목] 과 같이 검색하면 조회수가 가장 높은 영상을 보여줍니다.");
     } else if (r.msg.split(" ")[1] == "노래") {
         r.replier.reply("벅스 TOP100 중 한 곡을 추천해줍니다.");
     } else if (r.msg.split(" ")[1] == "제이플라") {
@@ -323,9 +320,9 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "건의") {
         r.replier.reply("건의를 받습니다. [!건의 건의내용] 으로 입력하면 됩니다.");
     } else if (r.msg.split(" ")[1] == "추첨") {
-        r.replier.reply("[!추첨]을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 숫자만 입력하면 됩니다. 입력 후에는 누구든지 [참가] 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 [!마감 ]을 입력하면 당첨자가 바로 발표됩니다.\n추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 [!추첨]이 입력된 후 90초 이후엔 [!추첨종료]로 종료가 가능합니다.");
+        r.replier.reply("[!추첨]을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 숫자만 입력하면 됩니다. 입력 후에는 누구든지 [참가] 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 [!마감 ]을 입력하면 당첨자가 바로 발표됩니다.\n추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 [!추첨]이 입력된 후 90초 이후엔 [!마감]이 가능합니다.");
     } else if (r.msg.split(" ")[1] == "명단") {
-        r.replier.reply("푸드뱅크 명단을 보여줍니다. [!명단 만월] 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.\n[!명단추가 복지센터 055645XXXX] 처럼 입력하면 추가되고 [!명단삭제 복지센터] 처럼 입력하면 목록이 삭제됩니다. 삭제할 땐 반드시 제대로 된 기관명을 입력해야합니다.");
+        r.replier.reply("푸드뱅크 명단을 보여줍니다. [!명단 만월] 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.");
     } else if (r.msg.split(" ")[1] == "맛집") {
         r.replier.reply("검색한 지역의 맛집을 알려줍니다. [!맛집 지역명] 으로 검색하면 됩니다.");
     } else if (r.msg.split(" ")[1] == "야구"){
@@ -348,6 +345,32 @@ function func(r) {
     	r.replier.reply("[!포토 사진이름]으로 검색하면 구글 이미지 검색 첫번째 사진을 보여줍니다.");
     }
 }
+
+function controlReload(r){
+	control = D.selectForArray('control').map(v=>v[0]);
+	controlPanel = D.selectForObject('control');
+}
+
+function controlEdit(r){
+	controlPanel = D.selectForObject('control');
+	control = D.selectForArray('control').map(v=>v[0]);
+	
+	var feature = -1;
+	for(var i in control){
+		if( msg.indexOf(control[i]) == 0 ){
+			feature = i;
+			break;
+		}
+	}
+	
+	if(feature != -1){
+		var work = controlPanel[feature][room.replace(/ /g, '_')];
+	}
+	
+	
+	r.replier.reply("")
+}
+
 function thread(r){
 	r.replier.reply(T.getThreadList().join('\n'));
 }
