@@ -244,7 +244,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 	str1 += featureList[i] + ' / ';
                 }
         	}
-        	str += '\n';
+        	str1 += '\n';
         	str1 = str1.split(' / \n').join('\n');
             replier.reply("!기능으로 작동합니다 "+es+'\n'+str1+'자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
@@ -268,7 +268,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
                 	str1 += featureList[i] + ' / ';
                 }
         	}
-        	str += '\n';
+        	str1 += '\n';
         	str1 = str1.split(' / \n').join('\n');
         	replier.reply(str1+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
@@ -403,7 +403,7 @@ function controlEdit(r){
 	controlPanel = D.selectForObject('control');
 	control = D.selectForArray('control').map(v=>v[0]);
 	
-	var temp = msg.split(',');
+	var temp = r.msg.split(',');
 	var feature = -1;
 	for(var i in control){
 		if( temp[1].indexOf(control[i]) == 0 ){
