@@ -1932,7 +1932,7 @@ function recentchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num - 1) )
+	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
 		
 	    var temp = [];
 		if(temp2 != ''){
@@ -2009,7 +2009,7 @@ function allchat(r) {
 			}
     	}
 	    
-	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num -1) )
+	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
     	
 		var temp = [];
 	    temp[0]='길이:'+num+'\n';
