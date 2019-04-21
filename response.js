@@ -36,7 +36,6 @@ function reload(r) {
 		Api.replyRoom('test', e + "\n" + e.stack);
 	}
 }
-
 File = java.io.File;
 var es=String.fromCharCode(8237).repeat(500);
 var weiredstring1=String.fromCharCode(8203);//공백
@@ -227,50 +226,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
         
         if (msg=="/기능") {
-        	var str='';
-        	for(var i in control) {
-        		if(controlPanel[i][room.replace(/ /g, '_')] ==1) {
-        			str += control[i] + '  ' ;
-        		}
-        	}
-        	var str1='';
-        	var j = 1;
-        	for(var i in featureList) {
-                if( str.indexOf(featureList[i]) > -1 ) {
-                	if( Math.floor( str1.length / 20) == j){
-                		str1 += '\n';
-                		j+=1;
-                	}
-                	str1 += featureList[i] + ' / ';
-                }
-        	}
-        	str1 += '\n';
-        	str1 = str1.split(' / \n').join('\n');
-            replier.reply("!기능으로 작동합니다 "+es+'\n'+str1+'자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
+            replier.reply("!기능으로 작동합니다 "+es+'\n'+funcCheck(r)+'자세한 기능 설명을 원하면 !기능 [기능명] 으로 검색해주세요.');
             return;
         } 
         
         if (msg == "!기능") {
-        	var str='';
-        	for(var i in control) {
-        		if(controlPanel[i][room.replace(/ /g, '_')] ==1) {
-        			str += control[i] + '  ' ;
-        		}
-        	}
-        	var str1='';
-        	var j = 1;
-        	for(var i in featureList) {
-                if( str.indexOf(featureList[i]) > -1 ) {
-                	if( Math.floor( str1.length / 20) == j){
-                		str1 += '\n';
-                		j+=1;
-                	}
-                	str1 += featureList[i] + ' / ';
-                }
-        	}
-        	str1 += '\n';
-        	str1 = str1.split(' / \n').join('\n');
-        	replier.reply(str1+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
+        	replier.reply(funcCheck(r)+es+"\n설명이 필요하면 !기능 [기능명]으로 확인하세요."); 
             return;
         }
         
@@ -822,6 +783,28 @@ function blackjack(r){
 }
 */
 
+function funcCheck(r){
+	var str='';
+	for(var i in control) {
+		if(controlPanel[i][r.room.replace(/ /g, '_')] ==1) {
+			str += control[i] + '  ' ;
+		}
+	}
+	var str1='';
+	var j = 1;
+	for(var i in featureList) {
+        if( str.indexOf(featureList[i]) > -1 ) {
+        	if( Math.floor( str1.length / 20) == j){
+        		str1 += '\n';
+        		j+=1;
+        	}
+        	str1 += featureList[i] + ' / ';
+        }
+	}
+	str1 += '\n';
+	str1 = str1.split(' / \n').join('\n');
+	return str1;
+}
 function music(r) {
 	var rand = Math.floor(Math.random()*100);
 	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
