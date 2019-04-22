@@ -390,11 +390,7 @@ function translation(r){
 		r.replier.reply('번역할 수 없습니다.');
 	}
 	
-	if((templan0 == '일' && templan1 =='영' )|| (templan0 == '영' && templan1 =='일' )){
-		r.replier.reply(Api.translate('ko',templan1,Api.translate(templan0,'ko',tempmsg)));
-	} else {
-		r.replier.reply(Api.translate(templan0,templan1,tempmsg));
-	}
+	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
 }
 function controlReload(r){
 	control = D.selectForArray('control').map(v=>v[0]);
