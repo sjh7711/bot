@@ -365,9 +365,9 @@ function func(r) {
 
 
 function translation(r){
-	var tempmsg = r.msg.split(' ')[1].split(',')[1];
-	var templan0 = r.msg.split(' ')[1].split(',')[0][0];
-	var templan1 = r.msg.split(' ')[1].split(',')[0][1];
+	var tempmsg = r.msg.substr(7);
+	var templan0 = r.msg.substr(4).split(',')[0][0];
+	var templan1 = r.msg.substr(4).split(',')[0][1];
 	if (templan0 == '영'){
 		templan0 = 'en';
 	} else if (templan0 =='한'){
