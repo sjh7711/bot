@@ -438,7 +438,7 @@ function suggestion(r){
 	}
 }
 
-
+/*
 function blackjack(r){
 	var gameinfo = Flag.get('gameinfo', r.room);
 	
