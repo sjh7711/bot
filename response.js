@@ -42,6 +42,7 @@ var weiredstring1=String.fromCharCode(8203);//공백
 var weiredstring2=String.fromCharCode(160);//띄워쓰기로
 var weiredstring3=String.fromCharCode(8237);//공백
 var weiredstring4=String.fromCharCode(8197);//띄워쓰기로
+//replace(new RegExp(weiredstring1, "gi"), "")
 var statustime = 0;
 Flag=(function(){
 	   var list={};
@@ -62,9 +63,11 @@ var featureList = ['!날씨', '!로또통계', '!행복회로','!로또','!당�
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
-	r = { replier: replier, msg: msg, sender: sender.replace(new RegExp(weiredstring1, "gi"), "").replace(new RegExp(weiredstring2, "gi"), "").replace(new RegExp(weiredstring3, "gi"), "").replace(new RegExp(weiredstring4, "gi"), " "), room: room.replace(new RegExp(weiredstring2, "gi"), " ")};
+	r = { replier: replier, msg: msg, sender: sender, room: room};
 	
-	if (sender == "시립봇") {} else { D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room}); }
+	if (sender != "시립봇") {
+		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
+	}
 	
 	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
 		return;
