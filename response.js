@@ -59,7 +59,8 @@ Flag=(function(){
 	   return Flag;
 	})();
 function blankFunc(r){}
-var featureList = ['!날씨', '!로또통계', '!행복회로','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
+//]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0})
+var featureList = ['!날씨', '!로또통계', '!행복회로','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -183,6 +184,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if(msg.indexOf('!주사위') == 0 && work == 1 ){
         	randomnumber(r);
+        	return;
+        }
+        
+        if(msg.indexOf('!번역') == 0 && work == 1 ){
+        	translation(r);
         	return;
         }
         
@@ -357,6 +363,28 @@ function func(r) {
     }
 }
 
+
+function translation(r){
+	var tempmsg = r.msg.split(' ')[1].split(',')[1];
+	var templan0 = r.msg.split(' ')[1].split(',')[0][0];
+	var templan1 = r.msg.split(' ')[1].split(',')[0][1];
+	if (templan0 == '영'){
+		templan0 = 'en';
+	} else if (templan0 =='한'){
+		templan0 = 'ko';
+	} else if (templan0 =='일'){
+		templan0 = 'ja';
+	}
+	if (templan1 == '영'){
+		templan1 = 'en';
+	} else if (templan1 =='한'){
+		templan1 = 'ko';
+	} else if (templan1 =='일'){
+		templan1 = 'ja';
+	}
+	
+	r.replier.reply(Api.translate(templan0,templan1,tempmsg));
+}
 function controlReload(r){
 	control = D.selectForArray('control').map(v=>v[0]);
 	controlPanel = D.selectForObject('control');
@@ -410,11 +438,11 @@ function suggestion(r){
 	}
 }
 
-/*
+
 function blackjack(r){
-	
 	var gameinfo = Flag.get('gameinfo', r.room);
 	
+	//강제종료
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!강제종료' ){
 		var gameinfo = {
 				start : 0,
@@ -427,6 +455,7 @@ function blackjack(r){
 		return;
 	}
 	
+	//
 	if( r.msg == '!블랙잭'){
 		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
