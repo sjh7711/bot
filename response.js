@@ -66,10 +66,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	r = { replier: replier, msg: msg, sender: sender, room: room};
 	
-	if (sender != "시립봇") {
-		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
-	}
-	
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
 			try {
@@ -81,6 +77,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		try {
 			blankFunc(r);
 		} catch (e) {replier.reply(e + "\n" + e.stack);}
+	}
+	
+	if (sender != "시립봇") {
+		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 	}
 	
 	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
