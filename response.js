@@ -376,6 +376,7 @@ function translation(r){
 		templan0 = 'ja';
 	} else {
 		r.replier.reply('번역할 수 없습니다.');
+		return;
 	}
 	if (templan1 == '영'){
 		templan1 = 'en';
@@ -385,9 +386,11 @@ function translation(r){
 		templan1 = 'ja';
 	} else {
 		r.replier.reply('번역할 수 없습니다.');
+		return;
 	}
 	if(templan0 == templan1 ){
 		r.replier.reply('번역할 수 없습니다.');
+		return;
 	}
 	
 	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
