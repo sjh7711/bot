@@ -60,7 +60,7 @@ Flag=(function(){
 	})();
 function blankFunc(r){}
 //]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0})
-var featureList = ['!날씨', '!로또통계', '!행복회로','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
+var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -121,6 +121,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
             lotto(r);
             return;
         } 
+		
+		if (msg.indexOf("/로또") == 0 && work == 1) {
+            mylotto(r);
+            return;
+        }
 
         if (msg.indexOf("!당첨") == 0 && work == 1) {
             lottocheck(r);
@@ -847,6 +852,7 @@ function funcCheck(r){
 	str1 = str1.split(' / \n').join('\n');
 	return str1;
 }
+
 function music(r) {
 	var rand = Math.floor(Math.random()*100);
 	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
@@ -864,6 +870,7 @@ function music(r) {
 	r.replier.reply(link);
 	return;
 }
+
 function youtube(r) {//조회수
 	var search_word = r.msg.substr(5);
 	if(r.msg.split(' ')[0]=='!yt'){
@@ -887,7 +894,7 @@ function youtube(r) {//조회수
 function jfla(r){
 	var list=org.jsoup.Jsoup.connect('https://www.youtube.com/user/JFlaMusic/videos?view=0&sort=dd&shelf_id=0').get().select('a:contains(cover by)').toArray().map(v=>v.text()+'\n'+v.attr("abs:href"));
 	r.replier.reply(list[0]);
-	r.replier.reply('더보기'+es+'\n'+list.slice(1).join('\n'));
+	r.replier.reply('더보기'+es+'\n'+'노래 전체 모음\nhttps://music.youtube.com/playlist?list=PLrJ-VGAeEn8gzjavY0PXwGsMssB1DTUx7\n\n최근 목록\n'+list.slice(1).join('\n\n'));
 }
 
 function baseball(r){
@@ -1646,6 +1653,24 @@ var WCC = T.register("weatherClockCheck",()=>{
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨 공릉동', room : '단톡방',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨', room : '단톡방',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨 강북구 수유 1동', room : '단톡방',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨', room : '오버워치',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
@@ -1658,25 +1683,13 @@ var WCC = T.register("weatherClockCheck",()=>{
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨 광주 오룡동', room : '오버워치',replier:{reply:function(msg){
-				Api.replyRoom(r.room,msg)
-				}}
-			}
-			weather(r);
-			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨 진해 석동', room : '오버워치',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
 			weather(r);
 			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨 공릉동', room : '단톡방',replier:{reply:function(msg){
-				Api.replyRoom(r.room,msg)
-				}}
-			}
-			weather(r);
-			java.lang.Thread.sleep(6*1000);
-			r={msg : '!날씨', room : '단톡방',replier:{reply:function(msg){
+			r={msg : '!날씨 광주 오룡동', room : '오버워치',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
@@ -2126,13 +2139,9 @@ function bestlotto(r) {
 	r.replier.reply(result);
 }
 
-//로또
-function lotto(r) {
-	try{
-		var cycle = 1;
-		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 6 ){
-			cycle = Number(r.msg.substr(4));
-		}
+function mylotto(r){
+	if( r.room =='test' && r.msg.substr(4) > 5 && r.msg.substr(4) < 10001 ){
+		cycle = Number(r.msg.substr(4));
 		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 		var num = raw.select('h4').text().split('회')[0]*1+1;
 		for(var j = 0 ; j < cycle; j++){
@@ -2146,8 +2155,8 @@ function lotto(r) {
 		            break;
 		        }
 		    }
-		    r.replier.reply(templotto.sort(compare).join(", "));
-			
+		    templotto.sort(compare);
+		    
 			var today = new Date();
 			var year   = today.getFullYear();
 			var month  = today.getMonth() + 1;
@@ -2161,38 +2170,54 @@ function lotto(r) {
 			
 		    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 		}
-		if( r.room =='test' && r.msg.substr(4) > 5 && r.msg.substr(4) < 10001 ){
-			cycle = Number(r.msg.substr(4))-1;
-			var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-			var num = raw.select('h4').text().split('회')[0]*1+1;
-			for(var j = 0 ; j < cycle; j++){
-				var templotto = []; //로또번호 담길곳
-			    for (var i = 0; i < 100; i++) {
-			        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
-			        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
-			            templotto.push(rad);
-			        }
-			        if (templotto.length == 6) {//6개까지
-			            break;
-			        }
-			    }
-			    templotto.sort(compare);
-			    
-				var today = new Date();
-				var year   = today.getFullYear();
-				var month  = today.getMonth() + 1;
-				var date   = today.getDate();
-				var hour   = today.getHours();
-				var minute = today.getMinutes();
-				
-				date = date < 10 ? '0' + date : date;
-				hour = hour < 10 ? '0' + hour : hour;
-				minute = minute < 10 ? '0' + minute : minute;
-				
-			    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
-			}
-			r.replier.reply('끝');
+		r.replier.reply('끝');
+	}
+}
+
+//로또
+function lotto(r) {
+	try{
+		var cycle = 1;
+		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 101 ){
+			cycle = Number(r.msg.substr(4));
 		}
+		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+		var num = raw.select('h4').text().split('회')[0]*1+1;
+		var str = '';
+		if(cycle < 101 && cycle > 5){
+			str = cycle+'개의 로또를 뽑았씁니다.';
+		}
+		for(var j = 0 ; j < cycle; j++){
+			var templotto = []; //로또번호 담길곳
+		    for (var i = 0; i < 100; i++) {
+		        var rad = Math.floor(1 + Math.random() * 45); //rad : 1~45중에 뽑히는 숫자
+		        if (templotto.indexOf(rad) == -1) {//중복이면 거른다
+		            templotto.push(rad);
+		        }
+		        if (templotto.length == 6) {//6개까지
+		            break;
+		        }
+		    }
+		    templotto.sort(compare);
+		    
+		    if(cycle < 6){
+		    	str += templotto.join(", ")+'\n';
+		    }
+		    
+			var today = new Date();
+			var year   = today.getFullYear();
+			var month  = today.getMonth() + 1;
+			var date   = today.getDate();
+			var hour   = today.getHours();
+			var minute = today.getMinutes();
+			
+			date = date < 10 ? '0' + date : date;
+			hour = hour < 10 ? '0' + hour : hour;
+			minute = minute < 10 ? '0' + minute : minute;
+			
+		    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
+		}
+		r.replier.reply(str);
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
