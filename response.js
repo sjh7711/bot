@@ -2219,7 +2219,7 @@ function lotto(r) {
 			
 		    D.insert('lotto', {room : r.room, sender : r.sender, year: year, month: month, date:date, hour:hour, minute:minute, num:num, num1:templotto[0],num2:templotto[1],num3:templotto[2],num4:templotto[3],num5:templotto[4],num6:templotto[5]});
 		}
-		str+=r.sedner+'님이 '+cycle+'개의 로또를 뽑았습니다.';
+		str+= r.sender+'님이 '+cycle+'개의 로또를 뽑았습니다.';
 		r.replier.reply(str);
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
