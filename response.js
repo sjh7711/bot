@@ -84,7 +84,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	if( sender != 'C봇' && (msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 )){
-		Api.replyRoom('test', room+ ' ' + sender +' ' + msg);
+		Api.replyRoom('test', room+ ' | ' + sender +' | ' + msg);
 	}
 	
 	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
@@ -2202,7 +2202,7 @@ function lotto(r) {
 		    templotto.sort(compare);
 		    
 		    if(cycle < 6){
-		    	str += Number(j+1)+'. | '+templotto.join(", ")+'\n';
+		    	str += Number(j+1)+'. | '+templotto.map(v=>String(v).extension(" ",2)).join(", ")+'\n';
 		    }
 		    
 		    
