@@ -83,7 +83,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 	}
 	
-	if(msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 ){
+	if( sender != 'C봇' && (msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 )){
 		Api.replyRoom('test', room+ ' ' + sender +' ' + msg);
 	}
 	
