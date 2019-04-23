@@ -1601,7 +1601,9 @@ function weather(r){
 					var doc1 = org.jsoup.Jsoup.connect(link3).get();
 					var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
 					var dust = doc1.select('div.chart_item').toArray().map(v=>v.select('div.dust_graph_number').text().replace('먼지', '먼지 :')+"㎍/㎥" + "("+v.select('div.dust_graph_text').text()+")");
-					
+					if(sky.slice(0,7).indexOf('비') > -1 ){
+						r.replier.reply('비소식이 있습니다. 우산을 챙기세요.');
+					}
 					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
 					res += "-------미세먼지/자외선--------\n";
 					res += dust.join("\n")+"\n";
