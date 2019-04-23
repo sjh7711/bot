@@ -2202,7 +2202,7 @@ function lotto(r) {
 		    templotto.sort(compare);
 		    
 		    if(cycle < 6){
-		    	str += j+'. '+templotto.join(", ")+'\n';
+		    	str += Number(j+1)+'. '+templotto.join(", ")+'\n';
 		    }
 		    
 		    
