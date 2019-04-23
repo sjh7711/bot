@@ -84,7 +84,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	if(msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 ){
-		Api.replyRoom('test', msg);
+		Api.replyRoom('test', room+ ' ' + sender +' ' + msg);
 	}
 	
 	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
