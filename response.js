@@ -59,7 +59,9 @@ Flag=(function(){
 	   return Flag;
 	})();
 function blankFunc(r){}
-//]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0})
+//]D.execSQL("alter table control add BASEBALL number")
+//]D.update("control", {BASEBALL:0})
+//]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
 var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -289,7 +291,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
     	
-    	if ((msg == "!야구" && work == 1) || ( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && ( !isNaN(msg) || msg == '참가' || msg == '!강제종료' || msg == '!힌트' || msg == '!패스') ) ){
+    	if ((msg == "!야구" && work == 1) || ( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && ( !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!강제종료' || msg == '!힌트' || msg == '!패스') ) ){
         	baseball(r);
         }
     	
@@ -431,6 +433,9 @@ function controlEdit(r){
 			tempf[temp[2].replace(/ /g, '_')] = 0;
 		}
 		D.update("control", tempf , "name=?", [control[feature]]);
+	} else {
+		r.replier.reply('잘못입력했습니다.');
+		return;
 	}
 	controlReload(r);
 	r.replier.reply("수정 완료");
