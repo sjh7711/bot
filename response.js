@@ -380,7 +380,7 @@ function func(r) {
 }
 
 function calculator(r){
-	r.msg = r.msg.substr(4).replace(/[가-힣ㄱ-ㅎㅏ-ㅣA-Za-z]/g, "");
+	r.msg = r.msg.substr(4).replace(/[^0-9*\-+%/*=\^&|!]/g, "");
 	r.replier.reply(eval(r.msg));
 }
 
