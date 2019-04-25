@@ -259,10 +259,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if (msg == "!기능리로드" && work == 1){
         	controlReload(r);
+        	return;
         }
         
         if (msg.indexOf("!온오프")==0 && work == 1){
         	controlEdit(r);
+        	return;
         }
         
         if (msg == "!상태"){
