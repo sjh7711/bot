@@ -71,7 +71,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
 			try {
-				replier.reply(eval(msg.substring(1)));
+				replier.reply(eval(msg.substr(1)));
 				return;
 			} catch (e) {replier.reply(e + "\n" + e.stack);}
 		}
@@ -200,6 +200,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if(msg.indexOf('!번역') == 0 && work == 1 ){
         	translation(r);
+        	return;
+        }
+        
+        if(msg.indexOf('!계산') == 0 && work == 1 ){
+        	calculator(r);
         	return;
         }
         
@@ -372,6 +377,11 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "포토"){
     	r.replier.reply("[!포토 사진이름]으로 검색하면 구글 이미지 검색 첫번째 사진을 보여줍니다.");
     }
+}
+
+function calculator(r){
+	r.msg = r.msg.substr(4).replace(/[가-힣A-Za-z]/g, "");
+	r.replier.reply(eval(r.msg.substr));
 }
 
 
