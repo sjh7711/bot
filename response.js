@@ -379,7 +379,7 @@ function func(r) {
 }
 
 function calculator(r){
-	r.msg = r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~]/g, "");
+	r.msg = r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[]]/g, "");
 	var temp = eval(r.msg);
 	if(temp!=undefined){
 		r.replier.reply(temp);
