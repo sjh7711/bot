@@ -1756,12 +1756,12 @@ function overwatch(r) {
 			var compwinrate = source.select('div.progress-category.toggle-display').get(10);
 			var compkilldeath = source.select('div.progress-category.toggle-display').get(11);
 			
-	        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP4"+es;
+	        var res = "닉네임 : "+r.msg.substr(6)+"\n점수 : "+score+"\n티어 : "+tier+"\n\n많이 플레이한 영웅 TOP5"+es;
 	        
 	        var num = compplaytime.select('div.ProgressBar-title').toArray().length;
 	        
-	        if(num>3){
-	        	num=4;
+	        if(num>4){
+	        	num=5;
 	        }
 	        
 	        for(var i = 0 ; i < num ; i++ ){
