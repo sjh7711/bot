@@ -81,10 +81,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
 	
-	if(msg.indexOf('!') == 0){
-    	calculator(r);
-    }
-	
 	if (sender != "시립봇") {
 		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 	}
@@ -316,6 +312,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['name','point'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> i++ +'. ' +v[0]+' '+v[1]).join('\n'));
     		return;
     	}
+    	
+    	if(msg.indexOf('!') == 0){
+        	calculator(r);
+        }
+    	
     	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
