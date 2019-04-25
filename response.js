@@ -81,6 +81,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
 	
+	if(msg.indexOf('!') == 0){
+    	calculator(r);
+    }
+	
 	if (sender != "시립봇") {
 		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 	}
@@ -200,11 +204,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if(msg.indexOf('!번역') == 0 && work == 1 ){
         	translation(r);
-        	return;
-        }
-        
-        if(msg.indexOf('!계산') == 0 && work == 1 ){
-        	calculator(r);
         	return;
         }
         
@@ -380,7 +379,7 @@ function func(r) {
 }
 
 function calculator(r){
-	r.msg = r.msg.substr(4).replace(/[^0-9*\-+%/*=\^&|!.]/g, "");
+	r.msg = r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.]/g, "");
 	r.replier.reply(eval(r.msg));
 }
 
