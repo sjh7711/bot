@@ -62,7 +62,7 @@ function blankFunc(r){}
 //]D.execSQL("alter table control add BASEBALL number")
 //]D.update("control", {BASEBALL:0})
 //]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
-var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!계산','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
+var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		
@@ -81,7 +81,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
 	
-	if(msg.indexOf('!') == 0){
+	if(msg.indexOf('/') == 0){
     	calculator(r);
     }
 	
@@ -90,10 +90,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	}
 	
 	if( sender != 'C봇' && (msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 )){
-		Api.replyRoom('test', room+ ' | ' + sender +' | ' + msg);
+		Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
 	}
 	
-	if( !(msg[0] == '!' || msg[0] == '/' || msg[0] == ']' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
+	if( !(msg[0] == '!' || msg[0] == '/' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
 		return;
 	}
 	
@@ -381,8 +381,6 @@ function func(r) {
 function calculator(r){
 	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[]]/g, ""));
 	if(temp==undefined){
-		return;
-	} else {
 		r.replier.reply(temp);
 	}
 }
