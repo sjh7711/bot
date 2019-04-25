@@ -81,7 +81,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
 	
-	if(msg.indexOf('/') == 0){
+	if(msg.indexOf('!') == 0){
     	calculator(r);
     }
 	
@@ -211,10 +211,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	notice(r);
         	return;
         }
+        
         if(msg.indexOf("!명단")==0 && work == 1){
         	banklist(r);
         	return;
         }
+        
     	if(msg.indexOf("!업무")==0 && work == 1){
     		foodbank(r);
     		return;
@@ -379,7 +381,7 @@ function func(r) {
 }
 
 function calculator(r){
-	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[]]/g, ""));
+	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, "");
 	if(temp!=undefined){
 		r.replier.reply(temp);
 	}
