@@ -447,6 +447,9 @@ function controlEdit(r){
 			tempf[temp[2].replace(/ /g, '_')] = 1;
 		} else if ( temp[3] == 'off' ){
 			tempf[temp[2].replace(/ /g, '_')] = 0;
+		} else {
+			r.replier.reply('잘못입력했습니다.');
+			return;
 		}
 		D.update("control", tempf , "name=?", [control[feature]]);
 	} else {
