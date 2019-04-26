@@ -75,10 +75,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 				return;
 			} catch (e) {replier.reply(e + "\n" + e.stack);}
 		}
-		
-		try {
-			blankFunc(r);
-		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
 	
 	if (room == 'test' || room == '시립대 봇제작방') {
