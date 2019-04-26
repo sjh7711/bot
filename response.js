@@ -98,6 +98,23 @@ const safeEval = (() => {
     };
 })();
 
+let myFunction;
+myFunction = safeEval("() => this");
+
+myFunction = safeEval("() => window");
+
+myFunction = safeEval("() => self");
+
+myFunction = safeEval("() => eval");
+
+myFunction = safeEval("() => (0,eval)");
+
+myFunction = safeEval("() => Object.getPrototypeOf(function() {}).constructor");
+
+myFunction = safeEval("() => Object.getPrototypeOf(async () => {}).constructor");
+
+myFunction = safeEval("() => Object.getPrototypeOf(function * () {}).constructor.constructor");
+
 function blankFunc(r){}
 //]D.execSQL("alter table control add BASEBALL number")
 //]D.update("control", {BASEBALL:0})
