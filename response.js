@@ -58,6 +58,71 @@ Flag=(function(){
 	   }
 	   return Flag;
 	})();
+
+const safeEval = (() => {
+    const sourceCode = (() => {
+        const whitelist = ["Array", "ArrayBuffer", "Boolean", "Date", "DataView", "Error", "Float32Array", "Float64Array", "Infinity", "Int8Array", "Int16Array", "Int32Array", "JSON", "Map", "Math", "NaN", "Number", "Object", "Promise", "RegExp", "Set", "String", "Symbol", "Uint8Array", "Uint8ClampedArray", "Uint16Array", "Uint32Array", "WeakMap", "WeakSet", "atob", "btoa", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "isNaN", "parseFloat", "parseInt", "undefined", "unescape", "eval"];
+        const scope = getScope(Object.create(null), window);
+        delete Function.prototype.constructor;
+        delete Object.getPrototypeOf(async () => { }).constructor;
+        delete (function * () { }).prototype.constructor.constructor;
+        return code => {
+            with (scope) {
+                return (function () {
+                    "use strict";
+                    return eval(`(0,eval)("eval = undefined"),${code}`);
+                })();
+            }
+        };
+
+        function getScope(scope, object) {
+            Object.getOwnPropertyNames(object)
+                .filter(name => whitelist.indexOf(name) == -1)
+                .concat(["getScope", "scope", "whitelist"])
+                .forEach(name => scope[name] = undefined);
+            const proto = Object.getPrototypeOf(object);
+            return proto ? getScope(scope, proto) : scope;
+        }
+    }).toString();
+
+    return code => {
+        const sandboxIframe = document.createElement("iframe");
+        document.body.appendChild(sandboxIframe);
+        const script = document.createElement("script");
+        script.textContent = "var safeEval = (" + sourceCode + ")();";
+        const sandboxWindow = sandboxIframe.contentWindow;
+        sandboxWindow.document.body.appendChild(script);
+        const safeEval = sandboxWindow.safeEval;
+        document.body.removeChild(sandboxIframe);
+        return safeEval(code);
+    };
+})();
+
+let myFunction;
+myFunction = safeEval("() => this");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => window");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => self");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => eval");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => (0,eval)");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => Object.getPrototypeOf(function() {}).constructor");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => Object.getPrototypeOf(async () => {}).constructor");
+console.log(myFunction()); // undefined
+
+myFunction = safeEval("() => Object.getPrototypeOf(function * () {}).constructor.constructor");
+console.log(myFunction()); // undefined
+
 function blankFunc(r){}
 //]D.execSQL("alter table control add BASEBALL number")
 //]D.update("control", {BASEBALL:0})
@@ -391,71 +456,6 @@ function func(r) {
     	r.replier.reply("[!포토 사진이름]으로 검색하면 구글 이미지 검색 첫번째 사진을 보여줍니다.");
     }
 }
-
-const safeEval = (() => {
-    const sourceCode = (() => {
-        const whitelist = ["Array", "ArrayBuffer", "Boolean", "Date", "DataView", "Error", "Float32Array", "Float64Array", "Infinity", "Int8Array", "Int16Array", "Int32Array", "JSON", "Map", "Math", "NaN", "Number", "Object", "Promise", "RegExp", "Set", "String", "Symbol", "Uint8Array", "Uint8ClampedArray", "Uint16Array", "Uint32Array", "WeakMap", "WeakSet", "atob", "btoa", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "isNaN", "parseFloat", "parseInt", "undefined", "unescape", "eval"];
-        const scope = getScope(Object.create(null), window);
-        delete Function.prototype.constructor;
-        delete Object.getPrototypeOf(async () => { }).constructor;
-        delete (function * () { }).prototype.constructor.constructor;
-        return code => {
-            with (scope) {
-                return (function () {
-                    "use strict";
-                    return eval(`(0,eval)("eval = undefined"),${code}`);
-                })();
-            }
-        };
-
-        function getScope(scope, object) {
-            Object.getOwnPropertyNames(object)
-                .filter(name => whitelist.indexOf(name) == -1)
-                .concat(["getScope", "scope", "whitelist"])
-                .forEach(name => scope[name] = undefined);
-            const proto = Object.getPrototypeOf(object);
-            return proto ? getScope(scope, proto) : scope;
-        }
-    }).toString();
-
-    return code => {
-        const sandboxIframe = document.createElement("iframe");
-        document.body.appendChild(sandboxIframe);
-        const script = document.createElement("script");
-        script.textContent = "var safeEval = (" + sourceCode + ")();";
-        const sandboxWindow = sandboxIframe.contentWindow;
-        sandboxWindow.document.body.appendChild(script);
-        const safeEval = sandboxWindow.safeEval;
-        document.body.removeChild(sandboxIframe);
-        return safeEval(code);
-    };
-})();
-
-let myFunction;
-myFunction = safeEval("() => this");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => window");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => self");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => eval");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => (0,eval)");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => Object.getPrototypeOf(function() {}).constructor");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => Object.getPrototypeOf(async () => {}).constructor");
-console.log(myFunction()); // undefined
-
-myFunction = safeEval("() => Object.getPrototypeOf(function * () {}).constructor.constructor");
-console.log(myFunction()); // undefined
-
 function calculator(r){
 	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
 	if(temp!=undefined){
