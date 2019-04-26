@@ -59,61 +59,6 @@ Flag=(function(){
 	   return Flag;
 	})();
 
-const safeEval = (() => {
-    const sourceCode = (() => {
-        const whitelist = ["Array", "ArrayBuffer", "Boolean", "Date", "DataView", "Error", "Float32Array", "Float64Array", "Infinity", "Int8Array", "Int16Array", "Int32Array", "JSON", "Map", "Math", "NaN", "Number", "Object", "Promise", "RegExp", "Set", "String", "Symbol", "Uint8Array", "Uint8ClampedArray", "Uint16Array", "Uint32Array", "WeakMap", "WeakSet", "atob", "btoa", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "isNaN", "parseFloat", "parseInt", "undefined", "unescape", "eval"];
-        const scope = getScope(Object.create(null), window);
-        delete Function.prototype.constructor;
-        delete Object.getPrototypeOf(async () => { }).constructor;
-        delete (function * () { }).prototype.constructor.constructor;
-        return code => {
-            with (scope) {
-                return (function () {
-                    "use strict";
-                    return eval(`(0,eval)("eval = undefined"),${code}`);
-                })();
-            }
-        };
-
-        function getScope(scope, object) {
-            Object.getOwnPropertyNames(object)
-                .filter(name => whitelist.indexOf(name) == -1)
-                .concat(["getScope", "scope", "whitelist"])
-                .forEach(name => scope[name] = undefined);
-            const proto = Object.getPrototypeOf(object);
-            return proto ? getScope(scope, proto) : scope;
-        }
-    }).toString();
-
-    return code => {
-        const sandboxIframe = document.createElement("iframe");
-        document.body.appendChild(sandboxIframe);
-        const script = document.createElement("script");
-        script.textContent = "var safeEval = (" + sourceCode + ")();";
-        const sandboxWindow = sandboxIframe.contentWindow;
-        sandboxWindow.document.body.appendChild(script);
-        const safeEval = sandboxWindow.safeEval;
-        document.body.removeChild(sandboxIframe);
-        return safeEval(code);
-    };
-})();
-
-let myFunction;
-myFunction = safeEval("() => this");
-
-myFunction = safeEval("() => window");
-
-myFunction = safeEval("() => self");
-
-myFunction = safeEval("() => eval");
-
-myFunction = safeEval("() => (0,eval)");
-
-myFunction = safeEval("() => Object.getPrototypeOf(function() {}).constructor");
-
-myFunction = safeEval("() => Object.getPrototypeOf(async () => {}).constructor");
-
-myFunction = safeEval("() => Object.getPrototypeOf(function * () {}).constructor.constructor");
 
 function blankFunc(r){}
 //]D.execSQL("alter table control add BASEBALL number")
@@ -124,15 +69,6 @@ var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로�
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		
 	r = { replier: replier, msg: msg, sender: sender, room: room};
-	
-	if (room == 'test' || room == '시립대 봇제작방') {
-		if (msg.indexOf("/") == 0) {
-			try {
-				replier.reply(safeEval(msg.substring(1)));
-				return;
-			} catch (e) {replier.reply(e + "\n" + e.stack);}
-		}
-	}
 	
 	if (room == 'test' || room == '시립대 봇제작방') {
 		if (msg.indexOf("]") == 0) {
