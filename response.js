@@ -295,7 +295,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
     	}*/
         
-        if (msg == "!블랙잭" && work == 1){
+        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 &&(!isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!블랙잭종료' || msg == '힛' || msg == '스테이')){
         	blackjack(r);
         }
         
@@ -596,7 +596,7 @@ function blackjack(r){
         }
     }
 	
-	if ( gameinfo.start == 1 && gameinfo.playerlist.length == 3 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 ) ){
+	if ( gameinfo.start == 1 && (gameinfo.playerlist.length == 3 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 )) ){
 		var figure = ['♣','♠','♦','♥'];
 		var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
 		var temp = [];
