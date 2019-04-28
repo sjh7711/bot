@@ -59,6 +59,7 @@ Flag=(function(){
 	   return Flag;
 	})();
 function blankFunc(r){}
+function blankFunc1(r){}
 //]D.execSQL("alter table control add BASEBALL number")
 //]D.update("control", {BASEBALL:0})
 //]D.selectForString('control')
@@ -82,6 +83,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			blankFunc(r);
 		} catch (e) {replier.reply(e + "\n" + e.stack);}
 	}
+	
+	try {
+		blankFunc1(r);
+	} catch (e) {replier.reply(e + "\n" + e.stack);}
 	
 	if (sender != "시립봇") {
 		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
