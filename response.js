@@ -496,10 +496,20 @@ function suggestion(r){
 
 
 function blackjack(r){
-	var gameinfo = Flag.get('gameinfo', r.room);
+	if( Flag.get('gameinfo', r.room) = 0 ){
+		var gameinfo = {
+				start : 0,
+				start1 : 0,
+				start2 : 0,
+				start3 : 0
+		}
+		Flag.set('gameinfo', r.room, gameinfo);
+	} else {
+		var gameinfo = Flag.get('gameinfo', r.room);
+	}
 	
 	//강제종료
-	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!강제종료' ){
+	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
 		var gameinfo = {
 				start : 0,
 				start1 : 0,
