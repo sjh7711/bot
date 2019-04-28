@@ -58,11 +58,11 @@ Flag=(function(){
 	   }
 	   return Flag;
 	})();
-
-
 function blankFunc(r){}
 //]D.execSQL("alter table control add BASEBALL number")
 //]D.update("control", {BASEBALL:0})
+//]D.selectForString('control')
+//]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
 //]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
 var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -131,7 +131,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         } 
 		
 		if (msg.indexOf("/로또") == 0 && work == 1) {
-            mylotto(r);
+            testlotto(r);
             return;
         }
 
@@ -142,6 +142,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         if (msg == "!종합로또통계" && work == 1 ){
         	allbestlotto(r);
+        	return;
+        }
+        
+        if (msg == "!내로또" && work == 1){
+        	mylotto(r);
         	return;
         }
     	
@@ -2126,6 +2131,16 @@ function recom(r, name) { //name : DB이름
 		}
 }
 
+function mylotto(r){
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4').text().split('회')[0]*1+1;
+	var temp = D.selectForArray('lotto', null, 'room = ? and sender = ? and num = ?' , [r.room , r.sender, num]);
+	var result = r.sender+"님이 이번주에 뽑은 로또번호 | "+num+"회차\n"+es+"\n";
+	for(var i=0; i<temp.length; i++){
+		result+= (i+1)+". | " + "생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+"\n\n";
+	}
+}
+
 function allbestlotto(r) {
 	var result = "명예의 전당 | ";
 	var temp = D.selectForArray('lottoresult', null, 'count > 2 ', null , {orderBy:"class asc"});
@@ -2140,10 +2155,16 @@ function allbestlotto(r) {
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+"\n"+es+"\n";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")";
 	
-	for(var i=0; i<temp.length; i++){
-		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+	if ( room == 'test'){
+		result += "\n"+es+"\n";
+		for(var i=0; i<temp.length; i++){
+			result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+		}
+	}
+	if (result.length > 100000){
+		result = result.substr(0,100000);
 	}
 	r.replier.reply(result);
 }
@@ -2170,7 +2191,7 @@ function bestlotto(r) {
 	r.replier.reply(result);
 }
 
-function mylotto(r){
+function testlotto(r){
 	var cycle = 1;
 	if( r.msg.substr(4) > 0 && r.msg.substr(4) < 10001 ){
 		cycle = Number(r.msg.substr(4));
