@@ -2139,6 +2139,7 @@ function mylotto(r){
 	for(var i=0; i<temp.length; i++){
 		result+= (i+1)+". | " + "생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+"\n\n";
 	}
+	r.replier.reply(result);
 }
 
 function allbestlotto(r) {
