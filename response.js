@@ -60,12 +60,14 @@ Flag=(function(){
 	})();
 function blankFunc(r){}
 function blankFunc1(r){}
-//]D.execSQL("alter table control add BASEBALL number")
-//]D.update("control", {BASEBALL:0})
-//]D.selectForString('control')
-//]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
-//]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
-var featureList = ['!날씨', '!로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!종합로또통계','!건의','!블랙잭','!야구','!추첨'];
+/*
+]D.execSQL("alter table control add BASEBALL number")
+]D.update("control", {BASEBALL:0})
+]D.selectForString('control')
+]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
+]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
+*/
+var featureList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		
@@ -492,7 +494,7 @@ function suggestion(r){
 	}
 }
 
-/*
+
 function blackjack(r){
 	var gameinfo = Flag.get('gameinfo', r.room);
 	
@@ -516,10 +518,11 @@ function blackjack(r){
 			var gameinfo = {
 					suggest : r.sender,
 					starttime : new Date().getTime(),
-					playerlist = [],
-					betlist = [],
+					playerlist : [],
+					betlist : [],
 					burstcount : 0,
 					staycount : 0,
+					endcount : 0,
 					start : 1,
 					start1 : 0,
 					start2 : 0,
@@ -536,7 +539,8 @@ function blackjack(r){
 					bet : 0,
 					sum : 0,
 					splitcount : 0,
-					insurance : 0
+					insurance : 0,
+					state : 0
 			};
 			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
@@ -559,7 +563,8 @@ function blackjack(r){
     					bet : 0,
     					sum : 0,
     					splitcount : 0,
-    					insurance : 0
+    					insurance : 0,
+    					state : 0
     					
     				}
         	} else if ( gameinfo.player0.name[0] != r.sender && gameinfo.player1.name[0] != r.sender) {
@@ -570,7 +575,8 @@ function blackjack(r){
     					bet : 0,
     					sum : 0,
     					splitcount : 0,
-    					insurance : 0
+    					insurance : 0,
+    					state : 0
     				}
         	}
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
@@ -599,7 +605,7 @@ function blackjack(r){
 		
 		for( var j = 0 ; j < 2 ; j++){
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-			gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1));
+			gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 		}
 		
 		gameinfo.start = 0;
@@ -613,7 +619,7 @@ function blackjack(r){
 		if( !isNaN(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
 			for( var j = 0 ; j < 2 ; j++){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1));
+				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			}
 			gameinfo['player'+num].bet = Number(r.msg);
 			r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅했습니다.');
@@ -625,10 +631,9 @@ function blackjack(r){
 		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
 		for( var j in gameinfo.playerlist){
 			for( var i in gameinfo['player'+j].card ){
-				r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+j].card.map(v=>v.join(' ')).join(' | '));
+				r.replier.reply(gameinfo['player'+j].name+'의 카드 : ' + gameinfo['player'+j].card.map(v=>v.join(' ')).join(' | '));
 			}
 		}
-		
 		gameinfo.start1 = 0;
 		gameinfo.start2 = 1;
 	}
@@ -637,13 +642,11 @@ function blackjack(r){
 		if( r.msg == '스플릿'){
 			
 		}
-		if( r.msg == '힛' && num != -1 ) {
-			var temp = Flag.get('blackjack', r.room);
+		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 ) {
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-			temp[num].push(Flag.get('cards', r.room).splice(rand,1));
-			Flag.set('blackjack', r.room, temp);
-			r.replier.reply(temp[num].slice(0,1)+'의 카드 : ' + temp[num].slice(2).map(v=>v[0].join(' ')).join(' | '));
-			var temp = temp[num].slice(2).map(v=>v[0][1]);
+			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
+			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -670,34 +673,50 @@ function blackjack(r){
 				sum+=temp[i]
 			}
 			if(sum > 21){
-				r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 버스트.');
-				if(Flag.get('stay', r.room) == 0 ){
-					var temp=Flag.get('blackjack', r.room).splice(num, 1);
-				} else {
-					var temp = Flag.get('burst', r.room);
-					temp.push(Flag.get('blackjack', r.room).splice(num, 1));
-				}
-				Flag.set('burst', r.room, temp);
-				Flag.set('endp', r.room, Flag.get('endp', r.room)+1 );
+				r.replier.reply(r.sender+'님의 버스트.');
+				gameinfo['player'+num].state = 1;
+				gameinfo['player'+num].endcount +=1;
+				gameinfo['player'+num].sum = sum;
 			}
 		}
 		
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room)[num][0]==r.sender ){
 			r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 스테이.');
-			if(Flag.get('stay', r.room) == 0 ){
-				var temp = Flag.get('blackjack', r.room).splice(num, 1);
-			} else {
-				var temp = Flag.get('stay', r.room);
-				temp.push(Flag.get('blackjack', r.room).splice(num, 1));
+			var temp = gameinfo['player'+num].card.map(v=>v[1]);
+			var sum = 0;
+			for(var j in temp){
+				if( temp[j] == 'A' ){
+					sum += 1
+				} else if( isNaN(temp[j])){
+					sum += 10;
+				} else {
+					sum += Number(temp[j]);
+				}
 			}
-			Flag.set('stay', r.room, temp);
-			Flag.set('endp', r.room, Flag.get('endp', r.room)+1 );
+			for(var j in temp) {
+				if(temp[j] == 'A'){
+					temp[j] = 1; 
+					if(sum <= 11) {
+						temp[j] = 11; 
+						break;
+					}
+				} else if ( isNaN(temp[j])){
+					temp[j] = 10; 
+				}
+			}
+			var sum = 0;
+			for(var j in temp) {
+				sum+=temp[j];
+			}
+			gameinfo['player'+num].sum = sum;
+			gameinfo['player'+num].state = 2;
+			gameinfo['player'+num].endcount +=1;
 		}
 	}
 	
-	if( Flag.get('endp', r.room) == Flag.get('pcount', r.room) && Flag.get('bstart2', r.room)==1 ){
+	if( gameinfo['player'+num].endcount == gameinfo['player'+num].playerlist.length && gameinfo.start2 == 1 ){
 		while(1){
-			var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
+			var temp = gameinfo.dealer.card.map(v=>v[1]);;
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -725,114 +744,14 @@ function blackjack(r){
 			}
 			
 			if(sum < 17){
-				var temp = Flag.get('PD', r.room);
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				temp.push(Flag.get('cards', r.room).splice(rand,1));
-				Flag.set('PD', r.room, temp);
+				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1));
 			} else{
-				break;
+				gameinfo.dealer.sum = sum;
 			}
 		}
-		
+				
 		var str = '';
-		
-		var temp = Flag.get('PD', r.room).slice().map(v=>v[0][1]);
-		if( Flag.get('PD', r.room) != 0){
-			var sum = 0;
-			for(var i in temp){
-				if( temp[i] == 'A' ){
-					sum += 1;
-				} else if( isNaN(temp[i])){
-					sum += 10;
-				} else {
-					sum += Number(temp[i]);
-				}
-			}
-			for(var i in temp) {
-				if(temp[i] == 'A'){
-					temp[i] = 1; 
-					if(sum <= 11) {
-						temp[i] = 11; 
-						break;
-					}
-				} else if ( isNaN(temp[i]) ){
-					temp[i] = 10; 
-				}
-			}
-			var sum = 0;
-			for(var i in temp) {
-				sum+=temp[i];
-			}
-			Flag.get('PD', r.room).push(sum);
-		}
-		
-		if( Flag.get('stay', r.room) != 0){
-			var temp = Flag.get('stay', r.room);
-			for(var i in Flag.get('stay', r.room) ){
-				var temp = temp[i].slice(2).map(v=>v[0][1]);
-				var sum = 0;
-				for(var j in temp){
-					if( temp[j] == 'A' ){
-						sum += 1
-					} else if( isNaN(temp[j])){
-						sum += 10;
-					} else {
-						sum += Number(temp[j]);
-					}
-				}
-				for(var j in temp) {
-					if(temp[j] == 'A'){
-						temp[j] = 1; 
-						if(sum <= 11) {
-							temp[j] = 11; 
-							break;
-						}
-					} else if ( isNaN(temp[j])){
-						temp[j] = 10; 
-					}
-				}
-				var sum = 0;
-				for(var j in temp) {
-					sum+=temp[j];
-				}
-				Flag.get('stay', r.room)[i].push(sum);
-			}
-		}
-		
-		if( Flag.get('burst', r.room) != 0){
-			var temp = Flag.get('burst', r.room);
-			for(var i in Flag.get('burst', r.room) ){
-				var temp = temp[i].slice(2).map(v=>v[0][1]);
-				var sum = 0;
-				for(var j in temp){
-					if( temp[j] == 'A' ){
-						sum += 1
-					} else if( isNaN(temp[j])){
-						sum += 10;
-					} else {
-						sum += Number(temp[j]);
-					}
-				}
-				for(var j in temp) {
-					if(temp[j] == 'A'){
-						temp[j] = 1; 
-						if(sum <= 11) {
-							temp[j] = 11; 
-							break;
-						}
-					} else if ( isNaN(temp[j])){
-						temp[j] = 10; 
-					}
-				}
-				var sum = 0;
-				for(var j in temp) {
-					sum+=temp[j];
-				}
-				Flag.get('burst', r.room)[i].push(sum);
-			}
-		}
-		
-
 		
 		if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] > 21 ){
 			if( Flag.get('burst', r.room) != 0 ){
@@ -867,7 +786,7 @@ function blackjack(r){
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
-*/
+
 
 function funcCheck(r){
 	var str='';
