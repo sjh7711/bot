@@ -2189,6 +2189,9 @@ function bestlotto(r) {
 	for(var i=0; i<temp.length; i++){
 		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
 	}
+	if (result.length > 20000){
+		result = result.substr(0,20000);
+	}
 	r.replier.reply(result);
 }
 
