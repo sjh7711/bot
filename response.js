@@ -496,7 +496,7 @@ function suggestion(r){
 
 
 function blackjack(r){
-	if( Flag.get('gameinfo', r.room) = 0 ){
+	if( Flag.get('gameinfo', r.room) == 0 ){
 		var gameinfo = {
 				start : 0,
 				start1 : 0,
