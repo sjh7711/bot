@@ -553,7 +553,7 @@ function blackjack(r){
 		}
 	}
 	
-	if (r.msg == '참가' && &&  gameinfo.start == 1 ){//참가모집중
+	if (r.msg == '참가' &&  gameinfo.start == 1 ){//참가모집중
         if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){
         	if(gameinfo.playercount == 1 && gameinfo.player0.name[0] != r.sender ){
     			gameinfo.playerlist.push(r.sender);
