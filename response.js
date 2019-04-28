@@ -684,29 +684,29 @@ function blackjack(r){
 			r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 스테이.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
-			for(var j in temp){
-				if( temp[j] == 'A' ){
+			for(var i in temp){
+				if( temp[i] == 'A' ){
 					sum += 1
-				} else if( isNaN(temp[j])){
+				} else if( isNaN(temp[i])){
 					sum += 10;
 				} else {
-					sum += Number(temp[j]);
+					sum += Number(temp[i]);
 				}
 			}
-			for(var j in temp) {
-				if(temp[j] == 'A'){
-					temp[j] = 1; 
+			for(var i in temp) {
+				if(temp[i] == 'A'){
+					temp[i] = 1; 
 					if(sum <= 11) {
-						temp[j] = 11; 
+						temp[i] = 11; 
 						break;
 					}
-				} else if ( isNaN(temp[j])){
-					temp[j] = 10; 
+				} else if ( isNaN(temp[i])){
+					temp[i] = 10; 
 				}
 			}
 			var sum = 0;
-			for(var j in temp) {
-				sum+=temp[j];
+			for(var i in temp) {
+				sum+=temp[i];
 			}
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 2;
@@ -748,40 +748,34 @@ function blackjack(r){
 				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1));
 			} else{
 				gameinfo.dealer.sum = sum;
+				break;
 			}
 		}
 				
 		var str = '';
 		
-		if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] > 21 ){
-			if( Flag.get('burst', r.room) != 0 ){
-				for(var i in Flag.get('burst', r.room)){
-					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('burst', r.room)[0].slice(2,Flag.get('burst', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | ')+' ('+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length-1]+')\n';
+		if( gameinfo.dealer.sum > 21 ){
+			for( var i in gameinfo.playerlist){
+				if(gameinfo['player'+i].state = 1){
+					str += gameinfo['player'+i].name + '님의 패배\n';
+				} else {
+					str += gameinfo['player'+i].name + '님의 승리\n';
 				}
 			}
-			if( Flag.get('stay', r.room) != 0 ){
-				for(var i in Flag.get('stay', r.room)){
-					str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | ')+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
-				}
-			}
-		} else if( Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] < 22 ){
-			if( Flag.get('burst', r.room) != 0 ){
-				for(var i in Flag.get('burst', r.room)){
-					str += Flag.get('burst', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('burst', r.room)[0].slice(2,Flag.get('burst', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | ')+' ('+Flag.get('burst', r.room)[i][Flag.get('burst', r.room)[i].length-1]+')\n';
-				}
-			}
-			if( Flag.get('stay', r.room) != 0 ){
-				for(var i in Flag.get('stay', r.room)){				
-					if( Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1] > Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1] ){
-						str += Flag.get('stay', r.room)[i][0]+'님은 이겼습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | ')+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
+		} else if( gameinfo.dealer.sum < 22 ){
+			for( var i in gameinfo.playerlist){
+				if(gameinfo['player'+i].state = 1){
+					str += gameinfo['player'+i].name + '님의 패배\n';
+				} else {
+					if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
+						str += gameinfo['player'+i].name + '님의 승리\n'; 
 					} else {
-						str += Flag.get('stay', r.room)[i][0]+'님은 졌습니다.\n'+Flag.get('stay', r.room)[0].slice(2,Flag.get('stay', r.room)[0].length-1).map(v=>v[0].join(' ')).join(' | ')+' ('+Flag.get('stay', r.room)[i][Flag.get('stay', r.room)[i].length-1]+')\n';
+						str += gameinfo['player'+i].name + '님의 패배\n'; 
 					}
 				}
 			}
 		}
-		
-		r.replier.reply('딜러의 카드를  공개합니다.\n' + Flag.get('PD', r.room).slice(0,Flag.get('PD', r.room).length-1).map(v=>v[0].join(' ')).join(' | ') +' ('+Flag.get('PD', r.room)[Flag.get('PD', r.room).length-1]+')\n'+str );		
+		r.replier.reply('딜러의 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + '(' + gameinfo.dealer.sum+ ')\n' +str );		
 	}
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
