@@ -295,7 +295,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
     	}*/
         
-        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 &&(!isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!블랙잭종료' || msg == '힛' || msg == '스테이')){
+        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!블랙잭종료' || msg == '힛' || msg == '스테이') )){
         	blackjack(r);
         }
         
