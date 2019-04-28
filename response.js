@@ -98,7 +98,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
 	}
 	
-	if( !(msg[0] == '!' || msg[0] == '/' ||msg == "시작" ||msg == "참가" || !isNaN(msg) ) || reloadcheck == 1  ){
+	if( reloadcheck == 1  ){
 		return;
 	}
 	
