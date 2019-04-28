@@ -596,7 +596,7 @@ function blackjack(r){
         }
     }
 	
-	if ( gameinfo.start == 1 && (gameinfo.playerlist.length == 3 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 )) ){
+	if ( gameinfo.start == 0 && (gameinfo.playerlist.length == 3 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 )) ){
 		var figure = ['♣','♠','♦','♥'];
 		var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
 		var temp = [];
