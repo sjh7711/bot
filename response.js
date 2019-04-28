@@ -724,7 +724,7 @@ function blackjack(r){
 		}
 	}
 	
-	if( gameinfo['player'+num].endcount == gameinfo['player'+num].playerlist.length && gameinfo.start2 == 1 ){
+	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1 ){
 		while(1){
 			var temp = gameinfo.dealer.card.map(v=>v[1]);;
 			var sum = 0;
