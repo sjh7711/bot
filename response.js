@@ -671,6 +671,7 @@ function blackjack(r){
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 		}
+		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
 		for( var i in gameinfo.playerlist){
 			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | '));
 		}
