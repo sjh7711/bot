@@ -652,7 +652,7 @@ function blackjack(r){
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v[0].join(' ')).join(' | '));
-			var temp = gameinfo['player'+num].card.map(v=>v[1]);
+			var temp = gameinfo['player'+num].card.map(v=>v[0][1]);
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -688,7 +688,7 @@ function blackjack(r){
 		
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room)[num][0]==r.sender ){
 			r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 스테이.');
-			var temp = gameinfo['player'+num].card.map(v=>v[1]);
+			var temp = gameinfo['player'+num].card.map(v=>v[0][1]);
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -722,7 +722,7 @@ function blackjack(r){
 	
 	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1 ){
 		while(1){
-			var temp = gameinfo.dealer.card.map(v=>v[1]);;
+			var temp = gameinfo.dealer.card.map(v=>v[0][1]);;
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
