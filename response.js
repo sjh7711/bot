@@ -773,10 +773,10 @@ function blackjack(r){
 			str += '딜러의 블랙잭!\n';
 			for( var i in gameinfo.playerlist){
 				if(gameinfo['player'+i].sum == 21 && gameinfo['player'+i].state == 4){
-					str += gameinfo['player'+i].name + '님의 Push\n';
+					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Push\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					gameinfo['player'+i].result = 3;
 				} else {
-					str += gameinfo['player'+i].name + '님의 패배\n';
+					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					gameinfo['player'+i].result = 1;
 				}
 			}
