@@ -731,7 +731,7 @@ function blackjack(r){
 			str += '딜러의 블랙잭!';
 			var str = '';
 			for( var i in gameinfo.playerlist){
-				if(gameinfo['player'+i].sum == 21){
+				if(gameinfo['player'+i].sum == 21 && gameinfo['player'+i].state == 4){
 					str += gameinfo['player'+i].name + '님의 Push\n';
 					gameinfo['player'+i].result = 3;
 				} else {
