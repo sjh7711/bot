@@ -668,12 +668,13 @@ function blackjack(r){
 				if(temp[i] == 'A'){
 					temp[i] = 1;
 					acount += 1;
-					if(sum <= 11 && acount == 0) {
+					if(sum <= 11 && acount == 1) {
 						temp[i] = 11;
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
 				}
+			}
 			}
 			var sum = 0;
 			for(var i in temp) {
@@ -705,7 +706,7 @@ function blackjack(r){
 				if(temp[i] == 'A'){
 					temp[i] = 1;
 					acount += 1;
-					if(sum <= 11 && acount == 0) {
+					if(sum <= 11 && acount == 1) {
 						temp[i] = 11;
 					}
 				} else if ( isNaN(temp[i])){
@@ -740,7 +741,7 @@ function blackjack(r){
 				if(temp[i] == 'A'){
 					temp[i] = 1;
 					acount += 1;
-					if(sum <= 11 && acount == 0) {
+					if(sum <= 11 && acount == 1) {
 						temp[i] = 11;
 					}
 				} else if ( isNaN(temp[i])){
