@@ -33,7 +33,7 @@ function reload(r) {
 		    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
 		}
 	}catch (e){
-		Api.replyRoom('test', e + "\n" + e.stack);
+		r.replier.reply('test', e + "\n" + e.stack);
 	}
 }
 File = java.io.File;
