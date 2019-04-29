@@ -701,7 +701,7 @@ function blackjack(r){
 	
 	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length &&  Number(gameinfo['player'+i].bet/2) >= r.msg && r.msg > -1  ){
 		gameinfo.insurlist.push(r.sender);
-		gameinfo['player'+i].insurance = r.msg;
+		gameinfo['player'+num].insurance = r.msg;
 		if(gameinfo.insurlist.length == gameinfo.playerlist.length){
 			gameinfo.start1 = 0;
 			gameinfo.start2 = 1;
