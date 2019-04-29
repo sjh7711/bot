@@ -675,7 +675,6 @@ function blackjack(r){
 					temp[i] = 10; 
 				}
 			}
-			}
 			var sum = 0;
 			for(var i in temp) {
 				sum+=temp[i]
