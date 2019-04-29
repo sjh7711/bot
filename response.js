@@ -704,6 +704,7 @@ function blackjack(r){
 		gameinfo['player'+num].insurance = r.msg;
 		if(gameinfo.insurlist.length == gameinfo.playerlist.length){
 			gameinfo.start1 = 0;
+			gameinfo.start3 = 0;
 			gameinfo.start2 = 1;
 		}
 		if(r.msg != '0'){
