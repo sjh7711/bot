@@ -637,10 +637,8 @@ function blackjack(r){
 	
 	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
 		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
-		for( var j in gameinfo.playerlist){
-			for( var i in gameinfo['player'+j].card ){
-				r.replier.reply(gameinfo['player'+j].name+'의 카드 : ' + gameinfo['player'+j].card.map(v=>v.join(' ')).join(' | '));
-			}
+		for( var i in gameinfo.playerlist){
+			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v[0].join(' ')).join(' | '));
 		}
 		gameinfo.start1 = 0;
 		gameinfo.start2 = 1;
@@ -653,7 +651,7 @@ function blackjack(r){
 		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 ) {
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
-			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
+			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v[0].join(' ')).join(' | '));
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
 			for(var i in temp){
