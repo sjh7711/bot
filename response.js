@@ -669,15 +669,17 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
+		var str = '';
 		for( var i in gameinfo.playerlist){
 			var temp = gameinfo['player'+i].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo['player'+i].sum = sum;
 		}
-		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
+		str += '딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? \n'
 		for( var i in gameinfo.playerlist){
-			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | '));
+			str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ') + '\n';
 		}
+		r.replier.reply(str.substr(0,str.length-1));
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
 				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!');
