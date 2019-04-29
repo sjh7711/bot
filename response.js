@@ -761,7 +761,7 @@ function blackjack(r){
 			r.replier.reply(str);
 		}
 		if( r.msg == '더블다운'){
-			var str = r.sender+'님의 더블다운.';
+			var str = r.sender+'님의 더블다운.\n';
 			gameinfo['player'+num].state = 6;
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
