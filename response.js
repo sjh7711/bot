@@ -681,7 +681,7 @@ function blackjack(r){
 			if(sum > 21){
 				r.replier.reply(r.sender+'님의 버스트.');
 				gameinfo['player'+num].state = 1;
-				gameinfo['player'+num].endcount +=1;
+				gameinfo.endcount +=1;
 				gameinfo['player'+num].sum = sum;
 			}
 		}
@@ -716,7 +716,7 @@ function blackjack(r){
 			}
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 2;
-			gameinfo['player'+num].endcount +=1;
+			gameinfo.endcount +=1;
 		}
 	}
 	
