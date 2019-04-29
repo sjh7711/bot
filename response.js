@@ -717,7 +717,11 @@ function blackjack(r){
 		}
 		if( r.msg == '서렌더'){
 			r.replier.reply(r.sender+'님의 서렌더.');
+			var temp = gameinfo['player'+num].card.map(v=>v[1]);
+			var sum = blackjacksum(temp);
+			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 5;
+			gameinfo.endcount +=1;
 		}
 		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
