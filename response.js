@@ -709,6 +709,9 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
+		if( r.msg == '스플릿' ){
+			
+		}
 		if( r.msg == '서렌더'){
 			r.replier.reply(r.sender+'님의 서렌더.');
 			gameinfo['player'+num].state = 5;
