@@ -677,9 +677,10 @@ function blackjack(r){
 		}
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
-				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!\n');
+				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!');
 				gameinfo['player'+i].result = 4;
 				gameinfo['player'+i].state = 4;
+				gameinfo.endcount +=1;
 			}
 		}
 		gameinfo.start1 = 0;
