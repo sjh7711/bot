@@ -667,7 +667,7 @@ function blackjack(r){
 			for(var i in temp) {
 				if(temp[i] == 'A'){
 					temp[i] = 1;
-					var acount += 1;
+					acount += 1;
 					if(sum <= 11 && acount == 0) {
 						temp[i] = 11;
 					}
@@ -704,7 +704,7 @@ function blackjack(r){
 			for(var i in temp) {
 				if(temp[i] == 'A'){
 					temp[i] = 1;
-					var acount += 1;
+					acount += 1;
 					if(sum <= 11 && acount == 0) {
 						temp[i] = 11;
 					}
@@ -739,7 +739,7 @@ function blackjack(r){
 			for(var i in temp) {
 				if(temp[i] == 'A'){
 					temp[i] = 1;
-					var acount += 1;
+					acount += 1;
 					if(sum <= 11 && acount == 0) {
 						temp[i] = 11;
 					}
