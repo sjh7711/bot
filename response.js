@@ -781,9 +781,8 @@ function blackjack(r){
 				}
 			}
 		}
-		r.replier.reply('딜러의 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str );		
+		r.replier.reply('딜러의 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str );
 		gameinfo.start2 = 0;
-		}
 	}
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
