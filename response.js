@@ -686,8 +686,8 @@ function blackjack(r){
 			}
 		}
 		
-		if( (r.msg == '스탠드' || r.msg == '스테이')  && Flag.get('blackjack', r.room)[num][0]==r.sender ){
-			r.replier.reply(Flag.get('blackjack', r.room)[num][0]+'님의 스테이.');
+		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender ){
+			r.replier.reply(gameinfo['player'+num].name+'님의 스테이.');
 			var temp = gameinfo['player'+num].card.map(v=>v[0][1]);
 			var sum = 0;
 			for(var i in temp){
