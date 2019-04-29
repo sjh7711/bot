@@ -751,7 +751,7 @@ function blackjack(r){
 			
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1));
+				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			} else{
 				gameinfo.dealer.sum = sum;
 				break;
