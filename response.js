@@ -666,13 +666,13 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
-		var temp = gameinfo.dealer.card.map(v=>v[1]);
-		var sum = blackjacksum(temp);
 		for( var i in gameinfo.playerlist){
 			var temp = gameinfo['player'+i].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 		}
+		var temp = gameinfo.dealer.card.map(v=>v[1]);
+		var sum = blackjacksum(temp);
 		if(sum == 21){
 			r.replier.reply('딜러의 블랙잭! 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str );
 			gameinfo.start1 = 0;
