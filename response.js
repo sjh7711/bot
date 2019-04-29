@@ -579,7 +579,7 @@ function blackjack(r){
 					bet : 0,
 					sum : 0,
 					split : 0,
-					insurance : -1,
+					insurance : 0,
 					state : 0,
 					result : 0
 			};
@@ -604,7 +604,7 @@ function blackjack(r){
     					bet : 0,
     					sum : 0,
     					split : 0,
-    					insurance : -1,
+    					insurance : 0,
     					state : 0,
     					result : 0
     					
@@ -617,7 +617,7 @@ function blackjack(r){
     					bet : 0,
     					sum : 0,
     					split : 0,
-    					insurance : -1,
+    					insurance : 0,
     					state : 0,
     					result : 0
     				}
@@ -699,12 +699,15 @@ function blackjack(r){
 		}
 	}
 	
-	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo['player'+i].insurance == -1 && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length &&  Number(gameinfo['player'+i].bet/2) >= r.msg && r.msg > 0  ){
+	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length &&  Number(gameinfo['player'+i].bet/2) >= r.msg && r.msg > -1  ){
 		gameinfo.insurlist.push(r.sender);
 		gameinfo['player'+i].insurance = r.msg;
 		if(gameinfo.insurlist.length == gameinfo.playerlist.length){
 			gameinfo.start1 = 0;
 			gameinfo.start2 = 1;
+		}
+		if(r.msg != '0'){
+			r.replier.reply(r.sender+'님이 '+ r.msg +'의 보험금으로 Insurance를 하셨습니다.');
 		}
 	}
 	
