@@ -638,7 +638,7 @@ function blackjack(r){
 	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
 		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
 		for( var i in gameinfo.playerlist){
-			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v[0].join(' ')).join(' | '));
+			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | '));
 		}
 		gameinfo.start1 = 0;
 		gameinfo.start2 = 1;
@@ -651,8 +651,8 @@ function blackjack(r){
 		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 ) {
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
-			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v[0].join(' ')).join(' | '));
-			var temp = gameinfo['player'+num].card.map(v=>v[0][1]);
+			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
+			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -688,7 +688,7 @@ function blackjack(r){
 		
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 스테이.');
-			var temp = gameinfo['player'+num].card.map(v=>v[0][1]);
+			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -722,7 +722,7 @@ function blackjack(r){
 	
 	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1 ){
 		while(1){
-			var temp = gameinfo.dealer.card.map(v=>v[0][1]);;
+			var temp = gameinfo.dealer.card.map(v=>v[1]);;
 			var sum = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
@@ -734,10 +734,10 @@ function blackjack(r){
 				}
 			}
 			for(var i in temp) {
-				if(temp[j] == 'A'){
-					temp[j] = 1; 
+				if(temp[i] == 'A'){
+					temp[i] = 1; 
 					if(sum <= 11) {
-						temp[j] = 11; 
+						temp[i] = 11; 
 						break;
 					}
 				} else if ( isNaN(temp[i])){
