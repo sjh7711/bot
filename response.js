@@ -494,6 +494,35 @@ function suggestion(r){
 	}
 }
 
+function blackjacksum(temp){
+	var sum = 0;
+	var acount = 0;
+	for(var i in temp){
+		if( temp[i] == 'A' ){
+			sum += 1
+		} else if( isNaN(temp[i])){
+			sum += 10;
+		} else {
+			sum += Number(temp[i]);
+		}
+	}
+	for(var i in temp) {
+		if(temp[i] == 'A'){
+			temp[i] = 1;
+			acount += 1;
+			if(sum <= 11 && acount == 1) {
+				temp[i] = 11;
+			}
+		} else if ( isNaN(temp[i])){
+			temp[i] = 10; 
+		}
+	}
+	var sum = 0;
+	for(var i in temp) {
+		sum+=temp[i]
+	}
+	return sum;
+}
 
 function blackjack(r){
 	if( Flag.get('gameinfo', r.room) == 0 ){
@@ -637,9 +666,39 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
-		r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
+		var temp = gameinfo.dealer.card.map(v=>v[1]);
+		var sum = blackjacksum(temp);
+		for( var i in gameinfo.playerlist){
+			var temp = gameinfo['player'+i].card.map(v=>v[1]);
+			var sum = blackjacksum(temp);
+			gameinfo['player'+num].sum = sum;
+		}
+		if(sum == 21){
+			r.replier.reply('딜러의 블랙잭! 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str );
+			gameinfo.start1 = 0;
+			var str = '';
+			for( var i in gameinfo.playerlist){
+				if(gameinfo['player'+i].sum == 21){
+					str += gameinfo['player'+i].name + '님의 Push\n';
+					gameinfo['player'+i].result = 3;
+				} else {
+					str += gameinfo['player'+i].name + '님의 패배\n';
+					gameinfo['player'+i].result = 1;
+				}
+			}
+			return;
+		} else {
+			r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
+		}
 		for( var i in gameinfo.playerlist){
 			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | '));
+		}
+		for( var i in gameinfo.playerlist){
+			if(gameinfo['player'+i].sum == 21){
+				str += gameinfo['player'+i].name + '님의 블랙잭!\n';
+				gameinfo['player'+i].result = 4;
+				gameinfo['player'+i].state = 4;
+			}
 		}
 		gameinfo.start1 = 0;
 		gameinfo.start2 = 1;
@@ -654,32 +713,7 @@ function blackjack(r){
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
-			var sum = 0;
-			var acount = 0;
-			for(var i in temp){
-				if( temp[i] == 'A' ){
-					sum += 1
-				} else if( isNaN(temp[i])){
-					sum += 10;
-				} else {
-					sum += Number(temp[i]);
-				}
-			}
-			for(var i in temp) {
-				if(temp[i] == 'A'){
-					temp[i] = 1;
-					acount += 1;
-					if(sum <= 11 && acount == 1) {
-						temp[i] = 11;
-					}
-				} else if ( isNaN(temp[i])){
-					temp[i] = 10; 
-				}
-			}
-			var sum = 0;
-			for(var i in temp) {
-				sum+=temp[i]
-			}
+			var sum = blackjacksum(temp);
 			if(sum > 21){
 				r.replier.reply(r.sender+'님의 버스트.');
 				gameinfo['player'+num].state = 1;
@@ -691,32 +725,7 @@ function blackjack(r){
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender && gameinfo['player'+num].state==0 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 스테이.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
-			var sum = 0;
-			var acount = 0;
-			for(var i in temp){
-				if( temp[i] == 'A' ){
-					sum += 1
-				} else if( isNaN(temp[i])){
-					sum += 10;
-				} else {
-					sum += Number(temp[i]);
-				}
-			}
-			for(var i in temp) {
-				if(temp[i] == 'A'){
-					temp[i] = 1;
-					acount += 1;
-					if(sum <= 11 && acount == 1) {
-						temp[i] = 11;
-					}
-				} else if ( isNaN(temp[i])){
-					temp[i] = 10; 
-				}
-			}
-			var sum = 0;
-			for(var i in temp) {
-				sum+=temp[i];
-			}
+			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 2;
 			gameinfo.endcount +=1;
@@ -725,34 +734,8 @@ function blackjack(r){
 	
 	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1 ){
 		while(1){
-			var temp = gameinfo.dealer.card.map(v=>v[1]);;
-			var sum = 0;
-			var acount = 0;
-			for(var i in temp){
-				if( temp[i] == 'A' ){
-					sum += 1
-				} else if( isNaN(temp[i])){
-					sum += 10;
-				} else {
-					sum += Number(temp[i]);
-				}
-			}
-			for(var i in temp) {
-				if(temp[i] == 'A'){
-					temp[i] = 1;
-					acount += 1;
-					if(sum <= 11 && acount == 1) {
-						temp[i] = 11;
-					}
-				} else if ( isNaN(temp[i])){
-					temp[i] = 10; 
-				}
-			}
-			var sum = 0;
-			for(var i in temp) {
-				sum+=temp[i]
-			}
-			
+			var temp = gameinfo.dealer.card.map(v=>v[1]);
+			var sum = blackjacksum(temp);
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
@@ -796,6 +779,8 @@ function blackjack(r){
 		r.replier.reply('딜러의 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str );
 		gameinfo.start2 = 0;
 	}
+	
+	
 	//var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-Flag.get('blackjack', r.room)[num][1];
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
