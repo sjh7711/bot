@@ -649,7 +649,7 @@ function blackjack(r){
 		if( r.msg == '스플릿'){
 			
 		}
-		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 ) {
+		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
@@ -688,7 +688,7 @@ function blackjack(r){
 			}
 		}
 		
-		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender ){
+		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender && gameinfo['player'+num].state==0 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 스테이.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
