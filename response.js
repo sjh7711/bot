@@ -654,6 +654,7 @@ function blackjack(r){
 			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
+			var acount = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
 					sum += 1
@@ -665,10 +666,10 @@ function blackjack(r){
 			}
 			for(var i in temp) {
 				if(temp[i] == 'A'){
-					temp[i] = 1; 
-					if(sum <= 11) {
-						temp[i] = 11; 
-						break;
+					temp[i] = 1;
+					var acount += 1;
+					if(sum <= 11 && acount == 0) {
+						temp[i] = 11;
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -690,6 +691,7 @@ function blackjack(r){
 			r.replier.reply(gameinfo['player'+num].name+'님의 스테이.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = 0;
+			var acount = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
 					sum += 1
@@ -701,10 +703,10 @@ function blackjack(r){
 			}
 			for(var i in temp) {
 				if(temp[i] == 'A'){
-					temp[i] = 1; 
-					if(sum <= 11) {
-						temp[i] = 11; 
-						break;
+					temp[i] = 1;
+					var acount += 1;
+					if(sum <= 11 && acount == 0) {
+						temp[i] = 11;
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -724,6 +726,7 @@ function blackjack(r){
 		while(1){
 			var temp = gameinfo.dealer.card.map(v=>v[1]);;
 			var sum = 0;
+			var acount = 0;
 			for(var i in temp){
 				if( temp[i] == 'A' ){
 					sum += 1
@@ -735,10 +738,10 @@ function blackjack(r){
 			}
 			for(var i in temp) {
 				if(temp[i] == 'A'){
-					temp[i] = 1; 
-					if(sum <= 11) {
-						temp[i] = 11; 
-						break;
+					temp[i] = 1;
+					var acount += 1;
+					if(sum <= 11 && acount == 0) {
+						temp[i] = 11;
 					}
 				} else if ( isNaN(temp[i])){
 					temp[i] = 10; 
@@ -2303,7 +2306,7 @@ function lottocheck(r) {
 		var bonus = raw.select('p').get(2).text();
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 
-		var temp=D.selectForArray('lottoresult', 'num', "num=?", [lastnum]).length;
+		var temp = D.selectForArray('lottoresult', "count(*)", "num=?", [lastnum]);
 		
 		if(temp == 0 ){
 			var lottodata = D.selectForArray('lotto',null,'num=?', [lastnum]);
@@ -2354,13 +2357,13 @@ function lottocheck(r) {
 		
 		if( r.msg == "!당첨"){
 			var temp = D.selectForArray('lottoresult',null,'room=? and num=?', [r.room, lastnum]);
-			if ( temp.length == 0 ){
+			if ( D.selectForArray('lottoresult',"count(*)",'room=? and num=?', [r.room, lastnum]) == 0 ){
 				r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 				return;
 			}
 		} else if ( r.msg.substr(4).length > 0){
 			var temp = D.selectForArray('lottoresult',null,'room=? and sender=?', [r.room , r.msg.substr(4)]);
-			if ( temp.length == 0 ){
+			if ( D.selectForArray('lottoresult',"count(*)",'room=? and sender=?', [r.room , r.msg.substr(4)]) == 0 ){
 				r.replier.reply(result+r.msg.substr(4)+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
 				return;
 			}
