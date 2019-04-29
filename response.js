@@ -762,7 +762,7 @@ function blackjack(r){
 		
 		if( gameinfo.dealer.sum > 21 ){
 			for( var i in gameinfo.playerlist){
-				if(gameinfo['player'+i].state = 1){
+				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name + '님의 패배\n';
 				} else {
 					str += gameinfo['player'+i].name + '님의 승리\n';
@@ -770,7 +770,7 @@ function blackjack(r){
 			}
 		} else if( gameinfo.dealer.sum < 22 ){
 			for( var i in gameinfo.playerlist){
-				if(gameinfo['player'+i].state = 1){
+				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name + '님의 패배\n';
 				} else {
 					if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
