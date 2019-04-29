@@ -581,7 +581,8 @@ function blackjack(r){
 					split : 0,
 					insurance : 0,
 					state : 0,
-					result : 0
+					result : 0,
+					isblackjack : 0
 			};
 			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
@@ -606,7 +607,8 @@ function blackjack(r){
     					split : 0,
     					insurance : 0,
     					state : 0,
-    					result : 0
+    					result : 0,
+    					isblackjack : 0
     					
     				}
         	} else if ( gameinfo.player0.name[0] != r.sender && gameinfo.player1.name[0] != r.sender) {
@@ -619,7 +621,8 @@ function blackjack(r){
     					split : 0,
     					insurance : 0,
     					state : 0,
-    					result : 0
+    					result : 0,
+    					isblackjack : 0
     				}
         	}
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
@@ -657,14 +660,18 @@ function blackjack(r){
 	var num = gameinfo.playerlist.indexOf(r.sender);
 	
 	if( gameinfo.start1 == 1 &&  gameinfo.betlist.length < gameinfo.playerlist.length ){
-		if( !isNaN(r.msg) && Number(r.msg)>9999 && Number(r.msg)<500001 && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
-			for( var j = 0 ; j < 2 ; j++){
-				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+		if( !isNaN(r.msg) && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
+			if ( Number(r.msg)>9999 && Number(r.msg)<500001 ){
+				for( var j = 0 ; j < 2 ; j++){
+					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+					gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+				}
+				gameinfo['player'+num].bet = Number(r.msg);
+				r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅했습니다.');
+				gameinfo.betlist.push(r.sender);
+			} else {
+				r.replier.reply('배팅금액은 1만원 ~ 50만원 입니다.');
 			}
-			gameinfo['player'+num].bet = Number(r.msg);
-			r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅했습니다.');
-			gameinfo.betlist.push(r.sender);
 		}
 	}
 	
@@ -683,6 +690,7 @@ function blackjack(r){
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
 				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!');
+				gameinfo['player'+i].isblackjack = 1;
 				gameinfo['player'+i].state = 4;
 				gameinfo.blackjacklist.push(gameinfo['player'+i].name);
 				gameinfo.endcount +=1;
@@ -691,7 +699,7 @@ function blackjack(r){
 		if(gameinfo.dealer.card[0][1] == 'A'){
 			r.replier.reply('Insurance를 하실 분은 보험금을 입력해주시고 아닌분은 0을 입력해주세요.');
 			if(gameinfo.blackjacklist.length > 0){
-				r.replier.reply('블랙잭이신 분 중 Evenmoney를 하실분은 0 이상의 아무 숫자를 입력해주세요.');
+				r.replier.reply('블랙잭이신 분 중 EvenMoney를 하실분은 0 이상의 적당한 숫자를 입력해주세요.');
 			}
 			gameinfo.start1 = 0;
 			gameinfo.start3 = 1;
@@ -701,17 +709,27 @@ function blackjack(r){
 		}
 	}
 	
-	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length &&  Number(gameinfo['player'+num].bet/2) >= r.msg && r.msg > -1  ){
-		gameinfo.insurlist.push(r.sender);
-		gameinfo['player'+num].insurance = r.msg;
-		if(r.msg != '0'){
-			r.replier.reply(r.sender+'님이 '+ r.msg +'의 보험금으로 Insurance를 하셨습니다.');
-		}
-		if(gameinfo.insurlist.length == gameinfo.playerlist.length){
-			gameinfo.start1 = 0;
-			gameinfo.start3 = 0;
-			gameinfo.start2 = 1;
-			r.replier.reply('Insurance 설정이 끝났습니다.')
+	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length  ){
+		if( Number(gameinfo['player'+num].bet/2) >= r.msg && r.msg > -1 ){
+			gameinfo.insurlist.push(r.sender);
+			gameinfo['player'+num].insurance = r.msg;
+			if(r.msg != '0'){
+				if (gameinfo.blackjacklist.indexOf(r.sender) == -1 ){
+					r.replier.reply(r.sender+'님이 '+ r.msg +'의 보험금으로 Insurance를 하셨습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
+				} else{
+					r.replier.reply(r.sender+'님이 EvenMoney를 선언했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
+				}
+			} else if ( r.msg != '0'){
+				r.replier.reply('('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
+			}
+			if(gameinfo.insurlist.length == gameinfo.playerlist.length){
+				gameinfo.start1 = 0;
+				gameinfo.start3 = 0;
+				gameinfo.start2 = 1;
+				r.replier.reply('Insurance 설정이 끝났습니다.');
+			}
+		} else {
+			r.replier.reply('Insurance는 베팅금액의 절반까지만 걸 수 있습니다.')
 		}
 	}
 	
