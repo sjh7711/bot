@@ -750,27 +750,27 @@ function blackjack(r){
 			if( gameinfo.dealer.sum > 21 ){
 				for( var i in gameinfo.playerlist){
 					if(gameinfo['player'+i].state == 1){
-						str += gameinfo['player'+i].name + '님의 패배\n';
+						str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+")\n┗> Lose\n";
 						gameinfo['player'+i].result = 1;
-					} else {
-						str += gameinfo['player'+i].name + '님의 승리\n';
+					} else {\
+						str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+")\n┗> Win\n";
 						gameinfo['player'+i].result = 2;
 					}
 				}
 			} else if( gameinfo.dealer.sum < 22 ){
 				for( var i in gameinfo.playerlist){
 					if(gameinfo['player'+i].state == 1){
-						str += gameinfo['player'+i].name + '님의 패배\n';
+						str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+")\n┗> Lose\n";
 						gameinfo['player'+i].result = 1;
 					} else {
 						if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
-							str += gameinfo['player'+i].name + '님의 승리\n'; 
+							str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+")\n┗> Win\n";
 							gameinfo['player'+i].result = 2;
 						} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
-							str += gameinfo['player'+i].name + '님의 Push\n';
+							str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+")\n┗> Push\n";
 							gameinfo['player'+i].result = 3;
 						} else {
-							str += gameinfo['player'+i].name + '님의 패배\n'; 
+							str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+")\n┗> Lose\n";
 							gameinfo['player'+i].result = 1;
 						}
 					}
