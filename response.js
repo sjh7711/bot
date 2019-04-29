@@ -823,21 +823,24 @@ function blackjack(r){
 						} else if (gameinfo['player'+i].state == 5){
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Surrender\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							gameinfo['player'+i].result = 5;
-						} else if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
-							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Win\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
-								gameinfo['player'+i].result = 2;
-						} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
-							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Push\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
-							gameinfo['player'+i].result = 3;
-						} else if (gameinfo['player'+i].state == 6){
+						}  else if (gameinfo['player'+i].state == 6 && gameinfo.dealer.sum < gameinfo['player'+i].sum){
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : DoubleDownWin\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							gameinfo['player'+i].result = 6;
+						} else if (gameinfo['player'+i].state == 6 && gameinfo.dealer.sum == gameinfo['player'+i].sum){
+							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : DoubleDownPush\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
+							gameinfo['player'+i].result = 8;
 						} else if (gameinfo['player'+i].state == 7){
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : DoubleDownLose\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							gameinfo['player'+i].result = 7;
 						} else if (gameinfo['player'+i].state == 4){
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							gameinfo['player'+i].result = 4;
+						} else if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
+							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Win\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
+							gameinfo['player'+i].result = 2;
+						} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
+							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Push\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
+							gameinfo['player'+i].result = 3;
 						} else {
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							gameinfo['player'+i].result = 1;
