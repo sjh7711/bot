@@ -559,6 +559,7 @@ function blackjack(r){
 					starttime : new Date().getTime(),
 					playerlist : [],
 					betlist : [],
+					insurlist : [],
 					endcount : 0,
 					start : 1,
 					start1 : 0,
@@ -576,8 +577,8 @@ function blackjack(r){
 					card : [],
 					bet : 0,
 					sum : 0,
-					splitcount : 0,
-					insurance : 0,
+					split : 0,
+					insurance : -1,
 					state : 0,
 					result : 0
 			};
@@ -601,8 +602,8 @@ function blackjack(r){
     					card : [],
     					bet : 0,
     					sum : 0,
-    					splitcount : 0,
-    					insurance : 0,
+    					split : 0,
+    					insurance : -1,
     					state : 0,
     					result : 0
     					
@@ -614,8 +615,8 @@ function blackjack(r){
     					card : [],
     					bet : 0,
     					sum : 0,
-    					splitcount : 0,
-    					insurance : 0,
+    					split : 0,
+    					insurance : -1,
     					state : 0,
     					result : 0
     				}
@@ -684,13 +685,29 @@ function blackjack(r){
 				gameinfo.endcount +=1;
 			}
 		}
-		gameinfo.start1 = 0;
-		gameinfo.start2 = 1;
+		if(gameinfo.dealer.card[0][1] == 'A'){
+			r.replier.reply('Insurance를 하실 분은 보험금을 입력해주시고 아닌분은 0을 입력해주세요.');
+			gameinfo.start1 = 0;
+			gameinfo.start3 = 1;
+		} else {
+			gameinfo.start1 = 0;
+			gameinfo.start2 = 1;
+		}
+	}
+	
+	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo['player'+i].insurance == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length  ){
+		gameinfo.insurlist.push(r.sender);
+		gameinfo['player'+i].insurance = r.msg;
+		if(gameinfo.insurlist.length == gameinfo.playerlist.length){
+			gameinfo.start1 = 0;
+			gameinfo.start2 = 1;
+		}
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
-		if( r.msg == '스플릿'){
-			
+		if( r.msg == '서렌더'){
+			r.replier.reply(r.sender+'님의 서렌더.');
+			gameinfo['player'+num].state = 5;
 		}
 		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
@@ -745,38 +762,45 @@ function blackjack(r){
 					break;
 				}
 			}
-		}
-		if (gameinfo.dealer.state == 0){
-			if( gameinfo.dealer.sum > 21 ){
-				for( var i in gameinfo.playerlist){
-					if(gameinfo['player'+i].state == 1){
-						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
-						gameinfo['player'+i].result = 1;
-					} else {
-						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Win\n";
-						gameinfo['player'+i].result = 2;
-					}
-				}
-			} else if( gameinfo.dealer.sum < 22 ){
-				for( var i in gameinfo.playerlist){
-					if(gameinfo['player'+i].state == 1){
-						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
-						gameinfo['player'+i].result = 1;
-					} else {
-						if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
-							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Win\n";
-							gameinfo['player'+i].result = 2;
-						} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
-							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Push\n";
-							gameinfo['player'+i].result = 3;
-						} else {
+			if (gameinfo.dealer.state == 0){
+				if( gameinfo.dealer.sum > 21 ){
+					for( var i in gameinfo.playerlist){
+						if(gameinfo['player'+i].state == 1){
 							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
 							gameinfo['player'+i].result = 1;
+						} else if (gameinfo['player'+i].state == 4){
+							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Blackjack\n";
+							gameinfo['player'+i].result = 4;
+						} else {
+							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Win\n";
+							gameinfo['player'+i].result = 2;
+						}
+					}
+				} else if( gameinfo.dealer.sum < 22 ){
+					for( var i in gameinfo.playerlist){
+						if(gameinfo['player'+i].state == 1){
+							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
+							gameinfo['player'+i].result = 1;
+						} else {
+							if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
+								str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Win\n";
+								gameinfo['player'+i].result = 2;
+							} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
+								str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Push\n";
+								gameinfo['player'+i].result = 3;
+							} else if (gameinfo['player'+i].state == 4){
+								str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Blackjack\n";
+								gameinfo['player'+i].result = 4;
+							} else {
+								str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
+								gameinfo['player'+i].result = 1;
+							}
 						}
 					}
 				}
 			}
 		}
+		
 		r.replier.reply('딜러의 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str.substr(0,str.length-1) );
 		gameinfo.start2 = 0;
 	}
