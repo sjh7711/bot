@@ -750,27 +750,27 @@ function blackjack(r){
 			if( gameinfo.dealer.sum > 21 ){
 				for( var i in gameinfo.playerlist){
 					if(gameinfo['player'+i].state == 1){
-						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") -> Lose\n";
+						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
 						gameinfo['player'+i].result = 1;
 					} else {
-						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") -> Win\n";
+						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Win\n";
 						gameinfo['player'+i].result = 2;
 					}
 				}
 			} else if( gameinfo.dealer.sum < 22 ){
 				for( var i in gameinfo.playerlist){
 					if(gameinfo['player'+i].state == 1){
-						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") -> Lose\n";
+						str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
 						gameinfo['player'+i].result = 1;
 					} else {
 						if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
-							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") -> Win\n";
+							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Win\n";
 							gameinfo['player'+i].result = 2;
 						} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
-							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") -> Push\n";
+							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Push\n";
 							gameinfo['player'+i].result = 3;
 						} else {
-							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") -> Lose\n";
+							str += gameinfo['player'+i].name+'님의 카드 \n' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+" ("+gameinfo['player'+i].sum+") : Lose\n";
 							gameinfo['player'+i].result = 1;
 						}
 					}
