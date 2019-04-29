@@ -616,7 +616,6 @@ function blackjack(r){
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 		}
-		
 		gameinfo.start = 0;
 		gameinfo.start1 = 1;
 		r.replier.reply(gameinfo.playerlist.length+'명이 참가했습니다. 게임을 시작합니다. 1만원 이상 50만원 이하로 배팅액을 정해주세요.');	
