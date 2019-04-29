@@ -695,7 +695,7 @@ function blackjack(r){
 		}
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
-				str += gameinfo['player'+i].name + '님의 블랙잭!\n';
+				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!\n');
 				gameinfo['player'+i].result = 4;
 				gameinfo['player'+i].state = 4;
 			}
