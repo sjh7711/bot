@@ -744,11 +744,11 @@ function blackjack(r){
 			r.replier.reply(gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | '));
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
+			gameinfo['player'+num].sum = sum;
+			gameinfo.endcount +=1;;
 			if(sum > 21){
 				r.replier.reply(r.sender+'님의 버스트.');
 				gameinfo['player'+num].state = 7;
-				gameinfo.endcount +=1;
-				gameinfo['player'+num].sum = sum;
 			}
 		}
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender && gameinfo['player'+num].state==0 ){
