@@ -671,25 +671,6 @@ function blackjack(r){
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 		}
-		var temp = gameinfo.dealer.card.map(v=>v[1]);
-		var sum = blackjacksum(temp);
-		if(sum == 21){
-			r.replier.reply('딜러의 블랙잭! 카드를  공개합니다.\n' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ' (' + gameinfo.dealer.sum+ ')\n' +str );
-			gameinfo.start1 = 0;
-			var str = '';
-			for( var i in gameinfo.playerlist){
-				if(gameinfo['player'+i].sum == 21){
-					str += gameinfo['player'+i].name + '님의 Push\n';
-					gameinfo['player'+i].result = 3;
-				} else {
-					str += gameinfo['player'+i].name + '님의 패배\n';
-					gameinfo['player'+i].result = 1;
-				}
-			}
-			return;
-		} else {
-			r.replier.reply('딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? ' );
-		}
 		for( var i in gameinfo.playerlist){
 			r.replier.reply(gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | '));
 		}
@@ -746,8 +727,20 @@ function blackjack(r){
 		}
 				
 		var str = '';
-		
-		if( gameinfo.dealer.sum > 21 ){
+		if( gameinfo.dealer.sum == 21){
+			str += '딜러의 블랙잭!';
+			var str = '';
+			for( var i in gameinfo.playerlist){
+				if(gameinfo['player'+i].sum == 21){
+					str += gameinfo['player'+i].name + '님의 Push\n';
+					gameinfo['player'+i].result = 3;
+				} else {
+					str += gameinfo['player'+i].name + '님의 패배\n';
+					gameinfo['player'+i].result = 1;
+				}
+			}
+			return;
+		} else if( gameinfo.dealer.sum > 21 ){
 			for( var i in gameinfo.playerlist){
 				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name + '님의 패배\n';
