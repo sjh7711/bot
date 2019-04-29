@@ -291,9 +291,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
     	
-        /*if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1 ){
+        if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1 ){
     		D.insert('blackjack', {name : sender, room : room, point : 10000000, win : 0, lose : 0});
-    	}*/
+    	}
         
         if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!블랙잭종료' || msg == '힛' || msg == '스테이') )){
         	blackjack(r);
@@ -530,8 +530,6 @@ function blackjack(r){
 					starttime : new Date().getTime(),
 					playerlist : [],
 					betlist : [],
-					burstcount : 0,
-					staycount : 0,
 					endcount : 0,
 					start : 1,
 					start1 : 0,
@@ -550,7 +548,8 @@ function blackjack(r){
 					sum : 0,
 					splitcount : 0,
 					insurance : 0,
-					state : 0
+					state : 0,
+					result : 0
 			};
 			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
@@ -574,7 +573,8 @@ function blackjack(r){
     					sum : 0,
     					splitcount : 0,
     					insurance : 0,
-    					state : 0
+    					state : 0,
+    					result : 0
     					
     				}
         	} else if ( gameinfo.player0.name[0] != r.sender && gameinfo.player1.name[0] != r.sender) {
@@ -586,7 +586,8 @@ function blackjack(r){
     					sum : 0,
     					splitcount : 0,
     					insurance : 0,
-    					state : 0
+    					state : 0,
+    					result : 0
     				}
         	}
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
@@ -767,19 +768,27 @@ function blackjack(r){
 			for( var i in gameinfo.playerlist){
 				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name + '님의 패배\n';
+					gameinfo['player'+i].result = 1;
 				} else {
 					str += gameinfo['player'+i].name + '님의 승리\n';
+					gameinfo['player'+i].result = 2;
 				}
 			}
 		} else if( gameinfo.dealer.sum < 22 ){
 			for( var i in gameinfo.playerlist){
 				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name + '님의 패배\n';
+					gameinfo['player'+i].result = 1;
 				} else {
 					if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
 						str += gameinfo['player'+i].name + '님의 승리\n'; 
+						gameinfo['player'+i].result = 2;
+					} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
+						str += gameinfo['player'+i].name + '님의 Push\n';
+						gameinfo['player'+i].result = 3;
 					} else {
 						str += gameinfo['player'+i].name + '님의 패배\n'; 
+						gameinfo['player'+i].result = 1;
 					}
 				}
 			}
