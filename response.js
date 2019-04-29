@@ -733,7 +733,7 @@ function blackjack(r){
 			var sum = blackjacksum(temp);
 			str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 			if(sum > 21){
-				str += '\n'+r.sender+'님의 버스트.');
+				str += '\n'+r.sender+'님의 버스트.';
 				gameinfo['player'+num].state = 1;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].sum = sum;
@@ -751,7 +751,7 @@ function blackjack(r){
 			gameinfo.endcount +=1;
 			str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 			if(sum > 21){
-				str += '\n'+r.sender+'님의 버스트.');
+				str += '\n'+r.sender+'님의 버스트.';
 				gameinfo['player'+num].state = 7;
 			}
 			r.replier.reply(str);
