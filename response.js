@@ -546,7 +546,8 @@ function blackjack(r){
 				start : 0,
 				start1 : 0,
 				start2 : 0,
-				start3 : 0
+				start3 : 0,
+				start4 : 0
 		}
 		Flag.set('gameinfo', r.room, gameinfo);
 	} else {
@@ -566,6 +567,9 @@ function blackjack(r){
 		return;
 	}
 	
+	if (gameinfo.start4 == 1){
+		return;
+	}
 	//
 	if( r.msg == '!블랙잭'){
 		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
@@ -854,7 +858,9 @@ function blackjack(r){
 	
 	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1){
 		r.replier.reply('게임종료!');
+		gameinfo.start4 = 1;
 		java.lang.Thread.sleep(2000);
+		gameinfo.start4 = 0;
 		while(1){
 			var str = '';
 			var temp = gameinfo.dealer.card.map(v=>v[1]);
@@ -865,7 +871,9 @@ function blackjack(r){
 				str += '\n딜러의 Bust.';
 			}
 			r.replier.reply(str);
+			gameinfo.start4 = 1;
 			java.lang.Thread.sleep(2000);
+			gameinfo.start4 = 0;
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
