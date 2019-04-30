@@ -913,7 +913,7 @@ function blackjack(r){
 						gameinfo['player'+i].result = 8;
 					} else if (gameinfo['player'+i].state == 6 && gameinfo.dealer.sum > gameinfo['player'+i].sum){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : DoubleDownLose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
-						gameinfo['player'+i].result = 8;
+						gameinfo['player'+i].result = 7;
 					} else if (gameinfo['player'+i].state == 7){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : DoubleDownLose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						gameinfo['player'+i].result = 7;
