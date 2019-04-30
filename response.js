@@ -855,7 +855,7 @@ function blackjack(r){
 			var temp = gameinfo.dealer.card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo.dealer.sum = sum;
-			str += '딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
+			str += '게임종료!\n딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
 			if(sum > 21){
 				str += '\n딜러의 Bust.';
 			}
