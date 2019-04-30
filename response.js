@@ -850,16 +850,17 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1){
+		r.replier.reply('게임종료!');
 		while(1){
 			var str = '';
 			var temp = gameinfo.dealer.card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo.dealer.sum = sum;
-			str += '게임종료!\n딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
+			str += '딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
 			if(sum > 21){
 				str += '\n딜러의 Bust.';
 			}
-			java.lang.Thread.sleep(1300);
+			java.lang.Thread.sleep(1500);
 			r.replier.reply(str);
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
