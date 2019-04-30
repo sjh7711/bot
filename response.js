@@ -683,7 +683,7 @@ function blackjack(r){
 					gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				}
 				gameinfo['player'+num].bet = Number(r.msg);
-				r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅했습니다.');
+				r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅.');
 				gameinfo.betlist.push(r.sender);
 			} else {
 				r.replier.reply('배팅금액은 1만원 ~ 50만원 입니다.');
@@ -864,8 +864,8 @@ function blackjack(r){
 			if(sum > 21){
 				str += '\n딜러의 Bust.';
 			}
-			java.lang.Thread.sleep(2000);
 			r.replier.reply(str);
+			java.lang.Thread.sleep(2000);
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
