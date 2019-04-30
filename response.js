@@ -853,7 +853,8 @@ function blackjack(r){
 		while(1){
 			var temp = gameinfo.dealer.card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
-			r.replier.reply('딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']\n');
+			gameinfo.dealer.sum = sum;
+			r.replier.reply('딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']');
 			java.lang.Thread.sleep(500);
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
