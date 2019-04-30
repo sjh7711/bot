@@ -859,7 +859,7 @@ function blackjack(r){
 			if(sum > 21){
 				str += '\n딜러의 Bust.';
 			}
-			java.lang.Thread.sleep(800);
+			java.lang.Thread.sleep(1300);
 			r.replier.reply(str);
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
