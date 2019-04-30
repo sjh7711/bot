@@ -851,11 +851,16 @@ function blackjack(r){
 	
 	if( gameinfo.endcount == gameinfo.playerlist.length && gameinfo.start2 == 1){
 		while(1){
+			var str = '';
 			var temp = gameinfo.dealer.card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo.dealer.sum = sum;
-			r.replier.reply('딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']');
-			java.lang.Thread.sleep(500);
+			str += '딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
+			if(sum > 21){
+				str += '\n딜러의 Bust.';
+			}
+			java.lang.Thread.sleep(800);
+			r.replier.reply(str);
 			if(sum < 17){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
