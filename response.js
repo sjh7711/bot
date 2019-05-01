@@ -88,7 +88,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 		}
 	
-		if( msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 ){
+		if( msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('\uc885\ud654') > -1 ){
 			Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
 		}
 	
@@ -185,9 +185,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
         
         if (msg.indexOf("!전체채팅") == 0 && work == 1) {
-        	if (room == '시립대 봇제작방' && msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방')){
-        	} else if (room == 'test'){
-        	} else {
+        	if ( room != 'test' && msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방')){
+        		allchat(r);
         		return;
         	}
         	allchat(r);
