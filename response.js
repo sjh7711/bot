@@ -293,7 +293,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
         
-        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!블랙잭종료' || msg == '힛' || msg == '스테이'|| msg == '서렌더'|| msg == '더블다운'|| msg == '스플릿') )){
+        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!블랙잭종료' || msg == '힛' || msg == '스테이'|| msg == '서렌더'|| msg == '더블다운'|| msg == '스플릿'|| msg == '스탠드') )){
         	blackjack(r);
         }
         
@@ -673,7 +673,7 @@ function blackjack(r){
 					gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				}
 				gameinfo['player'+num].bet = Number(r.msg);
-				r.replier.reply(r.sender+'님이 '+gameinfo['player'+num].bet+'원을 배팅.');
+				r.replier.reply(gameinfo['player'+num].name+'님이 '+gameinfo['player'+num].bet+'원을 배팅.');
 				gameinfo.betlist.push(r.sender);
 			} else {
 				r.replier.reply('배팅금액은 1만원 ~ 50만원 입니다.');
@@ -748,9 +748,9 @@ function blackjack(r){
 			gameinfo['player'+num].insurance = r.msg;
 			if(r.msg != '0'){
 				if (gameinfo.blackjacklist.indexOf(r.sender) == -1 ){
-					r.replier.reply(r.sender+'님이 Insurance를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
+					r.replier.reply(gameinfo['player'+num].name+'님이 Insurance를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				} else{
-					r.replier.reply(r.sender+'님이 EvenMoney를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
+					r.replier.reply(gameinfo['player'+num].name+'님이 EvenMoney를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				}
 			} else if ( r.msg == '0'){
 				r.replier.reply('('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
@@ -789,13 +789,15 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
-		if( r.msg == '스플릿' ){
+		if( r.msg == '스플릿' && num != -1){
 			if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
 				
+			} else {
+				r.replier.reply('스플릿을 할 수 있는 패가 아닙니다.');
 			}
 		}
-		if( r.msg == '서렌더'){
-			r.replier.reply(r.sender+'님의 Surrender.');
+		if( r.msg == '서렌더' && num != -1 ){
+			r.replier.reply(gameinfo['player'+num].name+'님의 Surrender.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
@@ -810,15 +812,15 @@ function blackjack(r){
 			var sum = blackjacksum(temp);
 			str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 			if(sum > 21){
-				str += '\n'+r.sender+'님의 Bust.';
+				str += '\n'+gameinfo['player'+num].name+'님의 Bust.';
 				gameinfo['player'+num].state = 1;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].sum = sum;
 			}
 			r.replier.reply(str);
 		}
-		if( r.msg == '더블다운'){
-			var str = r.sender+'님의 DoubleDown.\n';
+		if( r.msg == '더블다운' && num != -1){
+			var str = gameinfo['player'+num].name+'님의 DoubleDown.\n';
 			gameinfo['player'+num].state = 6;
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
@@ -827,14 +829,14 @@ function blackjack(r){
 			gameinfo['player'+num].sum = sum;
 			gameinfo.endcount +=1;
 			if(sum > 21){
-				str = gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ')+'\n'+ r.sender+'님의 Bust.';
+				str = gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ')+'\n'+ gameinfo['player'+num].name+'님의 Bust.';
 				gameinfo['player'+num].state = 7;
 			} else {
 				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.slice(0,2).map(v=>v.join(' ')).join(' | ') + ' | ?';
 			}
 			r.replier.reply(str);
 		}
-		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].name==r.sender && gameinfo['player'+num].state==0 ){
+		if( (r.msg == '스탠드' || r.msg == '스테이')  && num != -1 && gameinfo['player'+num].state==0 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 Stay.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
