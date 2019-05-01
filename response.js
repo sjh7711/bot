@@ -606,7 +606,7 @@ function blackjack(r){
 	if (r.msg == '참가' &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
         if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){
         	gameinfo.playerlist.push(r.sender);
-    		gameinfo.['player'+gameinfo.playerlist.length] = {
+    		gameinfo['player'+gameinfo.playerlist.length] = {
 					name : r.sender,
 					card : [],
 					bet : 0,
