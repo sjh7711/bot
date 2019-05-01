@@ -587,7 +587,6 @@ function blackjack(r){
 					card : [],
 					bet : 0,
 					sum : 0,
-					split : 0,
 					insurance : 0,
 					state : 0,
 					result : 0,
@@ -613,7 +612,6 @@ function blackjack(r){
     					card : [],
     					bet : 0,
     					sum : 0,
-    					split : 0,
     					insurance : 0,
     					state : 0,
     					result : 0,
@@ -627,7 +625,6 @@ function blackjack(r){
     					card : [],
     					bet : 0,
     					sum : 0,
-    					split : 0,
     					insurance : 0,
     					state : 0,
     					result : 0,
@@ -755,7 +752,7 @@ function blackjack(r){
 				} else{
 					r.replier.reply(r.sender+'님이 EvenMoney를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				}
-			} else if ( r.msg != '0'){
+			} else if ( r.msg == '0'){
 				r.replier.reply('('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 			}
 			if(gameinfo.insurlist.length == gameinfo.playerlist.length){
@@ -793,9 +790,9 @@ function blackjack(r){
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
 		if( r.msg == '스플릿' ){
-			//if(gameinfo['player'+num].split == 0){
+			if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
 				
-			//}
+			}
 		}
 		if( r.msg == '서렌더'){
 			r.replier.reply(r.sender+'님의 Surrender.');
