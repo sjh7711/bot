@@ -564,7 +564,6 @@ function blackjack(r){
 		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요.');
 			var gameinfo = {
-					suggest : r.sender,
 					starttime : new Date().getTime(),
 					playerlist : [],
 					betlist : [],
@@ -574,7 +573,8 @@ function blackjack(r){
 					start : 1,
 					start1 : 0,
 					start2 : 0,
-					start3 : 0
+					start3 : 0,
+					start4 : 0
 			};
 			gameinfo.dealer = {
 					card : [],
@@ -605,32 +605,17 @@ function blackjack(r){
 	
 	if (r.msg == '참가' &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
         if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){
-        	if(gameinfo.playerlist.length == 1 && gameinfo.player0.name[0] != r.sender ){
-    			gameinfo.playerlist.push(r.sender);
-        		gameinfo.player1 = {
-    					name : r.sender,
-    					card : [],
-    					bet : 0,
-    					sum : 0,
-    					insurance : 0,
-    					state : 0,
-    					result : 0,
-    					isblackjack : 0
-    					
-    				}
-        	} else if ( gameinfo.player0.name[0] != r.sender && gameinfo.player1.name[0] != r.sender) {
-    			gameinfo.playerlist.push(r.sender);
-        		gameinfo.player2 = {
-    					name : r.sender,
-    					card : [],
-    					bet : 0,
-    					sum : 0,
-    					insurance : 0,
-    					state : 0,
-    					result : 0,
-    					isblackjack : 0
-    				}
-        	}
+        	gameinfo.playerlist.push(r.sender);
+    		gameinfo.['player'+gameinfo.playerlist.length] = {
+					name : r.sender,
+					card : [],
+					bet : 0,
+					sum : 0,
+					insurance : 0,
+					state : 0,
+					result : 0,
+					isblackjack : 0
+				}
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
         } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
         	r.replier.reply('돈이 부족합니다.');
