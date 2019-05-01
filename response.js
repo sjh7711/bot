@@ -43,7 +43,6 @@ var weiredstring2=String.fromCharCode(160);//띄워쓰기로
 var weiredstring3=String.fromCharCode(8237);//공백
 var weiredstring4=String.fromCharCode(8197);//띄워쓰기로
 //replace(new RegExp(weiredstring1, "gi"), "")
-var statustime = 0;
 Flag=(function(){
 	   var list={};
 	   var Flag={};
@@ -605,7 +604,6 @@ function blackjack(r){
 	
 	if (r.msg == '참가' &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
         if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){
-        	gameinfo.playerlist.push(r.sender);
     		gameinfo['player'+gameinfo.playerlist.length] = {
 					name : r.sender,
 					card : [],
@@ -616,6 +614,7 @@ function blackjack(r){
 					result : 0,
 					isblackjack : 0
 				}
+        	gameinfo.playerlist.push(r.sender);
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
         } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
         	r.replier.reply('돈이 부족합니다.');
