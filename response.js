@@ -73,6 +73,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		
 		r = { replier: replier, msg: msg, sender: sender, room: room};
+		I.run(room, sender, msg);
+		blankFunc1(r);
 		
 		if (room == 'test' || room == '시립대 봇제작방') {
 			if (msg.indexOf("]") == 0) {
@@ -81,8 +83,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			}
 			blankFunc(r);
 		}
-	
-		blankFunc1(r);
 	
 		if (sender != "시립봇") {
 			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
@@ -108,8 +108,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if(feature != -1){
 			var work = controlPanel[feature][room.replace(/ /g, '_')];
 		}
-	
-		I.run(room, sender, msg);
 		
 		if ( msg.indexOf("!날씨") == 0 && work == 1 ) {
         	weather(r);
