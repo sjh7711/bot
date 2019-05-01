@@ -70,53 +70,47 @@ function blankFunc1(r){}
 var featureList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	try {
 		
-	r = { replier: replier, msg: msg, sender: sender, room: room};
-	
-	if (room == 'test' || room == '시립대 봇제작방') {
-		if (msg.indexOf("]") == 0) {
-			try {
+		r = { replier: replier, msg: msg, sender: sender, room: room};
+		
+		if (room == 'test' || room == '시립대 봇제작방') {
+			if (msg.indexOf("]") == 0) {
 				replier.reply(eval(msg.substring(1)));
-				return;
-			} catch (e) {replier.reply(e + "\n" + e.stack);}
-		}
-		
-		try {
+				return;	
+			}
 			blankFunc(r);
-		} catch (e) {replier.reply(e + "\n" + e.stack);}
-	}
-	
-	try {
-		blankFunc1(r);
-	} catch (e) {replier.reply(e + "\n" + e.stack);}
-	
-	if (sender != "시립봇") {
-		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
-	}
-	
-	if( sender != 'C봇' && (msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 )){
-		Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
-	}
-	
-	if( reloadcheck == 1  ){
-		return;
-	}
-	
-	var feature = -1;
-	for(var i in control){
-		if( msg.indexOf(control[i]) == 0 ){
-			feature = i;
-			break;
 		}
-	}
 	
-	if(feature != -1){
-		var work = controlPanel[feature][room.replace(/ /g, '_')];
-	}
+		blankFunc1(r);
 	
-	I.run(room, sender, msg);
+		if (sender != "시립봇") {
+			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
+		}
 	
-	try {
+		if( msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('종화') > -1 ){
+			Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
+		}
+	
+		if( reloadcheck == 1  ){
+			return;
+		}
+	
+		var feature = -1;
+		
+		for(var i in control){
+			if( msg.indexOf(control[i]) == 0 ){
+				feature = i;
+				break;
+			}
+		}
+	
+		if(feature != -1){
+			var work = controlPanel[feature][room.replace(/ /g, '_')];
+		}
+	
+		I.run(room, sender, msg);
+		
 		if ( msg.indexOf("!날씨") == 0 && work == 1 ) {
         	weather(r);
         	return;
