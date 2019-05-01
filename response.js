@@ -1271,70 +1271,6 @@ function baseball(r){
 	}
 }
 
-function checkimage(r){
-	Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-	var temp = [];
-	for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-		if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
-			temp.push(Flag.get('imagelist', r.room)[i]);
-		}
-	}
-	if(temp.length == 0){
-		r.replier.reply('검색결과가 없습니다.');
-		return;
-	}
-	Flag.set('imagelist', r.room, temp);
-	var i = 1;
-	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
-}
-
-function loadimage(r){
-	if(Flag.get('image', r.room)==0){
-		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-		var temp = [];
-		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
-				temp.push(Flag.get('imagelist', r.room)[i]);
-			}
-		}
-		if(temp.length == 0){
-			r.replier.reply('검색결과가 없습니다.');
-			return;
-		}
-		Flag.set('imagelist', r.room, temp);
-		var i = 1;
-		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
-		Flag.set('image', r.room, 1);
-	} else if ( Flag.get('image', r.room)== 1){
-		if(!isNaN(r.msg)){
-			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
-			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
-			Flag.set('image', r.room, 0);
-		} else {
-			r.replier.reply('숫자를 입력하세요.');
-			Flag.set('image', r.room, 0);
-		}
-	}
-}
-/*
-function googleimage(r){
-	var raw = org.jsoup.Jsoup.connect('https://www.google.com/search?q='+r.msg.substr(4)+'&tbm=isch&sa=X&ved=0ahUKEwiOifW47s_hAhWmGqYKHTRJC7QQ_AUIDigB&biw=1562&bih=776').get();
-	var link=JSON.parse(raw.select('div.rg_meta.notranslate').get(0).text()).ou;
-	r.replier.reply(link);
-}
-*/
-function deleteimage(r){
-	var temp = java.io.File("/sdcard/FTP").listFiles();
-	var delist = [];
-	for(i=0;i<temp.length;i++){
-		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
-			File(temp[i]).delete();
-			delist.push(temp[i]);
-		}
-	}
-	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
-}
-
 function inform(r){
 	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
 		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
@@ -1375,60 +1311,6 @@ function randomnumber(r){
 	} else {
 		r.replier.reply('잘못 입력했습니다.');
 	}
-}
-
-function saveImage(r){
-	file = 'storage/emulated/0/FTP/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
-	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'Image saved|'+r.room+'-'+r.sender);
-}
-//new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
-//File = new java.io.file
-
-function read64(file) {
-	   var is=new java.io.FileInputStream(file);
-	   var os=new java.io.ByteArrayOutputStream();
-	   var len=0;
-	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
-	   while((len=is.read(buf))!=-1){
-	      os.write(buf,0,len);
-	   }
-	   is.close();
-	   os.close();
-	   var fileArray=os.toByteArray();
-	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
-	   return str;
-	}
-	
-function write64(file,base64) {
-	   var base64Array=new java.lang.String(base64).getBytes();
-	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
-	   var is=new java.io.ByteArrayInputStream(fileArray);
-	   var os=new java.io.FileOutputStream(file);
-	   var len=0;
-	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
-	   while((len=is.read(buf))!=-1){
-	      os.write(buf,0,len);
-	   }
-	   is.close();
-	   os.close();
-	}
-	
-function readFile() {
-    var filedir = new java.io.File("/proc/stat");
-    try {
-        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
-        var readStr = "";
-        var str = null;
-        while (((str = br.readLine()) != null)) {
-            readStr += str + "\n";
-        }
-        br.close();
-        return readStr.trim();
-    }
-    catch (e) {
-    	Api.replyRoom('test',e+"\n"+e.stack);
-    }
 }
 
 function checkstatus(r){
@@ -2795,3 +2677,121 @@ String.prototype.extensionRight=function(char,length){
 	return this.toString()+char.repeat(addLength);
 }
 
+/*
+function checkimage(r){
+	Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
+	var temp = [];
+	for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
+		if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
+			temp.push(Flag.get('imagelist', r.room)[i]);
+		}
+	}
+	if(temp.length == 0){
+		r.replier.reply('검색결과가 없습니다.');
+		return;
+	}
+	Flag.set('imagelist', r.room, temp);
+	var i = 1;
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
+}
+
+function loadimage(r){
+	if(Flag.get('image', r.room)==0){
+		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
+		var temp = [];
+		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
+			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
+				temp.push(Flag.get('imagelist', r.room)[i]);
+			}
+		}
+		if(temp.length == 0){
+			r.replier.reply('검색결과가 없습니다.');
+			return;
+		}
+		Flag.set('imagelist', r.room, temp);
+		var i = 1;
+		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
+		Flag.set('image', r.room, 1);
+	} else if ( Flag.get('image', r.room)== 1){
+		if(!isNaN(r.msg)){
+			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
+			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
+			Flag.set('image', r.room, 0);
+		} else {
+			r.replier.reply('숫자를 입력하세요.');
+			Flag.set('image', r.room, 0);
+		}
+	}
+}
+
+function googleimage(r){
+	var raw = org.jsoup.Jsoup.connect('https://www.google.com/search?q='+r.msg.substr(4)+'&tbm=isch&sa=X&ved=0ahUKEwiOifW47s_hAhWmGqYKHTRJC7QQ_AUIDigB&biw=1562&bih=776').get();
+	var link=JSON.parse(raw.select('div.rg_meta.notranslate').get(0).text()).ou;
+	r.replier.reply(link);
+}
+
+function deleteimage(r){
+	var temp = java.io.File("/sdcard/FTP").listFiles();
+	var delist = [];
+	for(i=0;i<temp.length;i++){
+		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
+			File(temp[i]).delete();
+			delist.push(temp[i]);
+		}
+	}
+	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
+}
+
+function saveImage(r){
+	file = 'storage/emulated/0/FTP/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
+	write64(file, r.imageDB.getImage());
+	Api.replyRoom('test', 'Image saved|'+r.room+'-'+r.sender);
+}
+//new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
+//File = new java.io.file
+function read64(file) {
+	   var is=new java.io.FileInputStream(file);
+	   var os=new java.io.ByteArrayOutputStream();
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	   var fileArray=os.toByteArray();
+	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
+	   return str;
+	}
+	
+function write64(file,base64) {
+	   var base64Array=new java.lang.String(base64).getBytes();
+	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
+	   var is=new java.io.ByteArrayInputStream(fileArray);
+	   var os=new java.io.FileOutputStream(file);
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	}
+	
+function readFile() {
+    var filedir = new java.io.File("/proc/stat");
+    try {
+        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
+        var readStr = "";
+        var str = null;
+        while (((str = br.readLine()) != null)) {
+            readStr += str + "\n";
+        }
+        br.close();
+        return readStr.trim();
+    }
+    catch (e) {
+    	Api.replyRoom('test',e+"\n"+e.stack);
+    }
+}
+*/
