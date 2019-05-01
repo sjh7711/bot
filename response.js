@@ -328,10 +328,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
     	
-    	if(msg.indexOf('!') == 0){
-        	calculator(r);
-        }
-    	
     	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
@@ -413,13 +409,6 @@ function func(r) {
     	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
     }
 }
-function calculator(r){
-	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
-	if(temp!=undefined){
-		r.replier.reply(temp);
-	}
-}
-
 
 function translation(r){
 	var tempmsg = r.msg.substr(7);
@@ -2794,4 +2783,12 @@ function readFile() {
     	Api.replyRoom('test',e+"\n"+e.stack);
     }
 }
+
+function calculator(r){
+	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
+	if(temp!=undefined){
+		r.replier.reply(temp);
+	}
+}
+
 */
