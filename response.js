@@ -1,4 +1,6 @@
 var reloadcheck = 0;
+var reboottime = new Date().getTime();
+var reloadtime = new Date().getTime();
 var D = require("DBManager.js")("D");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
@@ -8,6 +10,7 @@ function reload(r) {
 	try {
 		if(r.sender == '봇배우는배주현' || r.sender == 'test'){
 			reloadcheck = 1;
+			reloadtime = new Date().getTime();
 			var Timer = new Date();
 		    file = "storage/emulated/0/kbot/response.js";
 		    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
@@ -1304,6 +1307,15 @@ function randomnumber(r){
 }
 
 function checkstatus(r){
+	var nowtime = new Date().getTime();
+	var day = Math.floor((nowtime-reboottime)/1000/60/60/24);
+	var hour = Math.floor((nowtime-reboottime)/1000/60/60);
+	var min = Math.floor((nowtime-reboottime)/1000/60);
+	var sec = Math.floor((nowtime-reboottime)/1000);
+	var day1 = Math.floor((nowtime-reloadtime)/1000/60/60/24);
+	var hour1 = Math.floor((nowtime-reloadtime)/1000/60/60);
+	var min1 = Math.floor((nowtime-reloadtime)/1000/60);
+	var sec1 = Math.floor((nowtime-reloadtime)/1000);
 	var bm = Api.getContext().registerReceiver(null,new android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED));
 	var temperature = bm.getIntExtra("temperature",0)/10 + '℃'
 	var level = bm.getIntExtra("level",0) + "%"
@@ -1320,8 +1332,8 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	batteryStatusStr = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%";
-	r.replier.reply(batteryStatusStr);
+	str = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n리부트 후 "+day+"일 "+hour+"시 "+min+"분 "+sec+"초 경과\n"+"리로딩 후 "+day1+"일 "+hour1+"시 "+min1+"분 "+sec1+"초 경과";
+	r.replier.reply(str);
 }
 
 function weather(r){
