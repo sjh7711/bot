@@ -2120,13 +2120,13 @@ function allbestlotto(r) {
 
 function bestlotto(r) {
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lottoresult', null, 'count > 2 ', null , {orderBy:"class asc"});
-	var all = D.selectForArray('lottoresult', "count(*)");
-	var five = D.selectForArray('lottoresult', "count(*)", 'count == 3');
-	var four = D.selectForArray('lottoresult', "count(*)", 'count == 4 ');
-	var three = D.selectForArray('lottoresult', "count(*)", 'count == 5 ');
-	var two = D.selectForArray('lottoresult', "count(*)", 'count == 7 ');
-	var one = D.selectForArray('lottoresult', "count(*)", 'count == 6');
+	var temp = D.selectForArray('lottoresult', null, 'count > 2 and room = ? ',  [r.room] , {orderBy:"class asc"});
+	var all = D.selectForArray('lottoresult', "count(*)" , 'room = ? ',  [r.room]);
+	var five = D.selectForArray('lottoresult', "count(*)", 'count == 3 and room = ? ',  [r.room]);
+	var four = D.selectForArray('lottoresult', "count(*)", 'count == 4 and room = ? ',  [r.room]);
+	var three = D.selectForArray('lottoresult', "count(*)", 'count == 5 and room = ? ',  [r.room]);
+	var two = D.selectForArray('lottoresult', "count(*)", 'count == 7 and room = ? ',  [r.room]);
+	var one = D.selectForArray('lottoresult', "count(*)", 'count == 6 and room = ? ',  [r.room]);
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
