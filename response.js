@@ -2548,6 +2548,22 @@ var NC = T.register("noticeCheck",()=>{
 	}
 }).start();
 
+function readFile() {
+    var filedir = new java.io.File("/proc/stat");
+    try {
+        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
+        var readStr = "";
+        var str = null;
+        while (((str = br.readLine()) != null)) {
+            readStr += str + "\n";
+        }
+        br.close();
+        return readStr.trim();
+    }
+    catch (e) {
+    	Api.replyRoom('test',e+"\n"+e.stack);
+    }
+}
 
 //time
 function time() {
@@ -2768,22 +2784,6 @@ function write64(file,base64) {
 	   os.close();
 	}
 	
-function readFile() {
-    var filedir = new java.io.File("/proc/stat");
-    try {
-        var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
-        var readStr = "";
-        var str = null;
-        while (((str = br.readLine()) != null)) {
-            readStr += str + "\n";
-        }
-        br.close();
-        return readStr.trim();
-    }
-    catch (e) {
-    	Api.replyRoom('test',e+"\n"+e.stack);
-    }
-}
 
 function calculator(r){
 	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
