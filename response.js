@@ -1,5 +1,5 @@
 var reloadcheck = 0;
-var reboottime = new Date().getTime();
+ObjKeep.keep("reboottime",new Date().getTime())
 var reloadtime = new Date().getTime();
 var D = require("DBManager.js")("D");
 var T = require("ThreadManager.js");
@@ -1307,6 +1307,7 @@ function randomnumber(r){
 }
 
 function checkstatus(r){
+	var reboottime = ObjKeep.get("reboottime");
 	var nowtime = new Date().getTime();
 	var day = Math.floor((nowtime-reboottime)/1000/60/60/24);
 	var hour = Math.floor((nowtime-reboottime)/1000/60/60);
