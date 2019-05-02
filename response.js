@@ -1,5 +1,7 @@
 var reloadcheck = 0;
-ObjKeep.keep("reboottime",new Date().getTime())
+if(ObjKeep.get("reboottime")==null){
+	ObjKeep.keep("reboottime",new Date().getTime());
+}
 var reloadtime = new Date().getTime();
 var D = require("DBManager.js")("D");
 var T = require("ThreadManager.js");
