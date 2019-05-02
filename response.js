@@ -1335,7 +1335,7 @@ function checkstatus(r){
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
 
-	str = "배터리 상태\n"+"온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\n기기 상태\n쓰레드 수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n리부트~"+day+"D "+hour+"H "+min+"M "+sec+"S\n"+"리로딩~"+day1+"D "+hour1+"H "+min1+"M "+sec1+"S";
+	str = "온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\nT수 : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100 +"%\n리부트~"+day+"D "+hour+"H "+min+"M "+sec+"S\n"+"리로딩~"+day1+"D "+hour1+"H "+min1+"M "+sec1+"S";
 	r.replier.reply(str);
 }
 
