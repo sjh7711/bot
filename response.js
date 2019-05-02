@@ -26,10 +26,10 @@ function reload(r) {
 		    r.replier.reply("파일저장 완료 / " + time + "s\n" + new Date() );
 		    T.interrupt();
 		    Api.reload();
-		    var time = (new Date() - Timer) / 1000;
 		    reloadcheck = 0;
 		    control = D.selectForArray('control').map(v=>v[0]);
 		    controlPanel = D.selectForObject('control');
+		    var time = (new Date() - Timer) / 1000;
 		    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
 		}
 	}catch (e){
@@ -69,12 +69,10 @@ function blankFunc1(r){}
 var featureList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
+	
+	r = { replier: replier, msg: msg, sender: sender, room: room};
+	
 	try {
-		
-		r = { replier: replier, msg: msg, sender: sender, room: room};
-		I.run(room, sender, msg);
-		blankFunc1(r);
-		
 		if (room == 'test' || room == '시립대 봇제작방') {
 			if (msg.indexOf("]") == 0) {
 				replier.reply(eval(msg.substring(1)));
@@ -82,7 +80,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			}
 			blankFunc(r);
 		}
+	} catch (e) {
+        replier.reply( e + "\n" + e.stack);
+	}
 	
+	try {
+		
+		I.run(room, sender, msg);
+		
+		blankFunc1(r);
+		
 		if (sender != "시립봇") {
 			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 		}
@@ -183,13 +190,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
         
+        if ( msg.indexOf("!전체채팅") == 0 && work == 1 && room != 'test'  && msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방')){
+    		allchat(r);
+    		return;
+    	}
+        
         if (msg.indexOf("!전체채팅") == 0 && work == 1) {
-        	if ( room != 'test' && msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방')){
-        		allchat(r);
-        		return;
-        	} else {
-        		return;
-        	}
         	allchat(r);
         	return;
         }
@@ -391,7 +397,7 @@ function func(r) {
 21을 초과하게 되었을 경우에는 <Bust> 라고 하며 딜러의 결과에 관계없이 무조건 건 금액을 잃게 됩니다. <Push>는 딜러와 무승부인 상황일 경우입니다. 이 경우 배팅액을 그대로 돌려받습니다.\n\
 딜러의 오픈카드가 10, J, Q, K 일 떈, 딜러가 블랙잭인지 아닌지 말을 해줍니다. 딜러의 오픈카드가 A일 경우 <Insurance>를 설정할 수 있습니다.\n\
 <Insurance>는 보험입니다. 딜러의 오픈된 카드가 A일 경우, 딜러가 블랙잭이 나올 가능성에 대비해 보험을 들어두는 것입니다. 자기가 배팅한 금액의 절반까지 보험금으로 추가로 맡길 수 있습니다. 만약 딜러가 블랙잭이면 보험금의 2배를 돌려받습니다. 배팅한 금액은 잃습니다.\n\
-만약 딜러가 블랙잭이 아니고 게임을 지게되면 보험금 + 배팅금을 다 잃게됩니다.딜러가 블랙잭인 경우 플레이어는 블랙잭이 아닌 이상 모두 바로 패배처리됩니다. 같은 블랙잭이면 배팅한 금액을 그대로 돌려받습니다. 플레이어가 블랙잭인 경우 딜러가 블랙잭이 아닌 이상 승리합니다.\n\n\
+만약 딜러가 블랙잭이 아니고 게임을 지게되면 보험금 + 배팅금을 다 잃게됩니다.딜러가 블랙잭인 경우 플레이어는 블랙잭이 아닌 이상 모두 바로 패배처리됩니다. 같은 블랙잭이면 배팅한 금액을 그대로 돌려받습니다. 플레이어가 블랙잭인 경우 딜러가 블랙잭이 아닌 이상 승리합니다.\n\
 <EvenMoney>는 플레이어가 블랙잭이고 딜러의 오픈된 카드 한장이 A일 때 같은 블랙잭으로 무승부 되는 경우를 대비한 보험입니다. 베팅한 금액과 동일한 금액을 승리수당으로 받고 게임을 종료할 것인지, 아니면 블랙잭의 효과(1.5배)를 그대로 유지하면서 게임을 계속 진행할 것인지에 대해 선택을 하는 것입니다.\n\
 [참가] 를 입력하면 참가가 가능하고 참여자 중 아무나 [시작] 이라고 입력하면 게임을 시작합니다.\n\
 처음엔 베팅할 금액을 정합니다. 1만원~50만원의 배팅이 가능합니다.\n\
@@ -775,6 +781,19 @@ function blackjack(r){
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
 		if( r.msg == '스플릿' && num != -1){
 			if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
+				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+				gameinfo['player'+gameinfo.playerlist.length] = {
+						name : r.sender,
+						card : [gameinfo['player'+num].card.splice(1,1), Flag.get('cards', r.room).splice(rand,1)[0]],
+						bet : 0,
+						sum : 0,
+						insurance : 0,
+						state : 0,
+						result : 0,
+						isblackjack : 0
+					}
+				gameinfo.playerlist.push(r.sender);
+				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				
 			} else {
 				r.replier.reply('스플릿을 할 수 있는 패가 아닙니다.');
