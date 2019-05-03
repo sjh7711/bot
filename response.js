@@ -1277,7 +1277,7 @@ function inform(r){
 		+'\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등'
 		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])
 		+'\n전적 : '+wincount+'승 / '+losecount+'패'
-		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
+		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%")
 		+'\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]));
 		return;
 	}else {
