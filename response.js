@@ -321,8 +321,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	baseball(r);
         }
     	
-    	if( msg == "!전적초기화" && D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) > -1  && work == 1 ){
-    		D.update('baseball', {point : 100000, win : 0, lose : 0, solowin : 0}, 'name=? and room=?', [sender, room] );
+    	if( msg == "!전적초기화" && && D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]) > 0 && work == 1 ){
+    		var point = Number(D.selectForArray('baseball', 'point', 'room=? and name = ?', [room, sender])-2000);
+    		var clear = Number(D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])-1);
+    		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
     		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
     		return;
     	}
@@ -393,6 +395,7 @@ function func(r) {
 [!강제종료]를 통해 게임을 강제로 종료할 수 있습니다. 혼자 플레이 중인 경우 아무나 종료 가능하고 2인 이상일 경우 현재 참가중인 플레이어 중에서만 강제종료가 가능합니다.\n\
 [!패스]를 통해 상대방이 30초 이상 답하지 않을 경우 그 다음 턴으로 차례를 넘길 수 있습니다.\n\
 [!힌트]를 통해 8번째 턴 부터 500포인트를 사용하여 숫자 하나에 대한 정보를 얻을 수 있습니다. 힌트를 쓰는 즉시 포인트는 차감되기 때문에 강제종료를 하더라도 포인트는 돌아오지 않습니다. 신중하게 사용해주세요.\n\
+[!전적초기화]를 통해 현재 포인트에서 2000점이 차감된 상태로 전적을 초기화 할 수 있습니다. 최대 2회까지 가능합니다.\n\
 [!야구방]을 통해 야구 전용방에 들어갈 수 있습니다.')
     } else if (r.msg.split(" ")[1] == "블랙잭"){
     	r.replier.reply('블랙잭 룰\n'+es+'\n\
@@ -1275,6 +1278,7 @@ function inform(r){
 		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])
 		+'\n전적 : '+wincount+'승 / '+losecount+'패'
 		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
+		+'\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]));
 		return;
 	}else {
 		r.replier.reply('알 수 없습니다.');
