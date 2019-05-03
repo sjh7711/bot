@@ -1560,7 +1560,7 @@ function weather(r){
 		        		var targetNum=msg-1;
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
 		        		link0 = link1.select('div.lcl_lst').select('a').toArray().map(v=>v.attr("abs:href"))[targetNum-1];
-		        		link2 = link0.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		link2 = org.jsoup.Jsoup.connect(link0).get().select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
