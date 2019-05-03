@@ -1438,7 +1438,7 @@ function weather(r){
 			        		var i = 1;
 			        		name = name.concat(temp.select('div.mg_cont.clear.admin_area').select('div.wrap_relspace').select('a').toArray().map(v=>(1+i++)+". "+v.text().replace('..', '')+' '));
 			        		if(navername != undefined){
-			        			if(navername.length > name.length){
+			        			if(navername.length >= name.length){
 				        			name = navername;
 				        		}
 			        		}
@@ -1467,6 +1467,8 @@ function weather(r){
 				        			wantplace = loc4;
 				        		} else if(loc5.length > 0){
 				        			wantplace = loc5;
+				        		} else {
+				        			wantplace = temp;
 				        		}
 				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
