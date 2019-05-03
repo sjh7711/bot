@@ -1279,7 +1279,7 @@ function inform(r){
 		str += '\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room]);
 		str += '\n전적 : '+wincount+'승 / '+losecount+'패';
 		str += '\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
-		str += '\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]));
+		str += '\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [r.room, r.sender]));
 		r.replier.reply(str);
 		return;
 	}else {
