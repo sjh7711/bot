@@ -321,7 +321,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	baseball(r);
         }
     	
-    	if( msg == "!전적초기화" && && D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]) > 0 && work == 1 ){
+    	if( msg == "!전적초기화" && D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]) > 0 && work == 1 ){
     		var point = Number(D.selectForArray('baseball', 'point', 'room=? and name = ?', [room, sender])-2000);
     		var clear = Number(D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])-1);
     		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
