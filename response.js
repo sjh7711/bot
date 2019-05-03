@@ -1278,7 +1278,7 @@ function inform(r){
 		+'\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])
 		+'\n전적 : '+wincount+'승 / '+losecount+'패'
 		+'\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%")
-		+'\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]));
+		+'\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])));
 		return;
 	}else {
 		r.replier.reply('알 수 없습니다.');
