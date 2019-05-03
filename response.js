@@ -687,7 +687,7 @@ function blackjack(r){
 		for( var i in gameinfo.playerlist){
 			str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ') + '\n';
 		}
-		r.replier.reply(str.substr(0,str.length-1));
+		r.replier.reply(str.trim());
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
 				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!');
@@ -725,7 +725,7 @@ function blackjack(r){
 				}
 				gameinfo.start1 = 0;
 				gameinfo.start3 = 0;
-				r.replier.reply( str.substr(0,str.length-1) );
+				r.replier.reply( str.trim() );
 			} else {
 				r.replier.reply('딜러는 블랙잭이 아닙니다.');
 				gameinfo.start1 = 0;
@@ -770,7 +770,7 @@ function blackjack(r){
 					}
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
-					r.replier.reply( str.substr(0,str.length-1) );
+					r.replier.reply( str.trim() );
 				} else {
 					r.replier.reply('딜러는 블랙잭이 아닙니다.');
 					gameinfo.start1 = 0;
@@ -940,7 +940,7 @@ function blackjack(r){
 				}
 			}
 		}
-		r.replier.reply( str.substr(0,str.length-1) );
+		r.replier.reply( str.trim() );
 		gameinfo.start2 = 0;
 	}
 	
