@@ -326,11 +326,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		var clear = Number(D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])-1);
     		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
     		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
+    		inform(r);
     		return;
     	}
     	
     	if(msg == '!정보' && work == 1 ){
-    		//inform(r);
+    		inform(r);
     	}
     	
     	if(msg == '!랭킹' && work == 1 ){
@@ -1269,7 +1270,6 @@ function baseball(r){
 	}
 }
 
-/*
 function inform(r){
 	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
 		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
@@ -1280,14 +1280,14 @@ function inform(r){
 		str += '\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room]);
 		str += '\n전적 : '+wincount+'승 / '+losecount+'패';
 		str += '\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%");
-		str += '\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'room=? and name = ?', [r.room, r.sender]));
+		str += '\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'name=? and room=?',[r.sender, r.room]);
 		r.replier.reply(str);
 		return;
 	}else {
 		r.replier.reply('알 수 없습니다.');
 		return;
 	}
-}*/
+}
 
 function randomnumber(r){
 	var num1 = Number(r.msg.split(' ')[1]);
