@@ -1361,7 +1361,7 @@ function weather(r){
 				where = "서울시립대";
 			}
 			if(want.length > 0){ //!날씨 ~뒤에 뭔가가 있을 때
-	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨"+want).get();
+	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	    		var	check = link2.indexOf('weather');
 	    		where = want; // 지역명
