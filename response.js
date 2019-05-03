@@ -326,12 +326,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		var clear = Number(D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])-1);
     		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
     		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
-    		inform(r);
     		return;
     	}
     	
     	if(msg == '!정보' && work == 1 ){
-    		inform(r);
+    		//inform(r);
     	}
     	
     	if(msg == '!랭킹' && work == 1 ){
