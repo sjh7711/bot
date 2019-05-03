@@ -1559,8 +1559,8 @@ function weather(r){
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
 		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
-		        		link2 = link1.select('div.lcl_lst').select('a').toArray().map(v=>v.attr("abs:href"))[targetNum-1];
-		        		//link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		link0 = link1.select('div.lcl_lst').select('a').toArray().map(v=>v.attr("abs:href"))[targetNum-1];
+		        		link2 = link0.select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
