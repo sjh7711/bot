@@ -1558,7 +1558,7 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		link0 = link1.select('div.lcl_lst').select('a').toArray().map(v=>v.attr("abs:href"))[targetNum-1];
+		        		link0 = link1.select('div.lcl_lst').select('a').get(targetNum-1).attr("abs:href");
 		        		link2 = org.jsoup.Jsoup.connect(link0).get().select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
