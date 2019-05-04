@@ -1332,9 +1332,9 @@ function checkstatus(r){
 	var status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
 	var voltage = bm.getIntExtra("voltage",0)/1000 + "V"
 	
-	var stat1 = readFile().substr(5).split(" ");
+	var stat1 = readFile('/proc/stat').substr(5).split(" ");
 	java.lang.Thread.sleep(1000);
-	var stat2 = readFile().substr(5).split(" ");        
+	var stat2 = readFile('/proc/stat').substr(5).split(" ");        
 	var user = stat2[0]-stat1[0];
 	var system = stat2[1]-stat1[1];
 	var nice = stat2[2]-stat1[2];
@@ -2579,8 +2579,15 @@ var NC = T.register("noticeCheck",()=>{
 	}
 }).start();
 
-function readFile() {
-    var filedir = new java.io.File("/proc/stat");
+function cmd(dir){
+	var p = java.lang.Runtime.getRuntime().exec("su -c \"\"" + dir + "\"\"");
+    p.waitFor();
+    var r = p.getInputStream() || p.getErrorStream();
+    return isread(r);
+}
+
+function readFile(file) {
+    var filedir = new java.io.File(file);
     try {
         var br = new java.io.BufferedReader(new java.io.FileReader(filedir));
         var readStr = "";
@@ -2628,7 +2635,7 @@ function compare(a, b) {
 
 
 own=function(obj){
-	return Object.getOwnPropertyNames(Api);
+	return Object.getOwnPropertyNames(obj);
 	}
 
 String.prototype.replaceAmp=function(){
