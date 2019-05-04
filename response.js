@@ -75,7 +75,7 @@ var featureList = ['!날씨', '!로또통계', '!종합로또통계', '!행복�
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
-	r = { replier: replier, msg: msg, sender: sender, room: room};
+	var r = { replier: replier, msg: msg, sender: sender, room: room};
 	
 	try {
 		if (room == 'test' || room == '시립대 봇제작방') {
