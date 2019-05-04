@@ -2143,12 +2143,15 @@ function allbestlotto(r) {
 	var three = D.selectForArray('lottoresult', "count(*)", 'count == 5 ');
 	var two = D.selectForArray('lottoresult', "count(*)", 'count == 7 ');
 	var one = D.selectForArray('lottoresult', "count(*)", 'count == 6');
+	var getmoney = Number(five*5000+four*5000+three*1400000+two*65000000+one*2000000000);
 	result+='로또 뽑은 횟수 : '+all+'\n';
-	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")";
+	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
+	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
+	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
+	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n"
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
+	result+='쓴돈 : '+ all*1000 + ' | 당첨금 : '+ getmoney +'원\n'
+	result+='회수율 : '+ getmoney/(all*1000);
 	
 	if ( r.room == 'test'){
 		result += "\n"+es+"\n";
@@ -2171,12 +2174,15 @@ function bestlotto(r) {
 	var three = D.selectForArray('lottoresult', "count(*)", 'count == 5 and room = ? ',  [r.room]);
 	var two = D.selectForArray('lottoresult', "count(*)", 'count == 7 and room = ? ',  [r.room]);
 	var one = D.selectForArray('lottoresult', "count(*)", 'count == 6 and room = ? ',  [r.room]);
+	var getmoney = Number(five*5000+four*5000+three*1400000+two*65000000+one*2000000000);
 	result+='로또 뽑은 횟수 : '+all+'\n';
-	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+"\n"+es+"\n";
+	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
+	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
+	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
+	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
+	result+='쓴돈 : '+ all*1000 + ' | 당첨금 : '+ getmoney +'원\n'
+	result+='회수율 : '+ getmoney/(all*1000)*100+'%'+es+"\n";
 	
 	for(var i=0; i<temp.length; i++){
 		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
