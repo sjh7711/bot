@@ -80,7 +80,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		if (room == 'test' || room == '시립대 봇제작방') {
 			if (msg.indexOf("]") == 0) {
-				replier.reply(eval(msg.substring(1)).toString().encoding());
+				replier.reply(String(eval(msg.substring(1))).encoding());
 				return;	
 			}
 			blankFunc(r);
