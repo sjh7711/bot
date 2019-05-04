@@ -827,22 +827,27 @@ function blackjack(r){
 			}
 			r.replier.reply(str);
 		}
-		if( r.msg == '더블다운' && num != -1){
-			var str = gameinfo['player'+num].name+'님의 DoubleDown.\n';
-			gameinfo['player'+num].state = 6;
-			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
-			var temp = gameinfo['player'+num].card.map(v=>v[1]);
-			var sum = blackjacksum(temp);
-			gameinfo['player'+num].sum = sum;
-			gameinfo.endcount +=1;
-			if(sum > 21){
-				str = gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ')+'\n'+ gameinfo['player'+num].name+'님의 Bust.';
-				gameinfo['player'+num].state = 7;
-			} else {
-				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.slice(0,2).map(v=>v.join(' ')).join(' | ') + ' | ?';
+		if( r.msg == '더블다운' && num != -1 ){
+			if(gameinfo['player'+num].card.length==2){
+				var str = gameinfo['player'+num].name+'님의 DoubleDown.\n';
+				gameinfo['player'+num].state = 6;
+				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+				var temp = gameinfo['player'+num].card.map(v=>v[1]);
+				var sum = blackjacksum(temp);
+				gameinfo['player'+num].sum = sum;
+				gameinfo.endcount +=1;
+				if(sum > 21){
+					str = gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ')+'\n'+ gameinfo['player'+num].name+'님의 Bust.';
+					gameinfo['player'+num].state = 7;
+				} else {
+					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.slice(0,2).map(v=>v.join(' ')).join(' | ') + ' | ?';
+				}
+				r.replier.reply(str);
+			} else{
+				r.replier.reply('더블다운이 불가능 합니다.');
+				return;
 			}
-			r.replier.reply(str);
 		}
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && num != -1 && gameinfo['player'+num].state==0 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 Stay.');
