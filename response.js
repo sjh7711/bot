@@ -354,7 +354,7 @@ function func(r) {
     } else if (r.msg.split(" ")[1] == "오버워치") {
         r.replier.reply("[!오버워치 똥개#5468]와 같이 입력하면 티어,점수,경쟁전에서 가장 많이 플레이한 영웅 4명을 확인할 수 있습니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
     } else if (r.msg.split(" ")[1] == "로또") {
-        r.replier.reply("로또번호를 추천해줍니다. [!로또 5] 와 같이 5장까지는 뽑은 번호를 바로 알려주고 5장 초과 200장 이하의 경우 뽑은 데이터는 저장되고 별도로 알려주지는 않습니다. [!당첨]으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
+        r.replier.reply("로또번호를 추천해줍니다. [!로또 5] 와 같이 5장까지는 뽑은 번호를 바로 알려주고 5장 초과 1000장 이하의 경우 뽑은 데이터는 저장되고 별도로 알려주지는 않습니다. [!당첨]으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
     } else if (r.msg.split(" ")[1] == "당첨") {
         r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. [!당첨 닉네임] 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
     } else if (r.msg.split(" ")[1] == "로또통계") {
@@ -2234,7 +2234,7 @@ function testlotto(r){
 function lotto(r) {
 	try{
 		var cycle = 1;
-		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 201 ){
+		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 1001 ){
 			cycle = Number(r.msg.substr(4));
 		}
 		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
