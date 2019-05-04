@@ -2234,7 +2234,7 @@ function testlotto(r){
 function lotto(r) {
 	try{
 		var cycle = 1;
-		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 101 ){
+		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 1001 ){
 			cycle = Number(r.msg.substr(4));
 		}
 		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
