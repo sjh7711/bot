@@ -2596,7 +2596,7 @@ function isread (is) {
 }
 
 function cmd(dir){
-	var p = java.lang.Runtime.getRuntime().exec("su -c \"\"" + dir + "\"\"");
+	var p = java.lang.Runtime.getRuntime().exec('su -c ""'+dir+'""');
     p.waitFor();
     var r = p.getInputStream() || p.getErrorStream();
     return isread(r);
