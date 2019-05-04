@@ -2150,8 +2150,8 @@ function allbestlotto(r) {
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n"
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
-	result+='쓴돈 : '+ all*1000 + ' | 당첨금 : '+ getmoney +'원\n'
-	result+='회수율 : '+ getmoney/(all*1000);
+	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
+	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%';
 	
 	if ( r.room == 'test'){
 		result += "\n"+es+"\n";
@@ -2181,8 +2181,8 @@ function bestlotto(r) {
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n";
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
-	result+='쓴돈 : '+ all*1000 + ' | 당첨금 : '+ getmoney +'원\n'
-	result+='회수율 : '+ getmoney/(all*1000)*100+'%'+es+"\n";
+	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
+	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+es+"\n";
 	
 	for(var i=0; i<temp.length; i++){
 		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
