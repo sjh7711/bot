@@ -312,7 +312,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
     	}
         
-    	if( (msg == "!야구" && work == 0) || (msg == "!야구방" && work == 1) ){
+    	if( (msg == "!야구" && work == 0) || msg == "!야구방" ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
