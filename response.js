@@ -305,7 +305,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
-    		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0});
+    		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0, clear : 2});
     	}
         
     	if( (msg == "!야구" && work == 0) || msg == "!야구방" ){
