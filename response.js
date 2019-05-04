@@ -9,36 +9,32 @@ var I = require("Interactive.js");
 var control = D.selectForArray('control').map(v=>v[0]);
 var controlPanel = D.selectForObject('control');
 function reload(r) {
-	try {
-		if(r.sender == '봇배우는배주현' || r.sender == 'test'){
-			reloadcheck = 1;
-			reloadtime = new Date().getTime();
-			var Timer = new Date();
-		    file = "storage/emulated/0/kbot/response.js";
-		    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
-		    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
-		    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
-		    str = "";
-		    tmp = null;
-		    while ((tmp = br.readLine()) != null) {
-		        str += tmp + "\n";
-		    }
-		    var filedir = new java.io.File(file);
-		    var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-		    bw.write(str.toString());
-		    bw.close();
-		    var time = (new Date() - Timer) / 1000;
-		    r.replier.reply("파일저장 완료 / " + time + "s\n" + new Date() );
-		    T.interrupt();
-		    Api.reload();
-		    reloadcheck = 0;
-		    control = D.selectForArray('control').map(v=>v[0]);
-		    controlPanel = D.selectForObject('control');
-		    var time = (new Date() - Timer) / 1000;
-		    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
-		}
-	}catch (e){
-		r.replier.reply('test', e + "\n" + e.stack);
+	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
+		reloadcheck = 1;
+		reloadtime = new Date().getTime();
+		var Timer = new Date();
+	    file = "storage/emulated/0/kbot/response.js";
+	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
+	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
+	    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
+	    str = "";
+	    tmp = null;
+	    while ((tmp = br.readLine()) != null) {
+	        str += tmp + "\n";
+	    }
+	    var filedir = new java.io.File(file);
+	    var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
+	    bw.write(str.toString());
+	    bw.close();
+	    var time = (new Date() - Timer) / 1000;
+	    r.replier.reply("파일저장 완료 / " + time + "s\n" + new Date() );
+	    T.interrupt();
+	    Api.reload();
+	    reloadcheck = 0;
+	    control = D.selectForArray('control').map(v=>v[0]);
+	    controlPanel = D.selectForObject('control');
+	    var time = (new Date() - Timer) / 1000;
+	    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
 	}
 }
 File = java.io.File;
