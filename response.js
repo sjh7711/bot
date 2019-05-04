@@ -67,7 +67,7 @@ function blankFunc1(r){}
 ]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
 ]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
 */
-var featureList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
+var funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -103,17 +103,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			return;
 		}
 	
-		var feature = -1;
+		var funcc = -1;
 		
 		for(var i in control){
 			if( msg.indexOf(control[i]) == 0 ){
-				feature = i;
+				funcc = i;
 				break;
 			}
 		}
 	
-		if(feature != -1){
-			var work = controlPanel[feature][room.replace(/ /g, '_')];
+		if(funcc != -1){
+			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
 		
 		if ( msg.indexOf("!날씨") == 0 && work == 1 ) {
@@ -461,16 +461,16 @@ function controlEdit(r){
 	control = D.selectForArray('control').map(v=>v[0]);
 	
 	var temp = r.msg.split(',');
-	var feature = -1;
+	var funcc = -1;
 	for(var i in control){
 		if( temp[1].indexOf(control[i]) == 0 ){
-			feature = i;
+			funcc = i;
 			break;
 		}
 	}
 	
-	if(feature != -1){
-		var tempf = controlPanel[feature];
+	if(funcc != -1){
+		var tempf = controlPanel[funcc];
 		if( temp[3] == 'on' ){
 			tempf[temp[2].replace(/ /g, '_')] = 1;
 		} else if ( temp[3] == 'off' ){
@@ -479,7 +479,7 @@ function controlEdit(r){
 			r.replier.reply('잘못입력했습니다.');
 			return;
 		}
-		D.update("control", tempf , "name=?", [control[feature]]);
+		D.update("control", tempf , "name=?", [control[funcc]]);
 	} else {
 		r.replier.reply('잘못입력했습니다.');
 		return;
@@ -845,7 +845,7 @@ function blackjack(r){
 				}
 				r.replier.reply(str);
 			} else{
-				r.replier.reply('더블다운이 불가능 합니다.');
+				r.replier.reply('더블다운이 불가능합니다.');
 				return;
 			}
 		}
@@ -964,13 +964,13 @@ function funcCheck(r){
 	}
 	var str1='';
 	var j = 1;
-	for(var i in featureList) {
-        if( str.indexOf(featureList[i]) > -1 ) {
+	for(var i in funccList) {
+        if( str.indexOf(funccList[i]) > -1 ) {
         	if( Math.floor( str1.length / 20) == j){
         		str1 += '\n';
         		j+=1;
         	}
-        	str1 += featureList[i] + ' / ';
+        	str1 += funccList[i] + ' / ';
         }
 	}
 	str1 += '\n';
