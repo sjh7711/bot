@@ -1126,7 +1126,9 @@ function baseball(r){
 		var k = 0;
 		Flag.set('k', r.room, k);
 		Flag.set('start1', r.room, 0);
-		r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
+		if(Flag.get('baseball', r.room).length > 1){
+			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
+		}
 		Flag.set('start2', r.room, 1);
 		Flag.set('passtime', r.room, new Date().getTime());
 		return;
@@ -1242,7 +1244,9 @@ function baseball(r){
 				k=0;
 			}
 			Flag.set('k', r.room, k);
-			r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
+			if(Flag.get('baseball', r.room).length > 1){
+				r.replier.reply(Flag.get('baseball', r.room)[Flag.get('k', r.room)] + '님 차례입니다.');
+			}
 			Flag.set('passtime', r.room, new Date().getTime());
 		}
 	} else if(Flag.get('start2', r.room) == 1 && Flag.get('baseball', r.room)[Flag.get('k', r.room)]!=r.sender && r.msg == '!패스' ) {
