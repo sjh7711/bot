@@ -2439,7 +2439,7 @@ function lottocheck(r) {
 				}else if(count==6){
 					lottodata[i].push('1등');
 				}
-				D.update('lotto', {count:lottodata[i][14],class:lottodata[i][15]}, "num=? and num1=? and num2 =? and num3=? and num4=? and num5=? and num6=? and room=? and sender=?", [lottodata[i][7],lottodata[i][8],lottodata[i][9],lottodata[i][10],lottodata[i][11],lottodata[i][12],lottodata[i][13],lottodata[i][0],lottodata[i][1] );
+				D.update('lotto', {count:lottodata[i][14],class:lottodata[i][15]}, "num=? and num1=? and num2 =? and num3=? and num4=? and num5=? and num6=? and room=? and sender=?", [lottodata[i][7],lottodata[i][8],lottodata[i][9],lottodata[i][10],lottodata[i][11],lottodata[i][12],lottodata[i][13],lottodata[i][0],lottodata[i][1]] );
 			}
 		}
 		
