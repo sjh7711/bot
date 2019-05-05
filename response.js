@@ -2163,9 +2163,11 @@ function mylotto(r){
 }
 
 function allbestlotto(r) {
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
 	var temp = D.selectForArray('lotto', null, 'count > 2 ', null , {orderBy:"class asc"});
-	var all = D.selectForArray('lotto', "count(*)");
+	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num]);
 	var five = D.selectForArray('lotto', "count(*)", 'count == 3');
 	var four = D.selectForArray('lotto', "count(*)", 'count == 4 ');
 	var three = D.selectForArray('lotto', "count(*)", 'count == 5 ');
@@ -2194,9 +2196,11 @@ function allbestlotto(r) {
 }
 
 function bestlotto(r) {
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
 	var temp = D.selectForArray('lotto', null, 'count > 2 and room = ? ',  [r.room] , {orderBy:"class asc"});
-	var all = D.selectForArray('lotto', "count(*)" , 'room = ? ',  [r.room]);
+	var all = D.selectForArray('lotto', "count(*)" , ' num < ? and room = ? ',  [num , r.room]);
 	var five = D.selectForArray('lotto', "count(*)", 'count == 3 and room = ? ',  [r.room]);
 	var four = D.selectForArray('lotto', "count(*)", 'count == 4 and room = ? ',  [r.room]);
 	var three = D.selectForArray('lotto', "count(*)", 'count == 5 and room = ? ',  [r.room]);
@@ -2210,7 +2214,7 @@ function bestlotto(r) {
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n";
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
-	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%'+es+"\n";
+	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%'+es+"\n\n";
 	
 	for(var i=0; i<temp.length; i++){
 		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
@@ -2443,7 +2447,7 @@ function lottocheck(r) {
 			}
 		}
 		
-		var money = D.selctForArray('lottomoney', null, "num=?", [lastnum]);
+		var money = D.selectForArray('lottomoney', null, "num=?", [lastnum]);
 		
 		var result=date+" "+lastnum+"회차\n당첨번호 : "+win.join(' ')+"/"+bonus+"\n";
 		var fail = '';
