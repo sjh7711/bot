@@ -2319,7 +2319,7 @@ function lotto(r) {
 function flottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
-	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum]);
+	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum-1])[0];
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
@@ -2379,7 +2379,7 @@ function flottocheck(r) {
 		return;
 	}
 	var result = '';
-	var getmoney = Number(five*5000+four*50000+three*money[3]+two*money[2]+one*money[1]);
+	var getmoney = Number(fifth*5000+fourth*50000+third*money[3]+second*money[2]+first*money[1]);
 	result+='1등 확률 : '+Math.floor(first/all*100000000000)/1000000000+"%("+first+")"+"\n";
 	result+='2등 확률 : '+Math.floor(second/all*100000000000)/1000000000+"%("+second+")"+"\n";
 	result+='3등 확률 : '+Math.floor(third/all*100000000000)/1000000000+"%("+third+")"+"\n";
@@ -2451,7 +2451,7 @@ function lottocheck(r) {
 			}
 		}
 		
-		var money = D.selectForArray('lottomoney', null, "num=?", [lastnum]);
+		var money = D.selectForArray('lottomoney', null, "num=?", [lastnum])[0];
 		
 		var result=date+" "+lastnum+"회차\n당첨번호 : "+win.join(' ')+"/"+bonus+"\n";
 		result += '당첨금\n1등 : '+money[1]+'원\n2등 : '+money[2]+'원\n3등 : '+money[3]+'원\n4등 : 50000원\n5등 : 5000원\n';
