@@ -2388,7 +2388,7 @@ function flottocheck(r) {
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%\n\n'+es;
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
-	result+='저번주 당첨금\n1등 : '+money[1]+'원\n2등 : '+money[2]+'원\n3등 : '+money[3]+'원\n4등 : 50000원\n5등 : 5000원';
+	result+='저번주 당첨금\n1등 : '+money[1]+'원\n2등 : '+money[2]+'원\n3등 : '+money[3]+'원\n4등 : 50000원\n5등 : 5000원\n\n';
 	
 	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result+
 			'1등 개수 : '+first+'\n'+str1+'\n'+
@@ -2454,6 +2454,7 @@ function lottocheck(r) {
 		var money = D.selectForArray('lottomoney', null, "num=?", [lastnum]);
 		
 		var result=date+" "+lastnum+"회차\n당첨번호 : "+win.join(' ')+"/"+bonus+"\n";
+		result += '당첨금\n1등 : '+money[1]+'원\n2등 : '+money[2]+'원\n3등 : '+money[3]+'원\n4등 : 50000원\n5등 : 5000원\n';
 		var fail = '';
 		
 		var first = '';
