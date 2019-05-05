@@ -4,6 +4,7 @@ if(ObjKeep.get("reboottime")==null){
 }
 var reloadtime = new Date().getTime();
 var D = require("DBManager.js")("D");
+var K = require("KBManager.js")("/data/data/com.kakao.talk/databases/KakaoTalk2.db");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
 var control = D.selectForArray('control').map(v=>v[0]);
