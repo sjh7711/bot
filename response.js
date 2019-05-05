@@ -38,11 +38,11 @@ function reload(r) {
 	}
 }
 File = java.io.File;
-var es=String.fromCharCode(8237).repeat(500);
-var weiredstring1=String.fromCharCode(8203);//공백
-var weiredstring2=String.fromCharCode(160);//띄워쓰기로
-var weiredstring3=String.fromCharCode(8237);//공백
-var weiredstring4=String.fromCharCode(8197);//띄워쓰기로
+const es=String.fromCharCode(8237).repeat(500);
+const weiredstring1=String.fromCharCode(8203);//공백
+const weiredstring2=String.fromCharCode(160);//띄워쓰기로
+const weiredstring3=String.fromCharCode(8237);//공백
+const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
 //replace(new RegExp(weiredstring1, "gi"), "")
 Flag=(function(){
 	   var list={};
@@ -67,7 +67,7 @@ function blankFunc1(r){}
 ]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
 ]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
 */
-var funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
+const funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
