@@ -76,6 +76,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	var r = { replier: replier, msg: msg, sender: sender, room: room};
 	
+	I.run(room, sender, msg);
+	
 	try {
 		if (room == 'test' || room == '시립대 봇제작방') {
 			if (msg.indexOf("]") == 0) {
@@ -93,8 +95,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	} 
 	
 	try {
-		
-		I.run(room, sender, msg);
 		
 		blankFunc1(r);
 		
@@ -2382,7 +2382,9 @@ function flottocheck(r) {
 
 function lottocheck(r) {
 	try{
-		var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+		var doc = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get()
+		var raw = doc.select('div.win_result');
+		var money = doc.select('tbody>tr').toArray().map(v=>v.select('td.tar').get(1).text());
 		var lastnum = raw.select('h4').text().split('회')[0];
 		var win = raw.select('p').get(1).text().split(" ").slice();
 		var bonus = raw.select('p').get(2).text();
