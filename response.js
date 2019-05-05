@@ -2173,7 +2173,7 @@ function allbestlotto(r) {
 	var three = D.selectForArray('lotto', "count(*)", 'count == 5 ');
 	var two = D.selectForArray('lotto', "count(*)", 'count == 7 ');
 	var one = D.selectForArray('lotto', "count(*)", 'count == 6');
-	var getmoney = Number(five*5000+four*5000+three*1400000+two*65000000+one*2000000000);
+	var getmoney = Number(five*5000+four*50000+three*1400000+two*65000000+one*2200000000);
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
@@ -2206,7 +2206,7 @@ function bestlotto(r) {
 	var three = D.selectForArray('lotto', "count(*)", 'count == 5 and room = ? ',  [r.room]);
 	var two = D.selectForArray('lotto', "count(*)", 'count == 7 and room = ? ',  [r.room]);
 	var one = D.selectForArray('lotto', "count(*)", 'count == 6 and room = ? ',  [r.room]);
-	var getmoney = Number(five*5000+four*5000+three*1400000+two*65000000+one*2000000000);
+	var getmoney = Number(five*5000+four*50000+three*1400000+two*65000000+one*2200000000);
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
@@ -2319,6 +2319,7 @@ function lotto(r) {
 function flottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
+	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum]);
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
@@ -2378,13 +2379,16 @@ function flottocheck(r) {
 		return;
 	}
 	var result = '';
+	var getmoney = Number(five*5000+four*50000+three*money[3]+two*money[2]+one*money[1]);
 	result+='1등 확률 : '+Math.floor(first/all*100000000000)/1000000000+"%("+first+")"+"\n";
 	result+='2등 확률 : '+Math.floor(second/all*100000000000)/1000000000+"%("+second+")"+"\n";
 	result+='3등 확률 : '+Math.floor(third/all*100000000000)/1000000000+"%("+third+")"+"\n";
 	result+='4등 확률 : '+Math.floor(fourth/all*100000000000)/1000000000+"%("+fourth+")"+"\n";
-	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")"+'\n\n'+es;
+	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")"+'\n\n';
+	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
+	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%\n\n'+es;
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
-	
+	result+='저번주 당첨금\n1등 : '+money[1]+'원\n2등 : '+money[2]+'원\n3등 : '+money[3]+'원\n4등 : 50000원\n5등 : 5000원';
 	
 	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result+
 			'1등 개수 : '+first+'\n'+str1+'\n'+
