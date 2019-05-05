@@ -1,4 +1,5 @@
 var reloadcheck = 0;
+var stop = 0;
 if(ObjKeep.get("reboottime")==null){
 	ObjKeep.keep("reboottime",new Date().getTime());
 }
@@ -86,6 +87,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	} catch (e) {
         replier.reply( e + "\n" + e.stack);
 	}
+	
+	if( stop == 1 ){
+		return;
+	} 
 	
 	try {
 		
@@ -287,6 +292,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
     	
+        if (msg == '!재부팅' && work == 1 && r.sender == 'test'){
+        	cmd(reboot);
+        }
+        
     	if ( (msg == "!추첨" && work == 1) || ( Flag.get("sel0", r.room) == 1 || Flag.get("sel1", r.room) == 1 ) && ( !isNaN(msg) || msg == '참가' || msg == '!마감' ) ) {
         	sel(r); 
         	return;
