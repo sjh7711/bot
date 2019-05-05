@@ -2164,7 +2164,7 @@ function mylotto(r){
 
 function allbestlotto(r) {
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 2 and count > -1 ', null , {orderBy:"class asc"});
+	var temp = D.selectForArray('lotto', null, 'count > 2 ', null , {orderBy:"class asc"});
 	var all = D.selectForArray('lotto', "count(*)");
 	var five = D.selectForArray('lotto', "count(*)", 'count == 3');
 	var four = D.selectForArray('lotto', "count(*)", 'count == 4 ');
@@ -2195,8 +2195,8 @@ function allbestlotto(r) {
 
 function bestlotto(r) {
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 2 and count > -1 and room = ? ',  [r.room] , {orderBy:"class asc"});
-	var all = D.selectForArray('lottor', "count(*)" , 'room = ? ',  [r.room]);
+	var temp = D.selectForArray('lotto', null, 'count > 2 and room = ? ',  [r.room] , {orderBy:"class asc"});
+	var all = D.selectForArray('lotto', "count(*)" , 'room = ? ',  [r.room]);
 	var five = D.selectForArray('lotto', "count(*)", 'count == 3 and room = ? ',  [r.room]);
 	var four = D.selectForArray('lotto', "count(*)", 'count == 4 and room = ? ',  [r.room]);
 	var three = D.selectForArray('lotto', "count(*)", 'count == 5 and room = ? ',  [r.room]);
