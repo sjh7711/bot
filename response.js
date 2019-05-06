@@ -82,7 +82,7 @@ function blankFunc1(r){}
 ]D.update("cat", {age : 4} , "name='인문이'")
 ]D.create("cat", {name:"모모",gender:"남",age:4})
 */
-const funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
+const funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!사진조회', '!사진삭제', '!사진목록', '!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
@@ -136,6 +136,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 		if(funcc != -1){
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
+		}
+		
+		if (msg == '!사진' && work == 1){
+			loadimage(r);
+		}
+		
+		if (msg == '!사진조회' && work == 1){
+			checkimage(r);
+		}
+		
+		if (msg == '!사진삭제' && work == 1){
+			deleteimage(r);
 		}
 		
 		if (msg == '!로딩' && work == 1){
@@ -2763,6 +2775,79 @@ function compare(a, b) {
     return a - b;
 }
 
+function checkimage(r){
+	Flag.set('imagelist', r.room, File("/sdcard/KakaoTalkDownload").listFiles());
+	var temp = [];
+	for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
+		if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
+			temp.push(Flag.get('imagelist', r.room)[i]);
+		}
+	}
+	if(temp.length == 0){
+		r.replier.reply('검색결과가 없습니다.');
+		return;
+	}
+	Flag.set('imagelist', r.room, temp);
+	var i = 1;
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
+}
+
+function deleteimage(r){
+	var temp = java.io.File("/sdcard/KakaoTalkDownload").listFiles();
+	var delist = [];
+	for(i=0;i<temp.length;i++){
+		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
+			File(temp[i]).delete();
+			delist.push(temp[i]);
+		}
+	}
+	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
+}
+
+function loadimage(r){
+	if(Flag.get('image', r.room)==0){
+		Flag.set('imagelist', r.room, File("/sdcard/KakaoTalkDownload").listFiles());
+		var temp = [];
+		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
+			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
+				temp.push(Flag.get('imagelist', r.room)[i]);
+			}
+		}
+		if(temp.length == 0){
+			r.replier.reply('검색결과가 없습니다.');
+			return;
+		}
+		Flag.set('imagelist', r.room, temp);
+		var i = 1;
+		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
+		Flag.set('image', r.room, 1);
+	} else if ( Flag.get('image', r.room)== 1){
+		if(!isNaN(r.msg)){
+			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
+			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
+			Flag.set('image', r.room, 0);
+		} else {
+			r.replier.reply('숫자를 입력하세요.');
+			Flag.set('image', r.room, 0);
+		}
+	}
+}
+
+function read64(file) {
+	   var is=new java.io.FileInputStream(file);
+	   var os=new java.io.ByteArrayOutputStream();
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	   var fileArray=os.toByteArray();
+	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
+	   return str;
+	}
+
 function write64(file,base64) {
 	   var base64Array=new java.lang.String(base64).getBytes();
 	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
@@ -2875,97 +2960,10 @@ String.prototype.extensionRight=function(char,length){
 }
 
 /*
-function checkimage(r){
-	Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-	var temp = [];
-	for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-		if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
-			temp.push(Flag.get('imagelist', r.room)[i]);
-		}
-	}
-	if(temp.length == 0){
-		r.replier.reply('검색결과가 없습니다.');
-		return;
-	}
-	Flag.set('imagelist', r.room, temp);
-	var i = 1;
-	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
-}
-
-function loadimage(r){
-	if(Flag.get('image', r.room)==0){
-		Flag.set('imagelist', r.room, File("/sdcard/FTP").listFiles());
-		var temp = [];
-		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(4))>-1) {
-				temp.push(Flag.get('imagelist', r.room)[i]);
-			}
-		}
-		if(temp.length == 0){
-			r.replier.reply('검색결과가 없습니다.');
-			return;
-		}
-		Flag.set('imagelist', r.room, temp);
-		var i = 1;
-		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
-		Flag.set('image', r.room, 1);
-	} else if ( Flag.get('image', r.room)== 1){
-		if(!isNaN(r.msg)){
-			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
-			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
-			Flag.set('image', r.room, 0);
-		} else {
-			r.replier.reply('숫자를 입력하세요.');
-			Flag.set('image', r.room, 0);
-		}
-	}
-}
-
-function googleimage(r){
-	var raw = org.jsoup.Jsoup.connect('https://www.google.com/search?q='+r.msg.substr(4)+'&tbm=isch&sa=X&ved=0ahUKEwiOifW47s_hAhWmGqYKHTRJC7QQ_AUIDigB&biw=1562&bih=776').get();
-	var link=JSON.parse(raw.select('div.rg_meta.notranslate').get(0).text()).ou;
-	r.replier.reply(link);
-}
-
-function deleteimage(r){
-	var temp = java.io.File("/sdcard/FTP").listFiles();
-	var delist = [];
-	for(i=0;i<temp.length;i++){
-		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
-			File(temp[i]).delete();
-			delist.push(temp[i]);
-		}
-	}
-	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
-}
-
-function saveImage(r){
-	file = 'storage/emulated/0/FTP/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
-	write64(file, r.imageDB.getImage());
-	Api.replyRoom('test', 'Image saved|'+r.room+'-'+r.sender);
-}
-//new File("/sdcard/kakaotalkbot").listFiles().slice().join("\n")
-//File = new java.io.file
-function read64(file) {
-	   var is=new java.io.FileInputStream(file);
-	   var os=new java.io.ByteArrayOutputStream();
-	   var len=0;
-	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
-	   while((len=is.read(buf))!=-1){
-	      os.write(buf,0,len);
-	   }
-	   is.close();
-	   os.close();
-	   var fileArray=os.toByteArray();
-	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
-	   return str;
-	}
-
 function calculator(r){
 	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
 	if(temp!=undefined){
 		r.replier.reply(temp);
 	}
 }
-
 */
