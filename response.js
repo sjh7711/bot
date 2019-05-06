@@ -2206,7 +2206,7 @@ function allbestlotto(r) {
 		'3등 개수 : '+three+'\n'+str3+'\n'+
 		'4등 개수 : '+four+'\n'+str4+'\n'+
 		'5등 개수 : '+five+'\n'+
-		'꽝 개수 : '+all-(one+two+three+four+five)+'\n';
+		'꽝 개수 : '+Number(all-(one+two+three+four+five))+'\n';
 	}
 	if (result.length > 100000){
 		result = result.substr(0,100000);
@@ -2256,7 +2256,7 @@ function bestlotto(r) {
 	'3등 개수 : '+three+'\n'+str3+'\n'+
 	'4등 개수 : '+four+'\n'+str4+'\n'+
 	'5등 개수 : '+five+'\n'+
-	'꽝 개수 : '+all-(one+two+three+four+five)+'\n';
+	'꽝 개수 : '+Number(all-(one+two+three+four+five))+'\n';
 	
 	if (result.length > 20000){
 		result = result.substr(0,20000);
