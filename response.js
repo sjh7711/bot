@@ -1580,6 +1580,7 @@ function weather(r){
 	        		}
 		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
+					link1 = '';
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
 	    			var msg;
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
