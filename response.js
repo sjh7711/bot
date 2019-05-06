@@ -2191,13 +2191,13 @@ function allbestlotto(r) {
 	if ( r.room == 'test'){
 		result += "\n"+es+"\n";
 		for(var i=0; i<temp.length; i++){
-			if(count==4){
+			if(temp[14]==4){
 				str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}else if(count==5){
+			}else if(temp[14]==5){
 				str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}else if(count==7){
+			}else if(temp[14]==7){
 				str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}else if(count==6){
+			}else if(temp[14]==6){
 				str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
 			}
 		}
@@ -2241,13 +2241,13 @@ function bestlotto(r) {
 	var str4 ='\n';
 	
 	for(var i=0; i<temp.length; i++){
-		if(count==4){
+		if(temp[14]==4){
 			str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-		}else if(count==5){
+		}else if(temp[14]==5){
 			str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-		}else if(count==7){
+		}else if(temp[14]==7){
 			str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-		}else if(count==6){
+		}else if(temp[14]==6){
 			str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
 		}
 	}
