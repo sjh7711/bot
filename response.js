@@ -2358,7 +2358,7 @@ function lotto(r) {
 function flottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
-	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum-1])[0].map(v=>v/10000);
+	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum-1])[0];
 	var win = raw.select('p').get(1).text().split(" ").slice();
 	var bonus = raw.select('p').get(2).text();
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
@@ -2427,6 +2427,7 @@ function flottocheck(r) {
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%'+es+'\n\n';
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
+	money = money.map(v=> Math.floor(v/100000000) > 0 ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' :  Math.floor(v/10000%10000)+'만 '+v%10000+'원' );
 	result+='저번주 당첨금\n1등 : '+money[1]+'만원\n2등 : '+money[2]+'만원\n3등 : '+money[3]+'만원\n4등 : 5만원\n5등 : 5천원\n\n';
 	result+='1등 개수 : '+first+'\n'+str1+'\n'+
 	'2등 개수 : '+second+'\n'+str2+'\n'+
