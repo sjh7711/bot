@@ -2205,7 +2205,7 @@ function allbestlotto(r) {
 		'2등 개수 : '+two+'\n'+str2+'\n'+
 		'3등 개수 : '+three+'\n'+str3+'\n'+
 		'4등 개수 : '+four+'\n'+str4+'\n'+
-		'5등 개수 : '+five+'\n'+
+		'5등 개수 : '+five+'\n\n'+
 		'꽝 개수 : '+Number(all-(one+two+three+four+five))+'\n';
 	}
 	if (result.length > 100000){
@@ -2233,7 +2233,7 @@ function bestlotto(r) {
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n";
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
-	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%'+es+"\n\n";
+	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%       '+es+"\n\n";
 	
 	var str1 ='\n';
 	var str2 ='\n';
@@ -2365,15 +2365,15 @@ function flottocheck(r) {
 	var lottodata = D.selectForArray('lotto',null,'num=? and sender=? and room=?', [lastnum, r.sender, r.room]);
 	var failcount=0;
 	var str1='\n';
-	var first = 0;
+	var one = 0;
 	var str2='\n';
-	var second = 0;
+	var two = 0;
 	var str3='\n';
-	var third = 0;
+	var three = 0;
 	var str4='\n';
-	var fourth = 0;
+	var four = 0;
 	var str5='\n';
-	var fifth = 0;
+	var five = 0;
 	for(var i=0;i<lottodata.length;i++){
 		var count = 0;
 		for(var j=0;j<6;j++){
@@ -2396,19 +2396,19 @@ function flottocheck(r) {
 			failcount += 1;
 		}else if(count==3){
 			str5+= lottodata[i].slice(2,5).join(' ')+' '+lottodata[i].slice(5,7).join(':')+' | '+lottodata[i].slice(8,14).join(' ')+'\n';
-			fifth += 1;
+			five += 1;
 		}else if(count==4){
 			str4+= lottodata[i].slice(2,5).join(' ')+' '+lottodata[i].slice(5,7).join(':')+' | '+lottodata[i].slice(8,14).join(' ')+'\n';
-			fourth += 1;
+			four += 1;
 		}else if(count==5){
 			str3+= lottodata[i].slice(2,5).join(' ')+' '+lottodata[i].slice(5,7).join(':')+' | '+lottodata[i].slice(8,14).join(' ')+'\n';
-			third += 1;
+			three += 1;
 		}else if(count==7){
 			str2+= lottodata[i].slice(2,5).join(' ')+' '+lottodata[i].slice(5,7).join(':')+' | '+lottodata[i].slice(8,14).join(' ')+'\n';
-			second += 1;
+			two += 1;
 		}else if(count==6){
 			str1+= lottodata[i].slice(2,5).join(' ')+' '+lottodata[i].slice(5,7).join(':')+' | '+lottodata[i].slice(8,14).join(' ')+'\n';
-			first += 1;
+			one += 1;
 		}
 	}
 	
@@ -2418,26 +2418,26 @@ function flottocheck(r) {
 		return;
 	}
 	var result = '';
-	var getmoney = Number(fifth*5000+fourth*50000+third*money[3]+second*money[2]+first*money[1]);
+	var getmoney = Number(five*5000+four*50000+three*money[3]+two*money[2]+one*money[1]);
 	
 	var v = Number(one*money1[1]+two*money1[2]+three*money1[3]+four*50000+five*5000);
 	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 
-	result+='1등 확률 : '+Math.floor(first/all*100000000000)/1000000000+"%("+first+")"+"\n";
-	result+='2등 확률 : '+Math.floor(second/all*100000000000)/1000000000+"%("+second+")"+"\n";
-	result+='3등 확률 : '+Math.floor(third/all*100000000000)/1000000000+"%("+third+")"+"\n";
-	result+='4등 확률 : '+Math.floor(fourth/all*100000000000)/1000000000+"%("+fourth+")"+"\n";
-	result+='5등 확률 : '+Math.floor(fifth/all*100000000000)/1000000000+"%("+fifth+")"+'\n\n';
+	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
+	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
+	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
+	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+'\n\n';
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney1 +'\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%'+es+'\n\n';
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
 	money = money.map(v=> Math.floor(v/100000000) > 0 ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' :  Math.floor(v/10000%10000)+'만 '+v%10000+'원' );
 	result+='저번주 당첨금\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n\n';
-	result+='1등 개수 : '+first+'\n'+str1+'\n'+
-	'2등 개수 : '+second+'\n'+str2+'\n'+
-	'3등 개수 : '+third+'\n'+str3+'\n'+
-	'4등 개수 : '+fourth+'\n'+str4+'\n'+
-	'5등 개수 : '+fifth+'\n'+str5+'\n'+
+	result+='1등 개수 : '+one+'\n'+str1+'\n'+
+	'2등 개수 : '+two+'\n'+str2+'\n'+
+	'3등 개수 : '+three+'\n'+str3+'\n'+
+	'4등 개수 : '+four+'\n'+str4+'\n'+
+	'5등 개수 : '+five+'\n'+str5+'\n'+
 	'꽝 개수 : '+failcount+'\n';
 	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result);
 }
@@ -2526,7 +2526,7 @@ function lottocheck(r) {
 
 		var result=date+" "+lastnum+"회 | 뽑은 개수 : "+temp.length+"\n당첨번호 : "+win.join(' ')+"/"+bonus+ "\n";
 		var money = money1.map(v=> Math.floor(v/100000000) > 0 ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' :  Math.floor(v/10000%10000)+'만 '+v%10000+'원' );
-		result += '쓴돈 :' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n';
+		result += '쓴돈 : ' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n';
 		
 		var first = '';
 		var second = '';
