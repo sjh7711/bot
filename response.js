@@ -2167,12 +2167,12 @@ function allbestlotto(r) {
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
 	var temp = D.selectForArray('lotto', null, 'count > 3 ', null , {orderBy:"class asc"});
-	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num]);
-	var five = D.selectForArray('lotto', "count(*)", 'count == 3');
-	var four = D.selectForArray('lotto', "count(*)", 'count == 4 ');
-	var three = D.selectForArray('lotto', "count(*)", 'count == 5 ');
-	var two = D.selectForArray('lotto', "count(*)", 'count == 7 ');
-	var one = D.selectForArray('lotto', "count(*)", 'count == 6');
+	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num])[0][0];
+	var five = D.selectForArray('lotto', "count(*)", 'count == 3')[0][0];
+	var four = D.selectForArray('lotto', "count(*)", 'count == 4 ')[0][0];
+	var three = D.selectForArray('lotto', "count(*)", 'count == 5 ')[0][0];
+	var two = D.selectForArray('lotto', "count(*)", 'count == 7 ')[0][0];
+	var one = D.selectForArray('lotto', "count(*)", 'count == 6')[0][0];
 	var getmoney = Number(five*5000+four*50000+three*1400000+two*65000000+one*2200000000);
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
@@ -2219,12 +2219,12 @@ function bestlotto(r) {
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
 	var temp = D.selectForArray('lotto', null, 'count > 3 and room = ? ',  [r.room] , {orderBy:"class asc"});
-	var all = D.selectForArray('lotto', "count(*)" , ' num < ? and room = ? ',  [num , r.room]);
-	var five = D.selectForArray('lotto', "count(*)", 'count == 3 and room = ? ',  [r.room]);
-	var four = D.selectForArray('lotto', "count(*)", 'count == 4 and room = ? ',  [r.room]);
-	var three = D.selectForArray('lotto', "count(*)", 'count == 5 and room = ? ',  [r.room]);
-	var two = D.selectForArray('lotto', "count(*)", 'count == 7 and room = ? ',  [r.room]);
-	var one = D.selectForArray('lotto', "count(*)", 'count == 6 and room = ? ',  [r.room]);
+	var all = D.selectForArray('lotto', "count(*)" , ' num < ? and room = ? ',  [num , r.room])[0][0];
+	var five = D.selectForArray('lotto', "count(*)", 'count == 3 and room = ? ',  [r.room])[0][0];
+	var four = D.selectForArray('lotto', "count(*)", 'count == 4 and room = ? ',  [r.room])[0][0];
+	var three = D.selectForArray('lotto', "count(*)", 'count == 5 and room = ? ',  [r.room])[0][0];
+	var two = D.selectForArray('lotto', "count(*)", 'count == 7 and room = ? ',  [r.room])[0][0];
+	var one = D.selectForArray('lotto', "count(*)", 'count == 6 and room = ? ',  [r.room])[0][0];
 	var getmoney = Number(five*5000+four*50000+three*1400000+two*65000000+one*2200000000);
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
@@ -2446,7 +2446,7 @@ function lottocheck(r) {
 		var bonus = raw.select('p').get(2).text();
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 
-		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum]);
+		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
 		if(temp == 0 ){
 			var money = doc.select('tbody>tr').toArray().map(v=>v.select('td.tar').get(1).text());
@@ -2501,13 +2501,13 @@ function lottocheck(r) {
 		var fifth = '';
 		
 		if( r.msg == "!당첨"){
-			if ( D.selectForArray('lotto',"count(*)",'room=? and num=?', [r.room, lastnum]) == 0 ){
+			if ( D.selectForArray('lotto',"count(*)",'room=? and num=?', [r.room, lastnum])[0][0] == 0 ){
 				r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 				return;
 			}
 			var temp = D.selectForArray('lotto',null,'room=? and num=?', [r.room, lastnum]);
 		} else if ( r.msg.substr(4).length > 0){
-			if ( D.selectForArray('lotto',"count(*)",'room=? and sender=?', [r.room , r.msg.substr(4)]) == 0 ){
+			if ( D.selectForArray('lotto',"count(*)",'room=? and sender=?', [r.room , r.msg.substr(4)])[0][0] == 0 ){
 				r.replier.reply(result+r.msg.substr(4)+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
 				return;
 			}
