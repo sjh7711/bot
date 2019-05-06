@@ -1378,17 +1378,20 @@ function checkstatus(r){
 function weather(r){
 	I.register("weatherSelect"+r.sender,r.room,r.sender,function(input){
 		try{
+			r.replier.reply(1);
 			var want = r.msg.substr(4);
 			var link1 = ""; // 날씨 검색화면
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "통영시 무전동";
 			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'|| r.room == '시립대 단톡방'){
+				r.replier.reply(2);
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=09230104';
 				check = link2.indexOf('weather');
 				where = "서울시립대";
 			}
 			if(want.length > 0){ //!날씨 ~뒤에 뭔가가 있을 때
+				r.replier.reply(3);
 	        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query="+want+"+날씨").get();
 	    		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
 	    		var	check = link2.indexOf('weather');
@@ -1396,12 +1399,15 @@ function weather(r){
 	    		var temp = org.jsoup.Jsoup.connect("https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=날씨+"+want).get().select('div.sort_box._areaSelectLayer').select('div.select_lst._selectLayerLists').select('a').toArray() //같은 이름의 지역이 있는지 확인
 	    		
 	    		if ( temp.length > 1 || (check == -1 && link2 != 'http://m.weather.naver.com/m/nation.nhn')){ //네이버에 날씨검색이 바로 안될 때 1
+	    			r.replier.reply(4);
 	    			if (temp.length > 1){ //네이버에서 같은 이름의 지역이 2곳 이상일 때 ex) 고성, 광주
+	    				r.replier.reply(5);
 			        	var i=0; //name의 번호에 필요
 			        	var navername = temp.map(v=> (1+i++) +". "+ v.text()+' '); //장소명들
 	    			}
 		        	var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 		        	if(String(temp).indexOf('addressColl') > -1){
+		        		r.replier.reply(6);
 		        		if(String(temp).indexOf('지번주소') > -1){//구체적인주소 죽림5로 56, 중림로 10
 		        			var name0 = temp.select('div.mg_cont.clear').select('dl.dl_comm').select('span.txt_address').select('span.f_l').text();
 		        			var name1 = temp.select('div.mg_cont.clear').select('div.wrap_tit').select('span.f_etit').text();
@@ -1505,6 +1511,7 @@ function weather(r){
 				        	}
 		        		}
 		        	}else{//읍내면 , 북극
+		        		r.replier.reply(7);
 		        		temp=temp.select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 			        	var i = 0;
 			        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
@@ -1538,6 +1545,7 @@ function weather(r){
 			        	}
 		        	}
 				} else if (link2 == 'http://m.weather.naver.com/m/nation.nhn') { // 바로 검색이 안될 때 2 ex) 독도, 죽림리
+					r.replier.reply(8);
 					var temp = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
 					if(String(temp).indexOf('addressColl') > -1){
 						var name = [];
@@ -1578,15 +1586,21 @@ function weather(r){
 							return;
 		        		}
 	        		}
-		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
+		        } else if(link2=="http://m.weather.naver.com"){
+		        	r.replier.reply(link2);
+		        	r.replier.reply(9);//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
+	    			r.replier.reply(link2);
 	    			var msg;
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
 		        	msg=input.getMsg()*1;
-		        	if(!isNaN(msg) && msg >= 1 && msg <= name.length+1){
+		        	r.replier.reply(link2);
+		        	if(!isNaN(msg) && msg >= 1 && msg <= name.length){
+		        		r.replier.reply(link2);
 		        		var targetNum=msg-1;
 		        		var link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
+		        		r.replier.reply(link2);
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
