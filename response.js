@@ -138,15 +138,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
 		
-		if (msg == '!사진' && work == 1){
-			loadimage(r);
-		}
-		
-		if (msg == '!사진조회' && work == 1){
+		if (msg.indexOf("!사진목록") && work == 1){
 			checkimage(r);
 		}
 		
-		if (msg == '!사진삭제' && work == 1){
+		if (msg.indexOf("!사진조회") && work == 1){
+			loadimage(r);
+		}
+		
+		if (msg.indexOf("!사진삭제") == 0 && work == 1){
 			deleteimage(r);
 		}
 		
