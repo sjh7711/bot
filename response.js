@@ -150,7 +150,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			deleteimage(r);
 		}
 		
-		if (msg == '!로딩' && work == 1){
+		if (msg == '!로딩' && work == 1 && reloadcheck ==0 ){
     		reload(r);
     		return;
 	    }
