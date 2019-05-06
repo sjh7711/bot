@@ -1586,18 +1586,18 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		var link0 = link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href");
-		        		link2 = org.jsoup.Jsoup.connect(link0).get().select('div.api_more_wrap').select('a').attr("abs:href");
+		        		link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
 		        }
 			}
 			
+			/*
 			if(link2.indexOf('regionCode')==-1){
 				r.replier.reply("검색이 불가능합니다.");
         		return;
-			}
+			}*/
 
 			
 			if(check > 0){
