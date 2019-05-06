@@ -2420,7 +2420,7 @@ function flottocheck(r) {
 	var result = '';
 	var getmoney = Number(five*5000+four*50000+three*money[3]+two*money[2]+one*money[1]);
 	
-	var v = Number(one*money1[1]+two*money1[2]+three*money1[3]+four*50000+five*5000);
+	var v = getmoney;
 	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
