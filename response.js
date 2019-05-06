@@ -2529,7 +2529,7 @@ function lottocheck(r) {
 		
 		if( r.msg == "!당첨"){
 			if ( D.selectForArray('lotto',"count(*)",'room=? and num=?', [r.room, lastnum])[0][0] == 0 ){
-				r.replier.reply(result+'저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
+				r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 				return;
 			}
 			var temp = D.selectForArray('lotto',null,'room=? and num=?', [r.room, lastnum]);
@@ -2541,7 +2541,7 @@ function lottocheck(r) {
 			var one = D.selectForArray('lotto', "count(*)", 'num = ? and count = 6 and room = ? ',  [lastnum , r.room])[0][0];
 		} else if ( r.msg.substr(4).length > 0){
 			if ( D.selectForArray('lotto',"count(*)",'room=? and sender=?', [r.room , r.msg.substr(4)])[0][0] == 0 ){
-				r.replier.reply(result+r.msg.substr(4)+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
+				r.replier.reply(r.msg.substr(4)+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
 				return;
 			}
 			var temp = D.selectForArray('lotto',null,'room=? and num and sender=?', [r.room , lastnum, r.msg.substr(4)]);
