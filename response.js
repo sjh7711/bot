@@ -2459,7 +2459,7 @@ function flottocheck(r) {
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+'\n\n';
+	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+'\n';
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney1 +'\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%     '+es+'\n\n';
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
