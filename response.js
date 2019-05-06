@@ -112,6 +112,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if (sender != "시립봇") {
 			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 		}
+		
+		if (msg == "사진을 보냈습니다."){
+			saveImage(r);
+		}
 	
 		if( msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('\uc885\ud654') > -1 ){
 			Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
@@ -2759,6 +2763,29 @@ function compare(a, b) {
     return a - b;
 }
 
+function write64(file,base64) {
+	   var base64Array=new java.lang.String(base64).getBytes();
+	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
+	   var is=new java.io.ByteArrayInputStream(fileArray);
+	   var os=new java.io.FileOutputStream(file);
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	}
+
+function saveImage(r) {
+    if (r.imageDB.getImage()) {
+        var i = String(r.imageDB.getImage());
+        var file = 'storage/emulated/0/KakaoTalkDownload/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
+    	write64(file, i);
+    	Api.replyRoom('test', 'Image saved|'+r.room+'-'+r.sender);
+    }
+}
+
 
 own=function(obj){
 	return Object.getOwnPropertyNames(obj);
@@ -2933,21 +2960,6 @@ function read64(file) {
 	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
 	   return str;
 	}
-	
-function write64(file,base64) {
-	   var base64Array=new java.lang.String(base64).getBytes();
-	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
-	   var is=new java.io.ByteArrayInputStream(fileArray);
-	   var os=new java.io.FileOutputStream(file);
-	   var len=0;
-	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
-	   while((len=is.read(buf))!=-1){
-	      os.write(buf,0,len);
-	   }
-	   is.close();
-	   os.close();
-	}
-	
 
 function calculator(r){
 	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
