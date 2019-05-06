@@ -135,7 +135,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
 		
-		if ( msg.indexOf("!날씨") == 0 && work == 1 && room == '시립대 봇제작방') {
+		if ( msg.indexOf("!날씨") == 0 && work == 1) {
         	weather(r);
         	return;
         }
