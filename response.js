@@ -2534,7 +2534,7 @@ function lottocheck(r) {
 
 		var result=date+" "+lastnum+"회 | 뽑은 개수 : "+temp.length+"\n당첨번호 : "+win.join(' ')+"/"+bonus+ "\n";
 		var money = money1.map(v=> Math.floor(v/100000000) > 0 ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' :  Math.floor(v/10000%10000)+'만 '+v%10000+'원' );
-		result += '쓴돈 : ' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n회수율 : '+ v/all/10 + '%\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n';
+		result += '\n쓴돈 : ' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n회수율 : '+ Math.floor(v/all*100)/1000 + '%\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n';
 		
 		var first = '';
 		var second = '';
