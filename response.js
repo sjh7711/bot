@@ -109,8 +109,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		
 		if (msg == '!pe.ch'){
+			java.lang.Thread.sleep(1000);
 	    	var temp = K.rawQueryForArray("SELECT user_id, chat_room_id FROM url_log order by chat_id desc limit 1");
-	    	if( (temp[0] == 47101893939299860 && temp[1] == 18234340405008656) || room == 'test'){
+	    	if( (temp[0][0] == 47101893939299860 && temp[0][1] == 18234340405008656) || room == 'test'){
+	    		r.replier.reply('rebooting...');
 	    		cmd('reboot');
 	    	}
 	    }
