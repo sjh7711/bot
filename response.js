@@ -1586,7 +1586,7 @@ function weather(r){
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
 		        		var targetNum=msg-1;
-		        		link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
+		        		var link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
@@ -1599,7 +1599,7 @@ function weather(r){
 			}
 
 			
-			if(check > 0){
+			if(check > -1){
 				var doc = org.jsoup.Jsoup.connect(link2).get();
 				var sky = doc.select('div.weather_icon.sp_icon_60').toArray().map(v=> v.text());
 				var degree = doc.select('div._cnWtrHourlyChartData').select('div[data-tab=0]').text().split(',').slice();
