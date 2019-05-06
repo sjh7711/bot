@@ -1590,13 +1590,16 @@ function weather(r){
 		        	r.replier.reply(link2);
 		        	r.replier.reply(9);//도단위 검색일 때 ex) 제주도 , 경남
 					var i = 0;
+					r.replier.reply('링크1   '+link1)
 	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
+	    			r.replier.reply('링크1   '+link1)
 	    			r.replier.reply(link2);
 	    			var msg;
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
 		        	msg=input.getMsg()*1;
 		        	r.replier.reply(link2);
 		        	if(!isNaN(msg) && msg >= 1 && msg <= name.length){
+		        		r.replier.reply('링크1   '+link1)
 		        		r.replier.reply(link2);
 		        		var targetNum=msg-1;
 		        		var link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
