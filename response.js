@@ -1584,7 +1584,7 @@ function weather(r){
 	    			var msg;
 	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
 		        	msg=input.getMsg()*1;
-		        	if(!isNaN(msg) && msg>=1 && msg<=name.length){
+		        	if(!isNaN(msg) && msg >= 1 && msg <= name.length+1){
 		        		var targetNum=msg-1;
 		        		var link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
 		        		check = link2.indexOf('weather');
