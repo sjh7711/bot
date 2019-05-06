@@ -2527,7 +2527,6 @@ function lottocheck(r) {
 		var result=date+" "+lastnum+"회 | 뽑은 개수 : "+temp.length+"\n당첨번호 : "+win.join(' ')+"/"+bonus+ "\n";
 		var money = money1.map(v=> Math.floor(v/100000000) > 0 ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' :  Math.floor(v/10000%10000)+'만 '+v%10000+'원' );
 		result += '쓴돈 :' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n';
-		var fail = '';
 		
 		var first = '';
 		var second = '';
@@ -2536,9 +2535,7 @@ function lottocheck(r) {
 		var fifth = '';
 		
 		for(var i=0; i<temp.length; i++){
-			if( temp[i][14] < 3){
-				fail+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
-			} else if (temp[i][14] == 3) {
+			if (temp[i][14] == 3) {
 				fifth+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} else if (temp[i][14] == 4) {
 				fourth+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
@@ -2550,12 +2547,9 @@ function lottocheck(r) {
 				second+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
-		result += '\n'+es+'\n1등('+one+')\n'+first+'\n2등('+two+')\n'+second+'\n3등('+three+')\n'+third+'\n4등('+four+')\n'+fourth+'\n5등('+five+')\n'+fifth;
-		if(fail.length > 50000){
-			r.replier.reply(result);
-		} else {
-			r.replier.reply(result+'\n꽝\n'+fail);
-		}
+		result += '\n'+es+'\n1등('+one+')\n'+first+'\n2등('+two+')\n'+second+'\n3등('+three+')\n'+third+'\n4등('+four+')\n'+fourth+'\n5등('+five+')\n'+fifth+'\n꽝('+Number(all-(one+two+three+four+five))+")\n";
+		
+		r.replier.reply(result);
 		
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
