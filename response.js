@@ -2166,7 +2166,7 @@ function allbestlotto(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 2 ', null , {orderBy:"class asc"});
+	var temp = D.selectForArray('lotto', null, 'count > 3 ', null , {orderBy:"class asc"});
 	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num]);
 	var five = D.selectForArray('lotto', "count(*)", 'count == 3');
 	var four = D.selectForArray('lotto', "count(*)", 'count == 4 ');
@@ -2183,11 +2183,30 @@ function allbestlotto(r) {
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%';
 	
+	var str1 ='\n';
+	var str2 ='\n';
+	var str3 ='\n';
+	var str4 ='\n';
+	
 	if ( r.room == 'test'){
 		result += "\n"+es+"\n";
 		for(var i=0; i<temp.length; i++){
-			result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+			if(count==4){
+				str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}else if(count==5){
+				str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}else if(count==7){
+				str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}else if(count==6){
+				str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}
 		}
+		result += '1등 개수 : '+one+'\n'+str1+'\n'+
+		'2등 개수 : '+two+'\n'+str2+'\n'+
+		'3등 개수 : '+three+'\n'+str3+'\n'+
+		'4등 개수 : '+four+'\n'+str4+'\n'+
+		'5등 개수 : '+five+'\n'+
+		'꽝 개수 : '+all-(one+two+three+four+five)+'\n';
 	}
 	if (result.length > 100000){
 		result = result.substr(0,100000);
@@ -2199,7 +2218,7 @@ function bestlotto(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 2 and room = ? ',  [r.room] , {orderBy:"class asc"});
+	var temp = D.selectForArray('lotto', null, 'count > 3 and room = ? ',  [r.room] , {orderBy:"class asc"});
 	var all = D.selectForArray('lotto', "count(*)" , ' num < ? and room = ? ',  [num , r.room]);
 	var five = D.selectForArray('lotto', "count(*)", 'count == 3 and room = ? ',  [r.room]);
 	var four = D.selectForArray('lotto', "count(*)", 'count == 4 and room = ? ',  [r.room]);
@@ -2216,9 +2235,29 @@ function bestlotto(r) {
 	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%'+es+"\n\n";
 	
+	var str1 ='\n';
+	var str2 ='\n';
+	var str3 ='\n';
+	var str4 ='\n';
+	
 	for(var i=0; i<temp.length; i++){
-		result+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+ ' '+temp[i][7] + "회차\n\n";
+		if(count==4){
+			str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+		}else if(count==5){
+			str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+		}else if(count==7){
+			str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+		}else if(count==6){
+			str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+		}
 	}
+	result += '1등 개수 : '+one+'\n'+str1+'\n'+
+	'2등 개수 : '+two+'\n'+str2+'\n'+
+	'3등 개수 : '+three+'\n'+str3+'\n'+
+	'4등 개수 : '+four+'\n'+str4+'\n'+
+	'5등 개수 : '+five+'\n'+
+	'꽝 개수 : '+all-(one+two+three+four+five)+'\n';
+	
 	if (result.length > 20000){
 		result = result.substr(0,20000);
 	}
@@ -2389,15 +2428,13 @@ function flottocheck(r) {
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%\n\n'+es;
 	result+='저번주 당첨 번호\n'+win.join(' ')+' / '+bonus+'\n\n';
 	result+='저번주 당첨금\n1등 : '+money[1]+'원\n2등 : '+money[2]+'원\n3등 : '+money[3]+'원\n4등 : 50000원\n5등 : 5000원\n\n';
-	
-	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result+
-			'1등 개수 : '+first+'\n'+str1+'\n'+
-			'2등 개수 : '+second+'\n'+str2+'\n'+
-			'3등 개수 : '+third+'\n'+str3+'\n'+
-			'4등 개수 : '+fourth+'\n'+str4+'\n'+
-			'5등 개수 : '+fifth+'\n'+str5+'\n'+
-			'꽝 개수 : '+failcount+'\n'
-			);
+	result+='1등 개수 : '+first+'\n'+str1+'\n'+
+	'2등 개수 : '+second+'\n'+str2+'\n'+
+	'3등 개수 : '+third+'\n'+str3+'\n'+
+	'4등 개수 : '+fourth+'\n'+str4+'\n'+
+	'5등 개수 : '+fifth+'\n'+str5+'\n'+
+	'꽝 개수 : '+failcount+'\n';
+	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result);
 }
 
 function lottocheck(r) {
