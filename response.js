@@ -2184,12 +2184,12 @@ function allbestlotto(r) {
 	var getmoney = 0;
 	for(var i = D.selectForArray('lottomoney')[0][0]; i < D.selectForArray('lottomoney')[0][0]+D.selectForArray('lottomoney', "count(*)")[0][0] ; i++ ){
 		var money = D.selectForArray('lottomoney', null, 'num = ?', [i])[0];
-		var five = D.selectForArray('lotto', "count(*)", 'count = 3 and num =?',  [i])[0][0];
-		var four = D.selectForArray('lotto', "count(*)", 'count = 4 and num =?',  [i])[0][0];
-		var three = D.selectForArray('lotto', "count(*)", 'count = 5 and num =?',  [i])[0][0];
-		var two = D.selectForArray('lotto', "count(*)", 'count = 7 and num =?',  [i])[0][0];
-		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and num =?',  [i])[0][0];
-		getmoney += one*money[1]+two*money[2]+three*money[3]+four*money[4]+five*money[5];
+		var five1 = D.selectForArray('lotto', "count(*)", 'count = 3 and num =?',  [i])[0][0];
+		var four1 = D.selectForArray('lotto', "count(*)", 'count = 4 and num =?',  [i])[0][0];
+		var three1 = D.selectForArray('lotto', "count(*)", 'count = 5 and num =?',  [i])[0][0];
+		var two1 = D.selectForArray('lotto', "count(*)", 'count = 7 and num =?',  [i])[0][0];
+		var one1 = D.selectForArray('lotto', "count(*)", 'count = 6 and num =?',  [i])[0][0];
+		getmoney += one1*money[1]+two1*money[2]+three1*money[3]+four1*money[4]+five1*money[5];
 	}
 	
 	var v = getmoney;
@@ -2249,12 +2249,12 @@ function bestlotto(r) {
 	var getmoney = 0;
 	for(var i = D.selectForArray('lottomoney')[0][0]; i < D.selectForArray('lottomoney')[0][0]+D.selectForArray('lottomoney', "count(*)")[0][0] ; i++ ){
 		var money = D.selectForArray('lottomoney', null, 'num = ?', [i])[0];
-		var five = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? and num =?',  [r.room, i])[0][0];
-		var four = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ?  and num =?',  [r.room, i])[0][0];
-		var three = D.selectForArray('lotto', "count(*)", 'count = 5 and room = ?  and num =?',  [r.room, i])[0][0];
-		var two = D.selectForArray('lotto', "count(*)", 'count = 7 and room = ?  and num =?',  [r.room, i])[0][0];
-		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ?  and num =?',  [r.room, i])[0][0];
-		getmoney += one*money[1]+two*money[2]+three*money[3]+four*money[4]+five*money[5];
+		var five1 = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? and num =?',  [r.room, i])[0][0];
+		var four1 = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ?  and num =?',  [r.room, i])[0][0];
+		var three1 = D.selectForArray('lotto', "count(*)", 'count = 5 and room = ?  and num =?',  [r.room, i])[0][0];
+		var two1 = D.selectForArray('lotto', "count(*)", 'count = 7 and room = ?  and num =?',  [r.room, i])[0][0];
+		var one1 = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ?  and num =?',  [r.room, i])[0][0];
+		getmoney += one1*money[1]+two1*money[2]+three1*money[3]+four1*money[4]+five1*money[5];
 	}
 	var v = getmoney;
 	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
