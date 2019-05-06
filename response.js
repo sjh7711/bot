@@ -107,17 +107,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	} 
 	
 	try {
-		
-		if (msg == '!로딩' && work == 1){
-    		reload(r);
-    		return;
-	    }
-		
-		if (msg == '!리부트' && work == 1){
-			replier.reply('Rebooting...');
-			cmd('reboot');
-	    }
-		
 		blankFunc1(r);
 		
 		if (sender != "시립봇") {
@@ -144,6 +133,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if(funcc != -1){
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
+		
+		if (msg == '!로딩' && work == 1){
+    		reload(r);
+    		return;
+	    }
+		
+		if (msg == '!리부트' && work == 1){
+			replier.reply('Rebooting...');
+			cmd('reboot');
+	    }
 		
 		if ( msg.indexOf("!날씨") == 0 && work == 1) {
         	weather(r);
