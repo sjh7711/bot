@@ -2183,12 +2183,12 @@ function allbestlotto(r) {
 	var one = D.selectForArray('lotto', "count(*)", 'count = 6')[0][0];
 	var getmoney = 0;
 	for(var i = D.selectForArray('lottomoney')[0][0]; i < D.selectForArray('lottomoney')[0][0]+D.selectForArray('lottomoney', "count(*)")[0][0] ; i++ ){
-		var money = D.selectForArray('lottomoney', null, 'num = ?', [num])[0];
-		var five = D.selectForArray('lotto', "count(*)", 'count = 3 and num =?',  [num])[0][0];
-		var four = D.selectForArray('lotto', "count(*)", 'count = 4 and num =?',  [num])[0][0];
-		var three = D.selectForArray('lotto', "count(*)", 'count = 5 and num =?',  [num])[0][0];
-		var two = D.selectForArray('lotto', "count(*)", 'count = 7 and num =?',  [num])[0][0];
-		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and num =?',  [num])[0][0];
+		var money = D.selectForArray('lottomoney', null, 'num = ?', [i])[0];
+		var five = D.selectForArray('lotto', "count(*)", 'count = 3 and num =?',  [i])[0][0];
+		var four = D.selectForArray('lotto', "count(*)", 'count = 4 and num =?',  [i])[0][0];
+		var three = D.selectForArray('lotto', "count(*)", 'count = 5 and num =?',  [i])[0][0];
+		var two = D.selectForArray('lotto', "count(*)", 'count = 7 and num =?',  [i])[0][0];
+		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and num =?',  [i])[0][0];
 		getmoney += one*money[1]+two*money[2]+three*money[3]+four*money[4]+five*money[5];
 	}
 	result+='로또 뽑은 횟수 : '+all+'\n';
@@ -2244,12 +2244,12 @@ function bestlotto(r) {
 	var one = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ? ',  [r.room])[0][0];
 	var getmoney = 0;
 	for(var i = D.selectForArray('lottomoney')[0][0]; i < D.selectForArray('lottomoney')[0][0]+D.selectForArray('lottomoney', "count(*)")[0][0] ; i++ ){
-		var money = D.selectForArray('lottomoney', null, 'num = ?', [num])[0];
-		var five = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? and num =?',  [r.room, num])[0][0];
-		var four = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ?  and num =?',  [r.room, num])[0][0];
-		var three = D.selectForArray('lotto', "count(*)", 'count = 5 and room = ?  and num =?',  [r.room, num])[0][0];
-		var two = D.selectForArray('lotto', "count(*)", 'count = 7 and room = ?  and num =?',  [r.room, num])[0][0];
-		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ?  and num =?',  [r.room, num])[0][0];
+		var money = D.selectForArray('lottomoney', null, 'num = ?', [i])[0];
+		var five = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? and num =?',  [r.room, i])[0][0];
+		var four = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ?  and num =?',  [r.room, i])[0][0];
+		var three = D.selectForArray('lotto', "count(*)", 'count = 5 and room = ?  and num =?',  [r.room, i])[0][0];
+		var two = D.selectForArray('lotto', "count(*)", 'count = 7 and room = ?  and num =?',  [r.room, i])[0][0];
+		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ?  and num =?',  [r.room, i])[0][0];
 		getmoney += one*money[1]+two*money[2]+three*money[3]+four*money[4]+five*money[5];
 	}
 	result+='로또 뽑은 횟수 : '+all+'\n';
@@ -2552,7 +2552,7 @@ function lottocheck(r) {
 
 		var result=date+" "+lastnum+"회 | 뽑은 개수 : "+temp.length+"\n당첨번호 : "+win.join(' ')+"/"+bonus+ "\n";
 		var money = money1.map(v=> Math.floor(v/100000000) > 0 ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' :  Math.floor(v/10000%10000)+'만 '+v%10000+'원' );
-		result += '\n쓴돈 : ' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n회수율 : '+ Math.floor(v/all*100)/1000 + '%\n1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원      ';
+		result += '1등 : '+money[1]+'\n2등 : '+money[2]+'\n3등 : '+money[3]+'\n4등 : 5만원\n5등 : 5천원\n쓴돈 : ' + all/10 + '만원 | 당첨금 : '+ getmoney  +'\n회수율 : '+ Math.floor(v/all*100)/1000 + '%      ';
 		
 		var first = '';
 		var second = '';
