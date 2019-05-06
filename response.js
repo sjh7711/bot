@@ -2191,13 +2191,17 @@ function allbestlotto(r) {
 		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and num =?',  [i])[0][0];
 		getmoney += one*money[1]+two*money[2]+three*money[3]+four*money[4]+five*money[5];
 	}
+	
+	var v = getmoney;
+	var getmoney = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
+	
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n"
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
-	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
+	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney +'\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%    ';
 	
 	var str1 ='\n';
@@ -2252,13 +2256,15 @@ function bestlotto(r) {
 		var one = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ?  and num =?',  [r.room, i])[0][0];
 		getmoney += one*money[1]+two*money[2]+three*money[3]+four*money[4]+five*money[5];
 	}
+	var v = getmoney;
+	var getmoney = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 	result+='로또 뽑은 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
 	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
 	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
 	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n";
 	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
-	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney/10000 +'만원\n';
+	result+='쓴돈 : '+ all/10 + '만원 | 당첨금 : '+ getmoney +'\n';
 	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%       '+es+"\n\n";
 	
 	var str1 ='\n';
