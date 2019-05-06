@@ -108,7 +108,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	try {
 		
-		if (msg == '!로딩' %% work == 1){
+		if (msg == '!로딩' && work == 1){
     		reload(r);
     		return;
 	    }
