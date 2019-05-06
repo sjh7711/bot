@@ -138,11 +138,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
 		
-		if (msg.indexOf("!사진조회") && work == 1){
+		if (msg.indexOf("!사진조회") == 0 && work == 1){
 			loadimage(r);
 		}
 		
-		if (msg.indexOf("!사진목록") && work == 1){
+		if (msg.indexOf("!사진목록") == 0 && work == 1){
 			checkimage(r);
 		}
 		
@@ -2789,7 +2789,7 @@ function checkimage(r){
 	}
 	Flag.set('imagelist', r.room, temp);
 	var i = 1;
-	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
+	r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(26)).join('\n'));
 }
 
 function deleteimage(r){
