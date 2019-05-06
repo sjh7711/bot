@@ -138,12 +138,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
 		
-		if (msg.indexOf("!사진목록") && work == 1){
-			checkimage(r);
-		}
-		
 		if (msg.indexOf("!사진조회") && work == 1){
 			loadimage(r);
+		}
+		
+		if (msg.indexOf("!사진목록") && work == 1){
+			checkimage(r);
 		}
 		
 		if (msg.indexOf("!사진삭제") == 0 && work == 1){
@@ -2819,7 +2819,7 @@ function loadimage(r){
 		}
 		Flag.set('imagelist', r.room, temp);
 		var i = 1;
-		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(12)).join('\n'));
+		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(26)).join('\n'));
 		Flag.set('image', r.room, 1);
 	} else if ( Flag.get('image', r.room)== 1){
 		if(!isNaN(r.msg)){
