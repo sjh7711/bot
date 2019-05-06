@@ -1505,17 +1505,17 @@ function weather(r){
 				        	}
 		        		}
 		        	}else{//읍내면 , 북극
-		        		temp=temp.select('div.wrap_place').select('div.wrap_cont').toArray().map(v=>v+' '); // 다음에서 해당하는 곳의 주소를 가져옴
+		        		temp=temp.select('div.wrap_place').select('div.wrap_cont').toArray(); // 다음에서 해당하는 곳의 주소를 가져옴
 			        	var i = 0;
 			        	var name = temp.map(v=>(1+i++)+". "+v.select('a').first().text().replace(' 펼치기/접기',''));// want로 daum에 검색한 곳들의 이름들
 			        	if(name.length == 0){
 			        		r.replier.reply("검색이 불가능합니다.");
 			        		return;
 			        	}
-			        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("면 ")+1)});
-			        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
-			        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
-			        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text());return vv.substr(0,vv.lastIndexOf("가 ")+1)});
+			        	var loc = temp.map(v=>{vv=String(v.select('dd.cont').text()+' ');return vv.substr(0,vv.lastIndexOf("면 ")+1)});
+			        	var loc1 = temp.map(v=>{vv=String(v.select('dd.cont').text()+' ');return vv.substr(0,vv.lastIndexOf("읍 ")+1)});
+			        	var loc2 = temp.map(v=>{vv=String(v.select('dd.cont').text()+' ');return vv.substr(0,vv.lastIndexOf("동 ")+1)});  //각 이름들의 주소
+			        	var loc3 = temp.map(v=>{vv=String(v.select('dd.cont').text()+' ');return vv.substr(0,vv.lastIndexOf("가 ")+1)});
 			        	var msg;
 			        	r.replier.reply("장소를 선택하세요\n"+name.join("\n"));
 			        	msg=input.getMsg()*1;
