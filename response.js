@@ -2119,6 +2119,8 @@ function mylotto(r){
 }
 
 function bestlotto(r) {
+	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
+	var num = raw.select('h4').text().split('회')[0]*1+1;
 	if(r.msg=='!종합로또통계'){
 		var str = ' and room = ?';
 		var str0 = ' and num = ? and room =? '
@@ -2133,8 +2135,6 @@ function bestlotto(r) {
 		var str3 = [i];
 	}
 	
-	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
 	var temp = D.selectForArray('lotto', null, 'count > 3' + str,  str1 , {orderBy:"class asc"});
 	var all = D.selectForArray('lotto', "count(*)" , ' num < ?'+ str,  str2)[0][0];
