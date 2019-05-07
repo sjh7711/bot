@@ -2006,14 +2006,6 @@ function recentchat(r) {
 		if(temp2 != ''){
 			temp[0]=temp2+"의 채팅"; 
 		}
-		
-		for (var i in tempchat) {
-			temp.push(tempchat[i].join(' | '));
-		}
-		if (tempchat.length > 3){
-			temp[2] += es;
-		}
-		r.replier.reply(temp.join("\n"));
 	} else {
 		var temp = r.msg.substr(5);
 		var temp1 = '';
@@ -2082,15 +2074,14 @@ function recentchat(r) {
 		} else {
 			temp[0]=temp[0]+"\n"; 
 		}
-		
-		for (var i in tempchat) {
-			temp.push(tempchat[i].join(' | '));
-		}
-		if (tempchat.length > 3){
-			temp[3] += es;
-		}
-		r.replier.reply(temp.join("\n"));
 	}
+	for (var i in tempchat) {
+		temp.push(tempchat[i].join(' | '));
+	}
+	if (tempchat.length > 3){
+		temp[3] += es;
+	}
+	r.replier.reply(temp.join("\n"));
 }
 
 //리스트에서 추천하기(1개 or 여러개)
