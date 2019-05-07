@@ -30,14 +30,14 @@ function reload(r) {
 	    bw.write(str.toString());
 	    bw.close();
 	    var time = (new Date() - Timer) / 1000;
-	    r.replier.reply("파일저장 완료 / " + time + "s\n" + new Date() );
+	    Api.replyRoom(r.room ,"파일저장 완료 / " + time + "s\n" + new Date() );
 	    T.interrupt();
 	    Api.reload();
 	    reloadcheck = 0;
 	    control = D.selectForArray('control').map(v=>v[0]);
 	    controlPanel = D.selectForObject('control');
 	    var time = (new Date() - Timer) / 1000;
-	    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
+	    Api.replyRoom(r.room , "reloading 완료 / " + time + "s\n" + new Date());
 	}
 }
 File = java.io.File;
@@ -150,7 +150,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			deleteimage(r);
 		}
 		
-		if (msg == '!로딩' && work == 1 && reloadcheck ==0 ){
+		if (msg == '!로딩' && work == 1){
     		reload(r);
     		return;
 	    }
