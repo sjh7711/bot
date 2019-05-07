@@ -5,8 +5,6 @@ if(ObjKeep.get("reboottime")==null){
 }
 var reloadtime = new Date().getTime();
 var D = require("DBManager.js")("D");
-cmd("chmod -R 777 /data/data/com.kakao.talk/databases");
-var K = require("KBManager.js")("/data/data/com.kakao.talk/databases/KakaoTalk2.db");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
 var control = D.selectForArray('control').map(v=>v[0]);
@@ -30,23 +28,18 @@ function reload(r) {
 	    bw.write(str.toString());
 	    bw.close();
 	    var time = (new Date() - Timer) / 1000;
-	    r.replier.reply("파일저장 완료 / " + time + "s\n" + new Date() );
+	    Api.replyRoom(r.room, "파일저장 완료 / " + time + "s\n" + new Date() );
 	    T.interrupt();
 	    Api.reload();
 	    reloadcheck = 0;
 	    control = D.selectForArray('control').map(v=>v[0]);
 	    controlPanel = D.selectForObject('control');
 	    var time = (new Date() - Timer) / 1000;
-	    r.replier.reply("reloading 완료 / " + time + "s\n" + new Date());
+	    Api.replyRoom(r.room, "reloading 완료 / " + time + "s\n" + new Date());
 	}
 }
 File = java.io.File;
 const es=String.fromCharCode(8237).repeat(500);
-const weiredstring1=String.fromCharCode(8203);//공백
-const weiredstring2=String.fromCharCode(160);//띄워쓰기로
-const weiredstring3=String.fromCharCode(8237);//공백
-const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
-//replace(new RegExp(weiredstring1, "gi"), "")
 Flag=(function(){
 	   var list={};
 	   var Flag={};
@@ -63,25 +56,6 @@ Flag=(function(){
 	})();
 function blankFunc(r){}
 function blankFunc1(r){}
-/*
-]D.execSQL("alter table control add BASEBALL number")
-]D.update("control", {BASEBALL:0})
-]D.selectForString('control')
-]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
-]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
-]D.rawQuery("INSERT INTO chatdb SELECT * FROM cbot")
-]D.execSQL("drop table botpoint")
-]D.insert("cat", {name :"중용", gender : "남", age : 22})
-]D.delete("cat", "name='중용'")
-]D.delete("cat", "name='모모' and age='5'" )
-]D.selectForString("cat", null, "age<4")
-]D.selectForString("cat", "name, gender", "age<4")
-]D.selectForString("cat", ["name", "gender"], "age<4")
-]D.selectForString("cat","count(*)")
-]D.selectForString("cat", null, "name=?",  [a]) //a='모모'
-]D.update("cat", {age : 4} , "name='인문이'")
-]D.create("cat", {name:"모모",gender:"남",age:4})
-*/
 const funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!사진조회', '!사진삭제', '!사진목록', '!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -152,7 +126,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		
 		if (msg == '!로딩' && work == 1 && reloadcheck ==0 ){
     		reload(r);
-    		return;
 	    }
 		
 		if (msg == '!리부트' && work == 1){
@@ -327,7 +300,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	blackjack(r);
         }
         
-        //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------------------------------------------------------
         if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
     		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0, clear : 2});
     	}
@@ -359,8 +332,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['point', 'win', 'lose', 'solowin', 'name'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2) +'. [' +String(v[0]).extension(' ',6)+'P '+String(v[1]).extension(' ',2)+'승 '+ String(v[2]).extension(' ',2)+'패 ' +String(v[3]).extension(' ',3)+'S/P ] ' +String(v[4])).join('\n'));
     		return;
     	}
-    	
-    	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    	//---------------------------------------------------------------------------------------------------------------------------------------------------------
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
@@ -2799,10 +2771,38 @@ String.prototype.extensionRight=function(char,length){
 }
 
 /*
+const weiredstring1=String.fromCharCode(8203);//공백
+const weiredstring2=String.fromCharCode(160);//띄워쓰기로
+const weiredstring3=String.fromCharCode(8237);//공백
+const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
+replace(new RegExp(weiredstring1, "gi"), "")
+
 function calculator(r){
 	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
 	if(temp!=undefined){
 		r.replier.reply(temp);
 	}
 }
+
+cmd("chmod -R 777 /data/data/com.kakao.talk/databases");
+var K = require("KBManager.js")("/data/data/com.kakao.talk/databases/KakaoTalk2.db");
+
+]D.execSQL("alter table control add BASEBALL number")
+]D.update("control", {BASEBALL:0})
+]D.selectForString('control')
+]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
+]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
+]D.rawQuery("INSERT INTO chatdb SELECT * FROM cbot")
+]D.execSQL("drop table botpoint")
+]D.insert("cat", {name :"중용", gender : "남", age : 22})
+]D.delete("cat", "name='중용'")
+]D.delete("cat", "name='모모' and age='5'" )
+]D.selectForString("cat", null, "age<4")
+]D.selectForString("cat", "name, gender", "age<4")
+]D.selectForString("cat", ["name", "gender"], "age<4")
+]D.selectForString("cat","count(*)")
+]D.selectForString("cat", null, "name=?",  [a]) //a='모모'
+]D.update("cat", {age : 4} , "name='인문이'")
+]D.create("cat", {name:"모모",gender:"남",age:4})
+
 */
