@@ -165,7 +165,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
         
-        if (msg == "!로또통계" && work == 1 ){
+        if ((msg == "!로또통계" || msg == "!종합로또통계" )&& work == 1 ){
         	bestlotto(r);
         	return;
     	}
@@ -188,11 +188,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg.indexOf("!당첨") == 0 && work == 1) {
             lottocheck(r);
             return;
-        } 
-        
-        if (msg == "!종합로또통계" && work == 1 ){
-        	allbestlotto(r);
-        	return;
         }
         
         if (msg == "!내로또" && work == 1){
@@ -230,18 +225,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	return;
         }
         
-        if (msg.indexOf("!최근채팅") == 0 && work == 1) {
-        	recentchat(r);
-        	return;
-        }
-        
         if ( msg.indexOf("!전체채팅") == 0 && work == 1 && room != 'test'  && msg.indexOf(',') > 0 && msg.split(',').length == 3 && (msg.split(',')[2] == '시립대 단톡방' || msg.split(',')[2] =='시립대 전전컴 톡방'|| msg.split(',')[2] =='시립대 봇제작방')){
-    		allchat(r);
+    		recentchat(r);
     		return;
     	}
         
-        if (msg.indexOf("!전체채팅") == 0 && work == 1) {
-        	allchat(r);
+        if ( (msg.indexOf("!최근채팅") == 0 || msg.indexOf("!전체채팅") == 0) && work == 1) {
+        	recentchat(r);
         	return;
         }
         
@@ -486,9 +476,9 @@ function translation(r){
 		r.replier.reply('번역할 수 없습니다.');
 		return;
 	}
-	
 	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
 }
+
 function controlReload(r){
 	control = D.selectForArray('control').map(v=>v[0]);
 	controlPanel = D.selectForObject('control');
@@ -1988,150 +1978,144 @@ function sel(r){ //flag[2]==0&&flag[3]==0 -> 초기상태  // flag[2]==1&&flag[3
 //최근채팅
 function recentchat(r) {
 	try{
-		var temp = r.msg.substr(5);
-		var temp1 = '';//개수
-		var temp2 = '';//이름
-		if(temp.length > 0 && temp.indexOf(' ') > -1 && temp.indexOf(' ') <= 2){
-			temp1 = temp.split(' ')[0];
-			temp2 = temp.substr(temp.indexOf(' ')+1);//닉
-		}
-		
-		if(temp1==''){
-			temp1 = 6;
-		}
-		if( 0 < Number(temp) ){
-			temp1 = temp;
-		}
-	    
-	    var list = [r.room];
-	    var list1 = 'room=?';
-	    var list2 = ['time'];
-	    var list3 = 'WHERE room=\''+r.room+'\'';
-	    
-	    if (temp2 == ''){
-	    	list2.push('name');
-	    }
-	    list2.push('msg');
-	    
-	    
-	    if (temp2 != ''){
-	    	list1 += ' and name=?';
-	    	list.push(temp2);
-	    	list3 += ' and name=\'' + temp2 + '\'';
-	    }
-	    
-	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
-	    if(templeng == 0){
-			r.replier.reply("검색된 내용이 없습니다.");
-			return;
-		} else {
-			if ( 0 < temp1 && 17 > temp1){
-				var num = Number(temp1);
+		if(r.msg.indexOf('!최근채팅')==0){
+			var temp = r.msg.substr(5);
+			var temp1 = '';//개수
+			var temp2 = '';//이름
+			if(temp.length > 0 && temp.indexOf(' ') > -1 && temp.indexOf(' ') <= 2){
+				temp1 = temp.split(' ')[0];
+				temp2 = temp.substr(temp.indexOf(' ')+1);//닉
+			}
+			
+			if(temp1==''){
+				temp1 = 6;
+			}
+			if( 0 < Number(temp) ){
+				temp1 = temp;
+			}
+		    
+		    var list = [r.room];
+		    var list1 = 'room=?';
+		    var list2 = ['time'];
+		    var list3 = 'WHERE room=\''+r.room+'\'';
+		    
+		    if (temp2 == ''){
+		    	list2.push('name');
+		    }
+		    list2.push('msg');
+		    
+		    
+		    if (temp2 != ''){
+		    	list1 += ' and name=?';
+		    	list.push(temp2);
+		    	list3 += ' and name=\'' + temp2 + '\'';
+		    }
+		    
+		    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
+		    if(templeng == 0){
+				r.replier.reply("검색된 내용이 없습니다.");
+				return;
 			} else {
-				var num = 6;
-			}
-			if(templeng < num){
-				num = templeng;
-			}
-    	}
-	    
-	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
-		
-	    var temp = [];
-		if(temp2 != ''){
-			temp[0]=temp2+"의 채팅"; 
-		}
-		
-		for (var i in tempchat) {
-			temp.push(tempchat[i].join(' | '));
-		}
-		if (tempchat.length > 3){
-			temp[2] += es;
-		}
-		r.replier.reply(temp.join("\n"));
-	}catch(e){
-		Api.replyRoom('test',e+"\n"+e.stack);
-		}
-}
-
-
-function allchat(r) { 
-	try{
-		var temp = r.msg.substr(5);
-		var temp1 = '';
-		var temp2 = '';
-		var temp3 = '';
-		if(temp.indexOf(',')>-1){
-			var temp1 = temp.split(',')[0]; // 개수
-			var temp2 = temp.split(',')[1]; // 이름
-			var temp3 = temp.split(',')[2]; // 방
-		}
-		if(temp1==''){
-			temp1 = 12;
-		}
-		if(Number(temp)>0){
-			temp1 = temp;
-		}
-	    
-	    var list = [];
-	    var list1 = '';
-	    var list2 = ['time'];
-	    var list3 = '';
-	    if (temp2 == ''){
-	    	list2.push('name');
-	    }
-	    if (temp3 == ''){
-	    	list2.push('room');
-	    }
-	    list2.push('msg');
-	    
-	    if (temp2 != ''){
-	    	list1 += 'name=? ';
-	    	list.push(temp2);
-	    	list3 += 'WHERE name=\'' + temp2 + '\'';
-	    }
-	    if (temp3 != ''){
-	    	if(list1 != ''){
-	    		list1 += 'and room=?';
-	    		list3 += 'and room=\'' + temp3 + '\'';
-	    	} else{
-	    		list1 += 'room=?';
-	    		list3 += 'WHERE room=\'' + temp3 + '\'';
+				if ( 0 < temp1 && 17 > temp1){
+					var num = Number(temp1);
+				} else {
+					var num = 6;
+				}
+				if(templeng < num){
+					num = templeng;
+				}
 	    	}
-	    	list.push(temp3);
-	    }
-	    
-	    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
-	    if(templeng == 0){
-			r.replier.reply("검색된 내용이 없습니다.");
-			return;
-		} else {
-			var num = temp1*1;
-			if(templeng < num){
-				num = templeng;
+		    
+		    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
+			
+		    var temp = [];
+			if(temp2 != ''){
+				temp[0]=temp2+"의 채팅"; 
 			}
-    	}
-	    
-	    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
-    	
-		var temp = [];
-	    temp[0]='길이:'+num+'\n';
-		if(temp2 != ''){
-			temp[0]=temp[0]+temp2+"의 채팅"; 
-		}
-		if(temp3 != ''){
-			temp[0]=temp[0]+"("+temp3+")\n"; 
+			
+			for (var i in tempchat) {
+				temp.push(tempchat[i].join(' | '));
+			}
+			if (tempchat.length > 3){
+				temp[2] += es;
+			}
+			r.replier.reply(temp.join("\n"));
 		} else {
-			temp[0]=temp[0]+"\n"; 
-		}
-		
-		for (var i in tempchat) {
-			temp.push(tempchat[i].join(' | '));
-		}
-		if (tempchat.length > 3){
-			temp[3] += es;
-		}
-		r.replier.reply(temp.join("\n"));
+			var temp = r.msg.substr(5);
+			var temp1 = '';
+			var temp2 = '';
+			var temp3 = '';
+			if(temp.indexOf(',')>-1){
+				var temp1 = temp.split(',')[0]; // 개수
+				var temp2 = temp.split(',')[1]; // 이름
+				var temp3 = temp.split(',')[2]; // 방
+			}
+			if(temp1==''){
+				temp1 = 12;
+			}
+			if(Number(temp)>0){
+				temp1 = temp;
+			}
+		    
+		    var list = [];
+		    var list1 = '';
+		    var list2 = ['time'];
+		    var list3 = '';
+		    if (temp2 == ''){
+		    	list2.push('name');
+		    }
+		    if (temp3 == ''){
+		    	list2.push('room');
+		    }
+		    list2.push('msg');
+		    
+		    if (temp2 != ''){
+		    	list1 += 'name=? ';
+		    	list.push(temp2);
+		    	list3 += 'WHERE name=\'' + temp2 + '\'';
+		    }
+		    if (temp3 != ''){
+		    	if(list1 != ''){
+		    		list1 += 'and room=?';
+		    		list3 += 'and room=\'' + temp3 + '\'';
+		    	} else{
+		    		list1 += 'room=?';
+		    		list3 += 'WHERE room=\'' + temp3 + '\'';
+		    	}
+		    	list.push(temp3);
+		    }
+		    
+		    var templeng = D.selectForArray("chatdb","count(*)",list1,list)[0][0];
+		    if(templeng == 0){
+				r.replier.reply("검색된 내용이 없습니다.");
+				return;
+			} else {
+				var num = temp1*1;
+				if(templeng < num){
+					num = templeng;
+				}
+	    	}
+		    
+		    var tempchat = D.rawQuery("SELECT "+ list2.join(',') +" FROM chatdb " + list3 + " limit " + num + " offset " + String(templeng - num) )
+	    	
+			var temp = [];
+		    temp[0]='길이:'+num+'\n';
+			if(temp2 != ''){
+				temp[0]=temp[0]+temp2+"의 채팅"; 
+			}
+			if(temp3 != ''){
+				temp[0]=temp[0]+"("+temp3+")\n"; 
+			} else {
+				temp[0]=temp[0]+"\n"; 
+			}
+			
+			for (var i in tempchat) {
+				temp.push(tempchat[i].join(' | '));
+			}
+			if (tempchat.length > 3){
+				temp[3] += es;
+			}
+			r.replier.reply(temp.join("\n"));
 	}catch(e){
 		Api.replyRoom('test',e+"\n"+e.stack);
 		}
@@ -2175,90 +2159,39 @@ function mylotto(r){
 	r.replier.reply(result);
 }
 
-function allbestlotto(r) {
-	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
-	var num = raw.select('h4').text().split('회')[0]*1+1;
-	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 3 ', null , {orderBy:"class asc"});
-	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num])[0][0];
-	var five = D.selectForArray('lotto', "count(*)", 'count = 3')[0][0];
-	var four = D.selectForArray('lotto', "count(*)", 'count = 4 ')[0][0];
-	var three = D.selectForArray('lotto', "count(*)", 'count = 5 ')[0][0];
-	var two = D.selectForArray('lotto', "count(*)", 'count = 7 ')[0][0];
-	var one = D.selectForArray('lotto', "count(*)", 'count = 6')[0][0];
-	var getmoney = 0;
-	for(var i = D.selectForArray('lottomoney')[0][0]; i < D.selectForArray('lottomoney')[0][0]+D.selectForArray('lottomoney', "count(*)")[0][0] ; i++ ){
-		var money = D.selectForArray('lottomoney', null, 'num = ?', [i])[0];
-		var five1 = D.selectForArray('lotto', "count(*)", 'count = 3 and num =?',  [i])[0][0];
-		var four1 = D.selectForArray('lotto', "count(*)", 'count = 4 and num =?',  [i])[0][0];
-		var three1 = D.selectForArray('lotto', "count(*)", 'count = 5 and num =?',  [i])[0][0];
-		var two1 = D.selectForArray('lotto', "count(*)", 'count = 7 and num =?',  [i])[0][0];
-		var one1 = D.selectForArray('lotto', "count(*)", 'count = 6 and num =?',  [i])[0][0];
-		getmoney += one1*money[1]+two1*money[2]+three1*money[3]+four1*money[4]+five1*money[5];
-	}
-	
-	var v = getmoney;
-	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
-	
-	result+='로또 뽑은 횟수 : '+all+'\n';
-	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n"
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
-	result+='\n쓴ㅤ돈 : '+ all/10 + '만원\n당첨금 : '+ getmoney1 +'\n';
-	result+='회수율 : '+ Math.floor(getmoney/(all*1000)*100000)/1000+'%    ';
-	
-	var str1 ='\n';
-	var str2 ='\n';
-	var str3 ='\n';
-	var str4 ='\n';
-	
-	if ( r.room == 'test'){
-		result += "\n"+es+"\n";
-		for(var i=0; i<temp.length; i++){
-			if(temp[i][14]==4){
-				str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}else if(temp[i][14]==5){
-				str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}else if(temp[i][14]==7){
-				str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}else if(temp[14]==6){
-				str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-			}
-		}
-		result += '1등 개수 : '+one+'\n'+str1+'\n'+
-		'2등 개수 : '+two+'\n'+str2+'\n'+
-		'3등 개수 : '+three+'\n'+str3+'\n'+
-		'4등 개수 : '+four+'\n'+str4+'\n'+
-		'5등 개수 : '+five+'\n\n'+
-		'꽝 개수 : '+Number(all-(one+two+three+four+five))+'\n';
-	}
-	if (result.length > 100000){
-		result = result.substr(0,100000);
-	}
-	r.replier.reply(result);
-}
-
 function bestlotto(r) {
+	if(r.msg=='!종합로또통계'){
+		var str = ' and room = ?';
+		var str0 = ' and num = ? and room =? '
+		var str1 = [r.room];
+		var str2 = [num, r.room];
+		var str3 = [i, r.room];
+	} else {
+		var str = '';
+		var str0 = ' and num = ? '
+		var str1 = null;
+		var str2 = [num];
+		var str3 = [i];
+	}
+	
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 3 and room = ? ',  [r.room] , {orderBy:"class asc"});
-	var all = D.selectForArray('lotto', "count(*)" , ' num < ? and room = ? ',  [num , r.room])[0][0];
-	var five = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? ',  [r.room])[0][0];
-	var four = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ? ',  [r.room])[0][0];
-	var three = D.selectForArray('lotto', "count(*)", 'count = 5 and room = ? ',  [r.room])[0][0];
-	var two = D.selectForArray('lotto', "count(*)", 'count = 7 and room = ? ',  [r.room])[0][0];
-	var one = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ? ',  [r.room])[0][0];
+	var temp = D.selectForArray('lotto', null, 'count > 3' + str,  str1 , {orderBy:"class asc"});
+	var all = D.selectForArray('lotto', "count(*)" , ' num < ?'+ str,  str2)[0][0];
+	var five = D.selectForArray('lotto', "count(*)", 'count = 3'+ str,  str1)[0][0];
+	var four = D.selectForArray('lotto', "count(*)", 'count = 4'+ str,  str1)[0][0];
+	var three = D.selectForArray('lotto', "count(*)", 'count = 5'+ str, str1)[0][0];
+	var two = D.selectForArray('lotto', "count(*)", 'count = 7'+ str, str1)[0][0];
+	var one = D.selectForArray('lotto', "count(*)", 'count = 6'+ str,  str1)[0][0];
 	var getmoney = 0;
 	for(var i = D.selectForArray('lottomoney')[0][0]; i < D.selectForArray('lottomoney')[0][0]+D.selectForArray('lottomoney', "count(*)")[0][0] ; i++ ){
 		var money = D.selectForArray('lottomoney', null, 'num = ?', [i])[0];
-		var five1 = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? and num =?',  [r.room, i])[0][0];
-		var four1 = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ?  and num =?',  [r.room, i])[0][0];
-		var three1 = D.selectForArray('lotto', "count(*)", 'count = 5 and room = ?  and num =?',  [r.room, i])[0][0];
-		var two1 = D.selectForArray('lotto', "count(*)", 'count = 7 and room = ?  and num =?',  [r.room, i])[0][0];
-		var one1 = D.selectForArray('lotto', "count(*)", 'count = 6 and room = ?  and num =?',  [r.room, i])[0][0];
+		var five1 = D.selectForArray('lotto', "count(*)", 'count = 3' + str0,  str3)[0][0];
+		var four1 = D.selectForArray('lotto', "count(*)", 'count = 4'+ str0,  str3)[0][0];
+		var three1 = D.selectForArray('lotto', "count(*)", 'count = 5'+ str0, str3)[0][0];
+		var two1 = D.selectForArray('lotto', "count(*)", 'count = 7'+ str0,  str3)[0][0];
+		var one1 = D.selectForArray('lotto', "count(*)", 'count = 6'+ str0,  str3)[0][0];
 		getmoney += one1*money[1]+two1*money[2]+three1*money[3]+four1*money[4]+five1*money[5];
 	}
 	var v = getmoney;
@@ -2277,26 +2210,28 @@ function bestlotto(r) {
 	var str3 ='\n';
 	var str4 ='\n';
 	
-	for(var i=0; i<temp.length; i++){
-		if(temp[i][14]==4){
-			str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-		}else if(temp[i][14]==5){
-			str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-		}else if(temp[i][14]==7){
-			str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
-		}else if(temp[14]==6){
-			str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+	if(r.msg == '!로또통계' || (r.msg =='!종합로또통계' && r.room =='test')){
+		for(var i=0; i<temp.length; i++){
+			if(temp[i][14]==4){
+				str4+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}else if(temp[i][14]==5){
+				str3+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}else if(temp[i][14]==7){
+				str2+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}else if(temp[14]==6){
+				str1+= temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][7] + "회차\n\n";
+			}
 		}
+		result += '1등 개수 : '+one+'\n'+str1+'\n'+
+		'2등 개수 : '+two+'\n'+str2+'\n'+
+		'3등 개수 : '+three+'\n'+str3+'\n'+
+		'4등 개수 : '+four+'\n'+str4+'\n'+
+		'5등 개수 : '+five+'\n'+
+		'꽝 개수 : '+Number(all-(one+two+three+four+five))+'\n';
 	}
-	result += '1등 개수 : '+one+'\n'+str1+'\n'+
-	'2등 개수 : '+two+'\n'+str2+'\n'+
-	'3등 개수 : '+three+'\n'+str3+'\n'+
-	'4등 개수 : '+four+'\n'+str4+'\n'+
-	'5등 개수 : '+five+'\n'+
-	'꽝 개수 : '+Number(all-(one+two+three+four+five))+'\n';
 	
-	if (result.length > 20000){
-		result = result.substr(0,20000);
+	if (result.length > 80000){
+		result = result.substr(0,80000);
 	}
 	r.replier.reply(result);
 }
