@@ -31,7 +31,7 @@ function reload(r) {
 	    bw.close();
 	    var time = (new Date() - Timer) / 1000;
 	    Api.replyRoom(r.room ,"파일저장 완료 / " + time + "s\n" + new Date() );
-	    T.interrupt();
+	    T.interruptAll();
 	    Api.reload();
 	    reloadcheck = 0;
 	    control = D.selectForArray('control').map(v=>v[0]);
