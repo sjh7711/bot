@@ -2498,8 +2498,8 @@ function lottocheck(r) {
 		var doc = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get()
 		var raw = doc.select('div.win_result');
 		var lastnum = raw.select('h4').text().split('회')[0];
-		var win = raw.select('p').get(1).text().split(" ").slice();
-		var bonus = raw.select('p').get(2).text();
+		var win = raw.select('p').get(1).text().split(" ").slice().map(v=>Number(v));
+		var bonus = Number(raw.select('p').get(2).text());
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
