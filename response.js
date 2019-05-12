@@ -843,6 +843,8 @@ function blackjack(r){
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				gameinfo['player'+num].end = 0;
 				r.replier.reply(r.sender+'님이 Split을 했습니다.');
+				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+				r.replier.reply(str);
 			} else {
 				r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
 			}
@@ -2505,19 +2507,19 @@ function lottocheck(r) {
 		if(temp == 0 ){
 			var money = doc.select('tbody>tr').toArray().map(v=>v.select('td.tar').get(1).text());
 			D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
-			var lottodata = D.selectForArray('lotto', null, 'num=?', [lastnum]);
+			var lottodata = D.selectForArray('lotto', ['num1', 'num2', 'num3', 'num4' , 'num5', 'num6'] ,"num=?", [lastnum]);
 			for(var i=0;i<lottodata.length;i++){
 				var count = 0;
 				for(var j=0;j<6;j++){
 					for(var k=0;k<6;k++){
-						if(lottodata[i][j+8]==win[k]){
+						if(lottodata[i][j]==win[k]){
 							count+=1;
 							break;
 						}
 					}
 					if(count == 5){
 						for(var k=0;k<6;k++){
-							if(lottodata[i][j+8]==bonus){
+							if(lottodata[i][j]==bonus){
 								count+=2;
 								break;
 							}	
@@ -2538,7 +2540,7 @@ function lottocheck(r) {
 				}else if(count==6){
 					lottodata[i].push('1등');
 				}
-				D.update('lotto', {count:lottodata[i][14],class:lottodata[i][15]}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lottodata[i][7],lottodata[i][8],lottodata[i][9],lottodata[i][10],lottodata[i][11],lottodata[i][12],lottodata[i][13]] );
+				D.update('lotto', {count:count, class:lottodata[i][7]}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lottodata[i][7], lottodata[i][8], lottodata[i][9], lottodata[i][10], lottodata[i][11], lottodata[i][12], lottodata[i][13]] );
 			}
 		}
 		
