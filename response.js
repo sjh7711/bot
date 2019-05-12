@@ -2511,18 +2511,21 @@ function lottocheck(r) {
 			for(var i=0;i<lottodata.length;i++){
 				var count = 0;
 				for(var j=0;j<6;j++){
-					if(lottodata[i].indexOf(win[j]) > -1 ){
-						count+=1;
-					}
-				}
-				if(count == 5){
-					for(var j=0;j<6;j++){
-						if(lottodata[i].indexOf(bonus) > -1 ){
-							count+=2;
+					for(var k=0;k<6;k++){
+						if(lottodata[i][j]==win[k]){
+							count+=1;
 							break;
 						}
 					}
-				}	
+					if(count == 5){
+						for(var k=0;k<6;k++){
+							if(lottodata[i][j]==bonus){
+								count+=2;
+								break;
+							}	
+						}
+					}
+				}
 				if(count==0||count==1||count==2){
 					D.update('lotto', {count:count, class:'꽝'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}else if(count==3){
