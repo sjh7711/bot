@@ -4,6 +4,7 @@ if(ObjKeep.get("reboottime")==null){
 	ObjKeep.keep("reboottime",new Date().getTime());
 }
 var reloadtime = new Date().getTime();
+var calculating = 0;
 var D = require("DBManager.js")("D");
 cmd("chmod -R 777 /data/data/com.kakao.talk/databases");
 var K = require("KBManager.js")("/data/data/com.kakao.talk/databases/KakaoTalk2.db");
@@ -2504,7 +2505,8 @@ function lottocheck(r) {
 
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
-		if(temp == 0 ){
+		if(temp == 0 && calculating == 0 ){
+			calculating = 1;
 			var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 			D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
 			var lottodata = D.selectForArray('lotto', null ,"num=?", [lastnum]);
@@ -2540,6 +2542,7 @@ function lottocheck(r) {
 			D.delete('lotto', 'num=?', [lastnum]);
 			D.rawQuery("INSERT INTO lotto SELECT * FROM lottot");
 			D.delete('lottot');
+			calculating = 0;
 		}
 		
 		var money1 = D.selectForArray('lottomoney', null, "num=?", [lastnum])[0];
