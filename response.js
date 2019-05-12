@@ -2507,6 +2507,7 @@ function lottocheck(r) {
 		
 		if(temp == 0){
 			if(calculating == 0){
+				r.replier.reply('약 '+Number(temp/200+120)+'초 정도 소요될 예정입니다. 기다려주세요.');
 				calculating = 1;
 				var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 				D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
