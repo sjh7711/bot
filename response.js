@@ -2507,7 +2507,7 @@ function lottocheck(r) {
 		if(temp == 0 ){
 			var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 			D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
-			var lottodata = D.selectForArray('lotto', ['num1', 'num2', 'num3', 'num4' , 'num5', 'num6'] ,"num=?", [lastnum]);
+			var lottodata = D.selectForArray('lotto', null ,"num=?", [lastnum]);
 			for(var i=0;i<lottodata.length;i++){
 				var count = 0;
 				for(var j=0;j<6;j++){
@@ -2524,19 +2524,22 @@ function lottocheck(r) {
 					}
 				}	
 				if(count==0||count==1||count==2){
-					D.update('lotto', {count:count, class:'꽝'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
+					D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],locount:count, class:'꽝'});
 				}else if(count==3){
-					D.update('lotto', {count:count, class:'5등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
+					D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],locount:count, class:'5등'});
 				}else if(count==4){
-					D.update('lotto', {count:count, class:'4등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
+					D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],locount:count, class:'4등'});
 				}else if(count==5){
-					D.update('lotto', {count:count, class:'3등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
+					D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],locount:count, class:'3등'});
 				}else if(count==7){
-					D.update('lotto', {count:count, class:'2등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
+					D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],locount:count, class:'2등'});
 				}else if(count==6){
-					D.update('lotto', {count:count, class:'1등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
+					D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],locount:count, class:'1등'});
 				}
 			}
+			D.delete('lotto', 'num=?', [lastnum]);
+			D.rawQuery("INSERT INTO lotto SELECT * FROM lottot");
+			D.delete('lottot');
 		}
 		
 		var money1 = D.selectForArray('lottomoney', null, "num=?", [lastnum])[0];
