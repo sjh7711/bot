@@ -2505,7 +2505,7 @@ function lottocheck(r) {
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
 		if(temp == 0 ){
-			var money = doc.select('tbody>tr').toArray().map(v=>v.select('td.tar').get(1).text());
+			var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 			D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
 			var lottodata = D.selectForArray('lotto', ['num1', 'num2', 'num3', 'num4' , 'num5', 'num6'] ,"num=?", [lastnum]);
 			for(var i=0;i<lottodata.length;i++){
@@ -2526,21 +2526,19 @@ function lottocheck(r) {
 						}
 					}
 				}
-				lottodata[i].push(count);
 				if(count==0||count==1||count==2){
-					lottodata[i].push('꽝');
+					D.update('lotto', {count:count, class:'꽝'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}else if(count==3){
-					lottodata[i].push('5등');
+					D.update('lotto', {count:count, class:'5등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}else if(count==4){
-					lottodata[i].push('4등');
+					D.update('lotto', {count:count, class:'4등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}else if(count==5){
-					lottodata[i].push('3등');
+					D.update('lotto', {count:count, class:'3등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}else if(count==7){
-					lottodata[i].push('2등');
+					D.update('lotto', {count:count, class:'2등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}else if(count==6){
-					lottodata[i].push('1등');
+					D.update('lotto', {count:count, class:'1등'}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 				}
-				D.update('lotto', {count:count, class:lottodata[i][6]}, "num=? and num1=? and num2=? and num3=? and num4=? and num5=? and num6=?", [lastnum, lottodata[i][0], lottodata[i][1], lottodata[i][2], lottodata[i][3], lottodata[i][4], lottodata[i][5]] );
 			}
 		}
 		
