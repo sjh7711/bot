@@ -2502,12 +2502,12 @@ function lottocheck(r) {
 		var win = raw.select('p').get(1).text().split(" ").slice().map(v=>Number(v));
 		var bonus = Number(raw.select('p').get(2).text());
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
-
+		var temp1 = D.selectForArray('lotto', "count(*)" );
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
 		if(temp == 0){
 			if(calculating == 0){
-				r.replier.reply('약 '+Number(temp/200+120)+'초 정도 소요될 예정입니다. 기다려주세요.');
+				r.replier.reply('약 '+Number(temp1/200+120)+'초 정도 소요될 예정입니다. 기다려주세요.');
 				calculating = 1;
 				var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 				D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
