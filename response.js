@@ -2546,7 +2546,8 @@ function lottocheck(r) {
 				D.delete('lottot');
 				calculating = 0;
 			} else {
-				r.replier.reply('로또 결과 연산이 진행중입니다.')
+				r.replier.reply('로또 결과 연산이 진행중입니다.');
+				return;
 			}
 		}
 		
