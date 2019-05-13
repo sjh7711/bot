@@ -2435,11 +2435,11 @@ function flottocheck(r) {
 		var count = 0;
 		var tempdata = lottodata[i].slice(8,14);
 		for(var j=0;j<6;j++){
-			if(tempdata[i].indexOf(win[j]) > -1 ){
+			if(tempdata.indexOf(win[j]) > -1 ){
 				count+=1;
 			}
 		}
-		if(count == 5 && tempdata[i].indexOf(bonus) > -1 ){
+		if(count == 5 && tempdata.indexOf(bonus) > -1 ){
 			count+=2;	
 		}
 		if(count==0||count==1||count==2){
@@ -2516,11 +2516,11 @@ function lottocheck(r) {
 					var count = 0;
 					var tempdata = lottodata[i].slice(8,14);
 					for(var j=0;j<6;j++){
-						if(tempdata[i].indexOf(win[j]) > -1 ){
+						if(tempdata.indexOf(win[j]) > -1 ){
 							count+=1;
 						}
 					}
-					if(count == 5 && tempdata[i].indexOf(bonus) > -1 ){
+					if(count == 5 && tempdata.indexOf(bonus) > -1 ){
 						count+=2;	
 					}
 					if(count==0||count==1||count==2){
