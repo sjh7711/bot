@@ -2430,7 +2430,7 @@ function flottocheck(r) {
 	var four = 0;
 	var str5='\n';
 	var five = 0;
-	var temp1 = D.selectForArray('lotto', "count(*)" ,"num=?", [lastnum]);
+	var temp1 = D.selectForArray('lotto', "count(*)" ,"num=?", [lastnum])[0][0];
 	for(var i=0;i<temp1;i++){
 		var count = 0;
 		var tempdata = lottodata[i].slice(8,14);
@@ -2502,7 +2502,7 @@ function lottocheck(r) {
 		var win = raw.select('p').get(1).text().split(" ").slice().map(v=>Number(v));
 		var bonus = Number(raw.select('p').get(2).text());
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
-		var temp1 = D.selectForArray('lotto', "count(*)" ,"num=?", [lastnum]);
+		var temp1 = D.selectForArray('lotto', "count(*)" ,"num=?", [lastnum])[0][0];
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
 		if(temp == 0){
