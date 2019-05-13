@@ -2216,11 +2216,11 @@ function allbestlotto(r) {
 	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 	
 	result+='로또 뽑은 횟수 : '+all+'\n';
-	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n"
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
+	result+='1등 확률 : '+Math.floor(one/all*10000000000000)/100000000000.toFixed(12)+"%("+one+")\n";
+	result+='2등 확률 : '+Math.floor(two/all*10000000000000)/100000000000.toFixed(12)+"%("+two+")\n";
+	result+='3등 확률 : '+Math.floor(three/all*10000000000000)/100000000000.toFixed(12)+"%("+three+")\n";
+	result+='4등 확률 : '+Math.floor(four/all*10000000000000)/100000000000.toFixed(12)+"%("+four+")\n"
+	result+='5등 확률 : '+Math.floor(five/all*10000000000000)/100000000000.toFixed(12)+"%("+five+")\n";
 	var v = all*1000;
 	var lost = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 	result+='\n쓴ㅤ돈 : '+ lost + '\n당첨금 : '+ getmoney1 +'\n';
@@ -2281,11 +2281,11 @@ function bestlotto(r) {
 	var v = getmoney;
 	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 	result+='로또 뽑은 횟수 : '+all+'\n';
-	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")\n";
+	result+='1등 확률 : '+Math.floor(one/all*10000000000000)/100000000000.toFixed(12)+"%("+one+")\n";
+	result+='2등 확률 : '+Math.floor(two/all*10000000000000)/100000000000.toFixed(12)+"%("+two+")\n";
+	result+='3등 확률 : '+Math.floor(three/all*10000000000000)/100000000000.toFixed(12)+"%("+three+")\n";
+	result+='4등 확률 : '+Math.floor(four/all*10000000000000)/100000000000.toFixed(12)+"%("+four+")\n";
+	result+='5등 확률 : '+Math.floor(five/all*10000000000000)/100000000000.toFixed(12)+"%("+five+")\n";
 	var v = all*1000;
 	var lost = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 	result+='\n쓴ㅤ돈 : '+ lost + '\n당첨금 : '+ getmoney1 +'\n';
@@ -2472,11 +2472,11 @@ function flottocheck(r) {
 	var v = getmoney;
 	var getmoney1 = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 
-	result+='1등 확률 : '+Math.floor(one/all*100000000000)/1000000000+"%("+one+")"+"\n";
-	result+='2등 확률 : '+Math.floor(two/all*100000000000)/1000000000+"%("+two+")"+"\n";
-	result+='3등 확률 : '+Math.floor(three/all*100000000000)/1000000000+"%("+three+")"+"\n";
-	result+='4등 확률 : '+Math.floor(four/all*100000000000)/1000000000+"%("+four+")"+"\n";
-	result+='5등 확률 : '+Math.floor(five/all*100000000000)/1000000000+"%("+five+")"+'\n';
+	result+='1등 확률 : '+Math.floor(one/all*10000000000000)/100000000000.toFixed(12)+"%("+one+")"+"\n";
+	result+='2등 확률 : '+Math.floor(two/all*10000000000000)/100000000000.toFixed(12)+"%("+two+")"+"\n";
+	result+='3등 확률 : '+Math.floor(three/all*10000000000000)/100000000000.toFixed(12)+"%("+three+")"+"\n";
+	result+='4등 확률 : '+Math.floor(four/all*10000000000000)/100000000000.toFixed(12)+"%("+four+")"+"\n";
+	result+='5등 확률 : '+Math.floor(five/all*10000000000000)/100000000000.toFixed(12)+"%("+five+")"+'\n';
 	var v = all*1000;
 	var lost = (Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원');
 	result+='\n쓴ㅤ돈 : '+ lost + '\n당첨금 : '+ getmoney1 +'\n';
