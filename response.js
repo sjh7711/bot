@@ -2415,8 +2415,8 @@ function flottocheck(r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
 	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum-1])[0];
-	var win = raw.select('p').get(1).text().split(" ").slice();
-	var bonus = raw.select('p').get(2).text();
+	var win = raw.select('p').get(1).text().split(" ").slice().map(v=>Number(v));
+	var bonus = Number(raw.select('p').get(2).text());
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 	var lottodata = D.selectForArray('lotto',null,'num=? and sender=? and room=?', [lastnum, r.sender, r.room]);
 	var failcount=0;
@@ -2430,20 +2430,17 @@ function flottocheck(r) {
 	var four = 0;
 	var str5='\n';
 	var five = 0;
-	for(var i=0;i<lottodata.length;i++){
+	var temp1 = D.selectForArray('lotto', "count(*)" ,"num=?", [lastnum]);
+	for(var i=0;i<temp1;i++){
 		var count = 0;
+		var tempdata = lottodata[i].slice(8,14);
 		for(var j=0;j<6;j++){
-			if(lottodata[i].slice(8,14).indexOf(win[j]) > -1 ){
+			if(tempdata[i].indexOf(win[j]) > -1 ){
 				count+=1;
 			}
 		}
-		if(count == 5){
-			for(var j=0;j<6;j++){
-				if(lottodata[i].slice(8,14).indexOf(bonus) > -1 ){
-					count+=2;
-					break;
-				}
-			}
+		if(count == 5 && tempdata[i].indexOf(bonus) > -1 ){
+			count+=2;	
 		}
 		if(count==0||count==1||count==2){
 			failcount += 1;
@@ -2505,30 +2502,26 @@ function lottocheck(r) {
 		var win = raw.select('p').get(1).text().split(" ").slice().map(v=>Number(v));
 		var bonus = Number(raw.select('p').get(2).text());
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
-		var temp1 = D.selectForArray('lotto', "count(*)" );
+		var temp1 = D.selectForArray('lotto', "count(*)" ,"num=?", [lastnum]);
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
 		if(temp == 0){
 			if(calculating == 0){
-				r.replier.reply('약 '+Number(temp1/220+120)+'초 정도 소요될 예정입니다. 기다려주세요.');
+				r.replier.reply('약 '+Number(temp1/200+140)+'초 정도 소요될 예정입니다. 기다려주세요.');
 				calculating = 1;
 				var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 				D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
 				var lottodata = D.selectForArray('lotto', null ,"num=?", [lastnum]);
-				for(var i=0;i<lottodata.length;i++){
+				for(var i=0;i<temp1;i++){
 					var count = 0;
+					var tempdata = lottodata[i].slice(8,14);
 					for(var j=0;j<6;j++){
-						if(lottodata[i].slice(8,14).indexOf(win[j]) > -1 ){
+						if(tempdata[i].indexOf(win[j]) > -1 ){
 							count+=1;
 						}
 					}
-					if(count == 5){
-						for(var j=0;j<6;j++){
-							if(lottodata[i].slice(8,14).indexOf(bonus) > -1 ){
-								count+=2;
-								break;
-							}
-						}
+					if(count == 5 && tempdata[i].indexOf(bonus) > -1 ){
+						count+=2;	
 					}
 					if(count==0||count==1||count==2){
 						D.insert('lottot', {room : lottodata[i][0], sender: lottodata[i][1], year: lottodata[i][2], month :lottodata[i][3], date:lottodata[i][4], hour:lottodata[i][5], minute:lottodata[i][6], num:lottodata[i][7],num1:lottodata[i][8],num2:lottodata[i][9],num3:lottodata[i][10],num4:lottodata[i][11],num5:lottodata[i][12],num6:lottodata[i][13],count:count, class:'꽝'});
