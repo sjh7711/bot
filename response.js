@@ -642,7 +642,9 @@ function blackjack(r){
 					insurance : 0,
 					state : 0,
 					result : 0,
-					isblackjack : 0
+					isblackjack : 0,
+					end : 0,
+					splitcount : 0
 			};
 			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
@@ -665,7 +667,9 @@ function blackjack(r){
 					insurance : 0,
 					state : 0,
 					result : 0,
-					isblackjack : 0
+					isblackjack : 0,
+					end : 0,
+					splitcount : 0
 				}
         	gameinfo.playerlist.push(r.sender);
             r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
@@ -826,8 +830,16 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
-		if( r.msg == '스플릿' && num != -1){
+		if( r.msg == '스플릿' && num != -1 && gameinfo['player'+num].splitcount < 4){
 			if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
+				if(gameinfo['player'+num].card[0][1] == 'A' && gameinfo['player'+num].splitcount == 0){
+					gameinfo['player'+num].splitcount += 4;
+				} else if (gameinfo['player'+num].card[0][1] == 'A'){
+					r.replier.reply('스플릿이 불가능합니다.');
+					return;
+				} else {
+					gameinfo['player'+num].splitcount += 1;
+				}
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.splitdata.push({
 						name : r.sender,
@@ -838,16 +850,17 @@ function blackjack(r){
 						state : 0,
 						result : 0,
 						isblackjack : 0,
+						splitcount : gameinfo['player'+num].splitcount,
 						end : 0
 					})
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
-				gameinfo['player'+num].end = 0;
-				r.replier.reply(r.sender+'님이 Split을 했습니다.');
+				str += r.sender+'님이 Split을 했습니다.\n';
 				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 				r.replier.reply(str);
 			} else {
 				r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
+				return;
 			}
 		}
 		if( r.msg == '서렌더' && num != -1 ){
@@ -870,6 +883,11 @@ function blackjack(r){
 				gameinfo['player'+num].state = 1;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].sum = sum;
+			} else if ( sum == 21){
+				str += '\n'+gameinfo['player'+num].name+'님의 Stay.';
+				gameinfo['player'+num].sum = sum;
+				gameinfo['player'+num].state = 2;
+				gameinfo['player'+num].end = 1;
 			}
 			r.replier.reply(str);
 		}
@@ -906,8 +924,9 @@ function blackjack(r){
 			if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
 				if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
 					gameinfo.splitdata.push(gameinfo['player'+num]);
-					gameinfo['player'+num]={};
-					gameinfo['player'+num]=gameinfo.splitdata.splice(0,1);
+					gameinfo['player'+num]= null;
+					gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+					gameinfo.splitdata.filter(v=>v.name == r.sender)[0] = null;
 				}
 			}
 		}
@@ -1008,6 +1027,9 @@ function blackjack(r){
 	//D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 }
 
+function cloneObject(obj) {
+	  return JSON.parse(JSON.stringify(obj));
+	}
 
 function funcCheck(r){
 	var str='';
