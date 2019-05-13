@@ -2433,18 +2433,15 @@ function flottocheck(r) {
 	for(var i=0;i<lottodata.length;i++){
 		var count = 0;
 		for(var j=0;j<6;j++){
-			for(var k=0;k<6;k++){
-				if(lottodata[i][j+8]==win[k]){
-					count+=1;
-					break;
-				}
+			if(lottodata[i].slice(8,14).indexOf(win[j]) > -1 ){
+				count+=1;
 			}
-			if(count == 5){
-				for(var k=0;k<6;k++){
-					if(lottodata[i][j+8]==bonus){
-						count+=2;
-						break;
-					}	
+		}
+		if(count == 5){
+			for(var j=0;j<6;j++){
+				if(lottodata[i].slice(8,14).indexOf(bonus) > -1 ){
+					count+=2;
+					break;
 				}
 			}
 		}
