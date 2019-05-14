@@ -884,7 +884,6 @@ function blackjack(r){
 						sum : 0,
 						insurance : 0,
 						state : 0,
-						result : 0,
 						isblackjack : 0,
 						splitcount : gameinfo['player'+num].splitcount,
 						end : 0
