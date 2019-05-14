@@ -1003,13 +1003,13 @@ function blackjack(r){
 							} else if ( (temp[j].state == 6 && gameinfo.dealer.sum > temp[j].sum ) || temp[j].state == 7){
 								str += temp[j].name+'님 ('+temp[j].sum+') : DoubleDownLose\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1-Number(temp[j].bet*2);
-							} /*else if (temp[j].state == 4){
+							} else if (temp[j].state == 4){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Blackjack\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1+Number(temp[j].bet*1.5);
 							} else if( gameinfo.dealer.sum < temp[j].sum ){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Win\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1+Number(temp[j].bet);
-							} else if (gameinfo.dealer.sum == temp[j].sum){
+							}/* else if (gameinfo.dealer.sum == temp[j].sum){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Push\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1;
 							} else {
