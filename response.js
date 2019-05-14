@@ -778,9 +778,6 @@ function blackjack(r){
 				r.replier.reply('Split을 더 이상 할 수 없습니다.');
 				return;
 			}
-		} else {
-			r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
-			return;
 		}
 		if( r.msg == '서렌더' && num != -1 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 Surrender.');
