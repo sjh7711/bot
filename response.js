@@ -847,7 +847,7 @@ function blackjack(r){
 				gameinfo.splitdata.push({
 						name : r.sender,
 						card : [gameinfo['player'+num].card.splice(1,1)[0], Flag.get('cards', r.room).splice(rand,1)[0]],
-						bet : 0,
+						bet : gameinfo['player'+num].bet,
 						sum : 0,
 						insurance : 0,
 						state : 0,
@@ -860,7 +860,7 @@ function blackjack(r){
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				var str = '';
 				str += r.sender+'님이 Split을 했습니다.\n';
-				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+				str += gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 				r.replier.reply(str);
 			} else {
 				r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
@@ -931,7 +931,16 @@ function blackjack(r){
 					gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
 					gameinfo['player'+num]= null;
 					gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
-					gameinfo.splitdata.filter(v=>v.name == r.sender)[0] = null;
+					var temp = [];
+					var breakc = 0;
+					for(var i in gameinfo.splitdata){
+						if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+							breakc += 1;
+						} else {
+							temp.push(gameinfo.splitdata[i])
+						}
+					}
+					gameinfo.splitdata = temp;
 					var str = '';
 					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 					r.replier.reply(str);
