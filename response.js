@@ -621,6 +621,7 @@ function blackjack(r){
 					insurlist : [],
 					blackjacklist : [],
 					splitdata : [],
+					splitcount : 0,
 					endcount : 0,
 					start : 1,
 					start1 : 0,
@@ -843,7 +844,7 @@ function blackjack(r){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.splitdata.push({
 						name : r.sender,
-						card : [gameinfo['player'+num].card.splice(1,1), Flag.get('cards', r.room).splice(rand,1)[0]],
+						card : [gameinfo['player'+num].card.splice(1,1)[0], Flag.get('cards', r.room).splice(rand,1)[0]],
 						bet : 0,
 						sum : 0,
 						insurance : 0,
@@ -855,6 +856,7 @@ function blackjack(r){
 					})
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+				var str = '';
 				str += r.sender+'님이 Split을 했습니다.\n';
 				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 				r.replier.reply(str);
@@ -921,6 +923,7 @@ function blackjack(r){
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 2;
 			gameinfo['player'+num].end = 1;
+			gameinfo.splitcount += 1;
 			gameinfo.endcount +=1;
 			if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
 				if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
@@ -928,12 +931,15 @@ function blackjack(r){
 					gameinfo['player'+num]= null;
 					gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
 					gameinfo.splitdata.filter(v=>v.name == r.sender)[0] = null;
+					var str = '';
+					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+					r.replier.reply(str);
 				}
 			}
 		}
 	}
 	
-	if( gameinfo.endcount == (gameinfo.playerlist.length + gameinfo.splitdata.length) && gameinfo.start2 == 1){
+	if( gameinfo.endcount == (gameinfo.playerlist.length + gameinfo.splitcount) && gameinfo.start2 == 1){
 		r.replier.reply('게임종료!');
 		gameinfo.start4 = 1;
 		java.lang.Thread.sleep(1500);
