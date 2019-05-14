@@ -613,7 +613,7 @@ function blackjack(r){
 	//
 	if( r.msg == '!블랙잭'){
 		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
-			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요. 시작하려면 [시작]을 입력해주세요.');
+			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요. 시작하려면 [시작]을 입력해주세요.\n[힛/스테이/더블다운/스플릿/서렌더]');
 			var gameinfo = {
 					starttime : new Date().getTime(),
 					playerlist : [],
