@@ -1289,7 +1289,7 @@ function baseball(r){
 				Flag.set('supposelist', r.room, '');
 				var str = '';
 				str += '게임이 종료되었습니다. 새로운 게임이 가능합니다.';
-				if(Flag.get('answer', r.room)==0){
+				if(Flag.get('answer', r.room)!=0){
 					str += '정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
 				}
 				r.replier.reply(str);
@@ -1303,7 +1303,7 @@ function baseball(r){
 			Flag.set('supposelist', r.room, '');
 			var str = '';
 			str += '게임이 종료되었습니다. 새로운 게임이 가능합니다.';
-			if(Flag.get('answer', r.room)==0){
+			if(Flag.get('answer', r.room)!=0){
 				str += '정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
 			}
 			r.replier.reply(str);
@@ -1321,7 +1321,7 @@ function baseball(r){
 		Flag.set('supposelist', r.room, '');
 		var str = '';
 		str += '게임이 종료되었습니다. 새로운 게임이 가능합니다.';
-		if(Flag.get('answer', r.room)==0){
+		if(Flag.get('answer', r.room)!=0){
 			str += '정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
 		}
 		r.replier.reply(str);
