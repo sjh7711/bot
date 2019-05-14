@@ -1009,10 +1009,10 @@ function blackjack(r){
 							} else if( gameinfo.dealer.sum < temp[j].sum ){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Win\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1+Number(temp[j].bet);
-							}/* else if (gameinfo.dealer.sum == temp[j].sum){
+							} else if (gameinfo.dealer.sum == temp[j].sum){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Push\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1;
-							} else {
+							}/* else {
 								str += temp[j].name+'님 ('+temp[j].sum+') : Lose\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1-Number(temp[j].bet);
 							}*/
