@@ -460,96 +460,6 @@ function func(r) {
     }
 }
 
-function translation(r){
-	var tempmsg = r.msg.substr(7);
-	var templan0 = r.msg.substr(4).split(',')[0][0];
-	var templan1 = r.msg.substr(4).split(',')[0][1];
-	if (templan0 == '영'){
-		templan0 = 'en';
-	} else if (templan0 =='한'){
-		templan0 = 'ko';
-	} else if (templan0 =='일'){
-		templan0 = 'ja';
-	} else {
-		r.replier.reply('번역할 수 없습니다.');
-		return;
-	}
-	if (templan1 == '영'){
-		templan1 = 'en';
-	} else if (templan1 =='한'){
-		templan1 = 'ko';
-	} else if (templan1 =='일'){
-		templan1 = 'ja';
-	} else {
-		r.replier.reply('번역할 수 없습니다.');
-		return;
-	}
-	if(templan0 == templan1 ){
-		r.replier.reply('번역할 수 없습니다.');
-		return;
-	}
-	
-	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
-}
-function controlReload(r){
-	control = D.selectForArray('control').map(v=>v[0]);
-	controlPanel = D.selectForObject('control');
-	r.replier.reply('기능 리로드 완료');
-}
-
-function controlEdit(r){
-	controlPanel = D.selectForObject('control');
-	control = D.selectForArray('control').map(v=>v[0]);
-	
-	var temp = r.msg.split(',');
-	var funcc = -1;
-	for(var i in control){
-		if( temp[1].indexOf(control[i]) == 0 ){
-			funcc = i;
-			break;
-		}
-	}
-	
-	if(funcc != -1){
-		var tempf = controlPanel[funcc];
-		if( temp[3] == 'on' ){
-			tempf[temp[2].replace(/ /g, '_')] = 1;
-		} else if ( temp[3] == 'off' ){
-			tempf[temp[2].replace(/ /g, '_')] = 0;
-		} else {
-			r.replier.reply('잘못입력했습니다.');
-			return;
-		}
-		D.update("control", tempf , "name=?", [control[funcc]]);
-	} else {
-		r.replier.reply('잘못입력했습니다.');
-		return;
-	}
-	controlReload(r);
-	r.replier.reply("수정 완료");
-}
-
-function thread(r){
-	r.replier.reply(T.getThreadList().join('\n'));
-}
-
-function db(r){
-	r.replier.reply(D.selectForString("sqlite_master"));
-}
-
-function checkroom(r){
-	r.replier.reply(Api.getRoomList().slice().join('\n'));
-}
-
-function suggestion(r){
-	if(r.msg.length < 7 ){
-		r.replier.reply("건의가 너무 짧습니다.");
-	}else{
-		Api.replyRoom('test', r.room+" : "+r.sender+" : "+r.msg.substr(4));
-		r.replier.reply(r.sender+"님의 건의가 접수되었습니다.");
-	}
-}
-
 function blackjacksum(temp){
 	var sum = 0;
 	var acount = 0;
@@ -579,6 +489,11 @@ function blackjacksum(temp){
 	}
 	return sum;
 }
+
+function cloneObject(obj) {
+	  return JSON.parse(JSON.stringify(obj));
+	}
+
 
 function blackjack(r){
 	if( Flag.get('gameinfo', r.room) == 0 ){
@@ -1116,9 +1031,95 @@ function blackjack(r){
 	}
 }
 
-function cloneObject(obj) {
-	  return JSON.parse(JSON.stringify(obj));
+function translation(r){
+	var tempmsg = r.msg.substr(7);
+	var templan0 = r.msg.substr(4).split(',')[0][0];
+	var templan1 = r.msg.substr(4).split(',')[0][1];
+	if (templan0 == '영'){
+		templan0 = 'en';
+	} else if (templan0 =='한'){
+		templan0 = 'ko';
+	} else if (templan0 =='일'){
+		templan0 = 'ja';
+	} else {
+		r.replier.reply('번역할 수 없습니다.');
+		return;
 	}
+	if (templan1 == '영'){
+		templan1 = 'en';
+	} else if (templan1 =='한'){
+		templan1 = 'ko';
+	} else if (templan1 =='일'){
+		templan1 = 'ja';
+	} else {
+		r.replier.reply('번역할 수 없습니다.');
+		return;
+	}
+	if(templan0 == templan1 ){
+		r.replier.reply('번역할 수 없습니다.');
+		return;
+	}
+	
+	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
+}
+function controlReload(r){
+	control = D.selectForArray('control').map(v=>v[0]);
+	controlPanel = D.selectForObject('control');
+	r.replier.reply('기능 리로드 완료');
+}
+
+function controlEdit(r){
+	controlPanel = D.selectForObject('control');
+	control = D.selectForArray('control').map(v=>v[0]);
+	
+	var temp = r.msg.split(',');
+	var funcc = -1;
+	for(var i in control){
+		if( temp[1].indexOf(control[i]) == 0 ){
+			funcc = i;
+			break;
+		}
+	}
+	
+	if(funcc != -1){
+		var tempf = controlPanel[funcc];
+		if( temp[3] == 'on' ){
+			tempf[temp[2].replace(/ /g, '_')] = 1;
+		} else if ( temp[3] == 'off' ){
+			tempf[temp[2].replace(/ /g, '_')] = 0;
+		} else {
+			r.replier.reply('잘못입력했습니다.');
+			return;
+		}
+		D.update("control", tempf , "name=?", [control[funcc]]);
+	} else {
+		r.replier.reply('잘못입력했습니다.');
+		return;
+	}
+	controlReload(r);
+	r.replier.reply("수정 완료");
+}
+
+function thread(r){
+	r.replier.reply(T.getThreadList().join('\n'));
+}
+
+function db(r){
+	r.replier.reply(D.selectForString("sqlite_master"));
+}
+
+function checkroom(r){
+	r.replier.reply(Api.getRoomList().slice().join('\n'));
+}
+
+function suggestion(r){
+	if(r.msg.length < 7 ){
+		r.replier.reply("건의가 너무 짧습니다.");
+	}else{
+		Api.replyRoom('test', r.room+" : "+r.sender+" : "+r.msg.substr(4));
+		r.replier.reply(r.sender+"님의 건의가 접수되었습니다.");
+	}
+}
 
 function funcCheck(r){
 	var str='';
