@@ -757,8 +757,9 @@ function blackjack(r){
 			if(sum == 21 ){
 				gameinfo.dealer.sum = sum;
 				gameinfo.dealer.state = 1;
+				var str = '';
 				str += '딜러의 BlackJack!\n';
-				str += '딜러 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
+				str += '⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + '] ('+gameinfo.dealer.sum +')\n;
 				r.replier.reply( str );
 				var str = '';
 				for( var i in gameinfo.playerlist){
