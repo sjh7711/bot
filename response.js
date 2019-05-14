@@ -1010,7 +1010,7 @@ function blackjack(r){
 					str1 += ' → ' + temppoint+'\n';
 				}
 				for( var i in gameinfo.splitdata){
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
+					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] ));
 					str1 += gameinfo.splitdata[i].name+'\n'+temppoint;
 					if(gameinfo.splitdata[i].state == 1){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Lose\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
