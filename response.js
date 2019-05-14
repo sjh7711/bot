@@ -774,10 +774,13 @@ function blackjack(r){
 					gameinfo.end = 1;
 				}
 				r.replier.reply(str);
-			} else {
-				r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
+			} else if (gameinfo['player'+num].splitcount > 3) {
+				r.replier.reply('Split을 더 이상 할 수 없습니다.');
 				return;
 			}
+		} else {
+			r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
+			return;
 		}
 		if( r.msg == '서렌더' && num != -1 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 Surrender.');
@@ -935,7 +938,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
-					var temp = cloneOjbect(gameinfo.splitdata.filter(v=>v.name == r.sender));
+					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 					for(var j in temp) {
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
@@ -1001,7 +1004,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
-					var temp = cloneOjbect(gameinfo.splitdata.filter(v=>v.name == r.sender));
+					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 					for(var j in temp) {
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
