@@ -856,6 +856,9 @@ function blackjack(r){
 						splitcount : gameinfo['player'+num].splitcount,
 						end : 0
 					})
+				for(var i in gameinfo.splitdata.filter(v=>v.name == r.sender)){
+					gameinfo.splitdata.filter(v=>v.name == r.sender)[i].splitcount = gameinfo['player'+num].splitcount;
+				}
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				var str = '';
