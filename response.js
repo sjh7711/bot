@@ -708,8 +708,11 @@ function blackjack(r){
 	var num = gameinfo.playerlist.indexOf(r.sender);
 	
 	if( gameinfo.start1 == 1 &&  gameinfo.betlist.length < gameinfo.playerlist.length ){
-		if( !isNaN(r.msg) && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
-			if ( Number(r.msg)>9999 && Number(r.msg)<500001 ){
+		if( /^\d+$/.test(r.msg) && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
+			if ( (Number(r.msg)>9999 && Number(r.msg)<500001) || (Number(r.msg)>0 && Number(r.msg)<51)){
+				if(Number(r.msg)>0 && Number(r.msg)<51){
+					Number(r.msg*10000);
+				}
 				for( var j = 0 ; j < 2 ; j++){
 					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 					gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
