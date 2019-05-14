@@ -1016,6 +1016,7 @@ function blackjack(r){
 			}
 		}
 
+		/*
 		var str1 = '';
 		if(gameinfo.splitdata.length > 0){
 			for( var i in gameinfo.splitdata){
@@ -1039,7 +1040,7 @@ function blackjack(r){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 				str1 += ' → ' + temppoint+'\n';
 			}
-		}
+		}*/
 		r.replier.reply( str.trim() + '\n\n' + str1.trim() );
 		gameinfo.start2 = 0;
 	}
