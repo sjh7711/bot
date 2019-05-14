@@ -1008,7 +1008,7 @@ function blackjack(r){
 					}
 					
 				}
-				
+				/*
 				for( var i in gameinfo.playerlist){
 					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0];
 					str1 += gameinfo['player'+i].name+'\n'+temppoint1;
@@ -1051,7 +1051,7 @@ function blackjack(r){
 					}
 					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 					str1 += ' → ' + temppoint+'\n';
-				}
+				}*/
 			}
 		}
 		r.replier.reply( str.trim() + '\n\n' + str1.trim() );
