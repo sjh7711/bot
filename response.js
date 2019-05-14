@@ -1177,6 +1177,7 @@ function blackjack(r){
 				}
 			}
 		}
+		//D.~~(이븐머니, 보험처리)
 		r.replier.reply( str.trim() );
 		gameinfo.start2 = 0;
 	}
@@ -1286,7 +1287,7 @@ function baseball(r){
 				Flag.set('start1', r.room, 0);
 				Flag.set('start2', r.room, 0);
 				Flag.set('supposelist', r.room, '');
-				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+				r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다. 정답은 '+Flag.get('answer', r.room).join('')+'입니다.');
 				return;
 			}
 		}
@@ -1295,7 +1296,7 @@ function baseball(r){
 			Flag.set('start1', r.room, 0);
 			Flag.set('start2', r.room, 0);
 			Flag.set('supposelist', r.room, '');
-			r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+			r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다. 정답은 '+Flag.get('answer', r.room).join('')+'입니다.');
 			return;
 		}else {
 			r.replier.reply( (Math.floor( (Flag.get('baseballtime', r.room ) + 1000*60*8 - new Date().getTime()) / 1000 )) + '초 뒤에 강제종료가 가능합니다.');
@@ -1308,7 +1309,7 @@ function baseball(r){
 		Flag.set('start1', r.room, 0);
 		Flag.set('start2', r.room, 0);
 		Flag.set('supposelist', r.room, '');
-		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다. 정답은 '+Flag.get('answer', r.room).join('')+'입니다.');
 		return;
 	}
 
