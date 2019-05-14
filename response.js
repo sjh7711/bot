@@ -938,21 +938,19 @@ function blackjack(r){
 				}
 			}
 			gameinfo.splitdata = temp;
-			
+			var str = '';
+			str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 			if(gameinfo['player'+num].sum == 21){
-				r.replier.reply(gameinfo['player'+num].name + '님의 블랙잭!');
+				str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!');
 				gameinfo['player'+num].isblackjack = 1;
 				gameinfo['player'+num].state = 4;
 				gameinfo.endcount +=1;
 				gameinfo.end = 1;
-			} else {
-				var str = '';
-				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
-				r.replier.reply(str);
 			}
+			r.replier.reply(str);
 		}
 	}
 	
