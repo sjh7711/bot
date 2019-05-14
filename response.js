@@ -711,7 +711,7 @@ function blackjack(r){
 		if( /^\d+$/.test(r.msg) && gameinfo.playerlist.indexOf(r.sender) > -1 && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0 ){
 			if ( (Number(r.msg)>9999 && Number(r.msg)<500001) || (Number(r.msg)>0 && Number(r.msg)<51)){
 				if(Number(r.msg)>0 && Number(r.msg)<51){
-					Number(r.msg*10000);
+					r.msg = Number(r.msg*10000);
 				}
 				for( var j = 0 ; j < 2 ; j++){
 					var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
@@ -819,18 +819,20 @@ function blackjack(r){
 							gameinfo['player'+i].result = 1;
 						}
 					}
+					//D.~~(이븐머니, 보험처리)
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
 					r.replier.reply( str.trim() );
 				} else {
 					r.replier.reply('딜러는 BlackJack이 아닙니다.');
+					//D.~~(이븐머니, 보험처리)
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
 					gameinfo.start2 = 1;
 				}
 			}
 		} else {
-			r.replier.reply('0 : 동의 안함 | 1 : 동의함')
+			r.replier.reply('0 : 동의 안함 | 1 : 동의함');
 		}
 	}
 	
