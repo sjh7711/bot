@@ -1006,11 +1006,8 @@ function blackjack(r){
 					}
 				}
 				for( var i in gameinfo.splitdata){
-<<<<<<< HEAD
 					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] ));
 					str1 += gameinfo.splitdata[i].name+'\n'+temppoint;
-=======
->>>>>>> parent of d12ada8... Revert "Update response.js"
 					if(gameinfo.splitdata[i].state == 1){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Lose\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						gameinfo.splitdata[i].result = 1;
