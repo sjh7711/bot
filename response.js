@@ -547,7 +547,7 @@ function blackjack(r){
         }
     }
 	
-	if ( gameinfo.start == 1 && (gameinfo.playerlist.length == 3 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 )) ){
+	if ( gameinfo.start == 1 && (gameinfo.playerlist.length == 4 || (r.msg == '시작' && gameinfo.playerlist.indexOf(r.sender) > -1 )) ){
 		var figure = ['♣','♠','♦','♥'];
 		var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
 		var temp = [];
@@ -765,6 +765,16 @@ function blackjack(r){
 				var str = '';
 				str += r.sender+'님이 Split을 했습니다.\n';
 				str += gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+				var temp = gameinfo['player'+num].card.map(v=>v[1]);
+				var sum = blackjacksum(temp);
+				gameinfo['player'+num].sum = sum;
+				if(gameinfo['player'+num].sum == 21){
+					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
+					gameinfo['player'+num].isblackjack = 1;
+					gameinfo['player'+num].state = 4;
+					gameinfo.endcount +=1;
+					gameinfo.end = 1;
+				}
 				r.replier.reply(str);
 			} else {
 				r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
@@ -968,7 +978,7 @@ function blackjack(r){
 					} else if (gameinfo['player'+i].state == 4){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1+Number(gameinfo['player'+i].bet*1.5);
-					} else if( gameinfo.dealer.sum < gameinfo['player'+i].sum ){
+					} else if( gameinfo.dealer.sum < gameinfo['player'+i].sum && gameinfo['player'+i].state != 1 ){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Win\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 					} else if (gameinfo.dealer.sum == gameinfo['player'+i].sum){
@@ -1000,7 +1010,7 @@ function blackjack(r){
 							} else if (temp[j].state == 4){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Blackjack\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1+Number(temp[j].bet*1.5);
-							} else if( gameinfo.dealer.sum < temp[j].sum ){
+							} else if( gameinfo.dealer.sum < temp[j].sum && gameinfo['player'+i].state != 1){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Win\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 								var temppoint = temppoint1+Number(temp[j].bet);
 							} else if (gameinfo.dealer.sum == temp[j].sum){
