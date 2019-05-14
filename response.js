@@ -923,7 +923,7 @@ function blackjack(r){
 			gameinfo.endcount +=1;
 			if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
 				if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
-					gameinfo.splitdata.push(gameinfo['player'+num]);
+					gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
 					gameinfo['player'+num]= null;
 					gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
 					gameinfo.splitdata.filter(v=>v.name == r.sender)[0] = null;
