@@ -693,7 +693,7 @@ function blackjack(r){
 					
 					for(var i in gameinfo.playerlist){
 						var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
-						str1 += gameinfo['player'+i].name+'\n'+temppoint;
+						str1 += gameinfo['player'+i].name+'\n'+temppoint1;
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
 							var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 						} else if (gameinfo['player'+i].insurance == 0 && gameinfo.blackjacklist.indexOf(r.sender) == -1) {//블랙잭x & 보험x
@@ -1030,7 +1030,7 @@ function blackjack(r){
 			D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 			str1 += ' → ' + temppoint+'\n';
 		}
-		/*
+		
 		if(gameinfo.splitdata.length > 0){
 			for( var i in gameinfo.splitdata){
 				var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0];
@@ -1053,7 +1053,7 @@ function blackjack(r){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 				str1 += ' → ' + temppoint+'\n';
 			}
-		}*/
+		}
 		r.replier.reply( str.trim() + '\n\n' + str1.trim() );
 		gameinfo.start2 = 0;
 	}
