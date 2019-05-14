@@ -938,7 +938,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
-					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
+					var temp = cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender));
 					for(var j in temp) {
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
@@ -1004,7 +1004,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
-					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
+					var temp = cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender));
 					for(var j in temp) {
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
