@@ -899,7 +899,7 @@ function blackjack(r){
 		if (gameinfo.dealer.state == 0){
 			if( gameinfo.dealer.sum > 21 ){
 				for( var i in gameinfo.playerlist){
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
+					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 					str1 += gameinfo['player'+i].name+'\n'+temppoint;
 					if(gameinfo['player'+i].state == 1){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -924,7 +924,7 @@ function blackjack(r){
 					str1 += ' → ' + temppoint+'\n';
 				}
 				for( var i in gameinfo.splitdata){
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] ));
+					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] )[0][0];
 					str1 += gameinfo.splitdata[i].name+'\n'+temppoint;
 					if(gameinfo.splitdata[i].state == 1){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Lose\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -950,7 +950,7 @@ function blackjack(r){
 				}
 			} else if( gameinfo.dealer.sum < 22 ){
 				for( var i in gameinfo.playerlist){
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
+					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 					str1 += gameinfo['player'+i].name+'\n'+temppoint;
 					if(gameinfo['player'+i].state == 1){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -987,7 +987,7 @@ function blackjack(r){
 					str1 += ' → ' + temppoint+'\n';
 				}
 				for( var i in gameinfo.splitdata){
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] ));
+					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0];
 					str1 += gameinfo.splitdata[i].name+'\n'+temppoint;
 					if(gameinfo.splitdata[i].state == 1){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Lose\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
