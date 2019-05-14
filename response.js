@@ -944,7 +944,7 @@ function blackjack(r){
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 			if(gameinfo['player'+num].sum == 21){
-				str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!');
+				str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
 				gameinfo['player'+num].isblackjack = 1;
 				gameinfo['player'+num].state = 4;
 				gameinfo.endcount +=1;
