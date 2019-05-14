@@ -924,6 +924,7 @@ function blackjack(r){
 					if( gameinfo['player'+i].splitcount > 0 ){
 						var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 						for(var j in temp ) {
+							temp = cloneObject(temp[j]);
 							var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 							if(temp[j].state == 1){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Lose\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -987,6 +988,7 @@ function blackjack(r){
 					if( gameinfo['player'+i].splitcount > 0 ){
 						var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 						for(var j in temp ) {
+							temp = cloneObject(temp[j]);
 							var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 							if(temp[j].state == 1){
 								str += temp[j].name+'님 ('+temp[j].sum+') : Lose\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
