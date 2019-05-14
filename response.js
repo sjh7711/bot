@@ -877,6 +877,26 @@ function blackjack(r){
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 5;
 			gameinfo.endcount +=1;
+			if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
+				if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
+					gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+					gameinfo['player'+num]= null;
+					gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+					var temp = [];
+					var breakc = 0;
+					for(var i in gameinfo.splitdata){
+						if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+							breakc += 1;
+						} else {
+							temp.push(gameinfo.splitdata[i])
+						}
+					}
+					gameinfo.splitdata = temp;
+					var str = '';
+					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+					r.replier.reply(str);
+				}
+			}
 		}
 		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
 			var str = '';
@@ -890,12 +910,52 @@ function blackjack(r){
 				gameinfo['player'+num].state = 1;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].sum = sum;
+				if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
+					if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
+						gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+						gameinfo['player'+num]= null;
+						gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+						var temp = [];
+						var breakc = 0;
+						for(var i in gameinfo.splitdata){
+							if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+								breakc += 1;
+							} else {
+								temp.push(gameinfo.splitdata[i])
+							}
+						}
+						gameinfo.splitdata = temp;
+						var str = '';
+						str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+						r.replier.reply(str);
+					}
+				}
 			} else if ( sum == 21){
 				str += '\n'+gameinfo['player'+num].name+'님의 Stay.';
 				gameinfo['player'+num].sum = sum;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].state = 2;
 				gameinfo['player'+num].end = 1;
+				if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
+					if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
+						gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+						gameinfo['player'+num]= null;
+						gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+						var temp = [];
+						var breakc = 0;
+						for(var i in gameinfo.splitdata){
+							if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+								breakc += 1;
+							} else {
+								temp.push(gameinfo.splitdata[i])
+							}
+						}
+						gameinfo.splitdata = temp;
+						var str = '';
+						str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+						r.replier.reply(str);
+					}
+				}
 			}
 			r.replier.reply(str);
 		}
@@ -916,6 +976,26 @@ function blackjack(r){
 					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.slice(0,2).map(v=>v.join(' ')).join(' | ') + ' | ?';
 				}
 				r.replier.reply(str);
+				if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
+					if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
+						gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+						gameinfo['player'+num]= null;
+						gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+						var temp = [];
+						var breakc = 0;
+						for(var i in gameinfo.splitdata){
+							if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+								breakc += 1;
+							} else {
+								temp.push(gameinfo.splitdata[i])
+							}
+						}
+						gameinfo.splitdata = temp;
+						var str = '';
+						str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+						r.replier.reply(str);
+					}
+				}
 			} else{
 				r.replier.reply('더블다운이 불가능합니다.');
 				return;
