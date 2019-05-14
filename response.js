@@ -934,6 +934,7 @@ function blackjackend(r, gameinfo){
 				str += temppoint1;
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
+				r.replier.reply(str);
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 					r.replier.reply('hi');
@@ -962,6 +963,7 @@ function blackjackend(r, gameinfo){
 						str += temppoint1;
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [temp[j].name, r.room] );
 						str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0] +'\n\n';
+						r.replier.reply(str);
 					}
 				}
 			}
@@ -1042,6 +1044,7 @@ function blackjackend(r, gameinfo){
 						str += temppoint1;
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [temp[j].name, r.room] );
 						str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0] +'\n\n';
+						r.replier.reply(str);
 					}
 				}
 			}
