@@ -1024,28 +1024,30 @@ function blackjack(r){
 					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 					str1 += ' → ' + temppoint+'\n';
 				}
-				/*
-				for( var i in gameinfo.splitdata){
-					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0];
-					str1 += gameinfo.splitdata[i].name+'\n'+temppoint1;
-					if(gameinfo.splitdata[i].result == 1){
-						var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet);
-					} else if (gameinfo.splitdata[i].result == 2) {
-						var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet);
-					} else if (gameinfo.splitdata[i].result == 3) {
-						var temppoint = temppoint1;
-					} else if (gameinfo.splitdata[i].result == 4) {
-						var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet*1.5);
-					} else if (gameinfo.splitdata[i].result == 5) {
-						var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet/2);
-					} else if (gameinfo.splitdata[i].result == 6) {
-						var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet*2);
-					} else if (gameinfo.splitdata[i].result == 7) {
-						var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet*2);
+				
+				if(gameinfo.splitdata.length > 0){
+					for( var i in gameinfo.splitdata){
+						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0];
+						str1 += gameinfo.splitdata[i].name+'\n'+temppoint1;
+						if(gameinfo.splitdata[i].result == 1){
+							var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet);
+						} else if (gameinfo.splitdata[i].result == 2) {
+							var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet);
+						} else if (gameinfo.splitdata[i].result == 3) {
+							var temppoint = temppoint1;
+						} else if (gameinfo.splitdata[i].result == 4) {
+							var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet*1.5);
+						} else if (gameinfo.splitdata[i].result == 5) {
+							var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet/2);
+						} else if (gameinfo.splitdata[i].result == 6) {
+							var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet*2);
+						} else if (gameinfo.splitdata[i].result == 7) {
+							var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet*2);
+						}
+						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
+						str1 += ' → ' + temppoint+'\n';
 					}
-					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
-					str1 += ' → ' + temppoint+'\n';
-				}*/
+				}
 			}
 		}
 		r.replier.reply( str.trim() + '\n\n' + str1.trim() );
