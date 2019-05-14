@@ -505,7 +505,6 @@ function blackjack(r){
 		var gameinfo = Flag.get('gameinfo', r.room);
 	}
 	
-	//강제종료
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
 		var gameinfo = {
 				start : 0,start1 : 0,start2 : 0,start3 : 0
@@ -518,7 +517,7 @@ function blackjack(r){
 	if (gameinfo.start4 == 1){
 		return;
 	}
-	//
+
 	if( r.msg == '!블랙잭'){
 		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요. 시작하려면 [시작]을 입력해주세요.\n[힛/스테이/더블다운/스플릿/서렌더]');
@@ -921,7 +920,7 @@ function blackjack(r){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Win\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 					}
-					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+					//D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 					str1 += ' → ' + temppoint+'\n';
 				}
 				for( var i in gameinfo.splitdata){
@@ -946,7 +945,7 @@ function blackjack(r){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Win\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1+Number(gameinfo.splitdata[i].bet);
 					}
-					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
+					//D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 					str1 += ' → ' + temppoint+'\n';
 				}
 			} else if( gameinfo.dealer.sum < 22 ){
@@ -984,7 +983,7 @@ function blackjack(r){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
 					}
-					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+					//D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 					str1 += ' → ' + temppoint+'\n';
 				}
 				for( var i in gameinfo.splitdata){
@@ -1021,7 +1020,7 @@ function blackjack(r){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Lose\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1-Number(gameinfo.splitdata[i].bet);
 					}
-					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
+					//D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 					str1 += ' → ' + temppoint+'\n';
 				}
 			}
