@@ -886,6 +886,7 @@ function blackjack(r){
 			} else if ( sum == 21){
 				str += '\n'+gameinfo['player'+num].name+'님의 Stay.';
 				gameinfo['player'+num].sum = sum;
+				gameinfo.endcount +=1;
 				gameinfo['player'+num].state = 2;
 				gameinfo['player'+num].end = 1;
 			}
