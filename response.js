@@ -759,7 +759,7 @@ function blackjack(r){
 				gameinfo.dealer.state = 1;
 				var str = '';
 				str += '딜러의 BlackJack!\n';
-				str += '⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + '] ('+gameinfo.dealer.sum +')\n;
+				str += '⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + '] ('+gameinfo.dealer.sum +')';
 				r.replier.reply( str );
 				var str = '';
 				for( var i in gameinfo.playerlist){
