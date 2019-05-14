@@ -842,6 +842,7 @@ function blackjack(r){
 				} else {
 					gameinfo['player'+num].splitcount += 1;
 				}
+				gameinfo.splitcount += 1;
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo.splitdata.push({
 						name : r.sender,
@@ -924,7 +925,6 @@ function blackjack(r){
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 2;
 			gameinfo['player'+num].end = 1;
-			gameinfo.splitcount += 1;
 			gameinfo.endcount +=1;
 			if(gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
 				if(gameinfo['player'+num].end == 1 && gameinfo.splitdata[0].end == 0){
