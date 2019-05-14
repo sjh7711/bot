@@ -986,7 +986,7 @@ function blackjack(r){
 			if( gameinfo.dealer.sum > 21 ){
 				for( var i in gameinfo.playerlist){
 					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
-					str1 += gameinfo.splitdata[i].name+'\n'+temppoint;
+					str1 += gameinfo['player'+i].name+'\n'+temppoint;
 					if(gameinfo['player'+i].state == 1){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
@@ -1010,11 +1010,7 @@ function blackjack(r){
 					str1 += ' → ' + temppoint+'\n';
 				}
 				for( var i in gameinfo.splitdata){
-<<<<<<< HEAD
 					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] ));
-=======
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
->>>>>>> parent of a67a65a... Update response.js
 					str1 += gameinfo.splitdata[i].name+'\n'+temppoint;
 					if(gameinfo.splitdata[i].state == 1){
 						str += gameinfo.splitdata[i].name+'님 ('+gameinfo.splitdata[i].sum+') : Lose\n⤷[' + gameinfo.splitdata[i].card.map(v=>v.join(' ')).join(' | ')+']\n';
