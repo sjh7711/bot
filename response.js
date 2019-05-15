@@ -526,7 +526,7 @@ function blackjack(r){
 			gameinfo.playerlist.push(r.sender);
 			gameinfo.player0 = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,isblackjack : 0,end : 0,splitcount : 0};
 			Flag.set("gameinfo", r.room , gameinfo);
-			r.replier.reply(r.sender+"님("+(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+')이 참가하셨습니다. 현재 1명');
+			r.replier.reply(r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+')이 참가하셨습니다. 현재 1명');
 		}else if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
 		}
@@ -540,7 +540,7 @@ function blackjack(r){
         if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000 ){
     		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,isblackjack : 0,end : 0,splitcount : 0}
         	gameinfo.playerlist.push(r.sender);
-            r.replier.reply(r.sender+"님("+(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
+            r.replier.reply(r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
         } else if (D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
         	r.replier.reply('돈이 부족합니다.');
         	return;
@@ -641,7 +641,7 @@ function blackjack(r){
 						var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
 					}
 					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-					str1 += gameinfo['player'+i].name+'\n'+temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+' → ' + temppoint.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+					str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
 				}
 				gameinfo.start1 = 0;
 				gameinfo.start3 = 0;
@@ -698,7 +698,7 @@ function blackjack(r){
 							var temppoint = temppoint1
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str1 += gameinfo['player'+i].name+'\n'+temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + temppoint.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+						str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
 					}
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
@@ -715,7 +715,7 @@ function blackjack(r){
 							var temppoint = temppoint1-Number(gameinfo['player'+i].bet/2);
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str1 += gameinfo['player'+i].name+'\n'+temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + temppoint.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+						str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
 					}
 					r.replier.reply( str1.trim() );
 					gameinfo.start1 = 0;
@@ -939,7 +939,7 @@ function blackjackend(r, gameinfo){
 					var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 				}
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-				str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+				str += String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
@@ -964,7 +964,7 @@ function blackjackend(r, gameinfo){
 							temppoint = temppoint1+Number(temp[j].bet);
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+						str += String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 					}
 				}
 			}
@@ -1003,7 +1003,7 @@ function blackjackend(r, gameinfo){
 					var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
 				}
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-				str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+				str += String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
@@ -1040,7 +1040,7 @@ function blackjackend(r, gameinfo){
 							var temppoint = temppoint1-Number(temp[j].bet);
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+						str += String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 					}
 				}
 			}
