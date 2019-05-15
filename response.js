@@ -743,10 +743,16 @@ function blackjack(r){
 			r.replier.reply('0 : 동의 안함 | 1 : 동의함');
 		}
 	}
+	var temp = D.selectForArray('blackjack', 'lose', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+	D.update('blackjack', {lose : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
-		if( r.msg == '스플릿' && num != -1 && gameinfo['player'+num].splitcount < 4){
-			if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
+		if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 4){
+			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+			if( r.msg == '스플릿' && num != -1 ){
+				var temp = D.selectForArray('blackjack', 'split', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+				D.update('blackjack', {split : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 				if(gameinfo['player'+num].card[0][1] == 'A' && gameinfo['player'+num].splitcount == 0){
 					gameinfo['player'+num].splitcount += 4;
 				} else if (gameinfo['player'+num].card[0][1] == 'A'){
