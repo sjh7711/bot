@@ -779,6 +779,7 @@ function blackjack(r){
 				var temp = gameinfo['player'+num].card.map(v=>v[1]);
 				var sum = blackjacksum(temp);
 				gameinfo['player'+num].sum = sum;
+				r.replier.reply(str);
 				if(gameinfo['player'+num].sum == 21){
 					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
 					gameinfo['player'+num].isblackjack = 1;
@@ -821,7 +822,6 @@ function blackjack(r){
 						}
 					}
 				}
-				r.replier.reply(str);
 			} else if (gameinfo['player'+num].splitcount > 3) {
 				r.replier.reply('Split을 더 이상 할 수 없습니다.');
 				return;
