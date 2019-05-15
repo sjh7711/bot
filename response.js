@@ -359,8 +359,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
     	
     	if( msg == "!전적초기화" && D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]) > 0 && work == 1 ){
-    		var point = Number(D.selectForArray('baseball', 'point', 'room=? and name = ?', [room, sender])-2000);
-    		var clear = Number(D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])-1);
+    		var point = D.selectForArray('baseball', 'point', 'room=? and name = ?', [room, sender])[0][0]-2000;
+    		var clear = D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])[0][0]-1;
     		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
     		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
     		inform(r);
@@ -519,15 +519,15 @@ function blackjack(r){
 	}
 
 	if( r.msg == '!블랙잭'){
-		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000  ){
+		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000  ){
 			r.replier.reply('블랙잭을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요. 시작하려면 [시작]을 입력해주세요.\n[힛/스테이/더블다운/스플릿/서렌더]');
 			var gameinfo = {starttime : new Date().getTime(),playerlist : [],betlist : [],insurlist : [],blackjacklist : [],splitdata : [],splitcount : 0,endcount : 0,start : 1,start1 : 0,start2 : 0,start3 : 0,start4 : 0};
 			gameinfo.dealer = {card : [],sum : 0,state : 0};
 			gameinfo.playerlist.push(r.sender);
 			gameinfo.player0 = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,isblackjack : 0,end : 0,splitcount : 0};
 			Flag.set("gameinfo", r.room , gameinfo);
-			r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+')이 참가하셨습니다. 현재 1명');
-		}else if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
+			r.replier.reply(r.sender+"님("+(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+')이 참가하셨습니다. 현재 1명');
+		}else if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
 		}
 		else {
@@ -537,11 +537,11 @@ function blackjack(r){
 	}
 	
 	if (r.msg == '참가' &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
-        if( Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) >= 10000 ){
+        if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000 ){
     		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,isblackjack : 0,end : 0,splitcount : 0}
         	gameinfo.playerlist.push(r.sender);
-            r.replier.reply(r.sender+"님("+Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
-        } else if (Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])) < 10000 ){
+            r.replier.reply(r.sender+"님("+(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 참가하셨습니다. 현재 "+gameinfo.playerlist.length+'명');
+        } else if (D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
         	r.replier.reply('돈이 부족합니다.');
         	return;
         }
@@ -632,8 +632,7 @@ function blackjack(r){
 				r.replier.reply( str );
 				var str = '';
 				for( var i in gameinfo.playerlist){
-					var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
-					str1 += gameinfo['player'+i].name+'\n'+temppoint;
+					var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 					if(gameinfo['player'+i].sum == 21 && gameinfo['player'+i].state == 4){
 						str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						var temppoint = temppoint1;
@@ -642,7 +641,7 @@ function blackjack(r){
 						var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
 					}
 					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-					str1 += ' → ' + temppoint+'\n';
+					str1 += gameinfo['player'+i].name+'\n'+temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+' → ' + temppoint.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
 				}
 				gameinfo.start1 = 0;
 				gameinfo.start3 = 0;
@@ -690,8 +689,7 @@ function blackjack(r){
 					}
 					
 					for(var i in gameinfo.playerlist){
-						var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
-						str1 += gameinfo['player'+i].name+'\n'+temppoint1;
+						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
 							var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 						} else if (gameinfo['player'+i].insurance == 0 && gameinfo.blackjacklist.indexOf(r.sender) == -1) {//블랙잭x & 보험x
@@ -700,7 +698,7 @@ function blackjack(r){
 							var temppoint = temppoint1
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str1 += ' → ' + temppoint+'\n';
+						str1 += gameinfo['player'+i].name+'\n'+temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + temppoint.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
 					}
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
@@ -708,8 +706,7 @@ function blackjack(r){
 				} else {
 					r.replier.reply('딜러는 BlackJack이 아닙니다.');
 					for(var i in gameinfo.playerlist){
-						var temppoint1 = Number(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] ));
-						str1 += gameinfo['player'+i].name+'\n'+temppoint1;
+						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
 							var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 						} else if (gameinfo['player'+i].insurance == 0 && gameinfo.blackjacklist.indexOf(r.sender) == -1) {//블랙잭x & 보험x -> 그대로 진행
@@ -718,7 +715,7 @@ function blackjack(r){
 							var temppoint = temppoint1-Number(gameinfo['player'+i].bet/2);
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str1 += ' → ' + temppoint+'\n';
+						str1 += gameinfo['player'+i].name+'\n'+temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + temppoint.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
 					}
 					r.replier.reply( str1.trim() );
 					gameinfo.start1 = 0;
@@ -941,9 +938,8 @@ function blackjackend(r, gameinfo){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Win\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
 				}
-				str += temppoint1;
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
+				str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
@@ -967,9 +963,8 @@ function blackjackend(r, gameinfo){
 							str += temp[j].name+'님 ('+temp[j].sum+') : Win\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							temppoint = temppoint1+Number(temp[j].bet);
 						}
-						str += temppoint1;
-						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [temp[j].name, r.room] );
-						str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0] +'\n\n';
+						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+						str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 					}
 				}
 			}
@@ -1007,9 +1002,8 @@ function blackjackend(r, gameinfo){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
 				}
-				str += temppoint1;
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
+				str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
@@ -1045,9 +1039,8 @@ function blackjackend(r, gameinfo){
 							str += temp[j].name+'님 ('+temp[j].sum+') : Lose\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							var temppoint = temppoint1-Number(temp[j].bet);
 						}
-						str += temppoint1;
-						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [temp[j].name, r.room] );
-						str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0] +'\n\n';
+						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+						str += temppoint1.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0].replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
 					}
 				}
 			}
@@ -1219,10 +1212,10 @@ function baseball(r){
 	if(Flag.get('supposelist', r.room) != 0){
 		if( r.msg == '!힌트' && Flag.get('supposelist', r.room).split('\n').length-1 > 7  && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender){
 			var str = '';
-			str += Flag.get('baseball', r.room)[Flag.get('k', r.room)]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] ))+' → ';
-			var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] ))-500;
+			str += Flag.get('baseball', r.room)[Flag.get('k', r.room)]+' | '+D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] )[0][0]+' → ';
+			var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] )[0][0]-500;
 			D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room]);
-			str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] ));
+			str += D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[Flag.get('k', r.room)], r.room] )[0][0];
 			
 			var rand = Math.floor(Math.random()*4);
 			var answer = ['_','_','_','_'];
@@ -1285,15 +1278,15 @@ function baseball(r){
 	}
 
 	if( r.msg == '!야구'){
-		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000  ){
+		if(Flag.get('start', r.room) == 0 && Flag.get('start1', r.room) == 0 &&  Flag.get('start2', r.room) ==  0 && D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 1000  ){
 			r.replier.reply('게임을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요. 시작하려면 [시작]을 입력해주세요.');
 			Flag.set('baseballtime', r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
 			Flag.set("suggest", r.room, r.sender);
 			var temp = [r.sender];
 			Flag.set("baseball", r.room , temp);
-			r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
-		}else if( Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
+			r.replier.reply(r.sender+"님("+D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]+")이 참가하셨습니다. 현재 "+temp.length+'명');
+		}else if( D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 1000 ){
 			r.replier.reply('포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.')
 		}
 		else {
@@ -1303,12 +1296,12 @@ function baseball(r){
 	}
 	
 	if (r.msg == '참가' && Flag.get("start", r.room) == 1 ){
-        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 && Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) >= 1000 ){//||
+        if( Flag.get('baseball', r.room).indexOf(r.sender)==-1 && Flag.get('baseball', r.room).length < 3 && D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 1000 ){//||
             var temp = Flag.get('baseball', r.room);
             temp.push(r.sender);
             Flag.set("baseball", r.room , temp);
-            r.replier.reply(r.sender+"님("+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room]))+")이 참가하셨습니다. 현재 "+temp.length+'명');
-        } else if (Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])) < 1000 ){
+            r.replier.reply(r.sender+"님("+D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]+")이 참가하셨습니다. 현재 "+temp.length+'명');
+        } else if (D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 1000 ){
         	r.replier.reply('포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.');
         	return;
         }
@@ -1403,32 +1396,32 @@ function baseball(r){
 				var str = '';
 				for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 					if(Flag.get('baseball', r.room)[i] != r.sender){
-						str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
-						var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))-1000;
+						str += Flag.get('baseball', r.room)[i]+' | '+D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0][0]+' → ';
+						var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0][0]-1000;
 						D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-						str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )) + ' \n';
+						str += D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0][0] + ' \n';
 					} else {
-						str += Flag.get('baseball', r.room)[i]+' | '+Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] ))+' → ';
-						var temppoint = Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0])+Number(Flag.get('baseball', r.room).length*1100) - 1000;
+						str += Flag.get('baseball', r.room)[i]+' | '+D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0][0]+' → ';
+						var temppoint = D.selectForArray('baseball', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]+Number(Flag.get('baseball', r.room).length*1100) - 1000;
 						D.update('baseball', {point : temppoint }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
-						str += Number(D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )) + ' \n';
+						str += D.selectForArray('baseball', 'point', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room] )[0][0] + ' \n';
 					}
 				}
 				
 				r.replier.reply(str+'     <'+r.sender+'님 정답!>');
 				
 				if(Flag.get('baseball', r.room).length > 1){
-					var tempwin = Number(D.selectForArray('baseball', 'win',  'name=? and room=?', [r.sender, r.room])[0])+1;
+					var tempwin = D.selectForArray('baseball', 'win',  'name=? and room=?', [r.sender, r.room])[0][0]+1;
 					D.update('baseball', {win : tempwin }, 'name=? and room=?', [r.sender, r.room]);
 					
 					for(var i=0;i<Flag.get('baseball', r.room).length;i++){
 						if(Flag.get('baseball', r.room)[i] != r.sender){
-							var templose = Number(D.selectForArray('baseball', 'lose', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]))+1;
+							var templose = D.selectForArray('baseball', 'lose', 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room])[0][0]+1;
 							D.update('baseball', {lose : templose }, 'name=? and room=?', [Flag.get('baseball', r.room)[i], r.room]);
 						}
 					}
 				} else {
-					var tempwin = Number(D.selectForArray('baseball', 'solowin',  'name=? and room=?', [r.sender, r.room])[0])+1;
+					var tempwin = D.selectForArray('baseball', 'solowin',  'name=? and room=?', [r.sender, r.room])[0][0]+1;
 					D.update('baseball', {solowin : tempwin }, 'name=? and room=?', [r.sender, r.room]);
 				}
 				Flag.set('supposelist', r.room, '');
@@ -1481,12 +1474,12 @@ function baseball(r){
 
 function inform(r){
 	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
-		var wincount = Number(D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room]));
-		var losecount = Number(D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room]));
+		var wincount = D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room])[0][0];
+		var losecount = D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room])[0][0];
 		var str = '';
 		str += r.sender+'님의 정보';
-		str += '\n순위 : '+(Number(D.selectForArray('baseball',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1) + '등';
-		str += '\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room]);
+		str += '\n순위 : '+Number(D.selectForArray('baseball',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender))+1 + '등';
+		str += '\n포인트 : '+D.selectForArray('baseball', 'point','name=? and room=?',[r.sender, r.room])[0][0];
 		str += '\n전적 : '+wincount+'승 / '+losecount+'패';
 		str += '\n승률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%";
 		str += '\n초기화카운트 : '+ Number(2 - D.selectForArray('baseball', 'clear', 'name=? and room=?',[r.sender, r.room]));
