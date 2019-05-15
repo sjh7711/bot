@@ -872,10 +872,11 @@ function blackjack(r){
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
+					r.replier.reply(str);
 				} else {
+					r.replier.reply(str);
 					break;
 				}
-				r.replier.reply(str);
 			} else {
 				break;
 			}
