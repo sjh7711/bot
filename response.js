@@ -846,33 +846,39 @@ function blackjack(r){
 	}
 	
 	if(gameinfo['player'+num].state > 0 && gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
-		if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender)[0].end == 0){
-			gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
-			gameinfo['player'+num]= null;
-			gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
-			var temp = [];
-			var breakc = 0;
-			for(var i in gameinfo.splitdata){
-				if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
-					breakc += 1;
-				} else {
-					temp.push(gameinfo.splitdata[i])
+		while(1){
+			if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender)[0].end == 0){
+				gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+				gameinfo['player'+num]= null;
+				gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+				var temp = [];
+				var breakc = 0;
+				for(var i in gameinfo.splitdata){
+					if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+						breakc += 1;
+					} else {
+						temp.push(gameinfo.splitdata[i])
+					}
 				}
+				gameinfo.splitdata = temp;
+				var str = '';
+				str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+				var temp = gameinfo['player'+num].card.map(v=>v[1]);
+				var sum = blackjacksum(temp);
+				gameinfo['player'+num].sum = sum;
+				if(gameinfo['player'+num].sum == 21){
+					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
+					gameinfo['player'+num].isblackjack = 1;
+					gameinfo['player'+num].state = 4;
+					gameinfo.endcount +=1;
+					gameinfo.end = 1;
+				} else {
+					break;
+				}
+				r.replier.reply(str);
+			} else {
+				break;
 			}
-			gameinfo.splitdata = temp;
-			var str = '';
-			str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
-			var temp = gameinfo['player'+num].card.map(v=>v[1]);
-			var sum = blackjacksum(temp);
-			gameinfo['player'+num].sum = sum;
-			if(gameinfo['player'+num].sum == 21){
-				str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
-				gameinfo['player'+num].isblackjack = 1;
-				gameinfo['player'+num].state = 4;
-				gameinfo.endcount +=1;
-				gameinfo.end = 1;
-			}
-			r.replier.reply(str);
 		}
 	}
 	
@@ -935,7 +941,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
-					var temp = cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender));
+					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 					for(var j in temp) {
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
@@ -1001,7 +1007,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
-					var temp = cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender));
+					var temp = gameinfo.splitdata.filter(v=>v.name == r.sender);
 					for(var j in temp) {
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
