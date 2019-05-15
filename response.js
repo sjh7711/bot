@@ -667,8 +667,16 @@ function blackjack(r){
 			}
 		}
 		if(gameinfo.dealer.card[0][1] == 'A'){
+			for(var i in gameinfo.playerlist){
+				var temp = D.selectForArray('blackjack', 'insurc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+				D.update('blackjack', {insurc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+			}
 			r.replier.reply('Insurance를 하실 분은 1을, 하지않으실 분은 0을 입력해주세요.');
 			if(gameinfo.blackjacklist.length > 0){
+				for(var i in blackjacklist){
+					var temp = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+					D.update('blackjack', {evenc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+				}
 				r.replier.reply('BlackJack이신 분 중 EvenMoney를 하실 분은 1을, 하지않으실 분은 0을 입력해주세요.');
 			}
 			gameinfo.start1 = 0;
@@ -717,8 +725,12 @@ function blackjack(r){
 			gameinfo['player'+num].insurance = r.msg;
 			if(r.msg != '0'){
 				if (gameinfo.blackjacklist.indexOf(r.sender) == -1 ){
+					var temp = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
+					D.update('blackjack', {insur : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
 					r.replier.reply(gameinfo['player'+num].name+'님이 Insurance를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				} else{
+					var temp = D.selectForArray('blackjack', 'even', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
+					D.update('blackjack', {even : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
 					r.replier.reply(gameinfo['player'+num].name+'님이 EvenMoney를 했습니다. ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				}
 			} else if ( r.msg == '0'){
@@ -1225,26 +1237,6 @@ function blackjackend(r, gameinfo){
 	for(var i in gameinfo.splitdata){
 		var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
 		D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
-	}
-	
-	if(gameinfo.insurlist.length > 0){
-		for(var i in gameinfo.playerlist){
-			if(gameinfo['player'+i].isblackjack == 1){
-				var temp = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-				D.update('blackjack', {evenc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
-				if(gameinfo['player'+i].insurance == 1){
-					var temp = D.selectForArray('blackjack', 'even', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-					D.update('blackjack', {even : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
-				}
-			} else {
-				var temp = D.selectForArray('blackjack', 'insurc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-				D.update('blackjack', {insurc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
-				if(gameinfo['player'+i].insurance == 1){
-					var temp = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-					D.update('blackjack', {insur : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
-				}
-			}
-		}
 	}
 	
 	r.replier.reply( str.trim() );
