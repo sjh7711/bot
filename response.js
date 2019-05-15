@@ -741,7 +741,6 @@ function blackjack(r){
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						}
 					}
-					
 					for(var i in gameinfo.playerlist){
 						var temp = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
 						D.update('blackjack', {insurw : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
@@ -783,8 +782,6 @@ function blackjack(r){
 			r.replier.reply('0 : 동의 안함 | 1 : 동의함');
 		}
 	}
-	var temp = D.selectForArray('blackjack', 'lose', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-	D.update('blackjack', {lose : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
 		if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 4){
