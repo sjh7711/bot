@@ -104,10 +104,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         replier.reply( e + "\n" + e.stack);
 	}
 	
-	if( stop == 1 ){
-		return;
-	} 
-	
 	try {
 		blankFunc1(r);
 		
@@ -139,6 +135,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if(funcc != -1){
 			var work = controlPanel[funcc][room.replace(/ /g, '_')];
 		}
+		
+		if( stop == 1 ){
+			return;
+		} 
 		
 		if ((msg.indexOf("!사진조회") == 0 && work == 1) || Flag.get('image', r.room)== 1){
 			loadimage(r);
