@@ -797,8 +797,8 @@ function blackjack(r){
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0  && num != -1){
 		if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 4){
-			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
+			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
 			if( r.msg == '스플릿' ){
 				if (gameinfo['player'+num].splitcount > 3) {
 					r.replier.reply('Split을 더 이상 할 수 없습니다.');
