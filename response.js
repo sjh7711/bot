@@ -1209,6 +1209,11 @@ function blackjackend(r, gameinfo){
 		}
 	}
 	
+	for(var i in gameinfo.playerlist){
+		var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+		D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+	}
+	
 	if(gameinfo.insurlist.length > 0){
 		for(var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].isblackjack == 1){
