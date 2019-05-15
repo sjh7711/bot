@@ -956,7 +956,7 @@ function blackjack(r){
 		}
 	}
 	
-	if(gameinfo['player'+num].state > 0 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0).length > 0){
+	if( gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0).length > 0 && gameinfo['player'+num].state > 0 ){
 		while(1){
 			if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
 				gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
