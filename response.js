@@ -657,7 +657,7 @@ function blackjack(r){
 		}
 	}
 	
-	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length  ){
+	if ( gameinfo.start3 == 1 && !isNaN(r.msg) && gameinfo.playerlist.indexOf(r.sender) != -1 && gameinfo.insurlist.indexOf(r.sender) == -1 && gameinfo.insurlist.length < gameinfo.playerlist.length  ){
 		if( r.msg == 0 || r.msg == 1 ){
 			gameinfo.insurlist.push(r.sender);
 			gameinfo['player'+num].insurance = r.msg;
