@@ -811,6 +811,8 @@ function blackjack(r){
 				} else if (gameinfo['player'+num].card[0][1] == 'A'){
 					r.replier.reply('스플릿이 불가능합니다.');
 					return;
+				} else {
+					gameinfo['player'+num].splitcount+= 1;
 				}
 				gameinfo.splitcount += 1;
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
