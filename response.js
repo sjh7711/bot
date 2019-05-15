@@ -487,16 +487,25 @@ function blackinform(r){
 		var evenc = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var insur = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var insurc = D.selectForArray('blackjack', 'insurc', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var insurw = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var sur = D.selectForArray('blackjack', 'sur', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0]; 
 		
 		var str = '';
 		str += r.sender+'님의 정보';
 		str += '\n순위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
 		str += '\n포인트 : '+D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0];
-		str += '\n이득확률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%";
-		str += '\n본전확률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%";
-		str += '\n손해확률 : '+ Math.floor( wincount / (losecount + wincount)*1000)/10 + "%";
-		str += '\n세부전적\n'+ es + '';
+		str += '\n이득확률 : '+ Math.floor( (wincount + blackjack + ddw ) / all*1000)/10 + "%";
+		str += '\n본전확률 : '+ Math.floor( (push + ddp ) / all*1000)/10 + "%";
+		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
+		str += '\n세부전적\n'+ es;
+		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
+		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
+		str += '\nInsurance 성공 확률 : ' + Math.floor( insurw/insur *1000 )/10 + "%";
+		str += '\nEvenMoney 빈도 : ' + Math.floor( even/evenc *1000 )/10 + "%";
+		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
+		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
+ 		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 ;
 		r.replier.reply(str);
 		return;
 	}else {
@@ -734,6 +743,8 @@ function blackjack(r){
 					}
 					
 					for(var i in gameinfo.playerlist){
+						var temp = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+						D.update('blackjack', {insurw : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
 							var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
@@ -1212,6 +1223,11 @@ function blackjackend(r, gameinfo){
 	for(var i in gameinfo.playerlist){
 		var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
 		D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+	}
+	
+	for(var i in gameinfo.splitdata){
+		var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
+		D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 	}
 	
 	if(gameinfo.insurlist.length > 0){
