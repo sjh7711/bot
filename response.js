@@ -1109,7 +1109,7 @@ function blackjackend(r, gameinfo){
 			}
 		}
 	}
-	
+	/*
 	if(gameinfo.insurlist.length > 0){
 		for(var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].isblackjack == 1 && gameinfo['player'+i].insurance == 1){
@@ -1123,7 +1123,7 @@ function blackjackend(r, gameinfo){
 				D.update('blackjack', {insurc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 			}
 		}
-	}
+	}*/
 	
 	r.replier.reply( str.trim() );
 	gameinfo.start2 = 0;
