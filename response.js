@@ -474,8 +474,8 @@ function func(r) {
 
 function blackinform(r){
 	if(D.selectForArray('blackjack', null, 'name=? and room=?', [r.sender, r.room]) !=undefined){
-		var wincount = D.selectForArray('blackjack', 'win', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var losecount =  D.selectForArray('blackjack', 'lose', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var win = D.selectForArray('blackjack', 'win', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var lose =  D.selectForArray('blackjack', 'lose', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var blackjack = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var splitc = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var split = D.selectForArray('blackjack', 'split', 'name=? and room=?', [r.sender, r.room])[0][0];
@@ -495,7 +495,7 @@ function blackinform(r){
 		str += r.sender+'님의 정보';
 		str += '\n순위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
 		str += '\n포인트 : '+D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0];
-		str += '\n이득확률 : '+ Math.floor( (wincount + blackjack + ddw ) / all*1000)/10 + "%";
+		str += '\n이득확률 : '+ Math.floor( (win + black + ddw ) / all*1000)/10 + "%";
 		str += '\n본전확률 : '+ Math.floor( (push + ddp ) / all*1000)/10 + "%";
 		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
 		str += '\n세부전적\n'+ es;
