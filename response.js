@@ -472,6 +472,10 @@ function func(r) {
     }
 }
 
+function blackinform(r){
+	
+}
+
 function blackjacksum(temp){
 	var sum = 0;
 	var acount = 0;
