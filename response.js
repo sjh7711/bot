@@ -344,6 +344,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	blackjack(r);
         }
         
+        if(msg == '!블랙잭정보' && work == 1 ){
+    		blackinform(r);
+    		return;
+    	}
+    	
+    	if(msg == '!블랙잭랭킹' && work == 1 ){
+    		var i = 1;
+    		replier.reply('전체 순위\n'+es+D.selectForString('blackjack', null , 'room=?', room, {orderBy:"point desc"}));
+    		return;
+    	}
+        
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
     		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0, clear : 2});
@@ -369,6 +380,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	
     	if(msg == '!야구정보' && work == 1 ){
     		inform(r);
+    		return;
     	}
     	
     	if(msg == '!야구랭킹' && work == 1 ){
@@ -769,6 +781,41 @@ function blackjack(r){
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
+					while(1){
+						if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender)[0].end == 0){
+							gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+							gameinfo['player'+num]= null;
+							gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+							var temp = [];
+							var breakc = 0;
+							for(var i in gameinfo.splitdata){
+								if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+									breakc += 1;
+								} else {
+									temp.push(gameinfo.splitdata[i])
+								}
+							}
+							gameinfo.splitdata = temp;
+							var str = '';
+							str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+							var temp = gameinfo['player'+num].card.map(v=>v[1]);
+							var sum = blackjacksum(temp);
+							gameinfo['player'+num].sum = sum;
+							if(gameinfo['player'+num].sum == 21){
+								str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
+								gameinfo['player'+num].isblackjack = 1;
+								gameinfo['player'+num].state = 4;
+								gameinfo.endcount +=1;
+								gameinfo.end = 1;
+								r.replier.reply(str);
+							} else {
+								r.replier.reply(str);
+								break;
+							}
+						} else {
+							break;
+						}
+					}
 				}
 				r.replier.reply(str);
 			} else if (gameinfo['player'+num].splitcount > 3) {
