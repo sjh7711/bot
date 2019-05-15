@@ -367,11 +367,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
     	}
     	
-    	if(msg == '!정보' && work == 1 ){
+    	if(msg == '!야구정보' && work == 1 ){
     		inform(r);
     	}
     	
-    	if(msg == '!랭킹' && work == 1 ){
+    	if(msg == '!야구랭킹' && work == 1 ){
     		var i = 1;
     		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['point', 'win', 'lose', 'solowin', 'name'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2) +'. [' +String(v[0]).extension(' ',6)+'P '+String(v[1]).extension(' ',2)+'승 '+ String(v[2]).extension(' ',2)+'패 ' +String(v[3]).extension(' ',3)+'S/P ] ' +String(v[4])).join('\n'));
     		return;
@@ -428,9 +428,9 @@ function func(r) {
 [1246]이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
 단서를 통해 정답인 1325를 맞추면 됩니다. 참가비는 1000point입니다. 1000point아래로 내려가면 별도의 안내가 있을 예정입니다.\n\
 최대 3인까지 가능하며 혼자서도 가능하지만 전적은 기록되지 않습니다.\n\
-[!정보]를 통해 자신의 각종 정보를 확인할 수 있습니다.\n\
-[!랭킹]을 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.\n\
-[!강제종료]를 통해 게임을 강제로 종료할 수 있습니다. 혼자 플레이 중인 경우 아무나 종료 가능하고 2인 이상일 경우 현재 참가중인 플레이어 중에서만 강제종료가 가능합니다.\n\
+[!야구정보]를 통해 자신의 각종 정보를 확인할 수 있습니다.\n\
+[!야구랭킹]을 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.\n\
+[!야구종료]를 통해 게임을 강제로 종료할 수 있습니다. 혼자 플레이 중인 경우 아무나 종료 가능하고 2인 이상일 경우 현재 참가중인 플레이어 중에서만 강제종료가 가능합니다.\n\
 [!패스]를 통해 상대방이 30초 이상 답하지 않을 경우 그 다음 턴으로 차례를 넘길 수 있습니다.\n\
 [!힌트]를 통해 8번째 턴 부터 500포인트를 사용하여 숫자 하나에 대한 정보를 얻을 수 있습니다. 힌트를 쓰는 즉시 포인트는 차감되기 때문에 강제종료를 하더라도 포인트는 돌아오지 않습니다. 신중하게 사용해주세요.\n\
 [!전적초기화]를 통해 현재 포인트에서 2000점이 차감된 상태로 전적을 초기화 할 수 있습니다. 최대 2회까지 가능합니다.\n\
@@ -1229,7 +1229,7 @@ function baseball(r){
 	}
 	
 	
-	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length > 1 ){
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!야구종료' && Flag.get('baseball', r.room).length > 1 ){
 		for(var i=0 ; i<Flag.get('baseball', r.room).length ; i++ ){
 			if(r.sender == Flag.get('baseball', r.room)[i]){
 				Flag.set('start', r.room, 0);
@@ -1263,7 +1263,7 @@ function baseball(r){
 		}
 	}
 	
-	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!강제종료' && Flag.get('baseball', r.room).length == 1 ){
+	if( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && r.msg == '!야구종료' && Flag.get('baseball', r.room).length == 1 ){
 		Flag.set('start', r.room, 0);
 		Flag.set('start1', r.room, 0);
 		Flag.set('start2', r.room, 0);
