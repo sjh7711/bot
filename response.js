@@ -795,11 +795,15 @@ function blackjack(r){
 		}
 	}
 	
-	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0 ){
+	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0  && num != -1){
 		if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 4){
 			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
 			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
-			if( r.msg == '스플릿' && num != -1 ){
+			if( r.msg == '스플릿' ){
+				if (gameinfo['player'+num].splitcount > 3) {
+					r.replier.reply('Split을 더 이상 할 수 없습니다.');
+					return;
+				}
 				var temp = D.selectForArray('blackjack', 'split', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
 				D.update('blackjack', {split : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 				if(gameinfo['player'+num].card[0][1] == 'A' && gameinfo['player'+num].splitcount == 0){
@@ -807,8 +811,6 @@ function blackjack(r){
 				} else if (gameinfo['player'+num].card[0][1] == 'A'){
 					r.replier.reply('스플릿이 불가능합니다.');
 					return;
-				} else {
-					gameinfo['player'+num].splitcount += 1;
 				}
 				gameinfo.splitcount += 1;
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
@@ -877,15 +879,13 @@ function blackjack(r){
 						}
 					}
 				}
-			} else if (gameinfo['player'+num].splitcount > 3) {
-				r.replier.reply('Split을 더 이상 할 수 없습니다.');
-				return;
 			}
-		} else if ( r.msg == '스플릿' && num != -1 ) {
+		} else if ( r.msg == '스플릿') {
 			r.replier.reply('Split을 할 수 있는 패가 아닙니다.');
 			return;
 		}
-		if( r.msg == '서렌더' && num != -1 ){
+		
+		if( r.msg == '서렌더' ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 Surrender.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
@@ -894,7 +894,8 @@ function blackjack(r){
 			gameinfo['player'+num].end = 1;
 			gameinfo.endcount +=1;
 		}
-		if( r.msg == '힛' && num != -1 && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
+		
+		if( r.msg == '힛' && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
 			var str = '';
 			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
@@ -916,7 +917,7 @@ function blackjack(r){
 			}
 			r.replier.reply(str);
 		}
-		if( r.msg == '더블다운' && num != -1 ){
+		if( r.msg == '더블다운' ){
 			if(gameinfo['player'+num].card.length==2){
 				var str = gameinfo['player'+num].name+'님의 DoubleDown.\n';
 				gameinfo['player'+num].state = 6;
@@ -940,7 +941,7 @@ function blackjack(r){
 				return;
 			}
 		}
-		if( (r.msg == '스탠드' || r.msg == '스테이')  && num != -1 && gameinfo['player'+num].state==0 ){
+		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].state==0 ){
 			r.replier.reply(gameinfo['player'+num].name+'님의 Stay.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
