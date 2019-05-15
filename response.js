@@ -878,6 +878,8 @@ function blackjack(r){
 							break;
 						}
 					}
+				} else {
+					r.replier.reply(str);
 				}
 			}
 		} else if ( r.msg == '스플릿') {
