@@ -836,18 +836,18 @@ function blackjack(r){
 				var temp = gameinfo['player'+num].card.map(v=>v[1]);
 				var sum = blackjacksum(temp);
 				gameinfo['player'+num].sum = sum;
-				r.replier.reply(str);
 				if(gameinfo['player'+num].sum == 21){
 					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
 					gameinfo['player'+num].isblackjack = 1;
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
+					r.replier.reply(str);
 					while(1){
-						if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender)[0].end == 0){
+						if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
 							gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
 							gameinfo['player'+num]= null;
-							gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+							gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0]);
 							var temp = [];
 							var breakc = 0;
 							for(var i in gameinfo.splitdata){
@@ -954,10 +954,10 @@ function blackjack(r){
 	
 	if(gameinfo['player'+num].state > 0 && gameinfo.splitdata.filter(v=>v.name == r.sender).length > 0){
 		while(1){
-			if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender)[0].end == 0){
+			if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
 				gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
 				gameinfo['player'+num]= null;
-				gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender)[0]);
+				gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0]);
 				var temp = [];
 				var breakc = 0;
 				for(var i in gameinfo.splitdata){
