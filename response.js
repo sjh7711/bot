@@ -973,10 +973,10 @@ function blackjackend(r, gameinfo){
 				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1-Number(gameinfo['player'+i].bet);
-				} else if (gameinfo['player'+i].state == 4 gameinfo['player'+i].insurance == 0){
+				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 0){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1+Number(gameinfo['player'+i].bet*1.5);
-				} else if (gameinfo['player'+i].state == 4 gameinfo['player'+i].insurance == 1){
+				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : EvenMoney\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1;
 				} else if (gameinfo['player'+i].state == 5){
@@ -1043,10 +1043,10 @@ function blackjackend(r, gameinfo){
 				} else if ((gameinfo['player'+i].state == 6 && gameinfo.dealer.sum > gameinfo['player'+i].sum) || gameinfo['player'+i].state == 7 ){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : DoubleDownLose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1-Number(gameinfo['player'+i].bet*2);
-				} else if (gameinfo['player'+i].state == 4 gameinfo['player'+i].insurance == 0){
+				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 0){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1+Number(gameinfo['player'+i].bet*1.5);
-				} else if (gameinfo['player'+i].state == 4 gameinfo['player'+i].insurance == 1){
+				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : EvenMoney\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1;
 				} else if (gameinfo['player'+i].state == 4 && gameinfo.dealer.sum == gameinfo['player'+i].sum) {
