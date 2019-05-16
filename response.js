@@ -513,7 +513,7 @@ function blackinform(r){
 		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
 		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
  		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%\n";
- 		str += '\n게임승리 횟수 : '+all;
+ 		str += '\n전체 게임 횟수 : '+all;
  		str += '\n단순 승리 횟수 : '+win;
  		str += '\nBlackJack 횟수 : '+blackjack;
  		str += '\nBlackJack 승리 횟수 : ' + blackjack-bpush;
