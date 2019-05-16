@@ -512,7 +512,17 @@ function blackinform(r){
 		str += '\nEvenMoney 빈도 : ' + Math.floor( even/evenc *1000 )/10 + "%";
 		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
 		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
- 		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%";
+ 		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%\n";
+ 		str += '\n게임승리 횟수 : '+all;
+ 		str += '\n단순 승리 횟수 : '+win;
+ 		str += '\nBlackJack 횟수 : '+blackjack;
+ 		str += '\nBlackJack 승리 횟수 : ' + blackjack-bpush;
+ 		str += '\nPush 횟수 : '+push;
+ 		str += '\nDoubleDown 승리 횟수 : '+ddw;
+ 		str += '\nDoubleDown 패배 횟수 : '+ddl;
+ 		str += '\nDoubleDown 푸시 횟수 : '+ddp;
+ 		str += '\nSurrender 횟수 : ' + sur;
+ 		str += '\n패배 횟수 : ' + lose;
 		r.replier.reply(str.replace(/NaN%/g, '데이터 없음'));
 		return;
 	}else {
