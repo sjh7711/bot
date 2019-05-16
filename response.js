@@ -495,7 +495,7 @@ function blackinform(r){
 		var insurc = D.selectForArray('blackjack', 'insurc', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var insurw = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var sur = D.selectForArray('blackjack', 'sur', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0]; 
+		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var bpush = win + blackjack + ddw + push + ddp + lose + ddl + sur - all;
 		
 		var str = '';
@@ -516,7 +516,7 @@ function blackinform(r){
  		str += '\n전체 게임 횟수 : '+all;
  		str += '\n단순 승리 횟수 : '+win;
  		str += '\nBlackJack 횟수 : '+blackjack;
- 		str += '\nBlackJack 승리 횟수 : ' + blackjack-bpush;
+ 		str += '\nBlackJack 승리 횟수 : ' + Number(blackjack-bpush);
  		str += '\nPush 횟수 : '+push;
  		str += '\nDoubleDown 승리 횟수 : '+ddw;
  		str += '\nDoubleDown 패배 횟수 : '+ddl;
