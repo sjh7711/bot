@@ -796,7 +796,7 @@ function blackjack(r){
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0  && num != -1){
-		if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 4){
+		if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 4 && ]gameinfo['player'+num].card.length == 2){
 			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
 			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
 			if( r.msg == '스플릿' ){
