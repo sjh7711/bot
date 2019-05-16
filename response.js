@@ -937,8 +937,10 @@ function blackjack(r){
 	}
 	
 	if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 3 && gameinfo['player'+num].card.length == 2){
-		var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
-		D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
+		if(gameinfo['player'+num].end == 0) {
+			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
+			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
+		}
 		if( r.msg == '스플릿' || r.msg == 'ㅅㅍㄹ' ){
 			var temp = D.selectForArray('blackjack', 'split', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
 			D.update('blackjack', {split : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
