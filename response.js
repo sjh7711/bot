@@ -505,7 +505,7 @@ function blackinform(r){
 		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
 		str += '\n본전확률 : '+ Math.floor( (push + ddp ) / all*1000)/10 + "%";
 		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
-		str += '\n세부전적\n'+ es;
+		str += '\n\n세부전적'+ es;
 		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
 		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
 		str += '\nInsurance 성공 확률 : ' + Math.floor( insurw/insur *1000 )/10 + "%";
