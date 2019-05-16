@@ -771,7 +771,7 @@ function blackjack(r){
 					gameinfo.start3 = 0;
 					r.replier.reply( str.trim() + '\n\n' + str1.trim() );
 				} else {
-					str1 += '딜러는 BlackJack이 아닙니다.'
+					str1 += '딜러는 BlackJack이 아닙니다.\n'
 					for(var i in gameinfo.playerlist){
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
