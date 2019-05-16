@@ -523,11 +523,11 @@ function blackinform(r){
 
 function givemoney(r){
 	var data = r.msg.substr(7).split(',');
-	var money = data[0];
+	var money = Number(data[0]);
 	var who = data[1];
 	var room = data[2];
 	var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0];
-	D.update('blackjack', {point: Number(temp + money)}, 'name=? and room = ?', [who, room]);
+	D.update('blackjack', {point: temp + money}, 'name=? and room = ?', [who, room]);
 	r.replier.reply(room+'방의' + who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0])
 	Api.replyRoom(room, who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0] );
 }
