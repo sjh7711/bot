@@ -587,7 +587,7 @@ function blackjack(r){
 	
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
 		if( gameinfo.start == 0 ){
-			for(var i in playerlist){
+			for(var i in gameinfo.playerlist){
 				gameinfo['player'+i].bet = 0
 			}
 			if(gameinfo.splitdata.length > 0 ){
