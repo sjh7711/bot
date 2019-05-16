@@ -833,7 +833,7 @@ function blackjack(r){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				var str = '';
-				str += r.sender+'님의 Split\n  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
+				str += r.sender+'님의 Split  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')\n';
 				str += gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 				var temp = gameinfo['player'+num].card.map(v=>v[1]);
 				var sum = blackjacksum(temp);
