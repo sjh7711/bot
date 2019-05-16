@@ -880,7 +880,7 @@ function blackjack(r){
 					r.replier.reply(str);
 				}
 			}
-		} else if (gameinfo['player'+num].splitcount > 3) {
+		} else if ( r.msg == '스플릿' && gameinfo['player'+num].splitcount > 3) {
 			r.replier.reply('Split을 더 이상 할 수 없습니다.');
 			return;
 		} else if ( r.msg == '스플릿') {
