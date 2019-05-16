@@ -839,7 +839,7 @@ function blackjack(r){
 					gameinfo['player'+num].isblackjack = 1;
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
-					gameinfo.end = 1;
+					gameinfo['player'+num].end = 1;
 					r.replier.reply(str);
 					while(1){
 						if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
