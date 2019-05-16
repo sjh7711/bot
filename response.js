@@ -707,6 +707,8 @@ function blackjack(r){
 				gameinfo['player'+i].state = 4;
 				gameinfo.blackjacklist.push(gameinfo['player'+i].name);
 				gameinfo.endcount +=1;
+				var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+				D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 				r.replier.reply(gameinfo['player'+i].name + '님의 BlackJack!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')');
 			}
 		}
@@ -975,6 +977,8 @@ function blackjack(r){
 				gameinfo['player'+num].state = 4;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].end = 1;
+				var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+				D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 				str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 				r.replier.reply(str);
 				while(1){
@@ -1001,6 +1005,8 @@ function blackjack(r){
 							gameinfo['player'+num].state = 4;
 							gameinfo.endcount +=1;
 							gameinfo.end = 1;
+							var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+							D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 							str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 							r.replier.reply(str);
 						} else {
@@ -1045,10 +1051,12 @@ function blackjack(r){
 				var sum = blackjacksum(temp);
 				gameinfo['player'+num].sum = sum;
 				if(gameinfo['player'+num].sum == 21){
-					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
+					var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+					D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
+					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
 					str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')'
 					r.replier.reply(str);
 				} else {
