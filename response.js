@@ -513,7 +513,7 @@ function blackinform(r){
 		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
 		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
  		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%";
-		r.replier.reply(str.replace(/NaN/g, '데이터 없음'));
+		r.replier.reply(str.replace(/NaN%/g, '데이터 없음'));
 		return;
 	}else {
 		r.replier.reply('알 수 없습니다.');
