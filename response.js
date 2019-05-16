@@ -90,22 +90,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	
 	var r = { replier: replier, msg: msg, sender: sender, room: room, imageDB :imageDB};
 	
-	if (msg == "사진을 보냈습니다."){
-		saveImage(r);
-	}
-	
-	if (sender != "시립봇") {
-		D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
-	}
-
-	if( msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('\uc885\ud654') > -1 ){
-		Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
-	}
-
-	if( reloadcheck == 1  ){
-		return;
-	}
-	
 	I.run(room, sender, msg);
 	
 	try {
@@ -123,6 +107,22 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		blankFunc1(r);
 		
+		if (sender != "시립봇") {
+			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
+		}
+		
+		if (msg == "사진을 보냈습니다."){
+			saveImage(r);
+		}
+	
+		if( msg.indexOf('주현') > -1 || msg.indexOf('피치') > -1 || msg.indexOf('\uc885\ud654') > -1 ){
+			Api.replyRoom('test', room+ ' | ' + sender +'\n' + msg);
+		}
+	
+		if( reloadcheck == 1  ){
+			return;
+		}
+	
 		var funcc = -1;
 		
 		for(var i in control){
