@@ -586,7 +586,9 @@ function blackjack(r){
 	}
 	
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
-		blackjackend(r,gameinfo);
+		if( gameinfo.start == 0 ){
+			blackjackend(r,gameinfo);
+		}
 		var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
 		Flag.set('gameinfo', r.room, gameinfo);
 		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
