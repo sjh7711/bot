@@ -638,7 +638,7 @@ function blackjack(r){
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			}
 			gameinfo['player'+num].bet = Number(r.msg);
-			r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.\n('+gameinfo.betlist.length/gameinfo.playerlist.length+')');
+			r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 			gameinfo.betlist.push(r.sender);
 		} else {
 			r.replier.reply('배팅금액은 1만원 ~ 50만원 입니다.');
@@ -659,11 +659,11 @@ function blackjack(r){
 		r.replier.reply(str.trim());
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
-				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!');
 				gameinfo['player'+i].isblackjack = 1;
 				gameinfo['player'+i].state = 4;
 				gameinfo.blackjacklist.push(gameinfo['player'+i].name);
 				gameinfo.endcount +=1;
+				r.replier.reply(gameinfo['player'+i].name + '님의 블랙잭!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')');
 			}
 		}
 		if(gameinfo.dealer.card[0][1] == 'A'){
@@ -833,17 +833,17 @@ function blackjack(r){
 				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 				var str = '';
-				str += r.sender+'님이 Split을 했습니다.\n';
+				str += r.sender+'님이 Split을 했습니다.\n  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 				str += gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 				var temp = gameinfo['player'+num].card.map(v=>v[1]);
 				var sum = blackjacksum(temp);
 				gameinfo['player'+num].sum = sum;
 				if(gameinfo['player'+num].sum == 21){
-					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
 					gameinfo['player'+num].isblackjack = 1;
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo['player'+num].end = 1;
+					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 					r.replier.reply(str);
 					while(1){
 						if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
@@ -866,11 +866,11 @@ function blackjack(r){
 							var sum = blackjacksum(temp);
 							gameinfo['player'+num].sum = sum;
 							if(gameinfo['player'+num].sum == 21){
-								str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
 								gameinfo['player'+num].isblackjack = 1;
 								gameinfo['player'+num].state = 4;
 								gameinfo.endcount +=1;
 								gameinfo.end = 1;
+								str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 								r.replier.reply(str);
 							} else {
 								r.replier.reply(str);
@@ -893,13 +893,13 @@ function blackjack(r){
 		}
 		
 		if( r.msg == '서렌더' ){
-			r.replier.reply(gameinfo['player'+num].name+'님의 Surrender.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 5;
 			gameinfo['player'+num].end = 1;
 			gameinfo.endcount +=1;
+			r.replier.reply(gameinfo['player'+num].name+'님의 Surrender.'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')');
 		}
 		
 		if( r.msg == '힛' && gameinfo['player'+num].state == 0 && gameinfo['player'+num].state==0 ) {
@@ -910,17 +910,19 @@ function blackjack(r){
 			var sum = blackjacksum(temp);
 			str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
 			if(sum > 21){
-				str += '\n'+gameinfo['player'+num].name+'님의 Bust.';
 				gameinfo['player'+num].state = 1;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].sum = sum;
 				gameinfo['player'+num].end = 1;
+				str += '\n'+gameinfo['player'+num].name+'님의 Bust.';
+				str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 			} else if ( sum == 21){
-				str += '\n'+gameinfo['player'+num].name+'님의 Stay.';
 				gameinfo['player'+num].sum = sum;
 				gameinfo.endcount +=1;
 				gameinfo['player'+num].state = 2;
 				gameinfo['player'+num].end = 1;
+				str += '\n'+gameinfo['player'+num].name+'님의 Stay.';
+				str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 			}
 			r.replier.reply(str);
 		}
@@ -935,11 +937,13 @@ function blackjack(r){
 				gameinfo['player'+num].sum = sum;
 				gameinfo.endcount +=1;
 				if(sum > 21){
-					str = gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ')+'\n'+ gameinfo['player'+num].name+'님의 Bust.';
+					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ')+'\n'+ gameinfo['player'+num].name+'님의 Bust.';
+					str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 					gameinfo['player'+num].state = 7;
 					gameinfo['player'+num].end = 1;
 				} else {
 					str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.slice(0,2).map(v=>v.join(' ')).join(' | ') + ' | ?';
+					str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 					gameinfo['player'+num].end = 1;
 				}
 				r.replier.reply(str);
@@ -949,13 +953,14 @@ function blackjack(r){
 			}
 		}
 		if( (r.msg == '스탠드' || r.msg == '스테이')  && gameinfo['player'+num].state==0 ){
-			r.replier.reply(gameinfo['player'+num].name+'님의 Stay.');
 			var temp = gameinfo['player'+num].card.map(v=>v[1]);
 			var sum = blackjacksum(temp);
 			gameinfo['player'+num].sum = sum;
 			gameinfo['player'+num].state = 2;
 			gameinfo['player'+num].end = 1;
 			gameinfo.endcount +=1;
+			r.replier.reply(gameinfo['player'+num].name+'님의 Stay.'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')');
+			
 		}
 	}
 	
@@ -986,6 +991,7 @@ function blackjack(r){
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
+					str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')'
 					r.replier.reply(str);
 				} else {
 					r.replier.reply(str);
