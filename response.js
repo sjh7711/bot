@@ -689,6 +689,9 @@ function blackjack(r){
 				gameinfo.dealer.state = 1;
 				var str = '';
 				var str1 = '';
+				gameinfo.start4 = 1;
+				java.lang.Thread.sleep(1500);
+				gameinfo.start4 = 0;
 				str += '딜러의 BlackJack!\n';
 				str += '⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + '] ('+gameinfo.dealer.sum +')';
 				r.replier.reply( str );
@@ -744,6 +747,9 @@ function blackjack(r){
 				if(sum == 21 ){
 					gameinfo.dealer.sum = sum;
 					gameinfo.dealer.state = 1;
+					gameinfo.start4 = 1;
+					java.lang.Thread.sleep(1500);
+					gameinfo.start4 = 0;
 					str += '딜러의 BlackJack!\n';
 					str += '딜러 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']\n';
 					for( var i in gameinfo.playerlist){
