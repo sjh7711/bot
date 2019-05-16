@@ -613,7 +613,7 @@ function blackjack(r){
 			var gameinfo = {starttime : new Date().getTime(),playerlist : [],betlist : [],insurlist : [],blackjacklist : [],splitdata : [],splitcount : 0,endcount : 0,start : 1,start1 : 0,start2 : 0,start3 : 0,start4 : 0};
 			gameinfo.dealer = {card : [],sum : 0,state : 0};
 			gameinfo.playerlist.push(r.sender);
-			gameinfo.player0 = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,isblackjack : 0,end : 0,splitcount : 0};
+			gameinfo.player0 = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0};
 			Flag.set("gameinfo", r.room , gameinfo);
 			r.replier.reply(r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+')이 참가합니다. 현재 1명');
 		}else if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
@@ -627,7 +627,7 @@ function blackjack(r){
 	
 	if (r.msg == '참가' &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
         if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000 ){
-    		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,isblackjack : 0,end : 0,splitcount : 0}
+    		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0}
         	gameinfo.playerlist.push(r.sender);
             r.replier.reply(r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 참가합니다. 현재 "+gameinfo.playerlist.length+'명');
         } else if (D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
@@ -694,7 +694,6 @@ function blackjack(r){
 		r.replier.reply(str.trim());
 		for( var i in gameinfo.playerlist){
 			if(gameinfo['player'+i].sum == 21){
-				gameinfo['player'+i].isblackjack = 1;
 				gameinfo['player'+i].state = 4;
 				gameinfo.blackjacklist.push(gameinfo['player'+i].name);
 				gameinfo.endcount +=1;
@@ -864,7 +863,6 @@ function blackjack(r){
 						sum : 0,
 						insurance : 0,
 						state : 0,
-						isblackjack : 0,
 						splitcount : gameinfo['player'+num].splitcount,
 						end : 0
 					})
@@ -880,7 +878,6 @@ function blackjack(r){
 				var sum = blackjacksum(temp);
 				gameinfo['player'+num].sum = sum;
 				if(gameinfo['player'+num].sum == 21){
-					gameinfo['player'+num].isblackjack = 1;
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo['player'+num].end = 1;
@@ -907,7 +904,6 @@ function blackjack(r){
 							var sum = blackjacksum(temp);
 							gameinfo['player'+num].sum = sum;
 							if(gameinfo['player'+num].sum == 21){
-								gameinfo['player'+num].isblackjack = 1;
 								gameinfo['player'+num].state = 4;
 								gameinfo.endcount +=1;
 								gameinfo.end = 1;
@@ -1028,7 +1024,6 @@ function blackjack(r){
 				gameinfo['player'+num].sum = sum;
 				if(gameinfo['player'+num].sum == 21){
 					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
-					gameinfo['player'+num].isblackjack = 1;
 					gameinfo['player'+num].state = 4;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
