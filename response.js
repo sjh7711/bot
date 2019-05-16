@@ -348,10 +348,15 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		blackinform(r);
     		return;
     	}
+        
+        if(msg.indexOf('!블랙잭지급') == 0 && room == 'test' ){
+        	givemoney(r);
+        	return;
+        }
     	
     	if(msg == '!블랙잭랭킹' && work == 1 ){
     		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForString('blackjack', null , 'room=?', room, {orderBy:"point desc"}));
+    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' ] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' +String(v[0]).extensionRight('ㅤ',10) + ' : ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',12)+'원' ));
     		return;
     	}
         
@@ -491,12 +496,13 @@ function blackinform(r){
 		var insurw = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var sur = D.selectForArray('blackjack', 'sur', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0]; 
+		var bpush = win + blackjack + ddw + push + ddp + lose + ddl + sur - all;
 		
 		var str = '';
 		str += r.sender+'님의 정보';
 		str += '\n순위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
 		str += '\n포인트 : '+D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0];
-		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw ) / all*1000)/10 + "%";
+		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
 		str += '\n본전확률 : '+ Math.floor( (push + ddp ) / all*1000)/10 + "%";
 		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
 		str += '\n세부전적\n'+ es;
@@ -507,7 +513,7 @@ function blackinform(r){
 		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
 		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
  		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%";
-		r.replier.reply(str);
+		r.replier.reply(str.replace(/NaN/g, '데이터 없음'));
 		return;
 	}else {
 		r.replier.reply('알 수 없습니다.');
@@ -516,7 +522,13 @@ function blackinform(r){
 }
 
 function givemoney(r){
-	
+	var data = r.msg.substr(7).split(',');
+	var money = data[0];
+	var who = data[1];
+	var room = data[2];
+	var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0];
+	D.update('blackjack', {point:temp + money}, 'name=? and room = ?', [who, room]);
+	Api.replyRoom(room, who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0] );
 }
 
 function blackjacksum(temp){
