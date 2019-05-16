@@ -638,8 +638,8 @@ function blackjack(r){
 				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
 			}
 			gameinfo['player'+num].bet = Number(r.msg);
-			r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 			gameinfo.betlist.push(r.sender);
+			r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 		} else {
 			r.replier.reply('배팅금액은 1만원 ~ 50만원 입니다.');
 		}
