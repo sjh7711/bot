@@ -332,7 +332,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
     	
         if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1 ){
-    		D.insert('blackjack', {name : sender  , room : room, point : 10000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0  });
+    		D.insert('blackjack', {name : sender  , room : room, point : 10000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0  });
     	}
         
         if( (msg == "!블랙잭" && work == 0) || (msg == "!블랙잭방" && work == 1) ){
@@ -496,6 +496,7 @@ function blackinform(r){
 		var insurw = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var sur = D.selectForArray('blackjack', 'sur', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var exit = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var bpush = win + blackjack + ddw + push + ddp + lose + ddl + sur - all;
 		
 		var str = '';
@@ -505,7 +506,8 @@ function blackinform(r){
 		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
 		str += '\n본전확률 : '+ Math.floor( (push + ddp ) / all*1000)/10 + "%";
 		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
-		str += '\n'+ es+'\n세부전적';
+		
+		str += '\n\n세부전적'+ es;
 		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
 		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
 		str += '\nInsurance 성공 확률 : ' + Math.floor( insurw/insur *1000 )/10 + "%";
@@ -523,6 +525,7 @@ function blackinform(r){
  		str += '\nDoubleDown 푸시 횟수 : '+ddp;
  		str += '\nSurrender 횟수 : ' + sur;
  		str += '\n패배 횟수 : ' + lose;
+ 		str += '\n블랙잭 종료 횟수 : ' + exit;
 		r.replier.reply(str.replace(/NaN%/g, '데이터 없음'));
 		return;
 	}else {
@@ -586,16 +589,17 @@ function blackjack(r){
 	}
 	
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
-		if( gameinfo.start == 0 ){
-			for(var i in gameinfo.playerlist){
-				gameinfo['player'+i].bet = 0
-			}
-			if(gameinfo.splitdata.length > 0 ){
-				for(var i in gameinfo.splitdata){
-					gameinfo.splitdata[i].bet = 0;
-				}
-			}
-			blackjackend(r,gameinfo);
+		for(var i in gameinfo.playerlist){
+			var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+1;
+			D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+			var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+			D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+		}
+		if(gameinfo.splitdata.length > 0 ){
+			var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
+			D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
+			var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
+			D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
 		}
 		var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
 		Flag.set('gameinfo', r.room, gameinfo);
