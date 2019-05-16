@@ -673,9 +673,9 @@ function blackjack(r){
 			}
 			r.replier.reply('Insurance를 하실 분은 1을, 하지않으실 분은 0을 입력해주세요.');
 			if(gameinfo.blackjacklist.length > 0){
-				for(var i in blackjacklist){
-					var temp = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-					D.update('blackjack', {evenc : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+				for(var i in gameinfo.blackjacklist){
+					var temp = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [gameinfo.blackjacklist[i], r.room])[0][0]+1;
+					D.update('blackjack', {evenc : temp }, 'name=? and room=?', [gameinfo.blackjacklist[i], r.room] );
 				}
 				r.replier.reply('BlackJack이신 분 중 EvenMoney를 하실 분은 1을, 하지않으실 분은 0을 입력해주세요.');
 			}
