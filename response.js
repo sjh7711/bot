@@ -623,7 +623,7 @@ function blackjack(r){
 		}
 		gameinfo.start = 0;
 		gameinfo.start1 = 1;
-		r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 50만원 배팅해주세요.');	
+		r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 50만원 배팅하세요.');	
 	}
 	
 	var num = gameinfo.playerlist.indexOf(r.sender);
@@ -641,7 +641,7 @@ function blackjack(r){
 			gameinfo.betlist.push(r.sender);
 			r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 		} else {
-			r.replier.reply('배팅금액은 1만원 ~ 50만원 입니다.');
+			r.replier.reply('배팅금은 1만원 ~ 50만원 입니다.');
 		}
 	}
 	
@@ -677,7 +677,7 @@ function blackjack(r){
 					var temp = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [gameinfo.blackjacklist[i], r.room])[0][0]+1;
 					D.update('blackjack', {evenc : temp }, 'name=? and room=?', [gameinfo.blackjacklist[i], r.room] );
 				}
-				r.replier.reply('BlackJack이신 분 중 EvenMoney를 하려면 1을, 하지않으려면 0을 입력하세요.');
+				r.replier.reply('BlackJack인 분 중 EvenMoney를 하려면 1을, 안하려면 0을 입력하세요.');
 			}
 			gameinfo.start1 = 0;
 			gameinfo.start3 = 1;
@@ -948,7 +948,7 @@ function blackjack(r){
 				}
 				r.replier.reply(str);
 			} else{
-				r.replier.reply('더블다운이 불가능합니다.');
+				r.replier.reply('DoubleDown이 불가능합니다.');
 				return;
 			}
 		}
