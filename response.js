@@ -771,7 +771,7 @@ function blackjack(r){
 					gameinfo.start3 = 0;
 					r.replier.reply( str.trim() + '\n\n' + str1.trim() );
 				} else {
-					r.replier.reply('딜러는 BlackJack이 아닙니다.');
+					str1 += '딜러는 BlackJack이 아닙니다.'
 					for(var i in gameinfo.playerlist){
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
@@ -783,6 +783,10 @@ function blackjack(r){
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 						str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+					}
+					str1 += '\n딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? \n';
+					for( var i in gameinfo.playerlist){
+						str1 += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ') + '\n';
 					}
 					r.replier.reply( str1.trim() );
 					gameinfo.start1 = 0;
