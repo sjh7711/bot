@@ -935,8 +935,8 @@ function blackjack(r){
 		}
 	}
 	
-	if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 3 && gameinfo['player'+num].card.length == 2){
-		if(gameinfo.playerlist.length > 0 && gameinfo['player'+num].end == 0 ) {
+	if(gameinfo['player'+num].card.length == 2 &&gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 3 ){
+		if( gameinfo['player'+num].end == 0 ) {
 			var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
 			D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
 		}
