@@ -356,7 +356,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	
     	if(msg == '!블랙잭랭킹' && work == 1 ){
     		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' ] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' +String(v[0]).extensionRight('ㅤ',10) + ' : ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',12)+'원' ));
+    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' ] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' +String(v[0]).extensionRight('ㅤ',10) + ' : ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',12)+'원' ).join('\n'));
     		return;
     	}
         
@@ -746,12 +746,12 @@ function blackjack(r){
 			gameinfo['player'+num].insurance = r.msg;
 			if(r.msg != '0'){
 				if (gameinfo.blackjacklist.indexOf(r.sender) == -1 ){
-					var temp = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
-					D.update('blackjack', {insur : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
+					var temp = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
+					D.update('blackjack', {insur : temp }, 'name=? and room=?', [gameinfo['player'+num].name , r.room] );
 					r.replier.reply(gameinfo['player'+num].name+'님의 Insurance ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				} else{
-					var temp = D.selectForArray('blackjack', 'even', 'name=? and room=?', [gameinfo.playerlist[num], r.room])[0][0]+1;
-					D.update('blackjack', {even : temp }, 'name=? and room=?', [gameinfo.playerlist[num], r.room] );
+					var temp = D.selectForArray('blackjack', 'even', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
+					D.update('blackjack', {even : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
 					r.replier.reply(gameinfo['player'+num].name+'님의 EvenMoney ('+gameinfo.insurlist.length + ' / ' +  gameinfo.playerlist.length+')');
 				}
 			} else if ( r.msg == '0'){
@@ -771,7 +771,7 @@ function blackjack(r){
 					str += '딜러의 BlackJack!\n';
 					str += '딜러 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']\n';
 					for( var i in gameinfo.playerlist){
-						if(gameinfo['player'+i].sum == 21 && gameinfo['player'+i].state == 4){
+						if( gameinfo['player'+i].state == 4){
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : BlackJack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 						} else {
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
