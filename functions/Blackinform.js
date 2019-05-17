@@ -42,6 +42,7 @@ blackinform = function (r){
  		str += '\nSplit 횟수 : ' + split;
  		str += '\n단순 승리 횟수 : '+win;
  		str += '\nBlackJack 횟수 : '+blackjack;
+ 		str += '\nBlackJack 푸시 횟수 : '+bpush;
  		str += '\nBlackJack 승리 횟수 : ' + Number(blackjack-bpush);
  		str += '\nPush 횟수 : '+push;
  		str += '\nDoubleDown 승리 횟수 : '+ddw;
