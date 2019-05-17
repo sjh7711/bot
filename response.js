@@ -32,7 +32,7 @@ function readFile(file) {
 }
 function freload(r){
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
-    Api.replyRoom(r.room , "Function reloading 완료");
+    Api.replyRoom(r.room , "Function reloading 완료")
 }
 function reload(r) {
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
