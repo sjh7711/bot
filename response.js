@@ -1,5 +1,6 @@
 var reloadcheck = 0;
 var stop = 0;
+File = java.io.File;
 if(ObjKeep.get("reboottime")==null){
 	ObjKeep.keep("reboottime",new Date().getTime());
 }
@@ -538,23 +539,23 @@ function time() {
 	return { now : now , year : year, month : month , date : date, day : day, hour : hour , minute : minute , second : second, ampm : ampm , hour1: hour1};
 }
 
-cloneObject = function (obj) {
+function cloneObject (obj) {
 	  return JSON.parse(JSON.stringify(obj));
 	}
 
-thread = function (r){
+function thread (r){
 	r.replier.reply(T.getThreadList().join('\n'));
 }
 
-db = function (r){
+function db (r){
 	r.replier.reply(D.selectForString("sqlite_master"));
 }
 
-checkroom = function (r){
+function checkroom (r){
 	r.replier.reply(Api.getRoomList().slice().join('\n'));
 }
 
-suggestion = function (r){
+function suggestion(r){
 	if(r.msg.length < 7 ){
 		r.replier.reply("건의가 너무 짧습니다.");
 	}else{
@@ -563,7 +564,7 @@ suggestion = function (r){
 	}
 }
 
-isread = function (is) {
+function isread (is) {
   var br = new java.io.BufferedReader(new java.io.InputStreamReader(is));
   var readStr = "";
   var str = null;
@@ -574,7 +575,7 @@ isread = function (is) {
   return readStr.trim();
 }
 
-cmd = function (dir){
+function cmd (dir){
 	var p = java.lang.Runtime.getRuntime().exec('su -c ""'+dir+'""');
   p.waitFor();
   var r = p.getInputStream() || p.getErrorStream();
@@ -584,8 +585,6 @@ cmd = function (dir){
 compare = function (a, b) {
   return a - b;
 }
-
-File = java.io.File;
 
 own = function(obj){
 	return Object.getOwnPropertyNames(obj);
