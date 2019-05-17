@@ -1005,7 +1005,7 @@ function blackjack(r){
 						if(gameinfo['player'+num].sum == 21){
 							gameinfo['player'+num].state = 2;
 							gameinfo.endcount +=1;
-							gameinfo['player'+num].end = 1;
+							gameinfo.end = 1;
 							str += '\n'+gameinfo['player'+num].name + '님의 Stay!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
 							r.replier.reply(str);
 						} else {
@@ -1052,7 +1052,7 @@ function blackjack(r){
 				if(gameinfo['player'+num].sum == 21){
 					gameinfo['player'+num].state = 2;
 					gameinfo.endcount +=1;
-					gameinfo['player'+num].end = 1;
+					gameinfo.end = 1;
 					str += '\n'+gameinfo['player'+num].name + '님의 Stay!';
 					str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')'
 					r.replier.reply(str);
