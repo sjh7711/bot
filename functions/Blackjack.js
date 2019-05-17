@@ -67,6 +67,8 @@ blackjack = function (r){
 			return;
 		} else if ( ( gameinfo.starttime + 1000*8*60 ) < new Date().getTime() ){
 			blackjackend(r);
+		} else {
+			r.replier.reply( (Math.floor( ( gameinfo.starttime + 1000*8*60 ) - new Date().getTime() ) / 1000 ) + '초 뒤에 강제종료가 가능합니다.');
 		}
 	}
 	
