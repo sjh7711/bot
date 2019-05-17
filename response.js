@@ -7,7 +7,6 @@ if(ObjKeep.get("reboottime")==null){
 var funccheck = 0;
 if(funccheck == 0 ){
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))};
-	Api.replyRoom( 'test' , "Function reloading 완료");
 	funccheck = 1;
 }
 var reloadtime = new Date().getTime();
