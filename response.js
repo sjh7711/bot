@@ -59,7 +59,6 @@ function reload(r) {
 	    control = D.selectForArray('control').map(v=>v[0]);
 	    controlPanel = D.selectForObject('control');
 	    Api.replyRoom(r.room , "Response reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
-	    freload(r);
 	}
 }
 
@@ -149,6 +148,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		
 		if (msg == '!로딩' && work == 1){
     		reload(r);
+    		freload(r);
     		return;
 	    }
 		
