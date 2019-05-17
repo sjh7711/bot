@@ -48,22 +48,26 @@ blackjack = function (r){
 	}
 	
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
-		for(var i in gameinfo.playerlist){
-			var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+1;
-			D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-			var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-			D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+		if(gameinfo.playerlist.indexOf(r.sender) != -1 ){
+			for(var i in gameinfo.playerlist){
+				var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+1;
+				D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+				var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
+				D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
+			}
+			if(gameinfo.splitdata.length > 0 ){
+				var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
+				D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
+				var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
+				D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
+			}
+			var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
+			Flag.set('gameinfo', r.room, gameinfo);
+			r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
+			return;
+		} else if ( ( gameinfo.starttime + 1000*8*60 ) < new Date().getTime() ){
+			blackjackend(r);
 		}
-		if(gameinfo.splitdata.length > 0 ){
-			var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
-			D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
-			var temp = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [gameinfo.splitdata[i].name, r.room])[0][0]+1;
-			D.update('blackjack', {allp : temp }, 'name=? and room=?', [gameinfo.splitdata[i].name, r.room] );
-		}
-		var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
-		Flag.set('gameinfo', r.room, gameinfo);
-		r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
-		return;
 	}
 	
 	if (gameinfo.start4 == 1){
