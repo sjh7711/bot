@@ -582,11 +582,11 @@ function cmd (dir){
   return isread(r);
 }
 
-compare = function (a, b) {
+function compare (a, b) {
   return a - b;
 }
 
-own = function(obj){
+function own (obj){
 	return Object.getOwnPropertyNames(obj);
 	}
 
