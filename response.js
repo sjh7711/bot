@@ -62,7 +62,6 @@ function reload(r) {
 	    T.register("functionReload",()=>{
 	    	freload();
 	    }).start();
-	    Api.replyRoom(r.room , "Function reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date());
 	}
 }
 
