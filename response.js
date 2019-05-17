@@ -145,10 +145,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			return;
 		}
 		
-		if (msg.indexOf("!함수로딩") == 0 && work == 1){
+		if (msg.indexOf("!함수로딩") == 0 && work == 1 || Flag.get('freloadcheck', r.room)== 1){
 			functionreload(r);
 			return;
-		} 
+		}
 		
 		if ((msg.indexOf("!사진조회") == 0 && work == 1) || Flag.get('image', r.room)== 1){
 			loadimage(r);
