@@ -667,7 +667,9 @@ function blackjack(r){
 		r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 50만원 배팅하세요.');	
 	}
 	
-	var num = gameinfo.playerlist.indexOf(r.sender);
+	if(gameinfo.playerlist.length > 0){
+		var num = gameinfo.playerlist.indexOf(r.sender);
+	}
 	
 	if( num == -1 ){
 		return;
