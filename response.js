@@ -356,7 +356,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	
     	if(msg == '!블랙잭랭킹' && work == 1 ){
     		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' ] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' +String(v[0]).extensionRight('ㅤ',10) + ' : ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',12)+'원' ).join('\n'));
+    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' ] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' +String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',12)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) ).join('\n'));
     		return;
     	}
         
@@ -468,9 +468,11 @@ function func(r) {
 [힛]은 카드를 한 장 더 받는 것입니다.\n\
 [스테이]는 카드를 더 이상 받지 않겠다는 의미입니다.\n\
 [더블다운]은 카드를 무한정 받지 못하고 카드를 단 한 장만 더 받습니다. 배팅액을 두 배로 늘립니다.\n\
-[스플릿]은 같은 숫자인 카드를 받았을 경우 두 장을 나눠서 따로 게임을 진행하는 것입니다. 현재 진행중인 패의 상황이 종료되면 그 다음 패가 공개됩니다. 게임을 따로 진행하는 만큼 배팅액을 추가로 걸게됩니다. A를 제외한 나머지 카드들은 스플릿을 3번 까지 할 수 있습니다. A는 1번만 가능합니다. 스플릿을 하게 되면 기본적으로 2장을 채우기 위해 카드를 하나씩 더 받게됩니다.\n\
+[스플릿]은 같은 숫자인 카드를 받았을 경우 두 장을 나눠서 따로 게임을 진행하는 것입니다. 현재 진행중인 패의 상황이 종료되면 그 다음 패가 공개됩니다. 게임을 따로 진행하는 만큼 배팅액을 추가로 걸게됩니다. A를 제외한 나머지 카드들은 스플릿을 3번 까지 할 수 있습니다. A는 1번만 가능합니다. 스플릿해서 나온 블랙잭은 블랙잭이 아닌 21로 계산됩니다. 스플릿을 하게 되면 기본적으로 2장을 채우기 위해 카드를 하나씩 더 받게됩니다.\n\
 [서렌더]는 현재 게임을 포기하는 것 입니다. 배팅액의 절반을 돌려받고 게임을 포기합니다.\n\n\
 [!블랙잭종료]를 통해 게임을 강제로 종료할 수 있습니다.\n\
+[!블랙잭정보]를 통해 본인의 게임 정보를 알 수 있습니다.\n\
+[!블랙잭랭킹]을 통해 자산순위를 확인할 수 있습니다.\n\
 [!블랙잭방]을 통해 블랙잭 전용방에 들어갈 수 있습니다.');
 	r.replier.reply('추가설명 / https://namu.wiki/w/블랙잭(카드게임)');
     } else if (r.msg.split(" ")[1] == "주사위"){
