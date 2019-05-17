@@ -34,6 +34,7 @@ function readFile(file) {
 var funccheck = 0;
 if(funccheck == 0 ){
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))};
+	for(var i in File("/sdcard/kbot/thread").listFiles()){eval( readFile(File("/sdcard/kbot/thread").listFiles()[i]))}
 	funccheck = 1;
 }
 try {
@@ -497,7 +498,7 @@ function functionreload (r){
 			Flag.set('freloadcheck', r.room, 1);
 		} else if ( Flag.get('freloadcheck', r.room)== 1){
 			if(!isNaN(r.msg)){
-				eval( Flag.get('function', r.room)[Number(r.msg)-1] );
+				eval( readFile(Flag.get('function', r.room)[Number(r.msg)-1] ));
 				r.replier.reply(String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23) + ' 리로딩 완료');
 				Flag.set('freloadcheck', r.room, 0);
 			} else {
