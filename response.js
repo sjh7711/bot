@@ -1048,12 +1048,10 @@ function blackjack(r){
 				var sum = blackjacksum(temp);
 				gameinfo['player'+num].sum = sum;
 				if(gameinfo['player'+num].sum == 21){
-					var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-					D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
-					gameinfo['player'+num].state = 4;
+					gameinfo['player'+num].state = 2;
 					gameinfo.endcount +=1;
 					gameinfo.end = 1;
-					str += '\n'+gameinfo['player'+num].name + '님의 BlackJack!';
+					str += '\n'+gameinfo['player'+num].name + '님의 Stay!';
 					str += '  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')'
 					r.replier.reply(str);
 				} else {
