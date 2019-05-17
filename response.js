@@ -3,6 +3,15 @@ var stop = 0;
 if(ObjKeep.get("reboottime")==null){
 	ObjKeep.keep("reboottime",new Date().getTime());
 }
+var funccheck = 0;
+if(funccheck == 0 ){
+	r={room : 'test',replier:{reply:function(msg){
+		Api.replyRoom(r.room,msg)
+		}}
+	}
+	freload(r);
+	funccheck = 1;
+}
 var reloadtime = new Date().getTime();
 var calculating = 0;
 var D = require("DBManager.js")("D");
