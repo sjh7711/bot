@@ -1910,6 +1910,10 @@ function weather(r){
 			        		}
 				        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 				        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				        	if(link2.indexOf('regionCode')==-1){
+			        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+"+wantplace+"날씨").get();
+				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        		}
 				        	check = link2.indexOf('weather');
 				        	where = want;
 				        	if(check == -1 || String(temp).length == 0){
@@ -1957,8 +1961,12 @@ function weather(r){
 				        		} else {
 				        			wantplace = temp;
 				        		}
-				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
+				        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+"+wantplace+"날씨").get();
 				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				        		if(link2.indexOf('regionCode')==-1){
+				        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
+					        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+				    			}
 				        		check = link2.indexOf('weather');
 				        		where = name[targetNum].substr(3);
 				        	}
@@ -1992,6 +2000,10 @@ function weather(r){
 			        		}
 			        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        		if(link2.indexOf('regionCode')==-1){
+			        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+"+wantplace+"날씨").get();
+				        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        		}
 			        		where = name[targetNum].substr(3) ;
 			        		check = link2.indexOf('weather');
 			        	}
@@ -2030,6 +2042,10 @@ function weather(r){
 		        		}
 			        	link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+wantplace).get();
 			        	link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+			        	if(link2.indexOf('regionCode')==-1){
+		        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+"+wantplace+"날씨").get();
+			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		}
 			        	check = link2.indexOf('weather');
 			        	where = name[targetNum].split('. ')[1];
 			        	if(check == -1 || String(temp).length == 0){
