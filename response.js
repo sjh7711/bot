@@ -148,9 +148,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		
 		if (msg == '!로딩' && work == 1){
     		reload(r);
-    		freload(r);
     		return;
 	    }
+		
+		if (msg =='!로드' && wokr == 1){
+			freload(r);
+			return;
+		}
 		
 		if (msg == '!리부트' && work == 1){
 			replier.reply('Rebooting...');
@@ -652,8 +656,8 @@ const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
 ]D.execSQL("alter table control add BASEBALL number")
 ]D.update("control", {BASEBALL:0})
 ]D.selectForString('control')
-]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
-]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
+]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0, blackjack : 0, 동후방 : 0 }, "name='!계산'")
+]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0, blackjack : 0, 동후방 : 0 })
 ]D.rawQuery("INSERT INTO chatdb SELECT * FROM cbot")
 ]D.execSQL("drop table botpoint")
 ]D.insert("cat", {name :"중용", gender : "남", age : 22})
