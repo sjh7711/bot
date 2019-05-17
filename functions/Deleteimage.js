@@ -1,4 +1,4 @@
-function deleteimage(r){
+deleteimage(r){
 	var temp = java.io.File("/sdcard/KakaoTalkDownload").listFiles();
 	var delist = [];
 	for(i=0;i<temp.length;i++){

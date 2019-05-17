@@ -1,4 +1,4 @@
-function checkstatus(r){
+checkstatus(r){
 	var reboottime = ObjKeep.get("reboottime");
 	var nowtime = new Date().getTime();
 	var day = Math.floor((nowtime-reboottime)/1000/60/60/24);

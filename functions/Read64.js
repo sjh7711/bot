@@ -1,4 +1,4 @@
-function read64(file) {
+read64(file) {
 	   var is=new java.io.FileInputStream(file);
 	   var os=new java.io.ByteArrayOutputStream();
 	   var len=0;

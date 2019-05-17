@@ -1,4 +1,4 @@
-function recom(r, name) { //name : DB이름
+recom(r, name) { //name : DB이름
 	try{
 		var num = r.msg.split(" ")[1]; //num : 추천받고 싶은개수
 	    var list = D.selectForArray(name);

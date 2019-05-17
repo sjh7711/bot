@@ -1,4 +1,4 @@
-function foodbank(r){
+foodbank(r){
 	try{
 		var name = r.msg.split(" ")[1];
 		if(typeof name == 'string'){

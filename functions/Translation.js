@@ -1,4 +1,4 @@
-function translation(r){
+translation(r){
 	var tempmsg = r.msg.substr(7);
 	var templan0 = r.msg.substr(4).split(',')[0][0];
 	var templan1 = r.msg.substr(4).split(',')[0][1];

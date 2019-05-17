@@ -1,4 +1,4 @@
-function allchat(r) { 
+allchat(r) { 
 	try{
 		var temp = r.msg.substr(5);
 		var temp1 = '';

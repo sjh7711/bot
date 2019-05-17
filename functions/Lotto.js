@@ -1,4 +1,4 @@
-function lotto(r) {
+lotto(r) {
 	try{
 		var cycle = 1;
 		if( r.msg.substr(4) > 0 && r.msg.substr(4) < 1001 ){

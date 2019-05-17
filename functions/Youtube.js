@@ -1,4 +1,4 @@
-function youtube(r) {//조회수
+youtube(r) {//조회수
 	var search_word = r.msg.substr(5);
 	if(r.msg[0] == '!'){//관련성
 		var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');

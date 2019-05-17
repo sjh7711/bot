@@ -1,4 +1,4 @@
-function randomnumber(r){
+randomnumber(r){
 	var num1 = Number(r.msg.split(' ')[1]);
 	var num2 = Number(r.msg.split(' ')[2]);
 	if(num1 < 0 || num2 < 0 ){

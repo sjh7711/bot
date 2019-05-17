@@ -1,4 +1,4 @@
-function loadimage(r){
+loadimage(r){
 	if(Flag.get('image', r.room)==0){
 		Flag.set('imagelist', r.room, File("/sdcard/KakaoTalkDownload").listFiles());
 		var temp = [];

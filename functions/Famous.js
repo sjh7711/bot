@@ -1,4 +1,4 @@
-function famous(r){
+famous(r){
 	try{
 		var name = r.msg.split(" ")[1];
 		var firsturl = "https://m.search.naver.com/search.naver?query="+name+"맛집&where=m&sm=mtp_hty.top";

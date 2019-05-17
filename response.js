@@ -12,6 +12,7 @@ var T = require("ThreadManager.js");
 var I = require("Interactive.js");
 var control = D.selectForArray('control').map(v=>v[0]);
 var controlPanel = D.selectForObject('control');
+const es=String.fromCharCode(8237).repeat(500);
 File = java.io.File;
 function readFile(file) {
     var filedir = new java.io.File(file);
@@ -60,6 +61,13 @@ function reload(r) {
 	    }
 	    Api.replyRoom(r.room , "Function reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date());
 	}
+}
+function freload(r){
+	var functions = File("/sdcard/kbot/functions").listFiles();
+    for(var i in functions){
+    	eval(readFile(functions[i]));
+    }
+    Api.replyRoom(r.room , "Function reloading 완료");
 }
 Flag=(function(){
 	   var list={};
@@ -1420,7 +1428,7 @@ function calculator(r){
 	}
 }
 
-const es=String.fromCharCode(8237).repeat(500);
+
 //a.charCodeAt(0)
 const weiredstring1=String.fromCharCode(8203);//공백
 const weiredstring2=String.fromCharCode(160);//띄워쓰기로

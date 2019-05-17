@@ -1,4 +1,4 @@
-function music(r) {
+music(r) {
 	var rand = Math.floor(Math.random()*100);
 	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
 	var search_word = list[rand];

@@ -1,4 +1,4 @@
-function givemoney(r){
+givemoney(r){
 	var data = r.msg.substr(7).split(',');
 	var money = Number(data[0]);
 	var who = data[1];
