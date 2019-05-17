@@ -65,25 +65,6 @@ Flag=(function(){
 	})();
 function blankFunc(r){}
 function blankFunc1(r){}
-/*
-]D.execSQL("alter table control add BASEBALL number")
-]D.update("control", {BASEBALL:0})
-]D.selectForString('control')
-]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
-]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
-]D.rawQuery("INSERT INTO chatdb SELECT * FROM cbot")
-]D.execSQL("drop table botpoint")
-]D.insert("cat", {name :"중용", gender : "남", age : 22})
-]D.delete("cat", "name='중용'")
-]D.delete("cat", "name='모모' and age='5'" )
-]D.selectForString("cat", null, "age<4")
-]D.selectForString("cat", "name, gender", "age<4")
-]D.selectForString("cat", ["name", "gender"], "age<4")
-]D.selectForString("cat","count(*)")
-]D.selectForString("cat", null, "name=?",  [a]) //a='모모'
-]D.update("cat", {age : 4} , "name='인문이'")
-]D.create("cat", {name:"모모",gender:"남",age:4})
-*/
 const funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!사진조회', '!사진삭제', '!사진목록', '!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -401,150 +382,42 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function func(r) {
-	if (r.msg.split(" ")[1] == "최근채팅") {
-        r.replier.reply("최근채팅 6개를 출력합니다. [!최근채팅16]과 같이 입력하면 조회됩니다. 최대 16개까지 조회가 가능합니다. [!최근채팅16 닉네임] 과 같이 입력하면 해당 닉네임의 최근 16개 채팅을 보여줍니다.");
-    } else if (r.msg.split(" ")[1] == "전체채팅") {
-        r.replier.reply("[!전체채팅12,사람이름,방이름]");
-    } else if (r.msg.split(" ")[1] == "오버워치") {
-        r.replier.reply("[!오버워치 똥개#5468]와 같이 입력하면 티어,점수,경쟁전에서 가장 많이 플레이한 영웅 5명을 확인할 수 있습니다.\n배치를 치지 않은 경우, 프로필이 비공개인 경우, 배틀태그를 입력하지 않은 경우, 대소문자를 정확하게 구분하지 않은 경우엔 정보를 알 수 없습니다.");
-    } else if (r.msg.split(" ")[1] == "!번역") {
-        r.replier.reply("[!번역 한영,안녕]과 같이 입력하면 한글을 영어로 변역해줍니다. 영 한 일 을 지원합니다.");
-    } else if (r.msg.split(" ")[1] == "!업무") {
-        r.replier.reply("[!업무 지역]을 입력하면 관련된 사업장을 보여줍니다.");
-    } else if (r.msg.split(" ")[1] == "로또") {
-        r.replier.reply("로또번호를 추천해줍니다. [!로또 5] 와 같이 5장까지는 뽑은 번호를 바로 알려주고 5장 초과 1000장 이하의 경우 뽑은 데이터는 저장되고 별도로 알려주지는 않습니다. [!당첨]으로 토요일에 로또번호 추첨이 끝나면 결과를 확인할 수 있습니다.");
-    } else if (r.msg.split(" ")[1] == "당첨") {
-        r.replier.reply("매주 토요일에 로또번호가 발표가 되면 지난 일주일간 뽑았던 번호가 몇등인지 알 수 있습니다. [!당첨 닉네임] 과 같이 입력하면 자기가 뽑은 번호만 확인 할 수 있습니다."+es+"\n3개 : 5등 / 4개 : 4등 / 5개 : 3등 / 5개+보너스 : 2등 / 6개 : 1등");
-    } else if (r.msg.split(" ")[1] == "로또통계") {
-        r.replier.reply("지금까지 뽑았던 로또의 당첨내역을 확인할 수 있습니다.");
-    } else if (r.msg.split(" ")[1] == "종합로또통계") {
-        r.replier.reply("피치봇이 들어있는 모든방에서 뽑은 로또의 통계입니다.");
-    }  else if (r.msg.split(" ")[1] == "행복회로") {
-        r.replier.reply("이번주에 뽑은 번호가 저번주에 뽑았다면 몇 등일지 보여줍니다.");
-    } else if (r.msg.split(" ")[1] == "메뉴") {
-        r.replier.reply("먹을 음식을 추천해 줍니다. [!메뉴 3]과 같이 입력하면 메뉴를 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    } else if (r.msg.split(" ")[1] == "식당") {
-        r.replier.reply("시립대 주변 식당을 추천해 줍니다. [!식당 3]과 같이 입력하면 식당을 3개 추천해줍니다. 최대 8개를 추천해줍니다.");
-    } else if (r.msg.split(" ")[1] == "유튜브") {
-        r.replier.reply("[!유튜브 제목] 과 같이 검색하면 유튜브 링크를 보여줍니다. 기본값은 관련성이 가장 높은 영상이지만 원하는 영상이 나오지 않을 경우 [/유튜브 제목] 과 같이 검색하면 조회수가 가장 높은 영상을 보여줍니다.");
-    } else if (r.msg.split(" ")[1] == "노래") {
-        r.replier.reply("벅스 TOP100 중 한 곡을 추천해줍니다.");
-    } else if (r.msg.split(" ")[1] == "제이플라") {
-        r.replier.reply("최신 제이플라 노래를 보여줍니다.");
-    } else if (r.msg.split(" ")[1] == "공지") {
-        r.replier.reply("최근 5개의 공지를 띄워줍니다. [!공지 15] 과 같이 입력하면 공지 15개를 보여주고 최대 15개까지 조회가능합니다. 해당 공지의 번호를 [!공지 823] 이렇게 입력하시면 내용과 댓글을 확인할 수 있습니다.");
-    } else if (r.msg.split(" ")[1] == "날씨") {
-        r.replier.reply("[!날씨 지역명]으로 검색가능하며 경우에 따라 선택을 해야할 수도 있습니다. 기본값은 해당 방과 가장 관련있는 지역입니다.");
-    } else if (r.msg.split(" ")[1] == "건의") {
-        r.replier.reply("건의를 받습니다. [!건의 건의내용] 으로 입력하면 됩니다.");
-    } else if (r.msg.split(" ")[1] == "추첨") {
-        r.replier.reply("[!추첨]을 입력하면 몇 명을 뽑을 건지 입력할 수 있습니다. 숫자만 입력하면 됩니다. 입력 후에는 누구든지 [참가] 를 입력하면 참가가 가능하고, 추첨을 제안한 사람이 [!마감 ]을 입력하면 당첨자가 바로 발표됩니다.\n추첨이 진행중일 땐 다른 추첨이 불가능합니다. 누구든 [!추첨]이 입력된 후 90초 이후엔 [!마감]이 가능합니다.");
-    } else if (r.msg.split(" ")[1] == "명단") {
-        r.replier.reply("푸드뱅크 명단을 보여줍니다. [!명단 만월] 처럼 입력하면 만월노인요양원의 검색 결과가 나옵니다.");
-    } else if (r.msg.split(" ")[1] == "맛집") {
-        r.replier.reply("검색한 지역의 맛집을 알려줍니다. [!맛집 지역명] 으로 검색하면 됩니다.");
-    } else if (r.msg.split(" ")[1] == "야구"){
-    	r.replier.reply('숫자야구 룰\n'+es+'\n\
-여러분들은 [!야구] 를 통해 게임을 시작 할 수 있으며 [!야구] 를  외친 사람은 자동으로 참가가 됩니다.\
-[참가] 를 입력하면 참가가 가능하고 [!야구] 를 외친 사람이 [시작] 이라고 입력하면 게임을 시작합니다.\n\
-참가한 순서대로 맞출 수 있는 기회가 부여됩니다. 숫자는 중복되지 않는 0~9까지의 숫자입니다. 맞출 숫자가 1325라고 가정합니다.\n\
-[1246]이라고 질문을 합니다. 1은 위치와 숫자가 같으므로 스트라이크, 2는 위치는 다르지만 포함은 되어있으니 볼입니다. 4와 6은 아무것도 해당되지 않습니다.\n\
-단서를 통해 정답인 1325를 맞추면 됩니다. 참가비는 1000point입니다. 1000point아래로 내려가면 별도의 안내가 있을 예정입니다.\n\
-최대 3인까지 가능하며 혼자서도 가능하지만 전적은 기록되지 않습니다.\n\
-[!야구정보]를 통해 자신의 각종 정보를 확인할 수 있습니다.\n\
-[!야구랭킹]을 통해 point가 가장 많은 순서대로 등수 조회가 가능합니다.\n\
-[!야구종료]를 통해 게임을 강제로 종료할 수 있습니다. 혼자 플레이 중인 경우 아무나 종료 가능하고 2인 이상일 경우 현재 참가중인 플레이어 중에서만 강제종료가 가능합니다.\n\
-[!패스]를 통해 상대방이 30초 이상 답하지 않을 경우 그 다음 턴으로 차례를 넘길 수 있습니다.\n\
-[!힌트]를 통해 8번째 턴 부터 500포인트를 사용하여 숫자 하나에 대한 정보를 얻을 수 있습니다. 힌트를 쓰는 즉시 포인트는 차감되기 때문에 강제종료를 하더라도 포인트는 돌아오지 않습니다. 신중하게 사용해주세요.\n\
-[!전적초기화]를 통해 현재 포인트에서 2000점이 차감된 상태로 전적을 초기화 할 수 있습니다. 최대 2회까지 가능합니다.\n\
-[!야구방]을 통해 야구 전용방에 들어갈 수 있습니다.')
-    } else if (r.msg.split(" ")[1] == "블랙잭"){
-    	r.replier.reply('블랙잭 룰\n'+es+'\n\
-여러분들은 [!블랙잭] 을 통해 게임을 시작 할 수 있으며 [!블랙잭] 을  외친 사람은 자동으로 참가가 됩니다. 최대 5인까지 가능합니다.\n\n\
-배당율은 기본 1배입니다. 블랙잭인 경우 1.5배입니다. 카드 숫자의 합이 21에 가까운 사람이 이기는 게임입니다. K, Q, J는 10에 해당하며, A는 11로 계산되지만 A를 포함하여 21을 넘기는 경우 1로 계산됩니다.\n\n\
-카드 두 장을 기본적으로 지급받게 되며, 처음 받은 2장 합쳐 21이 나오는 경우 블랙잭이 되며 21이 되지 않았을 경우 원한다면 얼마든지 카드를 계속 뽑을 수 있습니다. 카드를 추가로 받아 21이 되는 경우는 블랙잭이 아닙니다.\n\
-21을 초과하게 되었을 경우에는 <Bust> 라고 하며 딜러의 결과에 관계없이 무조건 건 금액을 잃게 됩니다. <Push>는 딜러와 무승부인 상황일 경우입니다. 이 경우 배팅액을 그대로 돌려받습니다.\n\n\
-딜러의 오픈카드가 10, J, Q, K 일 떈, 딜러가 블랙잭인지 아닌지 말을 해줍니다. 딜러의 오픈카드가 A일 경우 <Insurance>를 설정할 수 있습니다.\n\
-<Insurance>는 보험입니다. 딜러의 오픈된 카드가 A일 경우, 딜러가 블랙잭이 나올 가능성에 대비해 보험을 들어두는 것입니다. 자기가 배팅한 금액의 절반을 추가로 내고 보험에 들 수 있습니다. 만약 딜러가 블랙잭이면 보험금과 보험금의 2배를 돌려받습니다. 배팅한 금액은 잃습니다.\n\
-만약 딜러가 블랙잭이 아니면 보험금은 소멸합니다. 그리고 게임을 계속 진행합니다.\n\
-<EvenMoney>는 플레이어가 블랙잭이고 딜러의 오픈된 카드 한장이 A일 때 같은 블랙잭으로 무승부 되는 경우를 대비한 보험입니다. 베팅한 금액과 동일한 금액을 승리수당으로 받고 게임을 종료할 것인지, 아니면 블랙잭의 효과(1.5배)를 그대로 유지하면서 게임을 계속 진행할 것인지에 대해 선택을 하는 것입니다.\n\
-딜러가 블랙잭인 경우 플레이어는 블랙잭이 아닌 이상 모두 바로 패배처리됩니다. 같은 블랙잭이면 배팅한 금액을 그대로 돌려받습니다. 플레이어가 블랙잭인 경우 딜러가 블랙잭이 아닌 이상 승리합니다.\n\n\
-[참가] 를 입력하면 참가가 가능하고 참여자 중 아무나 [시작] 이라고 입력하면 게임을 시작합니다.\n\
-처음엔 베팅할 금액을 정합니다. 1만원~50만원의 배팅이 가능합니다. 1~50의 숫자 또는 10000~500000의 숫자를 입력하면 됩니다.\n\n\
-[힛]은 카드를 한 장 더 받는 것입니다.\n\
-[스테이]는 카드를 더 이상 받지 않겠다는 의미입니다.\n\
-[더블다운]은 카드를 무한정 받지 못하고 카드를 단 한 장만 더 받습니다. 배팅액을 두 배로 늘립니다.\n\
-[스플릿]은 같은 숫자인 카드를 받았을 경우 두 장을 나눠서 따로 게임을 진행하는 것입니다. 현재 진행중인 패의 상황이 종료되면 그 다음 패가 공개됩니다. 게임을 따로 진행하는 만큼 배팅액을 추가로 걸게됩니다. A를 제외한 나머지 카드들은 스플릿을 3번 까지 할 수 있습니다. A는 1번만 가능합니다. 스플릿해서 나온 블랙잭은 블랙잭이 아닌 21로 계산됩니다. 스플릿을 하게 되면 기본적으로 2장을 채우기 위해 카드를 하나씩 더 받게됩니다.\n\
-[서렌더]는 현재 게임을 포기하는 것 입니다. 배팅액의 절반을 돌려받고 게임을 포기합니다.\n\n\
-[!블랙잭종료]를 통해 게임을 강제로 종료할 수 있습니다.\n\
-[!블랙잭정보]를 통해 본인의 게임 정보를 알 수 있습니다.\n\
-[!블랙잭랭킹]을 통해 자산순위를 확인할 수 있습니다.\n\
-[!블랙잭방]을 통해 블랙잭 전용방에 들어갈 수 있습니다.');
-	r.replier.reply('추가설명 / https://namu.wiki/w/블랙잭(카드게임)');
-    } else if (r.msg.split(" ")[1] == "주사위"){
-    	r.replier.reply("기본값은 1~100이고 [!주사위 200] 처럼하면 1~200까지, [!주사위 2 200] 처럼하면 2부터 200까지 랜덤한 숫자를 뽑습니다.");
-    }
+function controlReload(r){
+	control = D.selectForArray('control').map(v=>v[0]);
+	controlPanel = D.selectForObject('control');
+	r.replier.reply('기능 리로드 완료');
 }
 
-function blackinform(r){
-	if(D.selectForArray('blackjack', null, 'name=? and room=?', [r.sender, r.room]) !=undefined){
-		var win = D.selectForArray('blackjack', 'win', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var lose =  D.selectForArray('blackjack', 'lose', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var blackjack = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var splitc = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var split = D.selectForArray('blackjack', 'split', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var ddw = D.selectForArray('blackjack', 'ddw', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var ddl = D.selectForArray('blackjack', 'ddl', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var ddp = D.selectForArray('blackjack', 'ddp', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var push = D.selectForArray('blackjack', 'push', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var even = D.selectForArray('blackjack', 'even', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var evenc = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var insur = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var insurc = D.selectForArray('blackjack', 'insurc', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var insurw = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var sur = D.selectForArray('blackjack', 'sur', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var exit = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [r.sender, r.room])[0][0];
-		var bpush = D.selectForArray('blackjack', 'bpush', 'name=? and room=?', [r.sender, r.room])[0][0];
-		
-		var str = '';
-		str += r.sender+'님의 정보';
-		str += '\n순위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
-		str += '\n포인트 : '+D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0];
-		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
-		str += '\n본전확률 : '+ Math.floor( (push + ddp + bpush ) / all*1000)/10 + "%";
-		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
-		str += '\n기ㅤㅤ타 : '+ Math.floor( ( exit ) / all*1000)/10 + "%";
-		
-		str += '\n\n세부전적'+ es;
-		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
-		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
-		str += '\nInsurance 성공 확률 : ' + Math.floor( insurw/insur *1000 )/10 + "%";
-		str += '\nEvenMoney 빈도 : ' + Math.floor( even/evenc *1000 )/10 + "%";
-		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
-		str += '\nBlackJack 승리 빈도 : ' + Math.floor( (blackjack-bpush)/all *1000 )/10 + "%";
-		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
- 		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%\n";
- 		str += '\n전체 게임 횟수 : '+all;
- 		str += '\nSplit 횟수 : ' + split;
- 		str += '\n단순 승리 횟수 : '+win;
- 		str += '\nBlackJack 횟수 : '+blackjack;
- 		str += '\nBlackJack 승리 횟수 : ' + Number(blackjack-bpush);
- 		str += '\nPush 횟수 : '+push;
- 		str += '\nDoubleDown 승리 횟수 : '+ddw;
- 		str += '\nDoubleDown 패배 횟수 : '+ddl;
- 		str += '\nDoubleDown 푸시 횟수 : '+ddp;
- 		str += '\nSurrender 횟수 : ' + sur;
- 		str += '\n패배 횟수 : ' + lose;
- 		str += '\n블랙잭 종료 횟수 : ' + exit;
-		r.replier.reply(str.replace(/NaN%/g, '데이터 없음'));
-		return;
-	}else {
-		r.replier.reply('알 수 없습니다.');
+function controlEdit(r){
+	controlPanel = D.selectForObject('control');
+	control = D.selectForArray('control').map(v=>v[0]);
+	
+	var temp = r.msg.split(',');
+	var funcc = -1;
+	for(var i in control){
+		if( temp[1].indexOf(control[i]) == 0 ){
+			funcc = i;
+			break;
+		}
+	}
+	
+	if(funcc != -1){
+		var tempf = controlPanel[funcc];
+		if( temp[3] == 'on' ){
+			tempf[temp[2].replace(/ /g, '_')] = 1;
+		} else if ( temp[3] == 'off' ){
+			tempf[temp[2].replace(/ /g, '_')] = 0;
+		} else {
+			r.replier.reply('잘못입력했습니다.');
+			return;
+		}
+		D.update("control", tempf , "name=?", [control[funcc]]);
+	} else {
+		r.replier.reply('잘못입력했습니다.');
 		return;
 	}
+	controlReload(r);
+	r.replier.reply("수정 완료");
 }
 
 function givemoney(r){
@@ -1127,8 +1000,6 @@ function blackjackend(r, gameinfo){
 				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 0){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1+Number(gameinfo['player'+i].bet*1.5);
-					var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-					D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : EvenMoney\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1;
@@ -1167,8 +1038,6 @@ function blackjackend(r, gameinfo){
 						} else if (temp[j].state == 4 && temp[j].insurance == 0){
 							str += temp[j].name+'님 ('+temp[j].sum+') : Blackjack\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							var temppoint = temppoint1+Number(temp[j].bet*1.5);
-							var tempc = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-							D.update('blackjack', {blackjack : tempc }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 						} else if (temp[j].state == 4 && temp[j].insurance == 1 ){
 							str += temp[j].name+'님 ('+temp[j].sum+') : EvenMoney\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							var temppoint = temppoint1;
@@ -1230,8 +1099,6 @@ function blackjackend(r, gameinfo){
 				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 0){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1+Number(gameinfo['player'+i].bet*1.5);
-					var temp = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-					D.update('blackjack', {blackjack : temp }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : EvenMoney\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1;
@@ -1292,8 +1159,6 @@ function blackjackend(r, gameinfo){
 						}  else if (temp[j].state == 4 && temp[j].insurance == 0){
 							str += temp[j].name+'님 ('+temp[j].sum+') : Blackjack\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							var temppoint = temppoint1+Number(temp[j].bet*1.5);
-							var tempc = D.selectForArray('blackjack', 'win', 'name=? and room=?', [gameinfo.playerlist[i], r.room])[0][0]+1;
-							D.update('blackjack', {win : tempc }, 'name=? and room=?', [gameinfo.playerlist[i], r.room] );
 						} else if (temp[j].state == 4 && temp[j].insurance == 1 ){
 							str += temp[j].name+'님 ('+temp[j].sum+') : EvenMoney\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
 							var even = D.selectForArray('blackjack', 'bet', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0];
@@ -1341,73 +1206,63 @@ function blackjackend(r, gameinfo){
 	gameinfo.start2 = 0;
 }
 
-function translation(r){
-	var tempmsg = r.msg.substr(7);
-	var templan0 = r.msg.substr(4).split(',')[0][0];
-	var templan1 = r.msg.substr(4).split(',')[0][1];
-	if (templan0 == '영'){
-		templan0 = 'en';
-	} else if (templan0 =='한'){
-		templan0 = 'ko';
-	} else if (templan0 =='일'){
-		templan0 = 'ja';
-	} else {
-		r.replier.reply('번역할 수 없습니다.');
+function blackinform(r){
+	if(D.selectForArray('blackjack', null, 'name=? and room=?', [r.sender, r.room]) !=undefined){
+		var win = D.selectForArray('blackjack', 'win', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var lose =  D.selectForArray('blackjack', 'lose', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var blackjack = D.selectForArray('blackjack', 'blackjack', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var splitc = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var split = D.selectForArray('blackjack', 'split', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var ddw = D.selectForArray('blackjack', 'ddw', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var ddl = D.selectForArray('blackjack', 'ddl', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var ddp = D.selectForArray('blackjack', 'ddp', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var push = D.selectForArray('blackjack', 'push', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var even = D.selectForArray('blackjack', 'even', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var evenc = D.selectForArray('blackjack', 'evenc', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var insur = D.selectForArray('blackjack', 'insur', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var insurc = D.selectForArray('blackjack', 'insurc', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var insurw = D.selectForArray('blackjack', 'insurw', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var sur = D.selectForArray('blackjack', 'sur', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var exit = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var bpush = D.selectForArray('blackjack', 'bpush', 'name=? and room=?', [r.sender, r.room])[0][0];
+		
+		var str = '';
+		str += r.sender+'님의 정보';
+		str += '\n순위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
+		str += '\n포인트 : '+D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0];
+		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
+		str += '\n본전확률 : '+ Math.floor( (push + ddp + bpush ) / all*1000)/10 + "%";
+		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
+		str += '\n기ㅤㅤ타 : '+ Math.floor( ( exit ) / all*1000)/10 + "%";
+		
+		str += '\n\n세부전적'+ es;
+		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
+		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
+		str += '\nInsurance 성공 확률 : ' + Math.floor( insurw/insur *1000 )/10 + "%";
+		str += '\nEvenMoney 빈도 : ' + Math.floor( even/evenc *1000 )/10 + "%";
+		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
+		str += '\nBlackJack 승리 빈도 : ' + Math.floor( (blackjack-bpush)/all *1000 )/10 + "%";
+		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
+ 		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%\n";
+ 		str += '\n전체 게임 횟수 : '+all;
+ 		str += '\nSplit 횟수 : ' + split;
+ 		str += '\n단순 승리 횟수 : '+win;
+ 		str += '\nBlackJack 횟수 : '+blackjack;
+ 		str += '\nBlackJack 승리 횟수 : ' + Number(blackjack-bpush);
+ 		str += '\nPush 횟수 : '+push;
+ 		str += '\nDoubleDown 승리 횟수 : '+ddw;
+ 		str += '\nDoubleDown 패배 횟수 : '+ddl;
+ 		str += '\nDoubleDown 푸시 횟수 : '+ddp;
+ 		str += '\nSurrender 횟수 : ' + sur;
+ 		str += '\n패배 횟수 : ' + lose;
+ 		str += '\n블랙잭 종료 횟수 : ' + exit;
+		r.replier.reply(str.replace(/NaN%/g, '데이터 없음'));
+		return;
+	}else {
+		r.replier.reply('알 수 없습니다.');
 		return;
 	}
-	if (templan1 == '영'){
-		templan1 = 'en';
-	} else if (templan1 =='한'){
-		templan1 = 'ko';
-	} else if (templan1 =='일'){
-		templan1 = 'ja';
-	} else {
-		r.replier.reply('번역할 수 없습니다.');
-		return;
-	}
-	if(templan0 == templan1 ){
-		r.replier.reply('번역할 수 없습니다.');
-		return;
-	}
-	
-	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
-}
-function controlReload(r){
-	control = D.selectForArray('control').map(v=>v[0]);
-	controlPanel = D.selectForObject('control');
-	r.replier.reply('기능 리로드 완료');
-}
-
-function controlEdit(r){
-	controlPanel = D.selectForObject('control');
-	control = D.selectForArray('control').map(v=>v[0]);
-	
-	var temp = r.msg.split(',');
-	var funcc = -1;
-	for(var i in control){
-		if( temp[1].indexOf(control[i]) == 0 ){
-			funcc = i;
-			break;
-		}
-	}
-	
-	if(funcc != -1){
-		var tempf = controlPanel[funcc];
-		if( temp[3] == 'on' ){
-			tempf[temp[2].replace(/ /g, '_')] = 1;
-		} else if ( temp[3] == 'off' ){
-			tempf[temp[2].replace(/ /g, '_')] = 0;
-		} else {
-			r.replier.reply('잘못입력했습니다.');
-			return;
-		}
-		D.update("control", tempf , "name=?", [control[funcc]]);
-	} else {
-		r.replier.reply('잘못입력했습니다.');
-		return;
-	}
-	controlReload(r);
-	r.replier.reply("수정 완료");
 }
 
 function thread(r){
@@ -1452,41 +1307,6 @@ function funcCheck(r){
 	str1 += '\n';
 	str1 = str1.split(' / \n').join('\n');
 	return str1;
-}
-
-function music(r) {
-	var rand = Math.floor(Math.random()*100);
-	var list = org.jsoup.Jsoup.connect('https://m.bugs.co.kr/chart').get().select('td.check').toArray().map(v=>v.toString().split('title="')[1].split('"')[0]);
-	var search_word = list[rand];
-	var trash = org.jsoup.Jsoup.connect('https://music.bugs.co.kr/genre/chart/kpop/rnh/total/day').get().select('p.title').toArray().map(v=>String(v.text()));
-	while(1){
-		if(trash.indexOf(String(search_word))>-1){
-			rand = Math.floor(Math.random()*100);
-			search_word = list[rand];
-		} else {
-			break;
-		}
-	}
-	var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content').get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
-	r.replier.reply(link);
-	return;
-}
-
-function youtube(r) {//조회수
-	var search_word = r.msg.substr(5);
-	if(r.msg[0] == '!'){//관련성
-		var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAASAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
-	} else if (r.msg[0] == '/'){//조회수
-		var link=org.jsoup.Jsoup.connect('https://www.youtube.com/results?search_query='+search_word+'&sp=CAMSAhAB').get().select('div.yt-lockup-dismissable').select('div.yt-lockup-content');
-		
-	}
-	if(String(link).length == 0 ){//CAASAhAB : 관련성  //CAMSAhAB : 조회수
-		r.replier.reply('검색결과가 없습니다.');
-		return;
-	}
-	var link=link.get(0).select('h3.yt-lockup-title').select('a').attr("abs:href");
-	r.replier.reply(link);
-	return;
 }
 
 function jfla(r){
@@ -3220,7 +3040,6 @@ function readFile(file) {
     }
 }
 
-//time
 function time() {
 	var today = new Date();
 	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
@@ -3245,96 +3064,10 @@ function time() {
 	
 	return { now : now , year : year, month : month , date : date, day : day, hour : hour , minute : minute , second : second, ampm : ampm , hour1: hour1};
 }
-//sort에 필요한 compare
+
 function compare(a, b) {
     return a - b;
 }
-
-function checkimage(r){
-	var imagelist = File("/sdcard/KakaoTalkDownload").listFiles();
-	var temp = [];
-	for(i=imagelist.length-1;i>-1;i--){
-		if(String(imagelist[i]).indexOf(r.msg.substr(6))>-1) {
-			temp.push(imagelist[i]);
-		}
-	}
-	if(temp.length == 0){
-		r.replier.reply('검색결과가 없습니다.');
-		return;
-	}
-	var i = 1;
-	r.replier.reply('파일 개수 : '+temp.length+'\n'+temp.map(v=> (i++)+'. ' + String(v).substr(26)).join('\n'));
-}
-
-function deleteimage(r){
-	var temp = java.io.File("/sdcard/KakaoTalkDownload").listFiles();
-	var delist = [];
-	for(i=0;i<temp.length;i++){
-		if(String(temp[i]).indexOf(r.msg.substr(6))>-1) {
-			File(temp[i]).delete();
-			delist.push(temp[i]);
-		}
-	}
-	r.replier.reply(delist.length+'개 삭제 완료\n'+delist.join('\n'));
-}
-
-function loadimage(r){
-	if(Flag.get('image', r.room)==0){
-		Flag.set('imagelist', r.room, File("/sdcard/KakaoTalkDownload").listFiles());
-		var temp = [];
-		for(i=Flag.get('imagelist', r.room).length-1;i>-1;i--){
-			if(String(Flag.get('imagelist', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
-				temp.push(Flag.get('imagelist', r.room)[i]);
-			}
-		}
-		if(temp.length == 0){
-			r.replier.reply('검색결과가 없습니다.');
-			return;
-		}
-		Flag.set('imagelist', r.room, temp);
-		var i = 1;
-		r.replier.reply('파일 개수 : '+Flag.get('imagelist', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('imagelist', r.room).map(v=> (i++)+'. ' + String(v).substr(26)).join('\n'));
-		Flag.set('image', r.room, 1);
-	} else if ( Flag.get('image', r.room)== 1){
-		if(!isNaN(r.msg)){
-			r.replier.reply('https://codebeautify.org/base64-to-image-converter');
-			r.replier.reply(read64(String(Flag.get('imagelist', r.room)[Number(r.msg)-1]) ) );
-			Flag.set('image', r.room, 0);
-		} else {
-			r.replier.reply('숫자를 입력하세요.');
-			Flag.set('image', r.room, 0);
-		}
-	}
-}
-
-function read64(file) {
-	   var is=new java.io.FileInputStream(file);
-	   var os=new java.io.ByteArrayOutputStream();
-	   var len=0;
-	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
-	   while((len=is.read(buf))!=-1){
-	      os.write(buf,0,len);
-	   }
-	   is.close();
-	   os.close();
-	   var fileArray=os.toByteArray();
-	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
-	   return str;
-	}
-
-function write64(file,base64) {
-	   var base64Array=new java.lang.String(base64).getBytes();
-	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
-	   var is=new java.io.ByteArrayInputStream(fileArray);
-	   var os=new java.io.FileOutputStream(file);
-	   var len=0;
-	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
-	   while((len=is.read(buf))!=-1){
-	      os.write(buf,0,len);
-	   }
-	   is.close();
-	   os.close();
-	}
 
 function saveImage(r) {
     if (r.imageDB.getImage()) {
@@ -3440,4 +3173,22 @@ function calculator(r){
 		r.replier.reply(temp);
 	}
 }
+
+]D.execSQL("alter table control add BASEBALL number")
+]D.update("control", {BASEBALL:0})
+]D.selectForString('control')
+]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0}, "name='!계산'")
+]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0})
+]D.rawQuery("INSERT INTO chatdb SELECT * FROM cbot")
+]D.execSQL("drop table botpoint")
+]D.insert("cat", {name :"중용", gender : "남", age : 22})
+]D.delete("cat", "name='중용'")
+]D.delete("cat", "name='모모' and age='5'" )
+]D.selectForString("cat", null, "age<4")
+]D.selectForString("cat", "name, gender", "age<4")
+]D.selectForString("cat", ["name", "gender"], "age<4")
+]D.selectForString("cat","count(*)")
+]D.selectForString("cat", null, "name=?",  [a]) //a='모모'
+]D.update("cat", {age : 4} , "name='인문이'")
+]D.create("cat", {name:"모모",gender:"남",age:4})
 */
