@@ -151,7 +151,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		return;
 	    }
 		
-		if (msg =='!로드' && wokr == 1){
+		if (msg =='!로드' && work == 1){
 			freload(r);
 			return;
 		}
