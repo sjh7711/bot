@@ -572,7 +572,7 @@ function blackjacksum(temp){
 	}
 	var sum = 0;
 	for(var i in temp) {
-		sum+=temp[i]
+		sum+=Number(temp[i])
 	}
 	return sum;
 }
