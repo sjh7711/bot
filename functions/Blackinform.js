@@ -34,6 +34,7 @@ blackinform = function (r){
 		str += '\nInsurance 성공 확률 : ' + Math.floor( (insur-insurw)/insur *1000 )/10 + "%";
 		str += '\nEvenMoney 빈도 : ' + Math.floor( even/evenc *1000 )/10 + "%";
 		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
+		str += '\nBlackJack 푸시 빈도 : ' + Math.floor( bpush/all *1000 )/10 + "%";
 		str += '\nBlackJack 승리 빈도 : ' + Math.floor( (blackjack-bpush)/all *1000 )/10 + "%";
 		str += '\nSurrender 빈도 : ' + Math.floor( sur/all *1000 )/10 + "%";
  		str += '\nDoubleDown 승률 비교 \nWin : ' + Math.floor( ddw/(ddw+ddl+ddp) *1000 )/10 + "%\nLose : "+ Math.floor( ddl/(ddw+ddl+ddp) *1000 )/10 + "%\nPush : "+Math.floor( ddp/(ddw+ddl+ddp) *1000 )/10 +"%\n";
