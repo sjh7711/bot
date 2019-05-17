@@ -49,7 +49,7 @@ blackjack = function (r){
 	
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
 		if ( ( gameinfo.starttime + 1000*90 ) < new Date().getTime() ){
-			blackjackend(r);
+			blackjackend(r, gameinfo);
 		} else if(gameinfo.playerlist.indexOf(r.sender) != -1 ){
 			for(var i in gameinfo.playerlist){
 				var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+1;
