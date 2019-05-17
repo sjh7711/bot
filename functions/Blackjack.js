@@ -48,7 +48,9 @@ blackjack = function (r){
 	}
 	
 	if( ( gameinfo.start == 1 || gameinfo.start1 == 1 || gameinfo.start2 ==  1 || gameinfo.start3 ==  1) && r.msg == '!블랙잭종료' ){
-		if(gameinfo.playerlist.indexOf(r.sender) != -1 ){
+		if ( ( gameinfo.starttime + 1000*90 ) < new Date().getTime() ){
+			blackjackend(r);
+		} else if(gameinfo.playerlist.indexOf(r.sender) != -1 ){
 			for(var i in gameinfo.playerlist){
 				var temppoint = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+1;
 				D.update('blackjack', {fexit : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
@@ -65,10 +67,8 @@ blackjack = function (r){
 			Flag.set('gameinfo', r.room, gameinfo);
 			r.replier.reply('게임이 종료되었습니다. 새로운 게임이 가능합니다.');
 			return;
-		} else if ( ( gameinfo.starttime + 1000*8*60 ) < new Date().getTime() ){
-			blackjackend(r);
 		} else {
-			r.replier.reply( (Math.floor( ( gameinfo.starttime + 1000*8*60 ) - new Date().getTime() ) / 1000 ) + '초 뒤에 강제종료가 가능합니다.');
+			r.replier.reply( (Math.floor( ( gameinfo.starttime + 1000*90 ) - new Date().getTime() ) / 1000 ) + '초 뒤에 강제종료가 가능합니다.');
 		}
 	}
 	
