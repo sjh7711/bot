@@ -39,11 +39,6 @@ blackjacksum = function (temp){
 	return sum;
 }
 
-cloneObject = function (obj) {
-	  return JSON.parse(JSON.stringify(obj));
-	}
-
-
 blackjack = function (r){
 	if( Flag.get('gameinfo', r.room) == 0 ){
 		var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
