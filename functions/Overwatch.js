@@ -1,4 +1,4 @@
-overwatch(r) {
+overwatch = function (r) {
 	try{
 		var name = r.msg.substr(6).replace("#", "-");//배틀태그가 담기는 공간
 	    var source = org.jsoup.Jsoup.connect('https://playoverwatch.com/ko-kr/career/pc/'+name).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36").get();

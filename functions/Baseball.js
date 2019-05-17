@@ -1,4 +1,4 @@
-baseball(r){
+baseball = function (r){
 	if(Flag.get('supposelist', r.room) == 0 && r.msg == '!힌트' && Flag.get('baseball', r.room)[Flag.get('k', r.room)] == r.sender ){
 		r.replier.reply('힌트를 쓰려면 8턴이 지나야 합니다.');
 		return;

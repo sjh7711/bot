@@ -1,4 +1,4 @@
-blackinform(r){
+blackinform = function (r){
 	if(D.selectForArray('blackjack', null, 'name=? and room=?', [r.sender, r.room]) !=undefined){
 		var win = D.selectForArray('blackjack', 'win', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var lose =  D.selectForArray('blackjack', 'lose', 'name=? and room=?', [r.sender, r.room])[0][0];

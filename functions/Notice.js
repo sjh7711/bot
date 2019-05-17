@@ -1,4 +1,4 @@
-notice(r){
+notice = function (r){
 	try{
 		if(Flag.get('cookie1', 'test') == 0 || Flag.get('cookie2', 'test') == 0){
 			var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html")

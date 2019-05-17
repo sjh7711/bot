@@ -1,4 +1,4 @@
-recentchat(r) {
+recentchat= function (r) {
 	try{
 		var temp = r.msg.substr(5);
 		var temp1 = '';//개수

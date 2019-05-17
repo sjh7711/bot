@@ -1,4 +1,4 @@
-checkimage(r){
+checkimage = function (r){
 	var imagelist = File("/sdcard/KakaoTalkDownload").listFiles();
 	var temp = [];
 	for(i=imagelist.length-1;i>-1;i--){

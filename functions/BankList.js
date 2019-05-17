@@ -1,4 +1,4 @@
-banklist(r){
+banklist = function (r){
 	try{
 		var name = r.msg.split(" ")[1];
 		if(typeof name == 'string'){

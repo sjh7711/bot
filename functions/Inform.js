@@ -1,4 +1,4 @@
-inform(r){
+inform = function (r){
 	if(D.selectForArray('baseball',null,'name=? and room=?',[r.sender, r.room])!=undefined){
 		var wincount = D.selectForArray('baseball', 'win','name=? and room=?',[r.sender, r.room])[0][0];
 		var losecount = D.selectForArray('baseball', 'lose','name=? and room=?',[r.sender, r.room])[0][0];

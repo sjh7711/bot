@@ -1,4 +1,4 @@
-lottocheck(r) {
+lottocheck = function (r) {
 	try{
 		var doc = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get()
 		var raw = doc.select('div.win_result');

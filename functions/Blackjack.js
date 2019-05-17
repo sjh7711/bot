@@ -1,4 +1,4 @@
-givemoney(r){
+givemoney = function (r){
 	var data = r.msg.substr(7).split(',');
 	var money = Number(data[0]);
 	var who = data[1];
@@ -9,7 +9,7 @@ givemoney(r){
 	Api.replyRoom(room, who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0] );
 }
 
-function blackjacksum(temp){
+blackjacksum = function (temp){
 	var sum = 0;
 	var acount = 0;
 	for(var i in temp){
@@ -39,12 +39,12 @@ function blackjacksum(temp){
 	return sum;
 }
 
-function cloneObject(obj) {
+cloneObject = function (obj) {
 	  return JSON.parse(JSON.stringify(obj));
 	}
 
 
-function blackjack(r){
+blackjack = function (r){
 	if( Flag.get('gameinfo', r.room) == 0 ){
 		var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
 		Flag.set('gameinfo', r.room, gameinfo);
@@ -539,7 +539,7 @@ function blackjack(r){
 	}
 }
 
-function blackjackend(r, gameinfo){
+blackjackend = function (r, gameinfo){
 	r.replier.reply('게임종료!');
 	gameinfo.start4 = 1;
 	java.lang.Thread.sleep(1500);

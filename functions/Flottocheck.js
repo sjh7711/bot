@@ -1,4 +1,4 @@
-flottocheck(r) {
+flottocheck = function (r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
 	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum-1])[0];

@@ -1,4 +1,4 @@
-bestlotto(r) {
+bestlotto = function (r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";

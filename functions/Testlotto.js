@@ -1,4 +1,4 @@
-testlotto(r){
+testlotto = function (r){
 	var cycle = 1;
 	if( r.msg.substr(4) > 0 && r.msg.substr(4) < 10001 ){
 		cycle = Number(r.msg.substr(4));

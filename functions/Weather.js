@@ -1,4 +1,4 @@
-weather(r){
+weather = function (r){
 	I.register("weatherSelect"+r.sender,r.room,r.sender,function(input){
 		try{
 			var want = r.msg.substr(4);
