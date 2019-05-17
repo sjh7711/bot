@@ -486,8 +486,8 @@ function functionreload(r){
 		Flag.set('freloadcheck', r.room, 1);
 	} else if ( Flag.get('freloadcheck', r.room)== 1){
 		if(!isNaN(r.msg)){
-			eval( Flag.get('imagelist', r.room)[Number(r.msg)-1] );
-			r.replier.reply(Flag.get('imagelist', r.room)[Number(r.msg)-1] + '리로딩 완료');
+			eval( Flag.get('function', r.room)[Number(r.msg)-1] );
+			r.replier.reply(Flag.get('function', r.room)[Number(r.msg)-1] + '리로딩 완료');
 		} else {
 			r.replier.reply('숫자를 입력하세요.');
 			Flag.set('freloadcheck', r.room, 0);
