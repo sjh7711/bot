@@ -356,7 +356,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	
     	if(msg == '!블랙잭랭킹' && work == 1 ){
     		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' ] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' +String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',12)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) ).join('\n'));
+    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'lose', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[0]).extensionRight('ㅤ',10) +'\n'+String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' | 승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무승부 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 기타 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n')).replace(/NaN%/g, '데이터 없음');
     		return;
     	}
         
@@ -516,6 +516,7 @@ function blackinform(r){
 		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
 		str += '\n본전확률 : '+ Math.floor( (push + ddp + bpush ) / all*1000)/10 + "%";
 		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
+		str += '\n기ㅤㅤ타 : '+ Math.floor( ( exit ) / all*1000)/10 + "%";
 		
 		str += '\n\n세부전적'+ es;
 		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
