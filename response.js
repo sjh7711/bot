@@ -633,6 +633,10 @@ function blackjack(r){
 		}
 	}
 	
+	if(gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0){
+		return;
+	}
+	
 	if ( (r.msg == '참가' || r.msg == 'ㅊㄱ') &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
         if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000 ){
     		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0}
@@ -1935,6 +1939,7 @@ function weather(r){
 					        	var loc3 = temp.substr(0, temp.lastIndexOf("가 ")+1);
 					        	var loc4 = temp.substr(0, temp.lastIndexOf("군 ")+1);
 					        	var loc5 = temp.substr(0, temp.lastIndexOf("구 ")+1);
+					        	var loc6 = temp.substr(0, temp.lastIndexOf("시 ")+1);
 				        		if( loc.length > 0){
 				        			wantplace=loc;
 				        		} else if (loc1.length > 0){
@@ -1947,6 +1952,8 @@ function weather(r){
 				        			wantplace = loc4;
 				        		} else if(loc5.length > 0){
 				        			wantplace = loc5;
+				        		} else if(loc6.length > 0){
+				        			wantplace = loc6;
 				        		} else {
 				        			wantplace = temp;
 				        		}
