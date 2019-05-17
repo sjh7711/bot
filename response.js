@@ -846,9 +846,9 @@ function blackjack(r){
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room] )[0][0];
 						if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) != -1) {//블랙잭 & 이븐머니
 							var temppoint = temppoint1+Number(gameinfo['player'+i].bet);
-						} else if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) == -1) {//블랙잭x & 보험x -> 그대로 진행
+						} else if (gameinfo['player'+i].insurance == 1 && gameinfo.blackjacklist.indexOf(r.sender) == -1) {//블랙잭x & 보험o -> 보험금 잃음
 							var temppoint = temppoint1-Number(gameinfo['player'+i].bet/2);
-						} else {//블랙잭 x & 보험 o -> 보험금 잃음
+						} else {//그 외 그대로진행
 							var temppoint = temppoint1
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
