@@ -4,11 +4,6 @@ File = java.io.File;
 if(ObjKeep.get("reboottime")==null){
 	ObjKeep.keep("reboottime",new Date().getTime());
 }
-var funccheck = 0;
-if(funccheck == 0 ){
-	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))};
-	funccheck = 1;
-}
 var reloadtime = new Date().getTime();
 var calculating = 0;
 var D = require("DBManager.js")("D");
@@ -35,6 +30,11 @@ function readFile(file) {
     catch (e) {
     	Api.replyRoom('test',e+"\n"+e.stack);
     }
+}
+var funccheck = 0;
+if(funccheck == 0 ){
+	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))};
+	funccheck = 1;
 }
 function freload(r){
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
