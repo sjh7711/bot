@@ -90,13 +90,31 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 				replier.reply(String(eval(msg.substring(1))).encoding());
 				return;	
 			}
-			blankFunc(r);
 		}
 	} catch (e) {
         replier.reply( e + "\n" + e.stack);
 	}
 	
 	try {
+		if (msg == '!로딩' && work == 1){
+    		reload(r);
+    		return;
+	    }
+		
+		if (msg =='!로드' && work == 1){
+			freload(r);
+			return;
+		}
+		
+		if (msg.indexOf("!함수로딩") == 0 && work == 1){
+			functionreload(r);
+			return;
+		} 
+		
+		if (room == 'test' || room == '시립대 봇제작방') {
+			blankFunc(r);
+		}
+		
 		blankFunc1(r);
 		
 		if (sender != "시립봇") {
@@ -143,21 +161,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if (msg.indexOf("!사진삭제") == 0 && work == 1){
 			deleteimage(r);
 		}
-		
-		if (msg == '!로딩' && work == 1){
-    		reload(r);
-    		return;
-	    }
-		
-		if (msg =='!로드' && work == 1){
-			freload(r);
-			return;
-		}
-		
-		if (msg.indexOf("!함수로딩") == 0 && work == 1){
-			functionreload(r);
-			return;
-		} 
 		
 		if (msg == '!리부트' && work == 1){
 			replier.reply('Rebooting...');
