@@ -30,6 +30,10 @@ function readFile(file) {
     	Api.replyRoom('test',e+"\n"+e.stack);
     }
 }
+function freload(){
+	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
+    Api.replyRoom('test' , "Function reloading 완료");
+}
 function reload(r) {
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
 		reloadcheck = 1;
@@ -55,14 +59,13 @@ function reload(r) {
 	    control = D.selectForArray('control').map(v=>v[0]);
 	    controlPanel = D.selectForObject('control');
 	    Api.replyRoom(r.room , "Response reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
-	    for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
+	    T.register("functionReload",()=>{
+	    	freload();
+	    }).start();
 	    Api.replyRoom(r.room , "Function reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date());
 	}
 }
-function freload(r){
-	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
-    Api.replyRoom(r.room , "Function reloading 완료");
-}
+
 Flag=(function(){
 	   var list={};
 	   var Flag={};
