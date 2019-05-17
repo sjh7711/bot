@@ -55,7 +55,7 @@ function reload(r) {
 	    control = D.selectForArray('control').map(v=>v[0]);
 	    controlPanel = D.selectForObject('control');
 	    Api.replyRoom(r.room , "Response reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
-	    eval(var functions = File("/sdcard/kbot/functions").listFiles();for(var i in functions){eval( readFile(functions[i]) )} )
+	    var functions = File("/sdcard/kbot/functions").listFiles();for(var i in functions){eval( readFile(functions[i]) )}
 	    Api.replyRoom(r.room , "Function reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date());
 	}
 }
