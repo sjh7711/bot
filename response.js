@@ -5,10 +5,7 @@ if(ObjKeep.get("reboottime")==null){
 }
 var funccheck = 0;
 if(funccheck == 0 ){
-	r={room : 'test',replier:{reply:function(msg){
-		Api.replyRoom(r.room,msg)
-		}}
-	}
+	r={room : 'test'}
 	freload(r);
 	funccheck = 1;
 }
