@@ -62,6 +62,9 @@ function reload(r) {
 	}
 }
 
+function blankFunc(r){}
+function blankFunc1(r){}
+
 Flag=(function(){
 	   var list={};
 	   var Flag={};
