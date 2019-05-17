@@ -56,7 +56,7 @@ function reload(r) {
 	    Api.replyRoom(r.room , "Response reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date());
 	    var functions = File("/sdcard/kbot/functions").listFiles();
 	    for(var i in functions){
-	    	eval(readFile(functions[i]]));
+	    	eval(readFile(functions[i]));
 	    }
 	    Api.replyRoom(r.room , "Function reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date());
 	}
