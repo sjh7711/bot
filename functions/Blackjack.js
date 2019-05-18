@@ -39,7 +39,7 @@ blackjacksum = function (temp){
 	return sum;
 }
 
-blackjack = function (r){s
+blackjack = function (r){
 	if( Flag.get('gameinfo', r.room) == 0 ){
 		var gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
 		Flag.set('gameinfo', r.room, gameinfo);
