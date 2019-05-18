@@ -33,17 +33,14 @@ function readFile(file) {
 }
 var funccheck = 0;
 if(funccheck == 0 ){
+	T.interruptAll();
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))};
-	for(var i in File("/sdcard/kbot/thread").listFiles()){eval( readFile(File("/sdcard/kbot/thread").listFiles()[i]))}
 	funccheck = 1;
 }
-try {
-	function freload(r){
-		for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
-	    Api.replyRoom(r.room , "Function reloading 완료");
-	}
-} catch (e) {
-    replier.reply( e + "\n" + e.stack);
+function freload(r){
+	T.interruptAll();
+	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
+    Api.replyRoom(r.room , "Function reloading 완료");
 }
 function reload(r) {
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
