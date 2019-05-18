@@ -42,12 +42,9 @@ function freload(r){
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
     Api.replyRoom(r.room , "Function reloading 완료");
 }
-function reload(r) {
+function githubload(r){
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
-		reloadcheck = 1;
-		reloadtime = new Date().getTime();
-		var Timer = new Date();
-	    file = "storage/emulated/0/kbot/response.js";
+		file = "storage/emulated/0/kbot/response.js";
 	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
 	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
 	    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
@@ -61,6 +58,13 @@ function reload(r) {
 	    bw.write(str.toString());
 	    bw.close();
 	    Api.replyRoom(r.room ,"파일저장 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
+	}
+}
+function reload(r) {
+	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
+		reloadcheck = 1;
+		reloadtime = new Date().getTime();
+		var Timer = new Date();
 	    T.interruptAll();
 	    Api.reload();
 	    reloadcheck = 0;
@@ -380,34 +384,37 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['point', 'win', 'lose', 'solowin', 'name'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2) +'. [' +String(v[0]).extension(' ',6)+'P '+String(v[1]).extension(' ',2)+'승 '+ String(v[2]).extension(' ',2)+'패 ' +String(v[3]).extension(' ',3)+'S/P ] ' +String(v[4])).join('\n'));
     		return;
     	}
-    	
-        //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         
-    	 if( (msg == "!블랙잭" && work == 0) || (msg == "!블랙잭방" && work == 1) ){
-     		replier.reply('https://open.kakao.com/o/grdPBAnb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
-     		return;
-     	}
-         
-         if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == 'ㅊㄱ' || msg == '시작' || msg == 'ㅅㅈ'  || msg == '!블랙잭종료' || msg == '힛'|| msg == 'ㅎ' || msg == '스테이'|| msg == 'ㅅㅌㅇ'|| msg == '서렌더'|| msg == 'ㅅㄹㄷ'|| msg == '더블다운'|| msg == 'ㄷㅂㄷㅇ'|| msg == '스플릿'|| msg == 'ㅅㅍㄹ') )){
-         	blackjack(r);
-         }
-         
-         if(msg == '!블랙잭정보' && work == 1 ){
-     		blackinform(r);
-     		return;
-     	}
-         
-         if(msg.indexOf('!블랙잭지급') == 0 && room == 'test' ){
-         	givemoney(r);
-         	return;
-         }
-     	
-     	if(msg == '!블랙잭랭킹' && work == 1 ){
-     		var i = 1;
-     		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) +'\n'+ '승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n\n').replace(/NaN%/g, 'X'));
-     		return;
-     	}
-     	
+    	if((Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1)){
+    		r.replier.reply('다른게임이 진행중입니다.');
+    		return;
+    	}
+    	
+        if( (msg == "!블랙잭" && work == 0) || (msg == "!블랙잭방" && work == 1) ){
+    		replier.reply('https://open.kakao.com/o/grdPBAnb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
+    		return;
+    	}
+        
+        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == 'ㅊㄱ' || msg == '시작' || msg == 'ㅅㅈ'  || msg == '!블랙잭종료' || msg == '힛'|| msg == 'ㅎ' || msg == '스테이'|| msg == 'ㅅㅌㅇ'|| msg == '서렌더'|| msg == 'ㅅㄹㄷ'|| msg == '더블다운'|| msg == 'ㄷㅂㄷㅇ'|| msg == '스플릿'|| msg == 'ㅅㅍㄹ') )){
+        	blackjack(r);
+        }
+        
+        if(msg == '!블랙잭정보' && work == 1 ){
+    		blackinform(r);
+    		return;
+    	}
+        
+        if(msg.indexOf('!블랙잭지급') == 0 && room == 'test' ){
+        	givemoney(r);
+        	return;
+        }
+    	
+    	if(msg == '!블랙잭랭킹' && work == 1 ){
+    		var i = 1;
+    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) +'\n'+ '승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n\n').replace(/NaN%/g, 'X'));
+    		return;
+    	}
+    	
     	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
