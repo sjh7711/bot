@@ -205,7 +205,7 @@ blackjack = function (r){
 				var str = '';
 				var str1 = '';
 				gameinfo.start4 = 1;
-				java.lang.Thread.sleep(1500);
+				java.lang.Thread.sleep(800);
 				gameinfo.start4 = 0;
 				str += '딜러의 BlackJack!\n';
 				str += '⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + '] ('+gameinfo.dealer.sum +')';
@@ -269,7 +269,7 @@ blackjack = function (r){
 					gameinfo.dealer.sum = sum;
 					gameinfo.dealer.state = 1;
 					gameinfo.start4 = 1;
-					java.lang.Thread.sleep(1500);
+					java.lang.Thread.sleep(800);
 					gameinfo.start4 = 0;
 					str += '딜러의 BlackJack!\n';
 					str += '딜러 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']\n';
