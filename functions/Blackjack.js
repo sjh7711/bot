@@ -236,10 +236,12 @@ blackjack = function (r){
 				r.replier.reply('딜러는 BlackJack이 아닙니다.');
 				gameinfo.start1 = 0;
 				gameinfo.start2 = 1;
+				return;
 			}
 		} else {
 			gameinfo.start1 = 0;
 			gameinfo.start2 = 1;
+			return;
 		}
 	}
 	
@@ -329,11 +331,12 @@ blackjack = function (r){
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
 					gameinfo.start2 = 1;
+					return;
 				}
 			}
 		} else {
 			r.replier.reply('0 : 동의 안함 | 1 : 동의함');
-		}
+		}	
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0  && num != -1 && gameinfo['player'+num].state == 0 ){
