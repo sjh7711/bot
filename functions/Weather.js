@@ -3,9 +3,14 @@ weather = function (r){
 		try{
 			var want = r.msg.substr(4);
 			var link1 = ""; // 날씨 검색화면
-			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111'; //네이버날씨기본주소
+			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=09140104'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
-			var where = "통영시 무전동";
+			var where = "서울 중구 을지로 1가";
+			if(r.room == 'test' || r.room == '단톡방'|| r.room == '공익'|| r.room == '푸드마켓'|| r.room == '오버워치'){
+				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
+				check = link2.indexOf('weather');
+				where = "통영시 무전동";
+			}
 			if(r.room == '시립대 자취생 생정' || r.room == '시립대 전전컴 톡방'|| r.room == '시립대 봇제작방'|| r.room == '시립대 단톡방'){
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=09230104';
 				check = link2.indexOf('weather');
@@ -221,15 +226,33 @@ weather = function (r){
 		        		}
 	        		}
 		        } else if(link2=="http://m.weather.naver.com"){//도단위 검색일 때 ex) 제주도 , 경남
-					var i = 0;
-	    			var name = link1.select('div.lcl_lst').select('span.lcl_name').toArray().map(v=>(1+i++)+". "+v.text());
+					
+		        	var i = 0;
+		        	var link1 = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+want).get();
+	    			var name = String(link1.select('select[id=regionnamelist]').text()).replace('하위 행정명', '').trim().split(' ').map(v=>(1+i++)+". "+v);
 	    			var msg;
-	    			r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
+	    			if ( name.length < 6){
+	    				r.replier.reply("지역을 선택하세요\n"+name.join('\n'));
+	    			} else if(name.length > 5) {
+	    				var name1 = '';
+	    				for(var i in name){
+	    					if(Number(name[i].split('.')[0])%2==1){
+	    						name1 += name[i];
+	    					} else{
+	    						name1 += ' / '+name[i]+'\n';
+	    					}
+	    				}
+	    				r.replier.reply("지역을 선택하세요\n"+name1.trim());
+	    			}
 		        	msg=input.getMsg()*1;
 		        	if(!isNaN(msg) && msg >= 1 && msg <= name.length){
 		        		var targetNum=msg-1;
-		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+want).get();
-		        		link2 = org.jsoup.Jsoup.connect(link1.select('div.lcl_lst').select('a').get(targetNum).attr("abs:href")).get().select('div.api_more_wrap').select('a').attr("abs:href");
+		        		link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+"+name[targetNum].substr(3)).get();
+		        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		if(link2.indexOf('regionCode')==-1){
+		        			link1 = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+"+name[targetNum].substr(3)+"날씨").get();
+			        		link2 = link1.select('div.api_more_wrap').select('a').attr("abs:href");
+		        		}
 		        		check = link2.indexOf('weather');
 		        		where = name[targetNum].substr(3) ;
 		        	}
@@ -290,7 +313,7 @@ weather = function (r){
 					var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
 					var dust = doc1.select('div.chart_item').toArray().map(v=>v.select('div.dust_graph_number').text().replace('먼지', '먼지 :')+"㎍/㎥" + "("+v.select('div.dust_graph_text').text()+")");
 					if(sky.slice(0,7).map(v=>String(v)).indexOf("비") > -1 ){
-						r.replier.reply('★비소식이 있습니다. 우산을 챙기세요★');
+						r.replier.reply('☔비소식이 있습니다. 우산을 챙기세요☔');
 					}
 					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
 					res += "-------미세먼지/자외선--------\n";

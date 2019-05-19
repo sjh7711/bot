@@ -42,7 +42,7 @@ blackinform = function (r){
 		str += '\n\n세부전적'+ es;
 		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
 		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
-		str += '\nInsurance 성공 확률 : ' + Math.floor( (insur-insurw)/insur *1000 )/10 + "%";
+		str += '\nInsurance 성공 확률 : ' + Math.floor( (insurc-insurw)/insurc *1000 )/10 + "%";
 		str += '\nEvenMoney 빈도 : ' + Math.floor( even/evenc *1000 )/10 + "%";
 		str += '\nBlackJack 빈도 : ' + Math.floor( blackjack/all *1000 )/10 + "%";
 		str += '\nBlackJack 푸시 빈도 : ' + Math.floor( bpush/all *1000 )/10 + "%";
@@ -171,7 +171,7 @@ blackjack = function (r){
     }
 	
 	if ( gameinfo.start == 1 && (gameinfo.playerlist.length == 5 || ((r.msg == '시작' || r.msg == 'ㅅㅈ')  && gameinfo.playerlist.indexOf(r.sender) > -1 )) ){
-		var figure = ['♣','♠','♦','♥'];
+		var figure = ["\u2663\uFE0F","\u2660\uFE0F","\u2666\uFE0F","\u2665\uFE0F"];
 		var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
 		var temp = [];
 		var cards = [];
@@ -230,6 +230,10 @@ blackjack = function (r){
 		str += '딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? \n';
 		for( var i in gameinfo.playerlist){
 			str += gameinfo['player'+i].name+'의 카드 : ' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ') + '\n';
+			if(gameinfo['player'+i].card[0][1] == gameinfo['player'+i].card[1][1]){
+				var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]+1;
+	            D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
+			}
 		}
 		r.replier.reply(str.trim());
 		for( var i in gameinfo.playerlist){
@@ -398,88 +402,87 @@ blackjack = function (r){
 	}
 	
 	if( gameinfo.start2 == 1 && gameinfo.playerlist.length > 0  && num != -1 && gameinfo['player'+num].state == 0 ){
-		if(gameinfo['player'+num].card.length == 2 &&gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 3 ){
-			if(  ( gameinfo['player'+num].end == 0 && (gameinfo['player'+num].splitcount > 0 ) ) || (!(r.msg == '스플릿' || r.msg =='ㅅㅍㄹ') &&(gameinfo['player'+num].splitcount == 0 ))  ) {
-				var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
-				D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
+		if((r.msg == '스플릿' || r.msg == 'ㅅㅍㄹ') && gameinfo['player'+num].card.length == 2 && gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1] && gameinfo['player'+num].splitcount < 3 ){
+			var temp = D.selectForArray('blackjack', 'split', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
+			D.update('blackjack', {split : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
+			if(gameinfo['player'+num].card[0][1] == 'A' && gameinfo['player'+num].splitcount == 0){
+				gameinfo['player'+num].splitcount += 3;
+			} else {
+				gameinfo['player'+num].splitcount+= 1;
 			}
-			if( r.msg == '스플릿' || r.msg == 'ㅅㅍㄹ' ){
-				var temp = D.selectForArray('blackjack', 'split', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
-				D.update('blackjack', {split : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
-				if(gameinfo['player'+num].card[0][1] == 'A' && gameinfo['player'+num].splitcount == 0){
-					gameinfo['player'+num].splitcount += 3;
-				} else if (gameinfo['player'+num].card[0][1] == 'A'){
-					r.replier.reply('스플릿이 불가능합니다');
-					return;
-				} else {
-					gameinfo['player'+num].splitcount+= 1;
-				}
-				gameinfo.splitcount += 1;
-				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				gameinfo.splitdata.push({
-						name : r.sender,
-						card : [gameinfo['player'+num].card.splice(1,1)[0], Flag.get('cards', r.room).splice(rand,1)[0]],
-						bet : gameinfo['player'+num].bet,
-						sum : 0,
-						insurance : 0,
-						state : 0,
-						splitcount : gameinfo['player'+num].splitcount,
-						end : 0
-					})
-				for(var i in gameinfo.splitdata.filter(v=>v.name == r.sender)){
-					gameinfo.splitdata.filter(v=>v.name == r.sender)[i].splitcount = gameinfo['player'+num].splitcount;
-				}
-				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
-				var str = '';
-				str += r.sender+'님의 Split  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')\n';
-				str += gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
-				var temp = gameinfo['player'+num].card.map(v=>v[1]);
-				var sum = blackjacksum(temp);
-				gameinfo['player'+num].sum = sum;
-				if(gameinfo['player'+num].sum == 21){
-					gameinfo['player'+num].state = 2;
-					gameinfo.endcount +=1;
-					gameinfo['player'+num].end = 1;
-					str += '\n'+gameinfo['player'+num].name + '님의 Stay!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
-					r.replier.reply(str);
-					while(1){
-						if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
-							gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
-							gameinfo['player'+num]= null;
-							gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0]);
-							var temp = [];
-							var breakc = 0;
-							for(var i in gameinfo.splitdata){
-								if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
-									breakc += 1;
-								} else {
-									temp.push(gameinfo.splitdata[i])
-								}
-							}
-							gameinfo.splitdata = temp;
-							var str = '';
-							str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
-							var temp = gameinfo['player'+num].card.map(v=>v[1]);
-							var sum = blackjacksum(temp);
-							gameinfo['player'+num].sum = sum;
-							if(gameinfo['player'+num].sum == 21){
-								gameinfo['player'+num].state = 2;
-								gameinfo.endcount +=1;
-								gameinfo['player'+num].end = 1;
-								str += '\n'+gameinfo['player'+num].name + '님의 Stay!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
-								r.replier.reply(str);
+			gameinfo.splitcount += 1;
+			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+			gameinfo.splitdata.push({
+					name : r.sender,
+					card : [gameinfo['player'+num].card.splice(1,1)[0], Flag.get('cards', r.room).splice(rand,1)[0]],
+					bet : gameinfo['player'+num].bet,
+					sum : 0,
+					insurance : 0,
+					state : 0,
+					splitcount : gameinfo['player'+num].splitcount,
+					end : 0
+				})
+			for(var i in gameinfo.splitdata.filter(v=>v.name == r.sender)){
+				gameinfo.splitdata.filter(v=>v.name == r.sender)[i].splitcount = gameinfo['player'+num].splitcount;
+			}
+			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+			gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+			if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
+				var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
+	            D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
+			}
+			var str = '';
+			str += r.sender+'님의 Split  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')\n';
+			str += gameinfo['player'+num].name+'의 카드 : ' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+			var temp = gameinfo['player'+num].card.map(v=>v[1]);
+			var sum = blackjacksum(temp);
+			gameinfo['player'+num].sum = sum;
+			if(gameinfo['player'+num].sum == 21){
+				gameinfo['player'+num].state = 2;
+				gameinfo.endcount +=1;
+				gameinfo['player'+num].end = 1;
+				str += '\n'+gameinfo['player'+num].name + '님의 Stay!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
+				r.replier.reply(str);
+				while(1){
+					if(gameinfo['player'+num].end == 1 && gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0].end == 0){
+						gameinfo.splitdata.push( cloneObject(gameinfo['player'+num]) );
+						gameinfo['player'+num]= null;
+						gameinfo['player'+num]= cloneObject(gameinfo.splitdata.filter(v=>v.name == r.sender).filter(v=>v.end == 0)[0]);
+						var temp = [];
+						var breakc = 0;
+						for(var i in gameinfo.splitdata){
+							if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+								breakc += 1;
 							} else {
-								r.replier.reply(str);
-								break;
+								temp.push(gameinfo.splitdata[i])
 							}
+						}
+						gameinfo.splitdata = temp;
+						var str = '';
+						str += gameinfo['player'+num].name+'의 카드\n' + gameinfo['player'+num].card.map(v=>v.join(' ')).join(' | ');
+						if(gameinfo['player'+num].card[0][1] == gameinfo['player'+num].card[1][1]){
+							var temp = D.selectForArray('blackjack', 'splitc', 'name=? and room=?', [gameinfo['player'+num].name, r.room])[0][0]+1;
+				            D.update('blackjack', {splitc : temp }, 'name=? and room=?', [gameinfo['player'+num].name, r.room] );
+						}
+						var temp = gameinfo['player'+num].card.map(v=>v[1]);
+						var sum = blackjacksum(temp);
+						gameinfo['player'+num].sum = sum;
+						if(gameinfo['player'+num].sum == 21){
+							gameinfo['player'+num].state = 2;
+							gameinfo.endcount +=1;
+							gameinfo['player'+num].end = 1;
+							str += '\n'+gameinfo['player'+num].name + '님의 Stay!'+'  ('+gameinfo.endcount+'/'+(gameinfo.playerlist.length+gameinfo.splitdata.length)+')';
+							r.replier.reply(str);
 						} else {
+							r.replier.reply(str);
 							break;
 						}
+					} else {
+						break;
 					}
-				} else {
-					r.replier.reply(str);
 				}
+			} else {
+				r.replier.reply(str);
 			}
 		} else if ( (r.msg == '스플릿' || r.msg == 'ㅅㅍㄹ') && gameinfo['player'+num].splitcount > 3) {
 			r.replier.reply('Split을 더 이상 할 수 없습니다.');
@@ -606,27 +609,39 @@ blackjack = function (r){
 blackjackend = function (r, gameinfo){
 	r.replier.reply('게임종료!');
 	gameinfo.start4 = 1;
-	java.lang.Thread.sleep(1500);
+	java.lang.Thread.sleep(1200);
 	gameinfo.start4 = 0;
-	while(1){
+	if((gameinfo.playerlist.length + gameinfo.splitdata.length == 1) && (gameinfo['player0'].state == 7 || gameinfo['player0'].state == 1 || gameinfo['player0'].state == 4 )){
 		var str = '';
 		var temp = gameinfo.dealer.card.map(v=>v[1]);
 		var sum = blackjacksum(temp);
 		gameinfo.dealer.sum = sum;
 		str += '딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
-		if(sum > 21){
-			str += '\n딜러의 Bust';
-		}
 		r.replier.reply(str);
 		gameinfo.start4 = 1;
-		java.lang.Thread.sleep(2000);
+		java.lang.Thread.sleep(1500);
 		gameinfo.start4 = 0;
-		if(sum < 17){
-			var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-			gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
-		} else{
+	} else {
+		while(1){
+			var str = '';
+			var temp = gameinfo.dealer.card.map(v=>v[1]);
+			var sum = blackjacksum(temp);
 			gameinfo.dealer.sum = sum;
-			break;
+			str += '딜러의 카드 ('+gameinfo.dealer.sum +')\n⤷[' + gameinfo.dealer.card.map(v=>v.join(' ')).join(' | ') + ']';
+			if(sum > 21){
+				str += '\n딜러의 Bust';
+			}
+			r.replier.reply(str);
+			gameinfo.start4 = 1;
+			java.lang.Thread.sleep(1500);
+			gameinfo.start4 = 0;
+			if(sum < 17){
+				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+				gameinfo.dealer.card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+			} else{
+				gameinfo.dealer.sum = sum;
+				break;
+			}
 		}
 	}
 	var str = '';
@@ -710,8 +725,8 @@ blackjackend = function (r, gameinfo){
 				}
 			}
 		} else if( gameinfo.dealer.sum < 22 ){
-			var even = 0;
 			for( var i in gameinfo.playerlist){
+				var even = 0;
 				var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0];
 				if(gameinfo['player'+i].state == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Lose\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -744,7 +759,7 @@ blackjackend = function (r, gameinfo){
 				} else if (gameinfo['player'+i].state == 4 && gameinfo['player'+i].insurance == 1){
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : EvenMoney\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1;
-					var even = D.selectForArray('blackjack', 'bet', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0];
+					var even = gameinfo['player'+i].bet;
 				} else if (gameinfo['player'+i].state == 4 && gameinfo.dealer.sum == gameinfo['player'+i].sum) {
 					str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack/Push\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
 					var temppoint = temppoint1;
@@ -768,10 +783,10 @@ blackjackend = function (r, gameinfo){
 				}
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				str += String(Number(temppoint1-even)).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
-				var even = 0;
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
+						var even = 0;
 						var temppoint1 = D.selectForArray('blackjack', 'point', 'name=? and room=?', [temp[j].name, r.room])[0][0];
 						if(temp[j].state == 1){
 							str += temp[j].name+'님 ('+temp[j].sum+') : Lose\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -803,7 +818,7 @@ blackjackend = function (r, gameinfo){
 							var temppoint = temppoint1+Number(temp[j].bet*1.5);
 						} else if (temp[j].state == 4 && temp[j].insurance == 1 ){
 							str += temp[j].name+'님 ('+temp[j].sum+') : EvenMoney\n⤷[' + temp[j].card.map(v=>v.join(' ')).join(' | ')+']\n';
-							var even = D.selectForArray('blackjack', 'bet', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0];
+							var even = gameinfo['player'+i].bet
 							var temppoint = temppoint1;
 						} else if (gameinfo['player'+i].state == 4 && gameinfo.dealer.sum == gameinfo['player'+i].sum) {
 							str += gameinfo['player'+i].name+'님 ('+gameinfo['player'+i].sum+') : Blackjack/Push\n⤷[' + gameinfo['player'+i].card.map(v=>v.join(' ')).join(' | ')+']\n';
@@ -845,5 +860,6 @@ blackjackend = function (r, gameinfo){
 	}
 	
 	r.replier.reply( str.trim() );
-	gameinfo.start2 = 0;
+	gameinfo = {start : 0,start1 : 0,start2 : 0,start3 : 0,start4 : 0}
+	Flag.set('gameinfo', r.room, gameinfo);
 }

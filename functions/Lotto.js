@@ -180,10 +180,13 @@ lottocheck = function (r) {
 		var bonus = Number(raw.select('p').get(2).text());
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
+		//현재 개수 : ]D.selectForArray('lottot', "count(*)")[0][0];
+		//처리 개수 : ]D.selectForArray('lotto', "count(*)", "num=?", [859])[0][0];
+		//]D.update('lotto', {count : -1 , class : ''}, 'num=859') //test용 코드
 		
 		if(temp == 0){
 			if(calculating == 0){
-				r.replier.reply('약 '+Number(temp1/200+140)+'초 정도 소요될 예정입니다. 기다려주세요.');
+				r.replier.reply('약 '+Number(D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0]/200+140)+'초 정도 소요될 예정입니다. 기다려주세요.');
 				calculating = 1;
 				var money = doc.select('tbody>tr').toArray().map(v=>String(v.select('td.tar').get(1).text()).replace(/[,원]/g, ''));
 				D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
@@ -218,7 +221,7 @@ lottocheck = function (r) {
 				D.delete('lottot');
 				calculating = 0;
 			} else {
-				r.replier.reply('로또 결과 연산이 진행중입니다.');
+				r.replier.reply('Now calculating.. ' + (Math.floor(D.selectForArray( 'lottot', "count(*)")[0][0]/D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0]*10000))/100+'%\n약 '+Number((D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0]-D.selectForArray( 'lottot', "count(*)")[0][0])/200)+'초 / '+ (D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0]-D.selectForArray( 'lottot', "count(*)")[0][0]) +'개 남음');
 				return;
 			}
 		}
@@ -281,7 +284,12 @@ lottocheck = function (r) {
 				second+=temp[i][1]+"|생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+" | "+temp[i][15]+"\n\n";
 			} 
 		}
-		result += es+'\n\n1등('+one+')\n'+first+'\n2등('+two+')\n'+second+'\n3등('+three+')\n'+third+'\n4등('+four+')\n'+fourth+'\n5등('+five+')\n'+fifth+'\n꽝('+Number(all-(one+two+three+four+five))+")\n";
+		result += es+'\n\n1등[확률 : '+Number((Math.floor(one/all*1000000000000)/10000000000).toFixed(12))+"% ("+one+")"+']\n'+first;
+		result+= '\n2등[확률 : '+Number((Math.floor(two/all*1000000000000)/10000000000).toFixed(12))+"% ("+two+")"+']\n'+second;
+		result+='\n3등[확률 : '+Number((Math.floor(three/all*1000000000000)/10000000000).toFixed(12))+"% ("+three+")"+']\n'+third;
+		result+='\n4등[확률 : '+Number((Math.floor(four/all*1000000000000)/10000000000).toFixed(12))+"% ("+four+")"+']\n'+fourth;
+		result+='\n5등[확률 : '+Number((Math.floor(five/all*1000000000000)/10000000000).toFixed(12))+"% ("+five+")"+']\n'+fifth;
+		result+='\n꽝('+Number(all-(one+two+three+four+five))+")\n";
 		
 		r.replier.reply(result);
 		
@@ -350,14 +358,13 @@ bestlotto = function (r) {
 	if (result.length > 20000){
 		result = result.substr(0,20000);
 	}
-	r.replier.reply(result);
+	r.replier.reply(result.replace(/NaN%/g, '데이터없음'));
 }
 
 allbestlotto = function (r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
 	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', null, 'count > 3 ', null , {orderBy:"class asc"});
 	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num])[0][0];
 	var five = D.selectForArray('lotto', "count(*)", 'count = 3')[0][0];
 	var four = D.selectForArray('lotto', "count(*)", 'count = 4 ')[0][0];
@@ -395,6 +402,7 @@ allbestlotto = function (r) {
 	var str4 ='\n';
 	
 	if ( r.room == 'test'){
+		var temp = D.selectForArray('lotto', null, 'count > 3 ', null , {orderBy:"class asc"});
 		result += "\n"+es+"\n";
 		for(var i=0; i<temp.length; i++){
 			if(temp[i][14]==4){

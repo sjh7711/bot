@@ -52,7 +52,7 @@ baseball = function (r){
 				var str = '';
 				str += '게임이 종료되었습니다. 새로운 게임이 가능합니다.';
 				if(Flag.get('answer', r.room)!=0){
-					str += '정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
+					str += ' 정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
 				}
 				r.replier.reply(str);
 				return;
@@ -66,7 +66,7 @@ baseball = function (r){
 			var str = '';
 			str += '게임이 종료되었습니다. 새로운 게임이 가능합니다.';
 			if(Flag.get('answer', r.room)!=0){
-				str += '정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
+				str += ' 정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
 			}
 			r.replier.reply(str);
 			return;
@@ -84,7 +84,7 @@ baseball = function (r){
 		var str = '';
 		str += '게임이 종료되었습니다. 새로운 게임이 가능합니다.';
 		if(Flag.get('answer', r.room)!=0){
-			str += '정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
+			str += ' 정답은 '+Flag.get('answer', r.room).join('')+'입니다.';
 		}
 		r.replier.reply(str);
 		return;
@@ -149,18 +149,8 @@ baseball = function (r){
 		return;
 	}
 	
-	if(Flag.get('start2', r.room) == 1 && Flag.get('baseball', r.room)[Flag.get('k', r.room)]==r.sender) {
-		if(r.msg < 0 ){
-			r.replier.reply('양수를 입력하세요');
-			return;
-		}
-		if(r.msg.indexOf('e') > -1){
-			return;
-		}
-		if(isNaN(r.msg)==true){
-			r.replier.reply('숫자가 아닙니다.');
-			return;
-		}else if( r.msg.split('').length != 4  || Math.floor(r.msg) < 100 ){
+	if(Flag.get('start2', r.room) == 1 && Flag.get('baseball', r.room)[Flag.get('k', r.room)]==r.sender && /^\d+$/.test(r.msg)) {
+		if( String(r.msg).split('').length != 4 ){
 			r.replier.reply('4자리 숫자만 입력해주세요.')
 			return;
 		}

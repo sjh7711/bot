@@ -7,14 +7,11 @@ if(ObjKeep.get("reboottime")==null){
 var reloadtime = new Date().getTime();
 var calculating = 0;
 var D = require("DBManager.js")("D");
-//cmd("chmod -R 777 /data/data/com.kakao.talk/databases");
-//var K = require("KBManager.js")("/data/data/com.kakao.talk/databases/KakaoTalk2.db");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
 var control = D.selectForArray('control').map(v=>v[0]);
 var controlPanel = D.selectForObject('control');
 const es=String.fromCharCode(8237).repeat(500);
-
 function readFile(file) {
     var filedir = new java.io.File(file);
     try {
@@ -67,25 +64,7 @@ function freload(r){
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
 	Api.replyRoom(r.room , "Function reloading 완료");
 }
-function githubload(r){
-	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
-		backup(r);
-		file = "storage/emulated/0/kbot/response.js";
-	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
-	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
-	    br = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
-	    str = "";
-	    tmp = null;
-	    while ((tmp = br.readLine()) != null) {
-	        str += tmp + "\n";
-	    }
-	    var filedir = new java.io.File(file);
-	    var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-	    bw.write(str.toString());
-	    bw.close();
-	    Api.replyRoom(r.room ,"Filesave success / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
-	}
-}
+
 function reload(r) {
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
 		backup(r);
@@ -119,6 +98,156 @@ Flag=(function(){
 	   }
 	   return Flag;
 	})();
+
+function controlReload(r){
+	control = D.selectForArray('control').map(v=>v[0]);
+	controlPanel = D.selectForObject('control');
+	r.replier.reply('기능 리로드 완료');
+}
+
+function controlEdit(r){
+	controlPanel = D.selectForObject('control');
+	control = D.selectForArray('control').map(v=>v[0]);
+	
+	var temp = r.msg.split(',');
+	var funcc = -1;
+	for(var i in control){
+		if( temp[1].indexOf(control[i]) == 0 ){
+			funcc = i;
+			break;
+		}
+	}
+	
+	if(funcc != -1){
+		var tempf = controlPanel[funcc];
+		if( temp[3] == 'on' ){
+			tempf[temp[2].replace(/ /g, '_')] = 1;
+		} else if ( temp[3] == 'off' ){
+			tempf[temp[2].replace(/ /g, '_')] = 0;
+		} else {
+			r.replier.reply('잘못입력했습니다.');
+			return;
+		}
+		D.update("control", tempf , "name=?", [control[funcc]]);
+	} else {
+		r.replier.reply('잘못입력했습니다.');
+		return;
+	}
+	controlReload(r);
+	r.replier.reply("수정 완료");
+}
+
+function funcCheck(r){
+	var str='';
+	for(var i in control) {
+		if(controlPanel[i][r.room.replace(/ /g, '_')] ==1) {
+			str += control[i] + '  ' ;
+		}
+	}
+	var str1='';
+	var j = 1;
+	for(var i in funccList) {
+        if( str.indexOf(funccList[i]) > -1 ) {
+        	if( Math.floor( str1.length / 20) == j){
+        		str1 += '\n';
+        		j+=1;
+        	}
+        	str1 += funccList[i] + ' / ';
+        }
+	}
+	str1 += '\n';
+	str1 = str1.split(' / \n').join('\n');
+	return str1;
+}
+
+function functionreload (r){
+	if(r.sender == 'test' || r.sender == '봇배우는배주현'){
+		if(Flag.get('freloadcheck', r.room)==0){
+			Flag.set('function', r.room, File("/sdcard/kbot/functions").listFiles());
+			var temp = [];
+			for(var i in Flag.get('function', r.room)){
+				if(String(Flag.get('function', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
+					temp.push(Flag.get('function', r.room)[i]);
+				}
+			}
+			if(temp.length == 0){
+				r.replier.reply('검색결과가 없습니다.');
+				return;
+			}
+			Flag.set('function', r.room, temp);
+			var i = 1;
+			r.replier.reply('함수 개수 : '+Flag.get('function', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('function', r.room).map(v=> (i++)+'. ' + String(v).substr(23)).join('\n'));
+			Flag.set('freloadcheck', r.room, 1);
+		} else if ( Flag.get('freloadcheck', r.room)== 1){
+			if(!isNaN(r.msg)){
+				var folder = time().now.replace(/ /g, '_');
+				File('/sdcard/kbotbackup/'+folder).mkdir();
+				var backup = Flag.get('function', r.room)[Number(r.msg)-1];
+				writeFile(folder+'/'+String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23)+'_'+time().now.replace(/ /g, '_'), readFile(backup));
+				Api.replyRoom(r.room, String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23)+' Backup 완료');
+				eval( readFile(Flag.get('function', r.room)[Number(r.msg)-1] ));
+				r.replier.reply(String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23) + ' Reloading 완료');
+				Flag.set('freloadcheck', r.room, 0);
+			} else {
+				r.replier.reply('숫자를 입력하세요.');
+				Flag.set('freloadcheck', r.room, 0);
+			}
+		}
+	}
+}
+
+function saveImage(r) {
+    if (r.imageDB.getImage()) {
+        var i = String(r.imageDB.getImage());
+        var file = 'storage/emulated/0/KakaoTalkDownload/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
+    	write64(file, i);
+    	Api.replyRoom('test', 'Image saved|'+r.room+'-'+r.sender);
+    }
+}
+
+function time() {
+	var today = new Date();
+	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
+	var day = dayNames[today.getDay()];
+	
+	var year   = today.getFullYear(),
+	month  = today.getMonth() + 1,
+	date   = today.getDate(),
+	hour   = today.getHours(),
+	minute = today.getMinutes(),
+	second = today.getSeconds();
+	ampm   = hour >= 12 ? 'PM' : 'AM';
+	
+	hour1 = hour % 12;
+	hour1 = hour1 < 10 ? '0' + hour1 : hour1;
+	
+	hour = hour < 10 ? '0' + hour : hour;
+	minute = minute < 10 ? '0' + minute : minute;
+	second = second < 10 ? '0' + second : second;
+	
+	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour1 + ':' + minute + ':' + second + ' ' + ampm;
+	
+	return { now : now , year : year, month : month , date : date, day : day, hour : hour , minute : minute , second : second, ampm : ampm , hour1: hour1};
+}
+
+function isread (is) {
+  var br = new java.io.BufferedReader(new java.io.InputStreamReader(is));
+  var readStr = "";
+  var str = null;
+  while (((str = br.readLine()) != null)) {
+      readStr += str + "\n";
+  }
+  br.close();
+  return readStr.trim();
+}
+
+function cmd (dir){
+	var p = java.lang.Runtime.getRuntime().exec('su -c ""'+dir+'""');
+  p.waitFor();
+  var r = p.getInputStream() || p.getErrorStream();
+  return isread(r);
+}
+
 const funccList = ['!날씨', '!로또통계', '!종합로또통계', '!행복회로','/로또','!로또','!당첨','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!사진조회', '!사진삭제', '!사진목록', '!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
@@ -132,6 +261,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			if (msg.indexOf("]") == 0) {
 				replier.reply(String(eval(msg.substring(1))).encoding());
 				return;	
+			}
+			
+			if (msg == '!test'){
+				replier.reply(String(eval( readFile("/sdcard/kbot/evalpad.js") )).encoding());
 			}
 			blankFunc(r);
 		}
@@ -451,309 +584,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if ((msg == "!야구" && work == 1) || ( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && ( !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!야구종료' || msg == '!힌트' || msg == '!패스') ) ){
         	baseball(r);
         }    	
-    	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
 	}
 }
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-function controlReload(r){
-	control = D.selectForArray('control').map(v=>v[0]);
-	controlPanel = D.selectForObject('control');
-	r.replier.reply('기능 리로드 완료');
-}
-
-function controlEdit(r){
-	controlPanel = D.selectForObject('control');
-	control = D.selectForArray('control').map(v=>v[0]);
-	
-	var temp = r.msg.split(',');
-	var funcc = -1;
-	for(var i in control){
-		if( temp[1].indexOf(control[i]) == 0 ){
-			funcc = i;
-			break;
-		}
-	}
-	
-	if(funcc != -1){
-		var tempf = controlPanel[funcc];
-		if( temp[3] == 'on' ){
-			tempf[temp[2].replace(/ /g, '_')] = 1;
-		} else if ( temp[3] == 'off' ){
-			tempf[temp[2].replace(/ /g, '_')] = 0;
-		} else {
-			r.replier.reply('잘못입력했습니다.');
-			return;
-		}
-		D.update("control", tempf , "name=?", [control[funcc]]);
-	} else {
-		r.replier.reply('잘못입력했습니다.');
-		return;
-	}
-	controlReload(r);
-	r.replier.reply("수정 완료");
-}
-
-function funcCheck(r){
-	var str='';
-	for(var i in control) {
-		if(controlPanel[i][r.room.replace(/ /g, '_')] ==1) {
-			str += control[i] + '  ' ;
-		}
-	}
-	var str1='';
-	var j = 1;
-	for(var i in funccList) {
-        if( str.indexOf(funccList[i]) > -1 ) {
-        	if( Math.floor( str1.length / 20) == j){
-        		str1 += '\n';
-        		j+=1;
-        	}
-        	str1 += funccList[i] + ' / ';
-        }
-	}
-	str1 += '\n';
-	str1 = str1.split(' / \n').join('\n');
-	return str1;
-}
-
-function functionreload (r){	
-	if(r.sender == 'test' || r.sender == '봇배우는배주현'){
-		if(Flag.get('freloadcheck', r.room)==0){
-			Flag.set('function', r.room, File("/sdcard/kbot/functions").listFiles());
-			var temp = [];
-			for(var i in Flag.get('function', r.room)){
-				if(String(Flag.get('function', r.room)[i]).indexOf(r.msg.substr(6))>-1) {
-					temp.push(Flag.get('function', r.room)[i]);
-				}
-			}
-			if(temp.length == 0){
-				r.replier.reply('검색결과가 없습니다.');
-				return;
-			}
-			Flag.set('function', r.room, temp);
-			var i = 1;
-			r.replier.reply('함수 개수 : '+Flag.get('function', r.room).length+'\n번호를 선택하세요.\n'+Flag.get('function', r.room).map(v=> (i++)+'. ' + String(v).substr(23)).join('\n'));
-			Flag.set('freloadcheck', r.room, 1);
-		} else if ( Flag.get('freloadcheck', r.room)== 1){
-			if(!isNaN(r.msg)){
-				var folder = time().now.replace(/ /g, '_');
-				File('/sdcard/kbotbackup/'+folder).mkdir();
-				var backup = Flag.get('function', r.room)[Number(r.msg)-1];
-				writeFile(folder+'/'+String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23)+'_'+time().now.replace(/ /g, '_'), readFile(backup));
-				Api.replyRoom(r.room, String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23)+' Backup 완료');
-				eval( readFile(Flag.get('function', r.room)[Number(r.msg)-1] ));
-				r.replier.reply(String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23) + ' Reloading 완료');
-				Flag.set('freloadcheck', r.room, 0);
-			} else {
-				r.replier.reply('숫자를 입력하세요.');
-				Flag.set('freloadcheck', r.room, 0);
-			}
-		}
-	}
-}
-
-function saveImage(r) {
-    if (r.imageDB.getImage()) {
-        var i = String(r.imageDB.getImage());
-        var file = 'storage/emulated/0/KakaoTalkDownload/'+r.sender.replace(/ /g, '')+"."+r.room.replace(/ /g, '')+"-"+time().year+"."+time().month+"."+time().date+time().day+"."+time().hour+"."+time().minute+"."+time().second+".jpg";
-    	write64(file, i);
-    	Api.replyRoom('test', 'Image saved|'+r.room+'-'+r.sender);
-    }
-}
-
-function time() {
-	var today = new Date();
-	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
-	var day = dayNames[today.getDay()];
-	
-	var year   = today.getFullYear(),
-	month  = today.getMonth() + 1,
-	date   = today.getDate(),
-	hour   = today.getHours(),
-	minute = today.getMinutes(),
-	second = today.getSeconds();
-	ampm   = hour >= 12 ? 'PM' : 'AM';
-	
-	hour1 = hour % 12;
-	hour1 = hour1 < 10 ? '0' + hour1 : hour1;
-	
-	hour = hour < 10 ? '0' + hour : hour;
-	minute = minute < 10 ? '0' + minute : minute;
-	second = second < 10 ? '0' + second : second;
-	
-	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour1 + ':' + minute + ':' + second + ' ' + ampm;
-	
-	return { now : now , year : year, month : month , date : date, day : day, hour : hour , minute : minute , second : second, ampm : ampm , hour1: hour1};
-}
-
-function cloneObject (obj) {
-	  return JSON.parse(JSON.stringify(obj));
-	}
-
-function thread (r){
-	r.replier.reply(T.getThreadList().join('\n'));
-}
-
-function db (r){
-	r.replier.reply(D.selectForString("sqlite_master"));
-}
-
-function checkroom (r){
-	r.replier.reply(Api.getRoomList().slice().join('\n'));
-}
-
-function suggestion(r){
-	if(r.msg.length < 7 ){
-		r.replier.reply("건의가 너무 짧습니다.");
-	}else{
-		Api.replyRoom('test', r.room+" : "+r.sender+" : "+r.msg.substr(4));
-		r.replier.reply(r.sender+"님의 건의가 접수되었습니다.");
-	}
-}
-
-function isread (is) {
-  var br = new java.io.BufferedReader(new java.io.InputStreamReader(is));
-  var readStr = "";
-  var str = null;
-  while (((str = br.readLine()) != null)) {
-      readStr += str + "\n";
-  }
-  br.close();
-  return readStr.trim();
-}
-
-function cmd (dir){
-	var p = java.lang.Runtime.getRuntime().exec('su -c ""'+dir+'""');
-  p.waitFor();
-  var r = p.getInputStream() || p.getErrorStream();
-  return isread(r);
-}
-
-function compare (a, b) {
-  return a - b;
-}
-
-function own (obj){
-	return Object.getOwnPropertyNames(obj);
-	}
-
-String.prototype.replaceAmp=function(){
-	var res=this.toString();
-	var tmp;
-	while(tmp=/&#x....;/.exec(res)){
-		res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substr(3,4),16)));
-	}
-	while(tmp=/&#..;/.exec(res)){
-		res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substr(2,2))));
-	}
-	return res.replace(/&nbsp;/g,"\t").replace(/&gt;/g,">").replace(/&lt;/g,"<").replace(/&quot;/g,'"').replace(/&amp;/g,"&");
-}
-String.prototype.replaceAmp2=function(){
-	var res=this.toString();
-	var tmp;
-	while(tmp=/&#x....;/.exec(res)){
-		res=res.replace(tmp[0],String.fromCharCode(parseInt(tmp[0].substr(3,4),16)));
-	}
-	return res.replace(/&nbsp;/g,"\t").replace(/&gt;/g,">").replace(/&lt;/g,"<").replace(/&quot;/g,'"').replace(/&amp;/g,"&").replace(/<br>/g,"\n");
-}
-String.prototype.indexOfs=function(){  
-	var res = -1;
-	for (var i = 0; i < arguments.length; i++) {
-		var tmp=this.toString().indexOf(arguments[i]);
-		if(tmp==-1) continue;
-		else if(res==-1) res=tmp;
-		else if(tmp<res) res=this.toString().indexOf(arguments[i]);
-	}
-	return res;
-}
-String.prototype.includess=function(){
-	for (var i = 0; i < arguments.length; i++) {
-		if(this.toString().includes(arguments[i])) return true;
-	}
-	return false;
-}
-String.prototype.replaces=function(target){
-	var res=this.toString();
-	for (var i = 1; i < arguments.length; i++) {
-		res=res.replace(arguments[i],target);
-	}
-	return res;
-}
-String.prototype.encoding=function(){
- return this.replace(/\\u([\da-fA-F]{4})/g,(m,p1)=>String.fromCharCode(parseInt(p1,16)));
-}
-
-String.prototype.받침=function(){
-	var lastCharCode=this.toString().charCodeAt(this.toString().length-1);
-	if(lastCharCode>="가".charCodeAt(0) && lastCharCode<="힣".charCodeAt(0)){
-		if((lastCharCode-"가".charCodeAt(0))%28==0) return false;
-		else return true;
-	}else return false;
-	
-}
-String.prototype.은는=function(){
-	return this.toString().받침() ? this.toString()+"은" : this.toString()+"는"; 
-}
-String.prototype.이가=function(){
-	return this.toString().받침() ? this.toString()+"이" : this.toString()+"가"; 
-}
-String.prototype.과와=function(){
-	return this.toString().받침() ? this.toString()+"과" : this.toString()+"와"; 
-}
-String.prototype.을를=function(){
-	return this.toString().받침() ? this.toString()+"을" : this.toString()+"를"; 
-}
-String.prototype.조사=function(받침있음, 받침없음){
-	return this.toString().받침() ? this.toString()+받침있음 : this.toString()+받침없음;
-}
-
-String.format=function(str,arg){
-	if(str.charAt(str.length-1).toLowerCase()=='d') return String(new java.lang.String.format(str,new java.lang.Integer(arg)));
-	return String(new java.lang.String.format(str,arg));	
-}
-String.prototype.extension=function(char,length){
-	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
-	return char.repeat(addLength)+this.toString();
-}
-String.prototype.extensionRight=function(char,length){
-	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
-	return this.toString()+char.repeat(addLength);
-}
-
-/*
-function calculator(r){
-	var temp = eval(r.msg.substr(1).replace(/[^0-9*\-+%/*=\^&|!.~{}()[\]]/g, ""));
-	if(temp!=undefined){
-		r.replier.reply(temp);
-	}
-}
-
-//a.charCodeAt(0)
-const weiredstring1=String.fromCharCode(8203);//공백
-const weiredstring2=String.fromCharCode(160);//띄워쓰기로
-const weiredstring3=String.fromCharCode(8237);//공백
-const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
-//replace(new RegExp(weiredstring1, "gi"), "")
-
-
-]D.execSQL("alter table control add BASEBALL number")
-]D.update("control", {BASEBALL:0})
-]D.selectForString('control')
-]D.update('control' , {name :'!계산',  시립대_단톡방 : 1, 시립대_전전컴_톡방 : 1, 오버워치 : 1, 시립대_자취생_생정 : 1, test :1, 단톡방 : 1, 짱구 : 1, 시립대_봇제작방 : 1, 푸드마켓 :1, 공익 : 1, BASEBALL : 0, blackjack : 0, 동후방 : 0 }, "name='!계산'")
-]D.insert('control' , {name :'!온오프',  시립대_단톡방 : 0, 시립대_전전컴_톡방 : 0, 오버워치 : 0, 시립대_자취생_생정 : 0, test :1, 단톡방 : 0, 짱구 : 0, 시립대_봇제작방 : 0, 푸드마켓 :0, 공익 : 0, BASEBALL : 0, blackjack : 0, 동후방 : 0 })
-]D.rawQuery("INSERT INTO chatdb SELECT * FROM cbot")
-]D.execSQL("drop table botpoint")
-]D.insert("cat", {name :"중용", gender : "남", age : 22})
-]D.delete("cat", "name='중용'")
-]D.delete("cat", "name='모모' and age='5'" )
-]D.selectForString("cat", null, "age<4")
-]D.selectForString("cat", "name, gender", "age<4")
-]D.selectForString("cat", ["name", "gender"], "age<4")
-]D.selectForString("cat","count(*)")
-]D.selectForString("cat", null, "name=?",  [a]) //a='모모'
-]D.update("cat", {age : 4} , "name='인문이'")
-]D.create("cat", {name:"모모",gender:"남",age:4})
-*/
