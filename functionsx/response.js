@@ -31,30 +31,6 @@ function readFile(file) {
     	Api.replyRoom('test',e+"\n"+e.stack);
     }
 }
-function writeFile(file, str) {
-    var filedir = new java.io.File("/sdcard/kbotbackup/" + file);
-    try {
-        var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
-        bw.write(str.toString());
-        bw.close();
-    }
-    catch (e) {
-        Log.e(e + "\n" + e.stack);
-        throw e;
-    }
-}
-function backup(r){
-	var folder = time().now.replace(/ /g, '_');
-	File('/sdcard/kbotbackup/'+folder).mkdir();
-	var backup = File("/sdcard/kbot/functions").listFiles();
-	for (var i in backup){
-		writeFile(folder+'/'+String(backup[i]).substr(23)+'_'+time().now.replace(/ /g, '_'), readFile(backup[i]));
-	}
-	var response = "/sdcard/kbot/response.js";
-	writeFile(folder+'/'+'response.js_'+time().now.replace(/ /g, '_'), readFile(response));
-	Api.replyRoom(r.room, '전체 Backup 완료');
-}
-
 var funccheck = 0;
 if(funccheck == 0 ){
 	T.interruptAll();
@@ -62,14 +38,12 @@ if(funccheck == 0 ){
 	funccheck = 1;
 }
 function freload(r){
-	backup(r);
 	T.interruptAll();
 	for(var i in File("/sdcard/kbot/functions").listFiles()){eval( readFile(File("/sdcard/kbot/functions").listFiles()[i]))}
-	Api.replyRoom(r.room , "Function reloading 완료");
+    Api.replyRoom(r.room , "Function reloading 완료");
 }
 function githubload(r){
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
-		backup(r);
 		file = "storage/emulated/0/kbot/response.js";
 	    checksum = org.jsoup.Jsoup.connect("https://github.com/sjh7711/bot/commits/master").get().select("div.repository-content>a").attr("href").split('commit/')[1];
 	    conn = new java.net.URL("https://raw.githubusercontent.com/sjh7711/bot/"+checksum+"/response.js").openConnection();
@@ -83,22 +57,20 @@ function githubload(r){
 	    var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
 	    bw.write(str.toString());
 	    bw.close();
-	    Api.replyRoom(r.room ,"Filesave success / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
+	    Api.replyRoom(r.room ,"파일저장 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
 	}
 }
 function reload(r) {
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
-		backup(r);
-		var Timer = new Date();
-		Api.replyRoom(r.room , "Reloading Start\n" + new Date() );
 		reloadcheck = 1;
 		reloadtime = new Date().getTime();
+		var Timer = new Date();
 	    T.interruptAll();
 	    Api.reload();
 	    reloadcheck = 0;
 	    control = D.selectForArray('control').map(v=>v[0]);
 	    controlPanel = D.selectForObject('control');
-	    Api.replyRoom(r.room , "Reloading End / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
+	    Api.replyRoom(r.room , "Response reloading 완료 / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
 	}
 }
 
@@ -211,11 +183,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	weather(r);
         	return;
         }
-		
-		if (msg =='!로또확률'){
-        	replier.reply('1등 확률 : 0.000012277380399898834%\n2등 확률 : 0.000073664282399393%\n3등 확률 : 0.002799238607098869%\n4등 확률 : 0.1364256480218281%\n5등 확률 : 2.2222222222222223%');
-        	return;
-        }
         
         if (msg == "!로또통계" && work == 1 ){
         	bestlotto(r);
@@ -251,7 +218,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	mylotto(r);
         	return;
         }
-        
+    	
         if (msg.indexOf("!메뉴") == 0 && work == 1) {
             recom(r, "menu");
             return;
@@ -385,6 +352,44 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		D.insert('blackjack', {name : sender  , room : room, point : 10000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0 , bpush : 0 });
     	}
         
+        if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
+    		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0, clear : 2});
+    	}
+        
+    	if( (msg == "!야구" && work == 0) || msg == "!야구방" ){
+    		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
+    		return;
+    	}
+    	
+    	if ((msg == "!야구" && work == 1) || ( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && ( !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!야구종료' || msg == '!힌트' || msg == '!패스') ) ){
+        	baseball(r);
+        }
+    	
+    	if( msg == "!전적초기화" && D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]) > 0 && work == 1 ){
+    		var point = D.selectForArray('baseball', 'point', 'room=? and name = ?', [room, sender])[0][0]-2000;
+    		var clear = D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])[0][0]-1;
+    		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
+    		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
+    		inform(r);
+    		return;
+    	}
+    	
+    	if(msg == '!야구정보' && work == 1 ){
+    		inform(r);
+    		return;
+    	}
+    	
+    	if(msg == '!야구랭킹' && work == 1 ){
+    		var i = 1;
+    		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['point', 'win', 'lose', 'solowin', 'name'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2) +'. [' +String(v[0]).extension(' ',6)+'P '+String(v[1]).extension(' ',2)+'승 '+ String(v[2]).extension(' ',2)+'패 ' +String(v[3]).extension(' ',3)+'S/P ] ' +String(v[4])).join('\n'));
+    		return;
+    	}
+        
+    	if((Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1)){
+    		r.replier.reply('다른게임이 진행중입니다.');
+    		return;
+    	}
+    	
         if( (msg == "!블랙잭" && work == 0) || (msg == "!블랙잭방" && work == 1) ){
     		replier.reply('https://open.kakao.com/o/grdPBAnb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
@@ -406,51 +411,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	
     	if(msg == '!블랙잭랭킹' && work == 1 ){
     		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) +'\nㅤ→ '+ '승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n\n').replace(/NaN%/g, 'X'));
+    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) +'\n'+ '승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n\n').replace(/NaN%/g, 'X'));
     		return;
     	}
     	
-    	if( (msg == "!야구" && work == 0) || msg == "!야구방" ){
-    		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
-    		return;
-    	}
-    	
-    	if( msg == "!전적초기화" && D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender]) > 0 && work == 1 ){
-    		var point = D.selectForArray('baseball', 'point', 'room=? and name = ?', [room, sender])[0][0]-2000;
-    		var clear = D.selectForArray('baseball', 'clear', 'room=? and name = ?', [room, sender])[0][0]-1;
-    		D.update('baseball', {point : point, win : 0, lose : 0, solowin : 0, clear : clear}, 'name=? and room=?', [sender, room] );
-    		replier.reply(sender+'님의 정보가 초기화 되었습니다.');
-    		inform(r);
-    		return;
-    	}
-    	
-    	if(msg == '!야구정보' && work == 1 ){
-    		inform(r);
-    		return;
-    	}
-    	
-    	if(msg == '!야구랭킹' && work == 1 ){
-    		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForArray('baseball', ['point', 'win', 'lose', 'solowin', 'name'], 'room=?', r.room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2) +'. [' +String(v[0]).extension(' ',6)+'P '+String(v[1]).extension(' ',2)+'승 '+ String(v[2]).extension(' ',2)+'패 ' +String(v[3]).extension(' ',3)+'S/P ] ' +String(v[4])).join('\n'));
-    		return;
-    	}
-    	
-    	if(Flag.get('gameinfo', r.room).start == 1 || Flag.get('gameinfo', r.room).start1 == 1 ||Flag.get('gameinfo', r.room).start2 == 1 ||Flag.get('gameinfo', r.room).start3 == 1 ||Flag.get('gameinfo', r.room).start4 == 1 ){
-    		if(msg =='!야구'){
-    			r.replier.reply('블랙잭이 진행중입니다.');
-        		return;
-    		} else {
-    			return;
-    		}
-    	}
-    	
-    	if( D.selectForArray('baseball', 'name', 'room=?', room) == undefined || D.selectForArray('baseball', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1){
-    		D.insert('baseball', {name : sender, point : 100000, room : room, win : 0, lose : 0, solowin : 0, clear : 2});
-    	}
-        
-        if ((msg == "!야구" && work == 1) || ( (Flag.get('start', r.room) == 1 || Flag.get('start1', r.room) == 1 ||  Flag.get('start2', r.room) ==  1) && ( !isNaN(msg) || msg == '참가' || msg == '시작' || msg == '!야구종료' || msg == '!힌트' || msg == '!패스') ) ){
-        	baseball(r);
-        }    	
     	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	} catch (e) {
         Api.replyRoom("test", e + "\n" + e.stack);
@@ -519,7 +483,7 @@ function funcCheck(r){
 	return str1;
 }
 
-function functionreload (r){	
+function functionreload (r){
 	if(r.sender == 'test' || r.sender == '봇배우는배주현'){
 		if(Flag.get('freloadcheck', r.room)==0){
 			Flag.set('function', r.room, File("/sdcard/kbot/functions").listFiles());
@@ -539,13 +503,8 @@ function functionreload (r){
 			Flag.set('freloadcheck', r.room, 1);
 		} else if ( Flag.get('freloadcheck', r.room)== 1){
 			if(!isNaN(r.msg)){
-				var folder = time().now.replace(/ /g, '_');
-				File('/sdcard/kbotbackup/'+folder).mkdir();
-				var backup = Flag.get('function', r.room)[Number(r.msg)-1];
-				writeFile(folder+'/'+String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23)+'_'+time().now.replace(/ /g, '_'), readFile(backup));
-				Api.replyRoom(r.room, String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23)+' Backup 완료');
 				eval( readFile(Flag.get('function', r.room)[Number(r.msg)-1] ));
-				r.replier.reply(String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23) + ' Reloading 완료');
+				r.replier.reply(String(Flag.get('function', r.room)[Number(r.msg)-1]).substr(23) + ' 리로딩 완료');
 				Flag.set('freloadcheck', r.room, 0);
 			} else {
 				r.replier.reply('숫자를 입력하세요.');
