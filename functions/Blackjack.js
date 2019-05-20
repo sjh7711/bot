@@ -3,6 +3,8 @@ givemoney = function (r){
 	var money = Number(data[0]);
 	var who = data[1];
 	var room = data[2];
+	var temp = D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [who, room])[0][0] + money;
+	D.update('blackjack', {bank: temp }, 'name=? and room = ?', [who, room]);
 	var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0];
 	D.update('blackjack', {point: temp + money}, 'name=? and room = ?', [who, room]);
 	r.replier.reply(room+'방의' + who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0])
@@ -29,6 +31,7 @@ blackinform = function (r){
 		var all = D.selectForArray('blackjack', 'allp', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var exit = D.selectForArray('blackjack', 'fexit', 'name=? and room=?', [r.sender, r.room])[0][0];
 		var bpush = D.selectForArray('blackjack', 'bpush', 'name=? and room=?', [r.sender, r.room])[0][0];
+		var bank = D.selectForArray('blackjack', 'bank', 'name=? and room=?', [r.sender, r.room])[0][0];
 		
 		var str = '';
 		str += r.sender+'님의 정보';
@@ -62,6 +65,7 @@ blackinform = function (r){
  		str += '\nSurrender 횟수 : ' + sur;
  		str += '\n패배 횟수 : ' + lose;
  		str += '\n블랙잭 종료 횟수 : ' + exit;
+ 		str += '\n추가 지급 머니 : ' + bank + '원';
 		r.replier.reply(str.replace(/NaN%/g, '데이터 없음'));
 		return;
 	}else {
@@ -137,15 +141,35 @@ blackjack = function (r){
 		return;
 	}
 
-	if( r.msg == '!블랙잭'){
+	if( r.msg.indexOf('!블랙잭') == 0 ){
 		if( gameinfo.start == 0 && gameinfo.start1 == 0 &&  gameinfo.start2 ==  0 &&  gameinfo.start3 ==  0 && D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000  ){
 			r.replier.reply('BLACKJACK 시작. 참가하려면 [참가]를 입력하세요. 시작하려면 [시작]을 입력하세요.\n[힛/스테이/더블다운/스플릿/서렌더]');
 			var gameinfo = {starttime : new Date().getTime(),playerlist : [],betlist : [],insurlist : [],blackjacklist : [],splitdata : [],splitcount : 0,endcount : 0,start : 1,start1 : 0,start2 : 0,start3 : 0,start4 : 0};
 			gameinfo.dealer = {card : [],sum : 0,state : 0};
 			gameinfo.playerlist.push(r.sender);
 			gameinfo.player0 = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0};
+			var str = '';
+			str += r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 ";
+			if(D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [r.room, r.sender])[0][0] != 0 ){
+				var betting = D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [r.room, r.sender])[0][0];
+				gameinfo.player0.bet = Number( betting );
+				gameinfo.betlist.push(r.sender);
+				str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+			} else if(r.msg.length > 5 && /^\d+$/.test(r.msg.split(' ')[1])){
+				var betting = r.msg.split(' ')[1]
+    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
+    				if(Number(betting)>0 && Number(betting)<51){
+    					betting = Number(betting*10000);
+    				}
+    			}
+				gameinfo.player0.bet = Number( betting );
+				gameinfo.betlist.push(r.sender);
+				str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+			}else {
+				str += '참가합니다.'
+			}
 			Flag.set("gameinfo", r.room , gameinfo);
-			r.replier.reply(r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+')이 참가합니다. 현재 1명');
+			r.replier.reply(str);
 		}else if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
 			r.replier.reply('포인트가 부족합니다.')
 		}
@@ -159,11 +183,32 @@ blackjack = function (r){
 		return;
 	}
 	
-	if ( (r.msg == '참가' || r.msg == 'ㅊㄱ') &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
+	if ( (r.msg.indexOf( '참가') == 0 ||r.msg.indexOf( 'ㅊㄱ') == 0) &&  gameinfo.start == 1 && gameinfo.playerlist.indexOf(r.sender) == -1 ){//참가모집중
         if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] >= 10000 ){
     		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0}
         	gameinfo.playerlist.push(r.sender);
-            r.replier.reply(r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 참가합니다. 현재 "+gameinfo.playerlist.length+'명');
+    		var str = '';
+    		str += r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 ";
+    		if(D.selectForArray('blackjack', 'autobet' , 'room=? and name = ?', [r.room, name])[0][0] != 0 ){
+				var betting = D.selectForArray('blackjack', 'autobet', 'room=? and name = ?',[r.room, r.sender])[0][0];
+				gameinfo.player0.bet = Number( betting );
+				gameinfo.betlist.push(r.sender);
+				str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+			} else if(r.msg.length > 3 && /^\d+$/.test(r.msg.split(' ')[1])){
+    			var betting = r.msg.split(' ')[1]
+    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
+    				if(Number(betting)>0 && Number(betting)<51){
+    					betting = Number(betting*10000);
+    				}
+    			}
+				gameinfo['player'+(gameinfo.playerlist.length-1)].bet = Number( betting );
+				gameinfo.betlist.push(r.sender);
+				str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+			}else {
+				str += '참가합니다.'
+			}
+			str += " 현재 "+gameinfo.playerlist.length+'명'
+            r.replier.reply(str);
         } else if (D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < 10000 ){
         	r.replier.reply('포인트가 부족합니다.');
         	return;
@@ -192,7 +237,11 @@ blackjack = function (r){
 		}
 		gameinfo.start = 0;
 		gameinfo.start1 = 1;
-		r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 50만원 배팅하세요.');	
+		if( gameinfo.betlist.length == gameinfo.playerlist.length){
+			r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!');
+		} else{
+			r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 50만원 배팅하세요.');	
+		}
 	}
 	
 	if(gameinfo.playerlist.length > 0){
@@ -208,19 +257,23 @@ blackjack = function (r){
 			if(Number(r.msg)>0 && Number(r.msg)<51){
 				r.msg = Number(r.msg*10000);
 			}
-			for( var j = 0 ; j < 2 ; j++){
-				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
-				gameinfo['player'+num].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+			if(gameinfo.betlist.indexOf('r.sender') == -1 ){
+				gameinfo['player'+num].bet = Number(r.msg);
+				gameinfo.betlist.push(r.sender);
+				r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 			}
-			gameinfo['player'+num].bet = Number(r.msg);
-			gameinfo.betlist.push(r.sender);
-			r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 		} else {
 			r.replier.reply('배팅금은 1만원 ~ 50만원 입니다.');
 		}
 	}
 	
 	if( gameinfo.betlist.length == gameinfo.playerlist.length && gameinfo.start1==1){
+		for (var i in gameinfo.playerlist){
+			for( var j = 0 ; j < 2 ; j++){
+				var rand = Math.floor(Math.random()*Flag.get('cards', r.room).length);
+				gameinfo['player'+i].card.push(Flag.get('cards', r.room).splice(rand,1)[0]);
+			}
+		}
 		var str = '';
 		for( var i in gameinfo.playerlist){
 			var temp = gameinfo['player'+i].card.map(v=>v[1]);
@@ -451,7 +504,7 @@ blackjack = function (r){
 						var temp = [];
 						var breakc = 0;
 						for(var i in gameinfo.splitdata){
-							if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+							if( gameinfo.splitdata[i].name == r.sender && breakc == 0 && gameinfo.splitdata[i].end == 0){
 								breakc += 1;
 							} else {
 								temp.push(gameinfo.splitdata[i])
@@ -572,7 +625,7 @@ blackjack = function (r){
 				var temp = [];
 				var breakc = 0;
 				for(var i in gameinfo.splitdata){
-					if( gameinfo.splitdata[i].name == r.sender && breakc == 0){
+					if( gameinfo.splitdata[i].name == r.sender && breakc == 0 && gameinfo.splitdata[i].end == 0){
 						breakc += 1;
 					} else {
 						temp.push(gameinfo.splitdata[i])

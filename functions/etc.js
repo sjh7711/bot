@@ -142,4 +142,14 @@ String.prototype.조사=function(받침있음, 받침없음){
 }
 
 String.format=function(str,arg){
-	if(str.charAt(str.length-1).toLowerCase()=='d') return String(n
+	if(str.charAt(str.length-1).toLowerCase()=='d') return String(new java.lang.String.format(str,new java.lang.Integer(arg)));
+	return String(new java.lang.String.format(str,arg));	
+}
+String.prototype.extension=function(char,length){
+	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
+	return char.repeat(addLength)+this.toString();
+}
+String.prototype.extensionRight=function(char,length){
+	const addLength = (length-this.toString().length >= 0) ? length-this.toString().length : 0; 
+	return this.toString()+char.repeat(addLength);
+}

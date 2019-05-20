@@ -515,17 +515,29 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
     	
         if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1 ){
-    		D.insert('blackjack', {name : sender  , room : room, point : 10000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0 , bpush : 0 });
+    		D.insert('blackjack', {name : sender  , room : room, point : 10000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0 , bpush : 0, bank : 0, autobet : 0 });
     	}
+        
+        if (msg.indexOf('!블랙잭자동배팅')==0){
+        	if(r.msg.length > 9 && /^\d+$/.test(r.msg.split(' ')[1])){
+				var betting = r.msg.split(' ')[1]
+    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
+    				if(Number(betting)>0 && Number(betting)<51){
+    					betting = Number(betting*10000);
+    				}
+    				D.update('blackjack', {autobet : betting}, 'room=? and name = ?', [room, sender]);
+    			} else {
+    				r.replier.reply('배팅금액은 1만원~50만원 입니다.')
+    			}
+			}
+        	r.replier.reply(r.sender+'님의 블랙잭 자동 배팅액은 '+D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [room, sender])[0][0]+'원 입니다.');
+        	return;
+        }
         
         if( (msg == "!블랙잭" && work == 0) || (msg == "!블랙잭방" && work == 1) ){
     		replier.reply('https://open.kakao.com/o/grdPBAnb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
     		return;
     	}
-        
-        if ( (msg == "!블랙잭" && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg == '참가' || msg == 'ㅊㄱ' || msg == '시작' || msg == 'ㅅㅈ'  || msg == '!블랙잭종료' || msg == '힛'|| msg == 'ㅎ' || msg == '스테이'|| msg == 'ㅅㅌㅇ'|| msg == '서렌더'|| msg == 'ㅅㄹㄷ'|| msg == '더블다운'|| msg == 'ㄷㅂㄷㅇ'|| msg == '스플릿'|| msg == 'ㅅㅍㄹ') )){
-        	blackjack(r);
-        }
         
         if(msg == '!블랙잭정보' && work == 1 ){
     		blackinform(r);
@@ -542,6 +554,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) +'\nㅤ→ '+ '승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n\n').replace(/NaN%/g, 'X'));
     		return;
     	}
+    	
+    	if ( (msg.indexOf('!블랙잭') == 0 && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg.indexOf('참가') == 0 || msg == 'ㅊㄱ' || msg == '시작' || msg == 'ㅅㅈ'  || msg == '!블랙잭종료' || msg == '힛'|| msg == 'ㅎ' || msg == '스테이'|| msg == 'ㅅㅌㅇ'|| msg == '서렌더'|| msg == 'ㅅㄹㄷ'|| msg == '더블다운'|| msg == 'ㄷㅂㄷㅇ'|| msg == '스플릿'|| msg == 'ㅅㅍㄹ') )){
+        	blackjack(r);
+        }
     	
     	if( (msg == "!야구" && work == 0) || msg == "!야구방" ){
     		replier.reply('https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.');
