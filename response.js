@@ -521,7 +521,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         if (msg.indexOf('!블랙잭자동배팅')==0){
         	if(r.msg.length > 9 && /^\d+$/.test(r.msg.split(' ')[1])){
 				var betting = r.msg.split(' ')[1]
-    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
+    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51) || Number(betting) == 0){
     				if(Number(betting)>0 && Number(betting)<51){
     					betting = Number(betting*10000);
     				}
@@ -556,7 +556,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     	}
     	
     	if ( (msg.indexOf('!블랙잭') == 0 && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg.indexOf('참가') == 0 || msg == 'ㅊㄱ' || msg == '시작' || msg == 'ㅅㅈ'  || msg == '!블랙잭종료' || msg == '힛'|| msg == 'ㅎ' || msg == '스테이'|| msg == 'ㅅㅌㅇ'|| msg == '서렌더'|| msg == 'ㅅㄹㄷ'|| msg == '더블다운'|| msg == 'ㄷㅂㄷㅇ'|| msg == '스플릿'|| msg == 'ㅅㅍㄹ') )){
-        	blackjack(r);
+    		if( Math.random()*1000 < 1 ){
+    			var jackpot = Number((Math.floor(Math.random()*5)+1)*1000000);
+    			var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0];
+    			D.update('blackjack', {point: temp + jackpot}, 'name=? and room = ?', [sender, room]);
+    			r.replier.reply(sender+'님의 잭팟!' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0])
+    		}
+    		blackjack(r);
         }
     	
     	if( (msg == "!야구" && work == 0) || msg == "!야구방" ){
