@@ -164,7 +164,10 @@ blackjack = function (r){
     					r.replier.reply('금액이 부족합니다.');
     					return;
     				}
-    			}
+    			} else {
+					r.replier.reply('배팅금액은 1만원~50만원 입니다.');
+    				return;
+				}
 			}
 			var figure = ["\u2663\uFE0F","\u2660\uFE0F","\u2666\uFE0F","\u2665\uFE0F"];
 			var num = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
@@ -232,6 +235,9 @@ blackjack = function (r){
 					r.replier.reply('금액이 부족합니다.');
 					return;
 				}
+			} else {
+				r.replier.reply('배팅금액은 1만원~50만원 입니다.');
+				return;
 			}
 		}
 		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0}
@@ -249,6 +255,9 @@ blackjack = function (r){
 				if(Number(betting)>0 && Number(betting)<51){
 					betting = Number(betting*10000);
 				}
+			} else {
+				r.replier.reply('배팅금액은 1만원~50만원 입니다.');
+				return;
 			}
 			gameinfo['player'+(gameinfo.playerlist.length-1)].bet = Number( betting );
 			gameinfo.betlist.push(r.sender);
