@@ -559,8 +559,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
     		if( Math.random()*1000 < 1 ){
     			var jackpot = Number((Math.floor(Math.random()*5)+1)*1000000);
     			var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0];
-    			D.update('blackjack', {point: temp + jackpot}, 'name=? and room = ?', [sender, room]);
-    			r.replier.reply(sender+'님의 잭팟!' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0])
+    			D.update('blackjack', {point: Number(temp + jackpot)}, 'name=? and room = ?', [sender, room]);
+    			r.replier.reply(sender+'님의 잭팟!\n' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0]);
+    			Api.replyRoom('test', sender+'님의 잭팟!\n' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0])
     		}
     		blackjack(r);
         }
