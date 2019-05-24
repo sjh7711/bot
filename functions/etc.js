@@ -71,6 +71,16 @@ toUTF16 = function(codePoint) {
 	  return u(leadSurrogate) + u(tailSurrogate);
 	}
 
+String.prototype.moneyUnit=function(){
+	var v=Number(this);
+	if(v>-1){
+		return ((Math.floor(v/100000000) > 0) ? Math.floor(v/100000000)+'억 ' + Math.floor(v/10000%10000)+'만 '+v%10000+'원' : ((Math.floor(v/10000) > 0) ? Math.floor(v/10000%10000)+'만 '+v%10000+'원' : v+'원')).replace(' 0원', '원').replace(' 0만', '');
+
+	}else{
+		return v;
+	}
+}
+
 String.prototype.replaceAmp=function(){
 	var res=this.toString();
 	var tmp;

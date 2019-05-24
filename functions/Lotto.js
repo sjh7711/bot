@@ -1,6 +1,35 @@
+checklotto = function (a, b, bonus) {
+    var ai = 0, al = a.length;
+    var bi = 0, bl = b.length;
+    var count = 0;
+    while (true) {
+        if (a[ai] > b[bi]) {
+            bi++;
+            if (bi == bl) {
+                break;
+            }
+        } else {
+            if (a[ai] < b[bi]) {
+                ai++;
+                if ((ai >= 4 && count == 0) || ai == al) {
+                    break;
+                }
+            } else {
+                count++;
+                ai++;
+                bi++;
+                if (ai == al || bi == bl) {
+                    break;
+                }
+            }
+        }
+    }
+    return count;
+}
+
 lotto = function (r) {
 	var cycle = 1;
-	if( r.msg.substr(4) > 0 && r.msg.substr(4) < 2001 ){
+	if( r.msg.substr(4) > 0 && r.msg.substr(4) < 3001 ){
 		cycle = Number(r.msg.substr(4));
 	}
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
@@ -145,6 +174,7 @@ testlotto = function (r){
 }
 
 flottocheck = function (r) {
+	var Timer = new Date();
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var lastnum = Number(raw.select('h4').text().split('회')[0]) + 1;
 	var money = D.selectForArray('lottomoney', null, "num=?", [lastnum-1])[0];
@@ -152,6 +182,7 @@ flottocheck = function (r) {
 	var bonus = Number(raw.select('p').get(2).text());
 	var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 	var lottodata = D.selectForArray('lotto',null,'num=? and sender=? and room=?', [lastnum, r.sender, r.room]);
+	//D.rawQuery("SELECT * FROM lotto WHERE room ='" +r.room + "' and sender = '"+ r.sender +"' and num = " + lastnum )
 	var failcount=0;
 	var str1='\n';
 	var one = 0;
@@ -164,13 +195,8 @@ flottocheck = function (r) {
 	var str5='\n';
 	var five = 0;
 	for(var i=0;i<lottodata.length;i++){
-		var count = 0;
 		var tempdata = lottodata[i].slice(8,14);
-		for(var j=0;j<6;j++){
-			if(tempdata.indexOf(win[j]) > -1 ){
-				count+=1;
-			}
-		}
+		var count = checklotto(win, tempdata, bonus);
 		if(count == 5 && tempdata.indexOf(bonus) > -1 ){
 			count+=2;	
 		}
@@ -224,6 +250,7 @@ flottocheck = function (r) {
 	'5등 개수 : '+five+'\n'+str5+'\n'+
 	'꽝 개수 : '+failcount+'\n';
 	r.replier.reply(r.sender+'님의 이번주 번호가 저번주 번호라면?(개수 : '+lottodata.length+')\n'+result);
+	Api.replyRoom('test' , lottodata.length + "개 / " + ((new Date() - Timer) / 1000) + "s" );
 }
 
 
@@ -248,13 +275,8 @@ lottocheck = function (r) {
 				D.insert('lottomoney', {num : lastnum , first: money[0], second:money[1], third:money[2], fourth:money[3] ,fifth:money[4]});
 				var lottodata = D.selectForArray('lotto', null ,"num=?", [lastnum]);
 				for(var i=0;i<lottodata.length;i++){
-					var count = 0;
 					var tempdata = lottodata[i].slice(8,14);
-					for(var j=0;j<6;j++){
-						if(tempdata.indexOf(win[j]) > -1 ){
-							count+=1;
-						}
-					}
+					var count = checklotto(win, tempdata, bonus);
 					if(count == 5 && tempdata.indexOf(bonus) > -1 ){
 						count+=2;	
 					}
@@ -496,5 +518,5 @@ mylotto = function (r){
 			result+= (i+1)+". | " + "생성:"+temp[i].slice(2,5).join('.')+" "+temp[i].slice(5,7).join(':')+" \n"+temp[i].slice(8,14).join(' ')+"\n\n";
 		}
 	}
-	r.replier.reply(result);
+	r.replier.reply(result.substr(0,100000));
 }

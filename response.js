@@ -275,11 +275,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	try {
 		blankFunc1(r);
 		
-		if (sender != "시립봇") {
+		if (sender != "시립봇" || room != 'fa') {
 			D.insert('chatdb', { time : time().hour+":"+time().minute+":"+time().second, name: sender, msg: msg, room : room});
 		}
 		
-		if (msg == "사진을 보냈습니다."){
+		if (msg == "사진을 보냈습니다." && room != '푸드마켓'){
 			saveImage(r);
 		}
 	
@@ -515,22 +515,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
     	
         if( D.selectForArray('blackjack', 'name', 'room=?', room) == undefined || D.selectForArray('blackjack', 'name', 'room=?', room).map(v=>v[0]).indexOf(sender) == -1 ){
-    		D.insert('blackjack', {name : sender  , room : room, point : 10000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0 , bpush : 0, bank : 0, autobet : 0 });
+    		D.insert('blackjack', {name : sender  , room : room, point : 1000000000, win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0 , bpush : 0, bank : 0, autobet : 0 });
     	}
         
         if (msg.indexOf('!블랙잭자동배팅')==0){
-        	if(r.msg.length > 9 && /^\d+$/.test(r.msg.split(' ')[1])){
-				var betting = r.msg.split(' ')[1]
-    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51) || Number(betting) == 0){
-    				if(Number(betting)>0 && Number(betting)<51){
-    					betting = Number(betting*10000);
-    				}
-    				D.update('blackjack', {autobet : betting}, 'room=? and name = ?', [room, sender]);
-    			} else {
-    				r.replier.reply('배팅금액은 1만원~50만원 입니다.')
-    			}
-			}
-        	r.replier.reply(r.sender+'님의 블랙잭 자동 배팅액은 '+D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [room, sender])[0][0]+'원 입니다.');
+        	blackjackautobetting(r);
         	return;
         }
         
@@ -548,20 +537,25 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         	givemoney(r);
         	return;
         }
+        
+        if(msg.indexOf('!블랙잭대출') == 0){
+        	lent(r);
+        	return;
+        }
+        
+        if(msg.indexOf('!블랙잭상환') == 0){
+        	repay(r);
+        	return;
+        }
     	
     	if(msg == '!블랙잭랭킹' && work == 1 ){
-    		var i = 1;
-    		replier.reply('전체 순위\n'+es+D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit'] , 'room=?', room, {orderBy:"point desc"}).map(v=> String(i++).extension(' ',2)+'. ' + String(v[1]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,").extension(' ',11)+'원' + ' - ' + String(v[0]).extensionRight('ㅤ',10) +'\nㅤ→ '+ '승 : ' + String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%').join('\n\n').replace(/NaN%/g, 'X'));
+    		r.replier.reply(blackjackranking(r));
     		return;
     	}
     	
     	if ( (msg.indexOf('!블랙잭') == 0 && work == 1) || ( Flag.get('gameinfo', r.room) != 0 && (  !isNaN(msg) || msg.indexOf('참가') == 0 || msg == 'ㅊㄱ' || msg == '시작' || msg == 'ㅅㅈ'  || msg == '!블랙잭종료' || msg == '힛'|| msg == 'ㅎ' || msg == '스테이'|| msg == 'ㅅㅌㅇ'|| msg == '서렌더'|| msg == 'ㅅㄹㄷ'|| msg == '더블다운'|| msg == 'ㄷㅂㄷㅇ'|| msg == '스플릿'|| msg == 'ㅅㅍㄹ') )){
     		if( Math.random()*1000 < 1 ){
-    			var jackpot = Number((Math.floor(Math.random()*5)+1)*1000000);
-    			var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0];
-    			D.update('blackjack', {point: Number(temp + jackpot)}, 'name=? and room = ?', [sender, room]);
-    			r.replier.reply(sender+'님의 잭팟!\n' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0]);
-    			Api.replyRoom('test', sender+'님의 잭팟!\n' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [sender, room])[0][0])
+    			jackpot(r);
     		}
     		blackjack(r);
         }

@@ -37,7 +37,24 @@ const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
 ]D.create("cat", {name:"모모",gender:"남",age:4})
 ]D.update('blackjack', { win : 0, lose : 0, push : 0 , ddl : 0, ddw : 0, ddp : 0, blackjack : 0 , even : 0 , evenc : 0, insurc : 0, insur : 0, splitc : 0 , split : 0, sur : 0, allp : 0, insurw : 0 , fexit : 0 , bpush : 0, bank : 0 });
 ]D.selectForString('blackjack','name , bank' , "bank > 0")
+]D.selectForString('blackjack','name ,room, bank' , "bank > 0")
+var money = 10000000
+var temp = D.selectForArray('blackjack', 'point, name , room');
+
+for(var i in temp){
+	D.update('blackjack', {point: temp[i][0] + money}, 'name=? and room = ?', [temp[i][1], temp[i][2]]);
+}
+
+
+.replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")
+	
+	
 */
+
+/*
+!온오프,!날씨,fa,on
+ */
+
 
 /* hash set 
 var templott = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]

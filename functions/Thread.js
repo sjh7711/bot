@@ -1,6 +1,18 @@
 WCC = T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 7 == new Date().getHours() ){
+			r={msg : '!날씨 통영시', room : 'fa',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
+			r={msg : '!날씨 창원시 마산회원구 내서읍', room : 'fa',replier:{reply:function(msg){
+				Api.replyRoom(r.room,msg)
+				}}
+			}
+			weather(r);
+			java.lang.Thread.sleep(6*1000);
 			r={msg : '!날씨', room : '푸드마켓',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}

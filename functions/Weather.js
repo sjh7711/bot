@@ -6,7 +6,7 @@ weather = function (r){
 			var link2 = 'https://m.weather.naver.com/m/main.nhn?regionCode=09140104'; //네이버날씨기본주소
 			var check = link2.indexOf('weather'); //link2 String에 weather이 있는지 검사
 			var where = "서울 중구 을지로 1가";
-			if(r.room == 'test' || r.room == '단톡방'|| r.room == '공익'|| r.room == '푸드마켓'|| r.room == '오버워치'){
+			if(r.room == 'test' || r.room == '단톡방'|| r.room == '공익'|| r.room == '푸드마켓'|| r.room == '오버워치' || r.room == 'fa'){
 				link2= 'https://m.weather.naver.com/m/main.nhn?regionCode=03220111';
 				check = link2.indexOf('weather');
 				where = "통영시 무전동";

@@ -1,3 +1,76 @@
+blackjackautobetting = function (r){
+	if(r.msg.length > 9 && /^\d+$/.test(r.msg.split(' ')[1])){
+		var betting = r.msg.split(' ')[1]
+		if ( (Number(betting)>9999 && Number(betting)<10000001) || (Number(betting)>0 && Number(betting)<1001) || Number(betting) == 0){
+			if(Number(betting)>0 && Number(betting)<1001){
+				betting = Number(betting*10000);
+			}
+			D.update('blackjack', {autobet : betting}, 'room=? and name = ?', [r.room, r.sender]);
+		} else {
+			r.replier.reply('배팅금액은 1만원~1000만원 입니다.')
+		}
+	}
+	r.replier.reply(r.sender+'님의 블랙잭 자동 배팅액은 '+String(D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [r.room, r.sender])[0][0]).moneyUnit()+' 입니다.');
+}
+
+jackpot = function (r){
+	var jackpot = Number((Math.floor(Math.random()*10)+1)*10000000);
+	var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0];
+	D.update('blackjack', {point: Number(temp + jackpot)}, 'name=? and room = ?', [r.sender, r.room]);
+	r.replier.reply(r.sender+'님의 잭팟!\n' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0]);
+	Api.replyRoom('test', r.room+'방의 '+r.sender+'님의 잭팟!\n' + jackpot + '원 지급!\n'+temp +' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0])
+}
+
+blackjackranking = function (r){
+	var i = 1;
+	var str = '';
+	str += '전체 순위'+es+'\n';
+	str += D.selectForArray('blackjack', ['name', 'point' , 'allp', 'win', 'blackjack', 'ddw', 'bpush', 'push', 'ddp', 'lose', 'ddl', 'sur', 'fexit','bank'] , 'room=?', r.room, {orderBy:"point-bank desc"})
+	.map(v=> String(i++).extension(' ',2)+'. ' + v[0] +'\nㅤ승 : ' +String( Math.floor((v[3]+v[4]+v[5]-v[6])/v[2]*1000)/10 ).extension(' ',2)+'% | 무 : ' + String( Math.floor((v[6]+v[7]+v[8])/v[2]*1000)/10 ).extension(' ',2)+'% | 패 : '+ String( Math.floor((v[9]+v[10]+v[11])/v[2]*1000)/10 ).extension(' ',2)+'% | 外 : ' +  String( Math.floor((v[12])/v[2]*1000)/10 ).extension(' ',2)+'%\nㅤ순자산 : '+String(v[1]-v[13]).moneyUnit()+'\n\ㅤ부ㅤ채 : '+String(v[13]).moneyUnit())
+	.join('\n\n').replace(/NaN%/g, 'X');
+	return str;
+}
+
+repay = function (r) {
+	var data = Number(r.msg.substr(7));
+	if( /^\d+$/.test(data) ){
+		if(D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [r.sender, r.room])[0][0] >= data ){
+			var temp = D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [r.sender, r.room])[0][0] - data;
+			D.update('blackjack', {bank: temp }, 'name=? and room = ?',[r.sender, r.room]);
+			var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0];
+			D.update('blackjack', {point: temp - data}, 'name=? and room = ?', [r.sender, r.room]);
+			r.replier.reply(r.sender+'님의 상환\n'+ String(temp).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0]).moneyUnit())
+			Api.replyRoom('test', r.room+'방의 ' + r.sender+'님의 상환\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0] );
+		} else {
+			r.replier.reply('상환하려고 하는 금액이 빌린 금액보다 큽니다.')
+		}
+	} else {
+		r.replier.reply('입력형식이 잘못되었습니다. !블랙잭상환 1000000 과 같은 형식으로 입력하세요.');
+	}
+}
+
+lent = function (r) {
+	var data = Number(r.msg.substr(7));
+	if( /^\d+$/.test(data) ){
+		if(data < 100000001 && data>9999 ){
+			if( (1000000000 - D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [r.sender, r.room])[0][0]) >= data && D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [r.sender, r.room])[0][0] < 1000000001  ){
+				var temp = D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [r.sender, r.room])[0][0] + data;
+				D.update('blackjack', {bank: temp }, 'name=? and room = ?',[r.sender, r.room]);
+				var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0];
+				D.update('blackjack', {point: temp + data}, 'name=? and room = ?', [r.sender, r.room]);
+				r.replier.reply(r.sender+'님의 대출\n'+ String(temp).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0]).moneyUnit())
+				Api.replyRoom('test', r.room+'방의 ' + r.sender+'님의 대출\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [r.sender, r.room])[0][0] );
+			} else {
+				r.replier.reply('대출 받을 수 없습니다. 대출 한도가 부족합니다. '+ r.sender+'님의 대출 한도 : '+ String(1000000000-D.selectForArray('blackjack', 'bank', 'name=? and room = ?', [r.sender, r.room])[0][0]).moneyUnit())
+			}
+		} else {
+			r.replier.reply('대출 받을 수 없습니다. 대출은 1회에 1만원 ~ 1억원입니다.')
+		} 
+	} else {
+		r.replier.reply('입력형식이 잘못되었습니다. !블랙잭대출 1000000 과 같은 형식으로 입력하세요.');
+	}
+}
+
 givemoney = function (r){
 	var data = r.msg.substr(7).split(',');
 	var money = Number(data[0]);
@@ -7,8 +80,8 @@ givemoney = function (r){
 	D.update('blackjack', {bank: temp }, 'name=? and room = ?', [who, room]);
 	var temp = D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0];
 	D.update('blackjack', {point: temp + money}, 'name=? and room = ?', [who, room]);
-	r.replier.reply(room+'방의' + who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0])
-	Api.replyRoom(room, who+'님의 포인트변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0] );
+	r.replier.reply(room+'방의' + who+'님의 자산변동\n'+ String(temp).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0]).moneyUnit())
+	Api.replyRoom(room, who+'님의 자산변동\n'+ temp + ' → ' + D.selectForArray('blackjack', 'point', 'name=? and room = ?', [who, room])[0][0] );
 }
 
 blackinform = function (r){
@@ -34,15 +107,17 @@ blackinform = function (r){
 		var bank = D.selectForArray('blackjack', 'bank', 'name=? and room=?', [r.sender, r.room])[0][0];
 		
 		var str = '';
-		str += r.sender+'님의 정보';
-		str += '\n순위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
-		str += '\n포인트 : '+D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0];
-		str += '\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
+		str += r.sender+'님의 정보\n';
+		str += '\n순ㅤㅤ위 : '+Number(D.selectForArray('blackjack',['name','point'], 'room=?', [r.room], {orderBy:"point-bank desc"}).map(v=>v[0]).indexOf(r.sender)+1) + '등';
+		str += '\n잔ㅤㅤ액 : '+String(D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0]).moneyUnit();
+ 		str += '\n순수자산 : '+ String(D.selectForArray('blackjack', 'point','name=? and room=?',[r.sender, r.room])[0][0] - bank).moneyUnit();
+ 		str += '\n부ㅤㅤ채 : '+String(bank).moneyUnit();
+ 		str += '\n\n이득확률 : '+ Math.floor( (win + blackjack + ddw - bpush ) / all*1000)/10 + "%";
 		str += '\n본전확률 : '+ Math.floor( (push + ddp + bpush ) / all*1000)/10 + "%";
 		str += '\n손해확률 : '+ Math.floor( (lose + ddl + sur) / all*1000)/10 + "%";
-		str += '\n기ㅤㅤ타 : '+ Math.floor( ( exit ) / all*1000)/10 + "%";
+		str += '\n강제종료 : '+ Math.floor( ( exit ) / all*1000)/10 + "%";
 		
-		str += '\n\n세부전적'+ es;
+		str += es+'\n\n세부전적';
 		str += '\nSplit 빈도 : ' + Math.floor( split/splitc *1000 )/10 + "%";
 		str += '\nInsurance 빈도 : ' + Math.floor( insur/insurc *1000 )/10 + "%";
 		str += '\nInsurance 성공 확률 : ' + Math.floor( (insurc-insurw)/insurc *1000 )/10 + "%";
@@ -65,7 +140,6 @@ blackinform = function (r){
  		str += '\nSurrender 횟수 : ' + sur;
  		str += '\n패배 횟수 : ' + lose;
  		str += '\n블랙잭 종료 횟수 : ' + exit;
- 		str += '\n추가 지급 머니 : ' + bank + '원';
  		str += '\n\n\nInsuracne 성공확률 :  (Insuracne를 해서 돈을 잃지않은 경우 + Insuracne를 하지않아서 손해를 안본 경우 ) / Insuracne을 할 수 있었던 기회  * 100 %';
  		str += '\n\nInsuracne 빈도 : ( Insuracne을 한 횟수 / Insuracne을 할 수 있었던 기회 ) * 100 %';
  		str += '\n\nEvenMoney 빈도 : ( EvenMoney을 한 횟수 / EvenMoney을 할 수 있었던 기회 ) * 100 %';
@@ -156,8 +230,8 @@ blackjack = function (r){
 				return;
 			} else if (r.msg.length > 5 && /^\d+$/.test(r.msg.split(' ')[1])){
 				var betting = r.msg.split(' ')[1];
-				if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
-    				if(Number(betting)>0 && Number(betting)<51){
+				if ( (Number(betting)>9999 && Number(betting)<10000001) || (Number(betting)>0 && Number(betting)<1001)){
+    				if(Number(betting)>0 && Number(betting)<1001){
     					betting = Number(betting*10000);
     				}
     				if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < betting ){
@@ -165,7 +239,7 @@ blackjack = function (r){
     					return;
     				}
     			} else {
-					r.replier.reply('배팅금액은 1만원~50만원 입니다.');
+					r.replier.reply('배팅금액은 1만원~1000만원 입니다.');
     				return;
 				}
 			}
@@ -189,22 +263,22 @@ blackjack = function (r){
 			gameinfo.playerlist.push(r.sender);
 			gameinfo.player0 = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0};
 			var str = '';
-			str += r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 ";
+			str += r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).moneyUnit()+")이 ";
 			if(D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [r.room, r.sender])[0][0] != 0 ){
 				var betting = D.selectForArray('blackjack', 'autobet', 'room=? and name = ?', [r.room, r.sender])[0][0];
 				gameinfo.player0.bet = Number( betting );
 				gameinfo.betlist.push(r.sender);
-				str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+				str += '배팅액 ' + String( betting ).moneyUnit()+'으로 참가합니다.';
 			} else if(r.msg.length > 5 && /^\d+$/.test(r.msg.split(' ')[1])){
 				var betting = r.msg.split(' ')[1]
-    			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
-    				if(Number(betting)>0 && Number(betting)<51){
+    			if ( (Number(betting)>9999 && Number(betting)<10000001) || (Number(betting)>0 && Number(betting)<1001)){
+    				if(Number(betting)>0 && Number(betting)<1001){
     					betting = Number(betting*10000);
     				}
     			}
 				gameinfo.player0.bet = Number( betting );
 				gameinfo.betlist.push(r.sender);
-				str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+				str += '배팅액 ' + String( betting ).moneyUnit()+'으로 참가합니다.';
 			}else {
 				str += '참가합니다.'
 			}
@@ -227,8 +301,8 @@ blackjack = function (r){
 			return;
 		} else if (r.msg.length > 5 && /^\d+$/.test(r.msg.split(' ')[1])){
 			var betting = r.msg.split(' ')[1];
-			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
-				if(Number(betting)>0 && Number(betting)<51){
+			if ( (Number(betting)>9999 && Number(betting)<10000001) || (Number(betting)>0 && Number(betting)<1001)){
+				if(Number(betting)>0 && Number(betting)<1001){
 					betting = Number(betting*10000);
 				}
 				if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < betting ){
@@ -236,32 +310,32 @@ blackjack = function (r){
 					return;
 				}
 			} else {
-				r.replier.reply('배팅금액은 1만원~50만원 입니다.');
+				r.replier.reply('배팅금액은 1만원~1000만원 입니다.');
 				return;
 			}
 		}
 		gameinfo['player'+gameinfo.playerlist.length] = {name : r.sender,card : [],bet : 0,sum : 0,insurance : 0,state : 0,end : 0,splitcount : 0}
     	gameinfo.playerlist.push(r.sender);
 		var str = '';
-		str += r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+")이 ";
+		str += r.sender+"님("+String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0]).moneyUnit()+")이 ";
 		if(D.selectForArray('blackjack', 'autobet' , 'room=? and name = ?', [r.room, r.sender])[0][0] != 0 ){
 			var betting = D.selectForArray('blackjack', 'autobet', 'room=? and name = ?',[r.room, r.sender])[0][0];
 			gameinfo['player'+(gameinfo.playerlist.length-1)].bet = Number( betting );
 			gameinfo.betlist.push(r.sender);
-			str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+			str += '배팅액 ' + String( betting ).moneyUnit()+'으로 참가합니다.';
 		} else if(r.msg.length > 3 && /^\d+$/.test(r.msg.split(' ')[1])){
 			var betting = r.msg.split(' ')[1]
-			if ( (Number(betting)>9999 && Number(betting)<500001) || (Number(betting)>0 && Number(betting)<51)){
-				if(Number(betting)>0 && Number(betting)<51){
+			if ( (Number(betting)>9999 && Number(betting)<10000001) || (Number(betting)>0 && Number(betting)<1001)){
+				if(Number(betting)>0 && Number(betting)<1001){
 					betting = Number(betting*10000);
 				}
 			} else {
-				r.replier.reply('배팅금액은 1만원~50만원 입니다.');
+				r.replier.reply('배팅금액은 1만원~1000만원 입니다.');
 				return;
 			}
 			gameinfo['player'+(gameinfo.playerlist.length-1)].bet = Number( betting );
 			gameinfo.betlist.push(r.sender);
-			str += '배팅액 ' + Number( betting )+'원으로 참가합니다.';
+			str += '배팅액 ' + String( betting ).moneyUnit()+'으로 참가합니다.';
 		}else {
 			str += '참가합니다.';
 		}
@@ -279,7 +353,7 @@ blackjack = function (r){
 		if( gameinfo.betlist.length == gameinfo.playerlist.length){
 			r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!');
 		} else{
-			r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 50만원 배팅하세요.');	
+			r.replier.reply(gameinfo.playerlist.length+'명이 참가합니다. 게임시작!\n1만원 ~ 1000만원 배팅하세요.');	
 		}
 	}
 	
@@ -292,8 +366,8 @@ blackjack = function (r){
 	}
 	
 	if( gameinfo.start1 == 1 &&  gameinfo.betlist.length < gameinfo.playerlist.length && /^\d+$/.test(r.msg) && gameinfo.betlist.indexOf(r.sender) == -1 && gameinfo['player'+num].bet == 0){
-		if ( (Number(r.msg)>9999 && Number(r.msg)<500001) || (Number(r.msg)>0 && Number(r.msg)<51)){
-			if(Number(r.msg)>0 && Number(r.msg)<51){
+		if ( (Number(r.msg)>9999 && Number(r.msg)<10000001) || (Number(r.msg)>0 && Number(r.msg)<1001)){
+			if(Number(r.msg)>0 && Number(r.msg)<1001){
 				r.msg = Number(r.msg*10000);
 			}
 			if( D.selectForArray('blackjack', 'point', 'name=? and room=?', [r.sender, r.room])[0][0] < r.msg ){
@@ -303,10 +377,10 @@ blackjack = function (r){
 			if(gameinfo.betlist.indexOf('r.sender') == -1 ){
 				gameinfo['player'+num].bet = Number(r.msg);
 				gameinfo.betlist.push(r.sender);
-				r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'원을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
+				r.replier.reply(gameinfo['player'+num].name+'님이 '+String(gameinfo['player'+num].bet).moneyUnit()+'을 배팅.  ('+gameinfo.betlist.length+'/'+gameinfo.playerlist.length+')');
 			}
 		} else {
-			r.replier.reply('배팅금은 1만원 ~ 50만원 입니다.');
+			r.replier.reply('배팅금은 1만원 ~ 1000만원 입니다.');
 		}
 	}
 	
@@ -388,7 +462,7 @@ blackjack = function (r){
 						D.update('blackjack', {lose : temp }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 					}
 					D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-					str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+					str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).moneyUnit()+' → ' + String(temppoint).moneyUnit()+'\n';
 				}
 				gameinfo.start1 = 0;
 				gameinfo.start3 = 0;
@@ -461,7 +535,7 @@ blackjack = function (r){
 							D.update('blackjack', {insurw : temp }, 'name=? and room=?', [gameinfo['player'+i].name,r.room] );
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+						str1 += gameinfo['player'+i].name+'\n'+String(temppoint1).moneyUnit() + ' → ' + String(temppoint).moneyUnit()+'\n';
 					}
 					gameinfo.start1 = 0;
 					gameinfo.start3 = 0;
@@ -480,7 +554,7 @@ blackjack = function (r){
 							var temppoint = temppoint1
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str1 += '\n'+gameinfo['player'+i].name+'\n'+String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(temppoint).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n';
+						str1 += '\n'+gameinfo['player'+i].name+'\n'+String(temppoint1).moneyUnit() + ' → ' + String(temppoint).moneyUnit()+'\n';
 					}
 					str1 += '\n딜러의 카드 : ' + gameinfo.dealer.card[0].join(' ') + ' | ? \n';
 					for( var i in gameinfo.playerlist){
@@ -778,7 +852,7 @@ blackjackend = function (r, gameinfo){
 					D.update('blackjack', {win : temp }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				}
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-				str += String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+				str += String(temppoint1).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).moneyUnit()+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
@@ -816,7 +890,7 @@ blackjackend = function (r, gameinfo){
 							D.update('blackjack', {win : tempc }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str += String(temppoint1).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+						str += String(temppoint1).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).moneyUnit()+'\n\n';
 					}
 				}
 			}
@@ -878,7 +952,7 @@ blackjackend = function (r, gameinfo){
 					D.update('blackjack', {lose : temp }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 				}
 				D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-				str += String(Number(temppoint1-even)).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+				str += String(Number(temppoint1-even)).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).moneyUnit()+'\n\n';
 				if( gameinfo['player'+i].splitcount > 0 ){
 					var temp = gameinfo.splitdata.filter(v=>v.name == gameinfo['player'+i].name);
 					for(var j in temp) {
@@ -938,7 +1012,7 @@ blackjackend = function (r, gameinfo){
 							D.update('blackjack', {lose : tempc }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
 						}
 						D.update('blackjack', {point : temppoint }, 'name=? and room=?', [gameinfo['player'+i].name, r.room] );
-						str += String(Number(temppoint1-even)).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,") + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).replace(/(\d{1,3})(?=(\d{3})+$)/g,"$1,")+'\n\n';
+						str += String(Number(temppoint1-even)).moneyUnit() + ' → ' + String(D.selectForArray('blackjack', 'point', 'name=? and room=?', [gameinfo['player'+i].name, r.room])[0][0]).moneyUnit()+'\n\n';
 					}
 				}
 			}
