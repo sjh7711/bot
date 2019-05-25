@@ -17,6 +17,7 @@ const weiredstring3=String.fromCharCode(8237);//공백
 const weiredstring4=String.fromCharCode(8197);//띄워쓰기로
 //replace(new RegExp(weiredstring1, "gi"), "")
 
+D.execSQL("create table numtest (key integer, num integer)")
 
 ]D.execSQL("alter table control add BASEBALL number")
 ]D.update("control", {BASEBALL:0})
