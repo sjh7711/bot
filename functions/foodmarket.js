@@ -1,3 +1,47 @@
+foodbank = function (r){
+	try{
+		var name = r.msg.split(" ")[1];
+		if(typeof name == 'string'){
+			var temp=D.selectForArray('foodbank',null,'name like ? or manager like ? or tel like ? or phone like ? or fax like ? or email like ? or addr like ?', ['%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%']);
+			var str = temp.map(v=>v[0]+'\n\n'+v[1]+'\n\n번호 : '+v[2]+'\n\n휴대폰 : '+v[3]+'\n\n팩스 : '+v[4]+'\n\n'+v[5]+'\n\n'+v[6]  ).join('\n-----------------\n');
+			r.replier.reply(str);
+		} else {
+			var temp=D.selectForArray('foodbank',null,'name like ? or manager like ? or tel like ? or phone like ? or fax like ? or email like ? or addr like ?', ['%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%','%'+name+'%']);
+			var str = temp.map(v=>v[0]+'\n\n'+v[1]+'\n\n번호 : '+v[2]+'\n\n휴대폰 : '+v[3]+'\n\n팩스 : '+v[4]+'\n\n'+v[5]+'\n\n'+v[6]  ).join('\n-----------------\n');
+			r.replier.reply(str);
+		}
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
+}
+
+banklist = function (r){
+	try{
+		var name = r.msg.split(" ")[1];
+		if(typeof name == 'string'){
+			var temp=D.selectForArray('bankls',null,'name like ?','%'+name+'%');
+			for(var i=0;i<temp.length;i++){
+				temp[i]=temp[i].join(" : ")
+				if(i==3){
+					temp[2]=temp[2]+es;
+				}
+			}
+			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+		} else {
+			var temp=D.selectForArray('bankls');
+			for(var i=0;i<temp.length;i++){
+				temp[i]=temp[i].join(" : ")
+				if(i==3){
+					temp[2]=temp[2]+es;
+				}
+			}
+			r.replier.reply("      기관명      |      전화번호\n----------------------------------\n"+temp.join("\n\n"));
+		}
+	}catch(e){
+		Api.replyRoom('test',e+"\n"+e.stack);
+		}
+}
+
 noticecheck = function (){
 	try{
 		if(Flag.get('cookie1', 'test') == 0 || Flag.get('cookie2', 'test') == 0){
@@ -18,6 +62,25 @@ noticecheck = function (){
     	var docnum = doc.select("tr.num").toArray().map(v=>v.select('td.num').get(0).text());
     	var doctitle = doc.select("tr.num").toArray().map(v=>v.select('a:first-child').get(0).ownText());
     	
+    	if( docnum[0] > D.selectForArray('notice')[0][0] ){
+    		for(var i = 0 ; i < docnum[0] - D.selectForArray('notice')[0][0] ; i++){
+    			var doclink = doc.select("tr.num").select("a:first-child").get(i).attr("abs:href");
+    	    	
+    	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get();
+    	    	
+    	    	var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, '\n').replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, ' ').trim().replace(/^ +/gm,"").replace(/\n\n\n/g, '\n').replace(/\n\n\n/g, '\n');
+    	    	var repl = subdoc.select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, '');
+    	    	
+    			Api.replyRoom("test","새공지!\n"+docnum[i]+" : "+doctitle[i]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+    			Api.replyRoom("푸드마켓","새공지!\n"+docnum[i]+" : "+doctitle[i]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+    		}
+    		D.delete('notice');
+	    	for(var i=0; i<15;i++){
+	    		D.insert('notice', {num : docnum[i], msg : doctitle[i]});
+	    	}
+    		return;
+    	}
+    	
     	var difcount = 0;
     	
     	for(var i=0; i<15;i++){
@@ -36,10 +99,6 @@ noticecheck = function (){
     	}
     	
 		if(difcount > 0){
-			D.delete('notice');
-	    	for(var i=0; i<15;i++){
-	    		D.insert('notice', {num : docnum[i], msg : doctitle[i]});
-	    	}
 			var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 	    	
 	    	var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get('cookie2', 'test')).cookies(Flag.get('cookie1', 'test')).get();
@@ -49,6 +108,10 @@ noticecheck = function (){
 	    	
 			Api.replyRoom("test","새공지!\n"+docnum[wantnum]+" : "+doctitle[wantnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
 			Api.replyRoom("푸드마켓","새공지!\n"+docnum[wantnum]+" : "+doctitle[wantnum]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
+			D.delete('notice');
+	    	for(var i=0; i<15;i++){
+	    		D.insert('notice', {num : docnum[i], msg : doctitle[i]});
+	    	}
 		}
 	}catch(e){
 		Log.e(e+"\n"+e.stack+'\n');

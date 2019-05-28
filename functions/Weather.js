@@ -312,8 +312,28 @@ weather = function (r){
 					var doc1 = org.jsoup.Jsoup.connect(link3).get();
 					var pollution = doc1.select('li.pollution_item').toArray().map(v=>{vv=String(v.select('span.number').select('em').text()); vvv=String(v.select('span.title').text()); return vvv +" : "+ v.select('span.number').text().replace(vv, " "+vv)});
 					var dust = doc1.select('div.chart_item').toArray().map(v=>v.select('div.dust_graph_number').text().replace('먼지', '먼지 :')+"㎍/㎥" + "("+v.select('div.dust_graph_text').text()+")");
+					var windrain = '';
+					var windtemp = wind.slice(0,7);
+					var windforce = [,,,,,,];
+					for (var i in windtemp) {
+						if(Number(windtemp[i]) > 16){
+							windforce[i]=1
+						} else if(Number(windtemp[i]) > 9){
+							windforce[i]=0
+						}
+					}
+					if( windforce.indexOf(1) > -1 ){
+						windtemp.sort(compare);
+						windrain += windtemp[6]+'㎧로 바람이 매우 강합니다.\n';
+					} else if( windforce.indexOf(0) > -1 ){
+						windtemp.sort(compare);
+						windrain += windtemp[6]+'㎧로 바람이 강합니다.\n';
+					}
 					if(sky.slice(0,7).map(v=>String(v)).indexOf("비") > -1 ){
-						r.replier.reply('☔비소식이 있습니다. 우산을 챙기세요☔');
+						windrain += '☔비가오니 우산을 챙기세요☔';
+					}
+					if(windrain != ''){
+						r.replier.reply(windrain.trim());
 					}
 					var res =where+where1+" 날씨\n"+"ㅤㅤ<종합정보 → 전체보기>\n";
 					res += "-------미세먼지/자외선--------\n";

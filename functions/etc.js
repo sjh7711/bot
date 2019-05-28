@@ -31,6 +31,89 @@ suggestion = function (r){
 	}
 }
 
+translation = function (r){
+	var tempmsg = r.msg.substr(7);
+	var templan0 = r.msg.substr(4).split(',')[0][0];
+	var templan1 = r.msg.substr(4).split(',')[0][1];
+	if (templan0 == '영'){
+		templan0 = 'en';
+	} else if (templan0 =='한'){
+		templan0 = 'ko';
+	} else if (templan0 =='일'){
+		templan0 = 'ja';
+	} else {
+		r.replier.reply('번역할 수 없습니다.');
+		return;
+	}
+	if (templan1 == '영'){
+		templan1 = 'en';
+	} else if (templan1 =='한'){
+		templan1 = 'ko';
+	} else if (templan1 =='일'){
+		templan1 = 'ja';
+	} else {
+		r.replier.reply('번역할 수 없습니다.');
+		return;
+	}
+	if(templan0 == templan1 ){
+		r.replier.reply('번역할 수 없습니다.');
+		return;
+	}
+	
+	r.replier.reply(Api.papagoTranslate(templan0,templan1,tempmsg));
+}
+
+randomnumber = function (r){
+	var num1 = Number(r.msg.split(' ')[1]);
+	var num2 = Number(r.msg.split(' ')[2]);
+	if(num1 < 0 || num2 < 0 ){
+		r.replier.reply('양수만 입력하세요');
+		return;
+	}
+	if (isNaN(num1) && isNaN(num2)){
+		num2=100;
+		num1=1;
+	}
+	if (!isNaN(num1) && isNaN(num2)){
+		num2=num1;
+		num1=1;
+	}
+	if(num2==num1){
+		r.replier.reply(num1);
+		return;
+	}
+	 if( !isNaN(num1) && !isNaN(num2) && (num1 < num2)){
+		r.replier.reply(num1 + Math.floor(Math.random() * ( num2 - num1 + 1 ) ));
+	} else {
+		r.replier.reply('잘못 입력했습니다.');
+	}
+}
+
+time = function () {
+	var today = new Date();
+	var dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
+	var day = dayNames[today.getDay()];
+	
+	var year   = today.getFullYear(),
+	month  = today.getMonth() + 1,
+	date   = today.getDate(),
+	hour   = today.getHours(),
+	minute = today.getMinutes(),
+	second = today.getSeconds();
+	ampm   = hour >= 12 ? 'PM' : 'AM';
+	
+	hour1 = hour % 12;
+	hour1 = hour1 < 10 ? '0' + hour1 : hour1;
+	
+	hour = hour < 10 ? '0' + hour : hour;
+	minute = minute < 10 ? '0' + minute : minute;
+	second = second < 10 ? '0' + second : second;
+	
+	var now = year + '년 ' + month + '월 ' + date + '일 ' + day + ' ' + hour1 + ':' + minute + ':' + second + ' ' + ampm;
+	
+	return { now : now , year : year, month : month , date : date, day : day, hour : hour , minute : minute , second : second, ampm : ampm , hour1: hour1};
+}
+
 githubload = function (r){
 	if(r.sender == '봇배우는배주현' || r.sender == 'test'){
 		backup(r);
@@ -50,6 +133,35 @@ githubload = function (r){
 	    Api.replyRoom(r.room ,"Filesave success / " + ((new Date() - Timer) / 1000) + "s\n" + new Date() );
 	}
 }
+
+write64 = function (file,base64) {
+	   var base64Array=new java.lang.String(base64).getBytes();
+	   var fileArray=org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
+	   var is=new java.io.ByteArrayInputStream(fileArray);
+	   var os=new java.io.FileOutputStream(file);
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	}
+
+read64 = function (file) {
+	   var is=new java.io.FileInputStream(file);
+	   var os=new java.io.ByteArrayOutputStream();
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	   var fileArray=os.toByteArray();
+	   var str=new java.lang.String(org.apache.commons.codec.binary.Base64.encodeBase64(fileArray));
+	   return str;
+	}
 
 toUTF16 = function(codePoint) {
 	  var TEN_BITS = parseInt('1111111111', 2);

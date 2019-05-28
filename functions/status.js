@@ -15,6 +15,7 @@ checkstatus = function (r){
 	var status =["Unknown","Charging","Discharging","Not charging","Full"][bm.getIntExtra("status",1)-1]
 	var voltage = bm.getIntExtra("voltage",0)/1000 + "V"
 	
+	/*
 	var stat1 = readFile('/proc/stat').substr(5).split(" ");
 	java.lang.Thread.sleep(1000);
 	var stat2 = readFile('/proc/stat').substr(5).split(" ");        
@@ -24,8 +25,9 @@ checkstatus = function (r){
 	var idle = stat2[3]-stat1[3];
 	var total = user+system+nice+idle;
 	var idlePerc = (1-idle/total)*100
+	*/
 
-	str = "온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\nT/C : "+T.getThreadList().length + "\nCPU : "+ Math.floor(idlePerc*100)/100;
-	str += "%\n리부트~"+day+"D "+String(hour).extension(" ",2)+"H "+String(min).extension(" ",2)+"M "+String(sec).extension(" ",2)+"S\n"+"리로딩~"+day1+"D "+String(hour1).extension(" ",2)+"H "+String(min1).extension(" ",2)+"M "+String(sec1).extension(" ",2)+"S";
+	str = "온도 : " + temperature +"\n충전률 : "+level + "\n상태 : " + status + "\n전압 : " + voltage + "\nT/C : "+T.getThreadList().length + "\n";//CPU : "+ Math.floor(idlePerc*100)/100+"%";
+	str += "\n리부트~"+day+"D "+String(hour).extension(" ",2)+"H "+String(min).extension(" ",2)+"M "+String(sec).extension(" ",2)+"S\n"+"리로딩~"+day1+"D "+String(hour1).extension(" ",2)+"H "+String(min1).extension(" ",2)+"M "+String(sec1).extension(" ",2)+"S";
 	r.replier.reply(str);
 }
