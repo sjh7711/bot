@@ -83,10 +83,10 @@ WCC = T.register("weatherClockCheck",()=>{
 		java.lang.Thread.sleep(59*1000); //59초
 	}
 }).start();
-
+/*
 NC = T.register("noticeCheck",()=>{
 	while(true){
 		java.lang.Thread.sleep(50*1000); //50초
 		noticecheck();
 	}
-}).start();
+}).start();*/

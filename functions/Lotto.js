@@ -199,7 +199,7 @@ lottocheck = function (r) {
 		var date = raw.select('p').get(0).text().replace("(","").replace(" 추첨)","").slice();
 		var temp = D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0];
 		
-		if(temp == 0){
+		if(temp == 0 || calculating == 1){
 			if(calculating == 0){
 				r.replier.reply('모든 방에서 이번주에 총 '+String(D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0])+'개의 로또를 뽑았습니다. 계산을 위해 잠시만 기다려주세요.');
 				calculating = 1;
@@ -234,7 +234,7 @@ lottocheck = function (r) {
 				calculating = 0;
 				r.replier.reply('계산이 끝났습니다. 데이터 정리를 위해 잠시만 기다려주세요.')
 			} else {
-				r.replier.reply('로또 결과를 계산중입니다. 진행률 '+Math.floor(Number(D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0]/D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0])*10000)/100+'%');
+				r.replier.reply('로또 결과를 계산중입니다.\n진행률 : '+Math.floor(Number(D.selectForArray('lotto', "count(*)", "num=? and count > -1", [lastnum])[0][0]/D.selectForArray('lotto', "count(*)", "num=?", [lastnum])[0][0])*10000)/100+'%');
 				return;
 			}
 		}
@@ -246,7 +246,7 @@ lottocheck = function (r) {
 				r.replier.reply('저번주에 로또 번호를 뽑은 사람이 아무도 없습니다.');
 				return;
 			}
-			var temp = D.selectForArray('lotto',['name', 'date', 'lotto', 'class', 'count'],'room=? and num=?', [r.room, lastnum]);
+			var temp = D.selectForArray('lotto',['name', 'date', 'lotto', 'count'],'room=? and num=?', [r.room, lastnum]);
 			var all = D.selectForArray('lotto', "count(*)" , ' num = ? and room = ? ',  [lastnum , r.room])[0][0];
 			var five = D.selectForArray('lotto', "count(*)", 'num = ? and count = 3 and room = ? ',  [lastnum ,r.room])[0][0];
 			var four = D.selectForArray('lotto', "count(*)", 'num = ? and count = 4 and room = ? ',  [lastnum ,r.room])[0][0];
@@ -258,7 +258,7 @@ lottocheck = function (r) {
 				r.replier.reply(r.msg.substr(4)+"님은 저번주에 로또번호를 뽑은 적이 없습니다.");
 				return;
 			}
-			var temp = D.selectForArray('lotto',['name', 'date', 'lotto', 'class', 'count'],'room=? and num =? and name=?', [r.room , lastnum, r.msg.substr(4)]);
+			var temp = D.selectForArray('lotto',['name', 'date', 'lotto', 'count'],'room=? and num =? and name=?', [r.room , lastnum, r.msg.substr(4)]);
 			var all = D.selectForArray('lotto', "count(*)" , ' num = ? and room = ? and name = ? ',  [lastnum , r.room, r.msg.substr(4)])[0][0];
 			var five = D.selectForArray('lotto', "count(*)", 'num = ? and count = 3 and room = ? and name = ? ',  [lastnum ,r.room, r.msg.substr(4)])[0][0];
 			var four = D.selectForArray('lotto', "count(*)", 'num = ? and count = 4 and room = ? and name = ?',  [lastnum ,r.room, r.msg.substr(4)])[0][0];
@@ -282,16 +282,16 @@ lottocheck = function (r) {
 		var fifth = '';
 		
 		for(var i=0; i<temp.length; i++){
-			if (temp[i][4] == 3) {
-				fifth+=temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][2]+"| "+temp[i][3]+"\n\n";
-			} else if (temp[i][4] == 4) {
-				fourth+=temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][2]+"| "+temp[i][3]+"\n\n";
-			} else if (temp[i][4] == 5) {
-				third+=temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][2]+"| "+temp[i][3]+"\n\n";
-			} else if (temp[i][4] == 6) {
-				first+=temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][2]+"| "+temp[i][3]+"\n\n";
-			} else if (temp[i][4] == 7) {
-				second+=temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][2]+"| "+temp[i][3]+"\n\n";
+			if (temp[i][3] == 3) {
+				fifth+=temp[i][0]+"|"+temp[i][2]+" \n생성 : "+temp[i][1]+"\n\n";
+			} else if (temp[i][3] == 4) {
+				fourth+=temp[i][0]+"|"+temp[i][2]+" \n생성 : "+temp[i][1]+"\n\n";
+			} else if (temp[i][3] == 5) {
+				third+=temp[i][0]+"|"+temp[i][2]+" \n생성 : "+temp[i][1]+"\n\n";
+			} else if (temp[i][3] == 6) {
+				first+=temp[i][0]+"|"+temp[i][2]+" \n생성 : "+temp[i][1]+"\n\n";
+			} else if (temp[i][3] == 7) {
+				second+=temp[i][0]+"|"+temp[i][2]+" \n생성 : "+temp[i][1]+"\n\n";
 			} 
 		}
 		result += es+'\n\n1등[확률 : '+Number((Math.floor(one/all*1000000000000)/10000000000).toFixed(12))+"% ("+one+")"+']\n'+first;
@@ -311,8 +311,8 @@ lottocheck = function (r) {
 bestlotto = function (r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
-	var result = "명예의 전당 | ";
-	var temp = D.selectForArray('lotto', ['name', 'date', 'num', 'lotto', 'count'], 'count > 3 and room = ? ',  [r.room] , {orderBy:"class asc"});
+	var result = "";
+	var temp = D.selectForArray('lotto', ['name', 'date', 'num', 'lotto', 'count'], 'count > 4 and room = ? ',  [r.room] , {orderBy:"class asc"});
 	var all = D.selectForArray('lotto', "count(*)" , ' num < ? and room = ? ',  [num , r.room])[0][0];
 	var five = D.selectForArray('lotto', "count(*)", 'count = 3 and room = ? ',  [r.room])[0][0];
 	var four = D.selectForArray('lotto', "count(*)", 'count = 4 and room = ? ',  [r.room])[0][0];
@@ -330,7 +330,7 @@ bestlotto = function (r) {
 		getmoney += one1*money[1]+two1*money[2]+three1*money[3]+four1*money[4]+five1*money[5];
 	}
 	
-	result+='로또 뽑은 횟수 : '+all+'\n';
+	result+='누적 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Number((Math.floor(one/all*1000000000000)/10000000000).toFixed(12))+"%("+one+")\n";
 	result+='2등 확률 : '+Number((Math.floor(two/all*1000000000000)/10000000000).toFixed(12))+"%("+two+")\n";
 	result+='3등 확률 : '+Number((Math.floor(three/all*1000000000000)/10000000000).toFixed(12))+"%("+three+")\n";
@@ -366,7 +366,7 @@ bestlotto = function (r) {
 allbestlotto = function (r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select('div.win_result');
 	var num = raw.select('h4').text().split('회')[0]*1+1;
-	var result = "명예의 전당 | ";
+	var result = "";
 	var all = D.selectForArray('lotto', "count(*)" , ' num < ?',  [num])[0][0];
 	var five = D.selectForArray('lotto', "count(*)", 'count = 3')[0][0];
 	var four = D.selectForArray('lotto', "count(*)", 'count = 4 ')[0][0];
@@ -384,7 +384,7 @@ allbestlotto = function (r) {
 		getmoney += one1*money[1]+two1*money[2]+three1*money[3]+four1*money[4]+five1*money[5];
 	}
 	
-	result+='로또 뽑은 횟수 : '+all+'\n';
+	result+='누적 횟수 : '+all+'\n';
 	result+='1등 확률 : '+Number((Math.floor(one/all*1000000000000)/10000000000).toFixed(12))+"%("+one+")\n";
 	result+='2등 확률 : '+Number((Math.floor(two/all*1000000000000)/10000000000).toFixed(12))+"%("+two+")\n";
 	result+='3등 확률 : '+Number((Math.floor(three/all*1000000000000)/10000000000).toFixed(12))+"%("+three+")\n";
@@ -398,15 +398,15 @@ allbestlotto = function (r) {
 	var str3 ='\n';
 	
 	if ( r.room == 'test'){
-		var temp = D.selectForArray('lotto', ['name', 'date', 'num', 'lotto', 'count', 'room'], 'count > 3 and room = ? ',  [r.room] , {orderBy:"class asc"});
+		var temp = D.selectForArray('lotto', ['name', 'date', 'num', 'lotto', 'count', 'room'], 'count > 4 ', null , {orderBy:"class asc"});
 		result += "\n"+es+"\n";
 		for(var i=0; i<temp.length; i++){
 			if(temp[i][4]==5){
-				str3+= temp[i][0]+' '+temp[i][5]+"|생성:"+temp[i][1]+" \n"+temp[i][3]+"| "+temp[i][2] + "회차\n\n";
+				str3+= temp[i][5]+'/'+temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][3]+"| "+temp[i][2] + "회차\n\n";
 			}else if(temp[i][4]==7){
-				str2+= temp[i][0]+' '+temp[i][5]+"|생성:"+temp[i][1]+" \n"+temp[i][3]+"| "+temp[i][2] + "회차\n\n";
+				str2+= temp[i][5]+'/'+temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][3]+"| "+temp[i][2] + "회차\n\n";
 			}else if(temp[i][4]==6){
-				str1+= temp[i][0]+' '+temp[i][5]+"|생성:"+temp[i][1]+" \n"+temp[i][3]+"| "+temp[i][2] + "회차\n\n";
+				str1+= temp[i][5]+'/'+temp[i][0]+"|생성:"+temp[i][1]+" \n"+temp[i][3]+"| "+temp[i][2] + "회차\n\n";
 			}
 		}
 		result += '1등 개수 : '+one+'\n'+str1+'\n'+
@@ -427,14 +427,14 @@ mylotto = function (r){
 	if(temp.length == 0 ){
 		result = '뽑은 번호가 없습니다';
 	} else if(temp.length < 1000){
-		var result = r.sender+"님이 이번주에 뽑은 로또번호 | "+num+"회차 "+temp.length+"개\n"+es+"\n";
+		var result = r.sender+"님이 이번주에 뽑은 로또번호\n"+num+"회차 "+temp.length+"개\n"+es+"\n";
 		for(var i=0; i<temp.length; i++){
-			result+= (i+1)+". | " + "생성:"+temp[i][0]+" \n"+temp[i][1]+"\n\n";
+			result+= (i+1)+". |"+temp[i][1]+"\n  생성:"+temp[i][0]+"\n\n";
 		}
 	} else{
-		var result = r.sender+"님이 이번주에 뽑은 로또번호 | "+num+"회차 "+temp.length+"개\n"+es+"\n";
+		var result = r.sender+"님이 이번주에 뽑은 로또번호\n"+num+"회차 "+temp.length+"개\n"+es+"\n";
 		for(var i=0; i<1000; i++){
-			result+= (i+1)+". | " + "생성:"+temp[i][0]+" \n"+temp[i][1]+"\n\n";
+			result+= (i+1)+". |"+temp[i][1]+"\n  생성:"+temp[i][0]+"\n\n";
 		}
 	}
 	r.replier.reply(result);

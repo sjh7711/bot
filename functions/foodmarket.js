@@ -72,7 +72,6 @@ noticecheck = function (){
     	    	var repl = subdoc.select("div.comment_area").eachText().toArray().join('\n\n').replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, '');
     	    	
     			Api.replyRoom("test","새공지!\n"+docnum[i]+" : "+doctitle[i]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
-    			Api.replyRoom("푸드마켓","새공지!\n"+docnum[i]+" : "+doctitle[i]+"\n----------------------------------\n"+es+text+"\n----------------------------------\n"+repl+"\n----------------------------------\n"+doclink);
     		}
     		D.delete('notice');
 	    	for(var i=0; i<15;i++){

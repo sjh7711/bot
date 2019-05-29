@@ -196,6 +196,21 @@ function functionreload (r){
 	}
 }
 
+write64 = function (file,base64) {
+	   var base64Array=new java.lang.String(base64).getBytes();
+	   //var fileArray = org.apache.commons.codec.binary.Base64.decodeBase64(base64Array);
+	   var fileArray = android.util.Base64.decode(base64Array, android.util.Base64.DEFAULT);
+	   var is=new java.io.ByteArrayInputStream(fileArray);
+	   var os=new java.io.FileOutputStream(file);
+	   var len=0;
+	   var buf=java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE,1000)
+	   while((len=is.read(buf))!=-1){
+	      os.write(buf,0,len);
+	   }
+	   is.close();
+	   os.close();
+	}
+
 function saveImage(r) {
     if (r.imageDB.getImage()) {
         var i = String(r.imageDB.getImage());
@@ -335,10 +350,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			deleteimage(r);
 		}
 		
+		
 		if (msg == '!리부트' && work == 1){
 			replier.reply('Rebooting...');
 			cmd('reboot');
 	    }
+	    
 		
 		if ( msg.indexOf("!날씨") == 0 && work == 1) {
         	weather(r);
@@ -346,7 +363,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
         }
 		
 		if (msg =='!로또확률'){
-        	replier.reply('1등 확률 : 0.000012277380399898834%\n2등 확률 : 0.000073664282399393%\n3등 확률 : 0.002799238607098869%\n4등 확률 : 0.1364256480218281%\n5등 확률 : 2.2222222222222223%');
+			var str = '';
+			str += '1등 확률 : 1/8,145,060\n0.000012277380399898834%\n';
+			str += '2등 확률 : 1/1,357,510\n0.000073664282399393%\n';
+			str += '3등 확률 : 1/35,724\n0.002799238607098869%\n';
+			str += '4등 확률 : 1/733\n0.1364256480218281%\n';
+			str += '5등 확률 : 1/45\n2.2222222222222%';
+			replier.reply(str);		
         	return;
         }
         
