@@ -20,7 +20,7 @@ lottocount = function (r) {
 
 lotto = function (r) {
 	var cycle = 5;
-	if (r.msg.substr(4) > 0 && r.msg.substr(4) < 10001) {
+	if (r.msg.substr(4) > 0 && r.msg.substr(4) < 20001) {
 		cycle = Number(r.msg.substr(4));
 	}
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select("div.win_result");

@@ -48,10 +48,11 @@ noticecheck = function () {
 		for (var i = 0; i < docnum[0] - D.selectForArray("notice")[0][0]; i++) {
 			var doclink = doc.select("tr.num").select("a:first-child").get(i).attr("abs:href");
 			var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get();
-			var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
+			var doctime = String(subdoc.select("div.sum > span.date").text());
+			var text = String(subdoc.select("div.content").toArray()[0]).replace(/amp;/g, "").replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
 			var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
-			Api.replyRoom("test", "새공지!\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
-			Api.replyRoom("푸드마켓", "새공지!\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+			Api.replyRoom("test", "새공지!\n" + doctime + "\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+			Api.replyRoom("푸드마켓", "새공지!\n" + doctime + "\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
 		}
 		D.delete("notice");
 		for (var i = 0; i < 15; i++) {
@@ -77,10 +78,11 @@ noticecheck = function () {
 	if (difcount > 0) {
 		var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 		var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get();
-		var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
+		var doctime = String(subdoc.select("div.sum > span.date").text());
+		var text = String(subdoc.select("div.content").toArray()[0]).replace(/amp;/g, "").replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
 		var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
-		Api.replyRoom("test", "새공지!\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
-		Api.replyRoom("푸드마켓", "새공지!\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+		Api.replyRoom("test", "새공지!\n" + doctime + "\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+		Api.replyRoom("푸드마켓", "새공지!\n" + doctime + "\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
 		D.delete("notice");
 		for (var i = 0; i < 15; i++) {
 			D.insert("notice", {num: docnum[i], msg: doctitle[i]});
@@ -108,9 +110,10 @@ notice = function (r) {
 		var doctitle = doc.select("tr.num").select("a:first-child").get(wantnum).ownText();
 		var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 		var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get();
+		var doctime = String(subdoc.select("div.sum > span.date").text());
 		var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
 		var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
-		r.replier.reply(docnum + " : " + doctitle + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+		r.replier.reply(doctime + "\n" + docnum + " : " + doctitle + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
 	} else {
 		if (0 < count && count < 16) {
 			for (i = 0; i < count; i++) {

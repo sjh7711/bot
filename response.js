@@ -391,6 +391,19 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			famous(r);
 			return;
 		}
+		if (msg == "!서브웨이"){
+			subway(r);
+			return;
+		}
+		if (msg == "!햄버거"){
+			hamburg(r);
+			return;
+		}
+		if (msg == "!키보드"){
+			var key = org.jsoup.Jsoup.connect('https://www.amazon.com/CORSAIR-K70-Mechanical-Gaming-Keyboard/dp/B07D5S5QKF/ref=sr_1_1?crid=3HD02IPN4P64H&keywords=k70+brown+mk2&qid=1561166969&s=gateway&sprefix=K70+BRWON+%2Caps%2C314&sr=8-1').get().select('tr>td>span.a-size-medium.a-color-price.priceBlockBuyingPriceString').text();
+			replier.reply('현재 CORSAIR K70 RGB MK.2 MX Brown 가격 : '+key);
+			return;
+		}
 		if ((msg.indexOf("!유튜브") == 0 || msg.indexOf("/유튜브") == 0) && work == 1) {
 			youtube(r);
 			return;

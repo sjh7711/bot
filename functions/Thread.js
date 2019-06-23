@@ -1,7 +1,7 @@
 WCC = T.register("weatherClockCheck",()=>{
 	while(true){
 		if( 7 == new Date().getHours() ){
-			r={msg : '!날씨 통영시', room : 'fa',replier:{reply:function(msg){
+			r={msg : '!날씨', room : 'fa',replier:{reply:function(msg){
 				Api.replyRoom(r.room,msg)
 				}}
 			}
