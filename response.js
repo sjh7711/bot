@@ -278,7 +278,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if (msg.indexOf("vs") > -1 ) {
 			vs(r);
 		}
-		if (msg.indexOf("주현") > -1 || msg.indexOf("피치") > -1 || msg.indexOf("종화") > -1) {
+		if (msg.indexOf("주현") > -1 || msg.indexOf("피치") > -1 || msg.indexOf("\uc885\ud654") > -1 || msg.indexOf("\uc2E0\ucAD1") > -1) {
 			Api.replyRoom("test", room + " | " + sender + "\n" + msg);
 		}
 		if (reloadcheck == 1) {
