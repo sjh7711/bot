@@ -5,7 +5,7 @@ weather = function (r) {
 		var link2 = "https://m.weather.naver.com/m/main.nhn?regionCode=09140104";
 		var check = link2.indexOf("weather");
 		var where = "서울 중구 을지로 1가";
-		if (r.room == "test" || r.room == "단톡방" || r.room == "공익" || r.room == "푸드마켓" || r.room == "오버워치" || r.room == "fa") {
+		if (r.room == "test" || r.room == "단톡방" || r.room == "공익" || r.room == "푸드마켓" || r.room == "오버워치" || r.room == "fa" || r.room == "후원확인") {
 			link2 = "https://m.weather.naver.com/m/main.nhn?regionCode=03220111";
 			check = link2.indexOf("weather");
 			where = "통영시 무전동";
@@ -370,10 +370,10 @@ weather = function (r) {
 				var windtemp = wind.slice(0, 7);
 				var windforce = [, , , , ];
 				for (var i in windtemp) {
-					if (Number(windtemp[i]) > 16) {
+					if (Number(windtemp[i]) > 12) {
 						windforce[i] = 1;
 					} else {
-						if (Number(windtemp[i]) > 9) {
+						if (Number(windtemp[i]) > 7) {
 							windforce[i] = 0;
 						}
 					}

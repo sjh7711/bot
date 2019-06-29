@@ -141,20 +141,13 @@ function funcCheck(r) {
 			str += control[i] + "  ";
 		}
 	}
-	var str1 = "";
-	var j = 1;
-	for (var i in funccList) {
+	var str1 = "!날씨\n이 외의 기능은 전체보기를 통해 확인해주세요."+es+"\n\n";
+	for (var i = 1; i < funccList.length ; i++) {
 		if (str.indexOf(funccList[i]) > -1) {
-			if (Math.floor(str1.length / 20) == j) {
-				str1 += "\n";
-				j += 1;
-			}
-			str1 += funccList[i] + " / ";
+			str1 += funccList[i] + "\n";
 		}
 	}
-	str1 += "\n";
-	str1 = str1.split(" / \n").join("\n");
-	return str1;
+	return str1.trim();
 }
 
 function functionreload(r) {
@@ -215,7 +208,7 @@ function saveImage(r) {
 		var i = String(r.imageDB.getImage());
 		var file = "storage/emulated/0/KakaoTalkDownload/" + r.sender.replace(/ /g, "") + "." + r.room.replace(/ /g, "") + "-" + time().year + "." + time().month + "." + time().date + time().day + "." + time().hour + "." + time().minute + "." + time().second + ".jpg";
 		write64(file, i);
-		Api.replyRoom("test", "Image saved|" + r.room + "-" + r.sender);
+		//Api.replyRoom("test", "Image saved|" + r.room + "-" + r.sender);
 	}
 }
 
@@ -253,7 +246,7 @@ function cmd(dir) {
 	return isread(r);
 }
 
-const funccList = ['!날씨','!로또','!당첨','!로또개수목록','!로또통계', '!가사', '!종합로또통계', '!행복회로','!메뉴','!식당','!맛집','!유튜브','!노래','!제이플라','!번역','!최근채팅','!전체채팅','!사진조회', '!사진삭제', '!사진목록', '!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
+const funccList = ['!날씨','!로또','!당첨','!로또개수목록','!로또통계', '!종합로또통계', '!행복회로','!메뉴','!식당','!맛집','!서브웨이', '!햄버거', '!유튜브','!노래','!가사','!제이플라','!번역','!최근채팅','!전체채팅','!사진조회', '!사진삭제', '!사진목록', '!오버워치','!주사위','!공지','!명단','!업무','!방','!쓰레드','!디비','!건의','!블랙잭','!야구','!추첨'];
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	var r = {replier: replier, msg: msg, sender: sender, room: room, imageDB: imageDB};
@@ -391,16 +384,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			famous(r);
 			return;
 		}
-		if (msg == "!서브웨이"){
+		if (msg == "!서브웨이" && work == 1){
 			subway(r);
 			return;
 		}
-		if (msg == "!햄버거"){
+		if (msg == "!햄버거" && work == 1){
 			hamburg(r);
 			return;
 		}
 		if (msg == "!키보드"){
-			var key = org.jsoup.Jsoup.connect('https://www.amazon.com/CORSAIR-K70-Mechanical-Gaming-Keyboard/dp/B07D5S5QKF/ref=sr_1_1?crid=3HD02IPN4P64H&keywords=k70+brown+mk2&qid=1561166969&s=gateway&sprefix=K70+BRWON+%2Caps%2C314&sr=8-1').get().select('tr>td>span.a-size-medium.a-color-price.priceBlockBuyingPriceString').text();
+			var key = org.jsoup.Jsoup.connect('https://www.amazon.com/gp/product/B07D5S5QKF/ref=ox_sc_act_title_1?smid=ATVPDKIKX0DER&psc=1').get().select('tr>td>span.a-size-medium.a-color-price.priceBlockBuyingPriceString').text();
 			replier.reply('현재 CORSAIR K70 RGB MK.2 MX Brown 가격 : '+key);
 			return;
 		}
@@ -450,6 +443,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		}
 		if (msg.indexOf("!업무") == 0 && work == 1) {
 			foodbank(r);
+			return;
+		}
+		if(r.msg == '체크!' && (r.room == '후원확인' || r.room == 'test')){
+			donateedit(r);
 			return;
 		}
 		if (msg.indexOf("!건의 ") == 0 && work == 1) {

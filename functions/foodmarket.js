@@ -128,3 +128,33 @@ notice = function (r) {
 		}
 	}
 }
+
+donatecheck = function() {
+	var id = "tycwc";
+	var pw = "gngn12";
+
+	var cookiea = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/login.php?url=%2F").method(org.jsoup.Connection.Method.GET).execute().cookies();
+	var cookieb = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/login_check.php").cookies(cookiea).data("mb_id", id).data("mb_password", pw).data("x", "48").data("y", "38").method(org.jsoup.Connection.Method.POST).execute().cookies();
+
+	var doc = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/board.php?bo_table=support_apply").cookies(cookieb).cookies(cookiea).get().select('tbody').select('tbody>tr>td>form>table>tbody>tr>td>span').get(0).text();
+
+	if(D.selectForArray('donate')[0][0] != doc ){
+		Api.replyRoom('test', '새후원을 확인해주세요!');
+		Api.replyRoom('후원확인', '새후원을 확인해주세요!');
+	}
+}
+
+donateedit = function(r) {
+	var id = "tycwc";
+	var pw = "gngn12";
+
+	var cookiea = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/login.php?url=%2F").method(org.jsoup.Connection.Method.GET).execute().cookies();
+	var cookieb = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/login_check.php").cookies(cookiea).data("mb_id", id).data("mb_password", pw).data("x", "48").data("y", "38").method(org.jsoup.Connection.Method.POST).execute().cookies();
+
+	var doc = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/board.php?bo_table=support_apply").cookies(cookieb).cookies(cookiea).get().select('tbody').select('tbody>tr>td>form>table>tbody>tr>td>span').get(0).text();
+	if(D.selectForArray('donate')[0][0] != doc ){
+		D.update('donate', {num : Number(doc)});
+		Api.replyRoom('test', '새후원을 확인했습니다.');
+		Api.replyRoom('후원확인', '새후원을 확인했습니다.');
+	}
+}
