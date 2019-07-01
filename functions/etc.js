@@ -70,7 +70,7 @@ lyrics = function (r) {
 
 
 vs = function (r) {
-	if (r.room == "단톡방" || r.room == "시립대 전전컴 톡방" || r.room == "시립대 단톡방" || r.room == "시립대 봇제작방" || r.room == "공익" || r.room == "푸드마켓" || r.room == "오버워치"|| r.room == "test"|| r.room == "기타") {
+	if ( (r.room == "단톡방" || r.room == "시립대 전전컴 톡방" || r.room == "시립대 단톡방" || r.room == "시립대 봇제작방" || r.room == "공익" || r.room == "푸드마켓" || r.room == "오버워치"|| r.room == "test"|| r.room == "기타") && (r.sender != "시립봇") ){
 		var temp = r.msg.split("vs");
 		var num = Math.floor((temp.length) * Math.random());
 		r.replier.reply(temp[num].trim());

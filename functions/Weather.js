@@ -279,7 +279,7 @@ weather = function (r) {
 						}
 					}
 				} else {
-					if (link2 == "http://m.weather.naver.com") {
+					if (link2 == "http://m.weather.naver.com" || link2 == "https://m.weather.naver.com/m/nation.nhn") {
 						var i = 0;
 						var link1 = org.jsoup.Jsoup.connect("https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=" + want).get();
 						var name = String(link1.select("select[id=regionnamelist]").text()).replace("하위 행정명", "").trim().split(" ").map(v => (1 + i++) + ". " + v);
@@ -335,15 +335,19 @@ weather = function (r) {
 				if (clock1 > 16) {
 					clock1 = 16;
 				}
-				var res = where + where1 + " 날씨\n";
-				res += "-------------날씨-------------\n";
-				res += "시간 기온 습도 바람	날씨\n [h]   [℃]  [%]  [㎧]	상태\n";
+				var res = where + where1 + " 날씨";
+				if(res.length > 16) {
+					res = res.substr(0,19) + '\n' + res.substr(19, res.length);
+					res = res.trim();
+				}
+				res += "\n-------------날씨-------------\n";
+				res += "시간 기온 습도 바람ㅤ날씨\n [h]  [℃]  [%]  [㎧]ㅤㅤㅤ\n";
 				for (var i = 1; i < clock1; i++) {
-					res += " " + String(clock[i]).extension("0", 2) + "	";
-					res += String(degree[i]).extension(" ", 2) + "	";
-					res += String(wet[i]).extension(" ", 3) + "   ";
-					res += String(wind[i]).extension(" ", 2) + " ";
-					res += String(sky[i]).extension("ㅤ", 5) + "\n";
+					res += " " + String(clock[i]).extension("0", 2) + "ㅤ";
+					res += String(degree[i]).extension(" ", 2) + "ㅤ";
+					res += String(wet[i]).extension(" ", 3) + "ㅤ";
+					res += String(wind[i]).extension(" ", 2) + "ㅤ";
+					res += String(sky[i]).extensionRight("ㅤ", 5) + "\n";
 					if (i == 5) {
 						res = res.trim() + " " + es + "\n";
 					}
@@ -393,12 +397,16 @@ weather = function (r) {
 				if (windrain != "") {
 					r.replier.reply(windrain.trim());
 				}
-				var res = where + where1 + " 날씨\n";
-				res += "-------미세먼지/자외선-------\n";
+				var res = where + where1 + " 날씨";
+				if(res.length > 16) {
+					res = res.substr(0,16) + '\n' + res.substr(16, res.length);
+					res = res.trim();
+				}
+				res += "\n-------미세먼지/자외선-------\n";
 				res += dust.join("\n") + "\n";
 				res += "자외선 : " + uv + "\n";
 				res += "-------------날씨-------------\n";
-				res += "시간ㅤ기상ㅤ기온 습도 바람\n [h] ㅤ상황	[℃]  [%]  [㎧]\n";
+				res += "시간ㅤ기상ㅤ기온 습도 바람\n [h] ㅤ상황ㅤ  [℃]  [%]  [㎧]\n";
 				for (var i = 0; i < clock1; i++) {
 					res += " " + String(clock[i]).extension("0", 2) + " ";
 					res += String(sky[i]).extensionRight("ㅤ", 4) + "  ";
