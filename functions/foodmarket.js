@@ -1,3 +1,34 @@
+bread = function (r) {
+	var name = r.msg.split(" ")[1];
+	if (typeof name == "string") {
+		var temp = D.selectForArray("bread", null, "name like ?", "%" + name.split('').join('%') + "%");
+		for (var i = 0; i < temp.length; i++) {
+			if(temp[i][2].length > 0){
+				temp[i] = temp[i][0] + ' : ' + temp[i][1] + '\n특이사항 : ' + temp[i][2];
+			} else {
+				temp[i] = temp[i][0] + ' : ' + temp[i][1]
+			}
+			if (i == 3) {
+				temp[2] = temp[2] + es;
+			}
+		}
+		r.replier.reply(temp.join("\n\n"));
+	} else {
+		var temp = D.selectForArray("bread");
+		for (var i = 0; i < temp.length; i++) {
+			if(temp[i][2].length > 0){
+				temp[i] = temp[i][0] + ' : ' + temp[i][1] + '\n특이사항 : ' + temp[i][2];
+			} else {
+				temp[i] = temp[i][0] + ' : ' + temp[i][1]
+			}
+			if (i == 3) {
+				temp[2] = temp[2] + es;
+			}
+		}
+		r.replier.reply(temp.join("\n\n"));
+	}
+}
+
 foodbank = function (r) {
 	var name = r.msg.split(" ")[1];
 	if (typeof name == "string") {
@@ -14,7 +45,7 @@ foodbank = function (r) {
 banklist = function (r) {
 	var name = r.msg.split(" ")[1];
 	if (typeof name == "string") {
-		var temp = D.selectForArray("bankls", null, "name like ?", "%" + name + "%");
+		var temp = D.selectForArray("bankls", null, "name like ?", "%" + name.split('').join('%') + "%");
 		for (var i = 0; i < temp.length; i++) {
 			temp[i] = temp[i].join(" : ");
 			if (i == 3) {
@@ -42,6 +73,13 @@ noticecheck = function () {
 		Flag.set("cookie2", "test", cookie2);
 	}
 	var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get().select("tbody");
+	if(doc < 1){
+		var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html").method(org.jsoup.Connection.Method.GET).execute().cookies();
+		var cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1).data("mb_id", "tyfb1377").data("mb_password", "1q2w3e4r").data("x", "30").data("y", "30").method(org.jsoup.Connection.Method.POST).execute().cookies();
+		Flag.set("cookie1", "test", cookie1);
+		Flag.set("cookie2", "test", cookie2);
+		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get().select("tbody");
+	}
 	var docnum = doc.select("tr.num").toArray().map(v => v.select("td.num").get(0).text());
 	var doctitle = doc.select("tr.num").toArray().map(v => v.select("a:first-child").get(0).ownText());
 	if (docnum[0] > D.selectForArray("notice")[0][0]) {
@@ -51,8 +89,8 @@ noticecheck = function () {
 			var doctime = String(subdoc.select("div.sum > span.date").text());
 			var text = String(subdoc.select("div.content").toArray()[0]).replace(/amp;/g, "").replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
 			var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
-			Api.replyRoom("test", "새공지!\n" + doctime + "\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
-			Api.replyRoom("푸드마켓", "새공지!\n" + doctime + "\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+			Api.replyRoom("관리", "새공지!\n" + doctime + "\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+			Api.replyRoom("공익", "새공지!\n" + doctime + "\n" + docnum[i] + " : " + doctitle[i] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
 		}
 		D.delete("notice");
 		for (var i = 0; i < 15; i++) {
@@ -81,8 +119,8 @@ noticecheck = function () {
 		var doctime = String(subdoc.select("div.sum > span.date").text());
 		var text = String(subdoc.select("div.content").toArray()[0]).replace(/amp;/g, "").replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
 		var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
-		Api.replyRoom("test", "새공지!\n" + doctime + "\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
-		Api.replyRoom("푸드마켓", "새공지!\n" + doctime + "\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+		Api.replyRoom("관리", "새공지!\n" + doctime + "\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+		Api.replyRoom("공익", "새공지!\n" + doctime + "\n" + docnum[wantnum] + " : " + doctitle[wantnum] + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
 		D.delete("notice");
 		for (var i = 0; i < 15; i++) {
 			D.insert("notice", {num: docnum[i], msg: doctitle[i]});
@@ -99,11 +137,41 @@ notice = function (r) {
 		Flag.set("cookie2", "test", cookie2);
 	}
 	var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get().select("tbody");
-	var temptext = doc.select("tr.num").toArray().map(v => "번호:" + v.select("td.num").get(0).text() + "   날짜:" + v.select("td.date").text() + "\n" + v.select("td.title>a").first().ownText());
-	var text = [];
-	var count = r.msg.split(" ")[1];
+	if(doc < 1){
+		var cookie1 = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/login.php?url=%2Fhtml%2Fmain.html").method(org.jsoup.Connection.Method.GET).execute().cookies();
+		var cookie2 = org.jsoup.Jsoup.connect("https://www.knfb1377.or.kr:9001/bbs/login_check.php").cookies(cookie1).data("mb_id", "tyfb1377").data("mb_password", "1q2w3e4r").data("x", "30").data("y", "30").method(org.jsoup.Connection.Method.POST).execute().cookies();
+		Flag.set("cookie1", "test", cookie1);
+		Flag.set("cookie2", "test", cookie2);
+		var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01").cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get().select("tbody");
+	}
+	var count = r.msg.substr(4,r.msg.length);
 	var lastnum = doc.select("tr.num").get(14).select("td.num").get(0).text();
-	if (lastnum - 1 < count) {
+	if ( isNaN(count) ){
+		if(count.indexOf('/') != -1){
+			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01&sca=&sop=and&sfl=wr_subject%7C%7Cwr_content&stx=" + count.split('/')[0] + "&sop=and&x=0&y=0").cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get().select("tbody");
+			var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
+			var wantnum = firstnum - count.split('/')[1];
+			var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
+			var doctitle = doc.select("tr.num").select("a:first-child").get(wantnum).ownText();
+			var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
+			var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get();
+			var doctime = String(subdoc.select("div.sum > span.date").text());
+			var text = String(subdoc.select("div.content").toArray()[0]).replace(/amp;/g, "").replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
+			var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
+			r.replier.reply(doctime + "\n" + docnum + " : " + doctitle + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
+		} else {
+			var doc = org.jsoup.Jsoup.connect("http://www.knfb1377.or.kr/bbs/board.php?bo_table=10_01&sca=&sop=and&sfl=wr_subject%7C%7Cwr_content&stx=" + count + "&sop=and&x=0&y=0").cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get().select("tbody");
+			var temptext = doc.select("tr.num").toArray().map(v => "번호:" + v.select("td.num").get(0).text() + "   날짜:" + v.select("td.date").text() + "\n" + v.select("td.title>a").first().ownText());
+			var text = [];
+			for (i = 0; i < 15; i++) {
+				text.push(temptext[i]);
+				if( i == 4) {
+					text.push(es);
+				}
+			}
+			r.replier.reply(text.join("\n\n"));
+		}
+	} else if (Number(lastnum) - 1 < count && count < Number(lastnum) + 15 ) {
 		var firstnum = doc.select("tr.num").get(0).select("td.num").get(0).text();
 		var wantnum = firstnum - count;
 		var docnum = doc.select("tr.num").get(wantnum).select("td.num").get(0).text();
@@ -111,13 +179,18 @@ notice = function (r) {
 		var doclink = doc.select("tr.num").select("a:first-child").get(wantnum).attr("abs:href");
 		var subdoc = org.jsoup.Jsoup.connect(doclink).cookies(Flag.get("cookie2", "test")).cookies(Flag.get("cookie1", "test")).get();
 		var doctime = String(subdoc.select("div.sum > span.date").text());
-		var text = String(subdoc.select("div.content").toArray()[0]).replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
+		var text = String(subdoc.select("div.content").toArray()[0]).replace(/amp;/g, "").replace(/<br>/g, "\n").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").trim().replace(/^ +/gm, "").replace(/\n\n\n/g, "\n").replace(/\n\n\n/g, "\n");
 		var repl = subdoc.select("div.comment_area").eachText().toArray().join("\n\n").replace(/관리자 /g, "").replace(/답변 /g, "\n").replace(/수정 삭제 /g, "");
 		r.replier.reply(doctime + "\n" + docnum + " : " + doctitle + "\n----------------------------------\n" + es + text + "\n----------------------------------\n" + repl + "\n----------------------------------\n" + doclink);
 	} else {
+		var temptext = doc.select("tr.num").toArray().map(v => "번호:" + v.select("td.num").get(0).text() + "   날짜:" + v.select("td.date").text() + "\n" + v.select("td.title>a").first().ownText());
+		var text = [];
 		if (0 < count && count < 16) {
 			for (i = 0; i < count; i++) {
 				text.push(temptext[i]);
+				if( i == 4) {
+					text.push(es);
+				}
 			}
 			r.replier.reply(text.join("\n\n"));
 		} else {
@@ -139,8 +212,8 @@ donatecheck = function() {
 	var doc = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/board.php?bo_table=support_apply").cookies(cookieb).cookies(cookiea).get().select('tbody').select('tbody>tr>td>form>table>tbody>tr>td>span').get(0).text();
 
 	if(D.selectForArray('donate')[0][0] != doc ){
-		Api.replyRoom('test', '새후원을 확인해주세요!');
-		Api.replyRoom('후원확인', '새후원을 확인해주세요!');
+		Api.replyRoom('후원', '새후원을 확인해주세요!');
+		Api.replyRoom('관리', '새후원을 확인해주세요!');
 	}
 }
 
@@ -154,7 +227,7 @@ donateedit = function(r) {
 	var doc = org.jsoup.Jsoup.connect("http://www.tycwc.or.kr/bbs/board.php?bo_table=support_apply").cookies(cookieb).cookies(cookiea).get().select('tbody').select('tbody>tr>td>form>table>tbody>tr>td>span').get(0).text();
 	if(D.selectForArray('donate')[0][0] != doc ){
 		D.update('donate', {num : Number(doc)});
-		Api.replyRoom('test', '새후원을 확인했습니다.');
-		Api.replyRoom('후원확인', '새후원을 확인했습니다.');
+		Api.replyRoom('관리', '새후원을 확인했습니다.');
+		Api.replyRoom('후원', '새후원을 확인했습니다.');
 	}
 }
