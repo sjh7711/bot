@@ -1,23 +1,3 @@
-moonlist = function () {
-	try {
-		var badlist = readFile("/sdcard/badlist.txt");
-		var goodlist = readFile("/sdcard/goodlist.txt");
-		var hour = time().hour
-		var min = time().minute
-		var sec = time().second
-		var day = time().date
-		var bad = org.jsoup.Jsoup.connect("https://www1.president.go.kr/petitions/585683").get().select("#cont_view > div.cs_area > div.new_contents > div > div.petitionsView_left > div > h2 > span").text();
-		var good = org.jsoup.Jsoup.connect("https://www1.president.go.kr/petitions/584936").get().select("#cont_view > div.cs_area > div.new_contents > div > div.petitionsView_left > div > h2 > span").text();
-		
-		badlist += '\n' + day + " " + hour + ":" + min + ":" + sec + " " + bad
-		goodlist += '\n' + day + " " + hour + ":" + min + ":" + sec + " " + good
-		writeFile("badlist.txt", badlist);
-		writeFile("goodlist.txt", goodlist);
-	} catch (e) {
-		Api.replyRoom("관리", e + "\n" + e.stack);
-	}
-}
-
 compare = function (a, b) {
 	return a - b;
 }
