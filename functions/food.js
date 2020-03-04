@@ -16,45 +16,48 @@ recom = function (r, name) {
 	}
 }
 
-
-
-
-menurecom = function (r) {
-	I.register("menuSelect" + r.sender, r.room, r.sender, function (input) {
-		var theme = D.selectForArray('menu', 'theme', null,null,{groupBy:"theme"}).concat("랜덤");
-		var msg;
-		r.replier.reply("테마를 선택하세요\n" +theme.map((v,i) => i+1 + '. ' + v).join("\n"));
-		msg = input.getMsg() * 1;
-		if (!isNaN(msg) && msg >= 1 && msg <= theme.length) {
-			var selectTheme = theme[Math.floor(msg-1)];
-			if(selectTheme == "랜덤"){
-				var menulist = D.selectForArray("menu", "name")
-			} else {
-				var menulist = D.selectForArray("menu", "name", "theme=?", [selectTheme])
-			}
-			var templist = menulist.slice();
-			var randmenu = [];
-			for (var i = 0; i < 6; i++) {
-				var rad = Math.floor(Math.random() * templist.length);
-				randmenu.push(templist.splice(rad, 1));
-			}
-			r.replier.reply(randmenu.join(", "));
-		} else {
-			r.replier.reply('범위내의 숫자를 입력해주세요.')
-		}
-	})
-}
-
  
 famous = function (r) {
-	doc = org.jsoup.Jsoup.connect('https://www.diningcode.com/list.php?query='+r.msg.substr(4)).get();
-	if(Number(String( doc.select('p.stit').text()).replace(/[^0-9]/g,'')) > 400000){
-		r.replier.reply('지역을 새로 입력하세요.')
-		return;
+	var name = r.msg.split(" ")[1];
+	var firsturl = "https://m.search.naver.com/search.naver?query=" + name + "맛집&where=m&sm=mtp_hty.top";
+	var url = undefined;
+	url = org.jsoup.Jsoup.connect(firsturl).get().select("a.btn_sort");
+	if (url.toArray()[0] == undefined) {
+		r.replier.reply("검색 결과가 없습니다.");
+	} else {
+		url = url.get(1).attr("abs:href");
+		var doc = org.jsoup.Jsoup.connect(url).get();
+		var temptext = doc.select("li.list_item").toArray().map(v => v.select("span.name").text() + " : " + v.select("div.txt.ellp1").text() + "\n태그 : " + String(v.select("span.tag").text()).replace(/ /g, "/"));
+		if (temptext.length > 3) {
+			temptext[2] = temptext[2] + es;
+		}
+		temptext = temptext.join("\n\n");
+		temptext = temptext + "\n" + url;
+		r.replier.reply(temptext);
 	}
-	doc = doc.select('ul.list').select('li[onmouseenter]').toArray().map((v,i)=> i+1 +'.\n' + '이름 : ' + v.select('span.btxt').text().substr(3) + '\n특징 : ' +  v.select('span.stxt').text() + '\n태그 : ' + v.select('span.ctxt').toArray()[0].text() + '\n주소 : ' + v.select('span.ctxt').toArray()[1].ownText() ).join('\n\n')
-	r.replier.reply(r.msg.substr(4)+' 지역의 맛집 검색결과'+es+'\n\n'+doc)
 }
+
+hamburg = function(r){
+	var lotte = org.jsoup.Jsoup.connect('http://www.lotteria.com/menu/Menu_All.asp').get().select('div.memu_group>ul').get(0).select('div.cont.menu.roundMiddle > a').toArray().map(v=>v.text());
+	var mc = org.jsoup.Jsoup.connect('http://www.mcdonalds.co.kr/www/kor/menu/menu_list.do?cate_cd=100').get().select('p.sbj').toArray().map(v=>v.ownText())
+	var moms1 = org.jsoup.Jsoup.connect('http://www.momstouch.co.kr/sub/menu/menu_list.html?pg=1&menu=4').get().select('span.title').toArray().map(v=>v.text());
+	var moms2 = org.jsoup.Jsoup.connect('http://www.momstouch.co.kr/sub/menu/menu_list.html?pg=2&menu=4').get().select('span.title').toArray().map(v=>v.text());
+	var moms3 = org.jsoup.Jsoup.connect('http://www.momstouch.co.kr/sub/menu/menu_list.html?pg=3&menu=4').get().select('span.title').toArray().map(v=>v.text());
+	var moms = moms1.concat(moms2).concat(moms3);
+
+	var rad = rad = Math.floor(Math.random() * 3);
+	if(rad < 1){
+		var rad = rad = Math.floor(Math.random() * lotte.length);
+		r.replier.reply('롯데리아 버거 추천\n' + lotte.splice(rad,1)[0]);
+	} else if(rad < 2){
+		var rad = rad = Math.floor(Math.random() * moms.length);
+		r.replier.reply('맘스터치 버거 추천\n' + moms.splice(rad,1)[0]);
+	} else {
+		var rad = rad = Math.floor(Math.random() * mc.length);
+		r.replier.reply('맥도날드 버거 추천\n' + mc.splice(rad,1)[0]);
+	}
+}
+
 
 subway = function (r) {
 	var sandwich = org.jsoup.Jsoup.connect('http://subway.co.kr/sandwichList').get().select('div.pd_list_wrapper');

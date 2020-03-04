@@ -1,23 +1,3 @@
-moonlist = function () {
-	try {
-		var badlist = readFile("/sdcard/badlist.txt");
-		var goodlist = readFile("/sdcard/goodlist.txt");
-		var hour = time().hour
-		var min = time().minute
-		var sec = time().second
-		var day = time().date
-		var bad = org.jsoup.Jsoup.connect("https://www1.president.go.kr/petitions/585683").get().select("#cont_view > div.cs_area > div.new_contents > div > div.petitionsView_left > div > h2 > span").text();
-		var good = org.jsoup.Jsoup.connect("https://www1.president.go.kr/petitions/584936").get().select("#cont_view > div.cs_area > div.new_contents > div > div.petitionsView_left > div > h2 > span").text();
-		
-		badlist += '\n' + day + " " + hour + ":" + min + ":" + sec + " " + bad
-		goodlist += '\n' + day + " " + hour + ":" + min + ":" + sec + " " + good
-		writeFile("badlist.txt", badlist);
-		writeFile("goodlist.txt", goodlist);
-	} catch (e) {
-		Api.replyRoom("관리", e + "\n" + e.stack);
-	}
-}
-
 compare = function (a, b) {
 	return a - b;
 }
@@ -39,8 +19,7 @@ db = function (r) {
 }
 
 checkroom = function (r) {
-	var i = 1;
-	r.replier.reply('인식된 방 개수 : ' + Api.getRoomList().length + '\n' + Api.getRoomList().map(v=> i++ + '. ' + v).join("\n"));
+	r.replier.reply(Api.getRoomList().slice().join("\n"));
 }
 
 suggestion = function (r) {
@@ -51,52 +30,6 @@ suggestion = function (r) {
 		r.replier.reply(r.sender + "님의 건의가 접수되었습니다.");
 	}
 }
-
-roomnamelist = function (r) {
-	var name = r.msg.substr(4)
-	if(name.length > 0){
-		var temp = D.selectForArray("baseball", 'name', "room = ? and name like ?", [r.room, "%" + name.split('').join('%') + "%"], {orderBy: "name"}).map((v,i)=> (i+1) + '. ' + v).join('\n') + '\n\n*이 명단은 한 번이상 이 방에서 채팅을 친 목록입니다. 현재 방에 없을 수도 있습니다.'
-		r.replier.reply('명단' + es + '\n' + temp)
-	} else {
-		r.replier.reply('명단' + es + '\n' + D.selectForArray("baseball", 'name', "room = ?", [r.room], {orderBy: "name"}).map((v,i)=> (i+1) + '. ' + v).join('\n') + '\n\n*이 명단은 한 번이상 이 방에서 채팅을 친 목록입니다. 현재 방에 없을 수도 있습니다.')
-	}
-}	
-
-globaltime = function(r) {
-	if(r.msg.substr(4).length > 0) {
-		var link = "https://m.search.daum.net/search?q=" + r.msg.substr(4) + "시간"
-		var temp = org.jsoup.Jsoup.connect(link).get();
-		var check = temp.select("#wTimeColl > div.coll_tit > h2").text();
-		if( String(check) == "해외시간" ){
-			var loc1 = temp.select("#worldtimeTopNationCity").text();
-			var loc1day = temp.select("#worldtimeTopCityDate").text();
-			var loc1PMAM = temp.select("#worldtimeTopCityisAm").text();
-			var loc1hour = temp.select("#worldtimeTopCityHour").text();
-			var loc1min = temp.select("#worldtimeTopCityMinute").text();
-			var loc1sec = temp.select("#worldtimeTopCitySecond").text();
-			var loc1time = loc1 + "\n" + loc1day + " " + loc1PMAM + " " + loc1hour + ":" + loc1min + ":" + loc1sec
-			
-			var loc2 = temp.select("#worldtimeBottomNationCity").text();
-			var loc2day = temp.select("#worldtimeBottomCityDate").text();
-			var loc2PMAM = temp.select("#worldtimeBottomCityisAM").text();
-			var loc2hour = temp.select("#worldtimeBottomCityHour").text();
-			var loc2min = temp.select("#worldtimeBottomCityMinute").text();
-			var loc2sec = temp.select("#worldtimeBottomCitySecond").text();
-			
-			var loc2time = loc2 + "\n" + loc2day + " " + loc2PMAM + " " + loc2hour + ":" + loc2min + ":" + loc2sec
-			
-			var timediff = temp.select("#wTimeColl > div.coll_cont > div > div.wrap_parallax > div").text()
-			
-			r.replier.reply(loc1time + "\n  [" + timediff + ']\n' + loc2time)
-		} else {
-			r.replier.reply("없는 지역입니다.");
-			return;
-		}
-	} else {
-		r.replier.reply(time().now)
-	}
-}
-	
 
 lyrics = function (r) {
 	var temp = org.jsoup.Jsoup.connect("https://www.melon.com/search/total/index.htm?q=" + r.msg.substr(4) + "&section=&linkOrText=T&ipath=srch_form").get().select("div.tb_list.d_song_list.songTypeOne").select("tr>td");
@@ -137,7 +70,7 @@ lyrics = function (r) {
 
 
 vs = function (r) {
-	if ( (r.room == "단톡" ||r.room == "시갤" || r.room == "기타" || r.room == "전컴" || r.room == "옵치"|| r.room == "관리") && (r.sender != "시립봇") ){
+	if ( (r.room == "단톡방" || r.room == "시립대 전전컴 톡방" || r.room == "시립대 단톡방" || r.room == "시립대 봇제작방" || r.room == "공익" || r.room == "푸드마켓" || r.room == "오버워치"|| r.room == "test"|| r.room == "기타") && (r.sender != "시립봇") ){
 		var temp = r.msg.split("vs");
 		var num = Math.floor((temp.length) * Math.random());
 		r.replier.reply(temp[num].trim());
@@ -218,9 +151,7 @@ time = function () {
 	var year = today.getFullYear(), month = today.getMonth() + 1, date = today.getDate(), hour = today.getHours(), minute = today.getMinutes(), second = today.getSeconds();
 	ampm = hour >= 12 ? "PM" : "AM";
 	hour1 = hour % 12;
-	if(String(hour1) == 0){
-		hour1 = '12'
-	}
+	hour1 = String(hour1).replace('0','12');
 	hour1 = hour1 < 10 ? "0" + hour1 : hour1;
 	hour = hour < 10 ? "0" + hour : hour;
 	minute = minute < 10 ? "0" + minute : minute;
