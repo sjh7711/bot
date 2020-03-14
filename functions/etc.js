@@ -79,26 +79,9 @@ globaltime = function(r) {
 	
 
 lyrics = function (r) {
-	var temp = org.jsoup.Jsoup.connect("https://www.melon.com/search/total/index.htm?q=" + r.msg.substr(4) + "&section=&linkOrText=T&ipath=srch_form").get().select("div.tb_list.d_song_list.songTypeOne").select("tr>td");
-	if (String(temp).length == 0) {
-		var temp = org.jsoup.Jsoup.connect("https://www.google.com/search?ei=u7v0XKb3B9mAr7wPuoq2kAk&q=" + r.msg.substr(4) + " 가사").get();
-		var temp1 = temp.select("div.SPZz6b").select("span").toArray();
-		if (temp1.length == 0) {
-			r.replier.reply("정보를 제공할 수 없습니다.");
-			return;
-		}
-		var artist = temp1[1].text();
-		var title = temp1[0].text();
-		var musicLyrics1 = String(temp.select("div.Oh5wg").select("div[jsname=rdVbIe]>div:not(.OULBYb)"));
-		var musicLyrics2 = String(temp.select("div.Oh5wg").select("div[jsname=wq5Syf]"));
-		musicLyrics = (musicLyrics1 + musicLyrics2).replace(/<br>/g, "").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").replace(/&gt;/g, ">").replace(/^ +/gm, "").trim();
-	} else {
-		var musicCode = String(temp.get(0)).split("value=\"")[1].split("\"")[0];
-		var musicData = org.jsoup.Jsoup.connect("https://www.melon.com/song/detail.htm?songId=" + musicCode).get();
-		var artist = musicData.select("div.info>div.artist").text();
-		var title = musicData.select("div.info>div.song_name").text().replace("곡명 ", "");
-		var musicLyrics = String(musicData.select("div.lyric")).replace(/<br>/g, "").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").replace(/&gt;/g, ">").replace(/^ +/gm, "").trim();
-		if (musicLyrics.length == 0) {
+	if(msg.substr(4).length > 0){
+		var temp = org.jsoup.Jsoup.connect("https://www.melon.com/search/total/index.htm?q=" + r.msg.substr(4) + "&section=&linkOrText=T&ipath=srch_form").get().select("div.tb_list.d_song_list.songTypeOne").select("tr>td");
+		if (String(temp).length == 0) {
 			var temp = org.jsoup.Jsoup.connect("https://www.google.com/search?ei=u7v0XKb3B9mAr7wPuoq2kAk&q=" + r.msg.substr(4) + " 가사").get();
 			var temp1 = temp.select("div.SPZz6b").select("span").toArray();
 			if (temp1.length == 0) {
@@ -110,9 +93,31 @@ lyrics = function (r) {
 			var musicLyrics1 = String(temp.select("div.Oh5wg").select("div[jsname=rdVbIe]>div:not(.OULBYb)"));
 			var musicLyrics2 = String(temp.select("div.Oh5wg").select("div[jsname=wq5Syf]"));
 			musicLyrics = (musicLyrics1 + musicLyrics2).replace(/<br>/g, "").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").replace(/&gt;/g, ">").replace(/^ +/gm, "").trim();
+		} else {
+			var musicCode = String(temp.get(0)).split("value=\"")[1].split("\"")[0];
+			var musicData = org.jsoup.Jsoup.connect("https://www.melon.com/song/detail.htm?songId=" + musicCode).get();
+			var artist = musicData.select("div.info>div.artist").text();
+			var title = musicData.select("div.info>div.song_name").text().replace("곡명 ", "");
+			var musicLyrics = String(musicData.select("div.lyric")).replace(/<br>/g, "").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").replace(/&gt;/g, ">").replace(/^ +/gm, "").trim();
+			if (musicLyrics.length == 0) {
+				var temp = org.jsoup.Jsoup.connect("https://www.google.com/search?ei=u7v0XKb3B9mAr7wPuoq2kAk&q=" + r.msg.substr(4) + " 가사").get();
+				var temp1 = temp.select("div.SPZz6b").select("span").toArray();
+				if (temp1.length == 0) {
+					r.replier.reply("정보를 제공할 수 없습니다.");
+					return;
+				}
+				var artist = temp1[1].text();
+				var title = temp1[0].text();
+				var musicLyrics1 = String(temp.select("div.Oh5wg").select("div[jsname=rdVbIe]>div:not(.OULBYb)"));
+				var musicLyrics2 = String(temp.select("div.Oh5wg").select("div[jsname=wq5Syf]"));
+				musicLyrics = (musicLyrics1 + musicLyrics2).replace(/<br>/g, "").replace(/(<([^>]+)>)/g, "").replace(/&nbsp;/g, " ").replace(/&gt;/g, ">").replace(/^ +/gm, "").trim();
+			}
 		}
+		r.replier.reply(r.msg.substr(4) + "의 검색 결과" + es + "\n제목 : " + title + "\n아티스트 : " + artist + "\n\n" + musicLyrics);
+	} else {
+		r.replier.reply("검색할 단어의 길이가 너무 짧습니다.")
 	}
-	r.replier.reply(r.msg.substr(4) + "의 검색 결과" + es + "\n제목 : " + title + "\n아티스트 : " + artist + "\n\n" + musicLyrics);
+	
 }
 
 
@@ -209,7 +214,6 @@ time = function () {
 	return {now: now, year: year, month: month, date: date, day: day, hour: hour, minute: minute, second: second, ampm: ampm, hour1: hour1};
 }
 
-
 githubload = function (r) {
 	if (r.sender == "봇배우는배주현" || r.sender == "test") {
 		backup(r);
@@ -267,6 +271,24 @@ String.prototype.moneyUnit=function(){
 	} else {
 		return v;
 	}
+}
+
+String.prototype.timeUnit=function(){
+	var today = new Date(Number(this))
+	var dayNames = ["(일요일)", "(월요일)", "(화요일)", "(수요일)", "(목요일)", "(금요일)", "(토요일)"];
+	var day = dayNames[today.getDay()];
+	var year = today.getFullYear(), month = today.getMonth() + 1, date = today.getDate(), hour = today.getHours(), minute = today.getMinutes(), second = today.getSeconds();
+	ampm = hour >= 12 ? "PM" : "AM";
+	hour1 = hour % 12;
+	if(String(hour1) == 0){
+		hour1 = '12'
+	}
+	hour1 = hour1 < 10 ? "0" + hour1 : hour1;
+	hour = hour < 10 ? "0" + hour : hour;
+	minute = minute < 10 ? "0" + minute : minute;
+	second = second < 10 ? "0" + second : second;
+	var now = year + "년 " + month + "월 " + date + "일 " + day + " " + hour1 + ":" + minute + ":" + second + " " + ampm;
+	return {now: now, year: year, month: month, date: date, day: day, hour: hour, minute: minute, second: second, ampm: ampm, hour1: hour1};
 }
 
 String.prototype.replaceAmp=function(){

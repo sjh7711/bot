@@ -1,3 +1,5 @@
+lottopossibility = "1등 확률 : 1/8,145,060\n0.000012277380399898834%\n" + "2등 확률 : 1/1,357,510\n0.000073664282399393%\n" + "3등 확률 : 1/35,724\n0.002799238607098869%\n" + "4등 확률 : 1/733\n0.1364256480218281%\n" + "5등 확률 : 1/45\n2.2222222222222%";
+
 lottocount = function (r) {
 	var raw = org.jsoup.Jsoup.connect("https://www.dhlottery.co.kr/gameResult.do?method=byWin").get().select("div.win_result");
 	var num = raw.select("h4").text().split("회")[0] * 1 + 1;

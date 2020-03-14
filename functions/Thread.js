@@ -65,58 +65,33 @@ WCC = T.register("weatherClockCheck",()=>{
 	}
 }).start();
 
-/*
-java.lang.Thread.sleep(4*1000);
-r={msg : '!날씨 창원시 마산회원구 내서읍', room : 'fa',replier:{reply:function(msg){
-	Api.replyRoom(r.room,msg)
-	}}
-}
-weather(r);*/
-
-/*
-var networkcheck = '';
-NetC = T.register("networkCheck",()=>{
+LC = T.register("LottoCheck",()=>{
 	while(true){
-		networkcheck = org.jsoup.Jsoup.connect('http://m.naver.com').get();
-		if(networkcheck == ''){
-			cmd('ifconfig wlan0 down');
-			while(true){
-				java.lang.Thread.sleep(50*1000);
-				networkcheck = org.jsoup.Jsoup.connect('http://m.naver.com').get();
-				if(networkcheck != ''){
-					Api.replyRoom('WIFI AUTO ON');
-					break;
-				}
-			}
-		}
-		networkcheck = '';
-		java.lang.Thread.sleep(50*1000);//50초
+		threadlotto();
+		java.lang.Thread.sleep(1000*60*60*24*5);
 	}
 }).start();
-*/
+
+NC = T.register("nicknameCheck",()=>{
+	while(true){
+		nicknamechecker()
+		java.lang.Thread.sleep(1000*4);
+	}
+}).start();
 
 TC = T.register("threadCheck",()=>{
 	while(true){
 		java.lang.Thread.sleep(30*60*1000);
 		var ThreadList = T.getThreadList().join('');
-		if( ThreadList.indexOf('weatherClockCheck') == -1 ){
-			Api.replyRoom('관리', '쓰레드 목록\n=====================\n'+ T.getThreadList().join('\n'));
+		if( ThreadList.indexOf('weatherClockCheck') == -1 || ThreadList.indexOf('nicknameCheck') == -1 ){
 			T.interruptAll();
 			eval(readFile(File("/sdcard/kbot/functions/thread.js")));
-			Api.replyRoom('관리', '쓰레드 재시작 완료');
+			Api.replyRoom('관리', '쓰레드 재시작 완료\n쓰레드 목록\n=====================\n'+ T.getThreadList().join('\n'));
 		} else {
 			Api.replyRoom('관리', '정상작동중');
 		}
-		
-		if( Api.getRoomList().length < 7 ) {
+		if( Api.getRoomList().length < 5 ) {
 			Api.replyRoom('관리', '방세션 갱신필요');
 		}
-	}
-}).start();
-
-LC = T.register("LottoCheck",()=>{
-	while(true){
-		threadlotto();
-		java.lang.Thread.sleep(1000*60*60*24*5);
 	}
 }).start();

@@ -6,9 +6,15 @@ if(ObjKeep.get("reboottime")==null){
 }
 var reloadtime = new Date().getTime();
 var calculating = 0;
-var D = require("DBManager.js")("D");
+cmd("chmod -R 777 /data")
+
+var DBManagerBuilder = require("DBManager.js");
+var D = DBManagerBuilder("D");
+var K1 = DBManagerBuilder("/data/data/com.kakao.talk/databases/KakaoTalk.db");
+var K2 = DBManagerBuilder("/data/data/com.kakao.talk/databases/KakaoTalk2.db");
 var T = require("ThreadManager.js");
 var I = require("Interactive.js");
+var B = require("bignumber.js")
 const es=String.fromCharCode(8237).repeat(500);
 
 function readFile(file) {
@@ -24,7 +30,7 @@ function readFile(file) {
 }
 
 function writeFile(file, str) {
-	var filedir = new java.io.File("/sdcard/" + file);
+	var filedir = new java.io.File("/storage/" + file);
 	var bw = new java.io.BufferedWriter(new java.io.FileWriter(filedir));
 	bw.write(str.toString());
 	bw.close();
@@ -32,13 +38,13 @@ function writeFile(file, str) {
 
 function backup(r) {
 	var folder = time().year + "." + time().month + "." +  time().date + " " +  time().hour + "H " + time().minute + "M " + time().second + "S"
-	File("/sdcard/kbotbackup/" + folder).mkdir();
-	var backup = File("/sdcard/kbot/functions").listFiles();
+	File("/storage/emulated/0/kbotbackup/" + folder).mkdir();
+	var backup = File("/storage/emulated/0/kbot/functions").listFiles();
 	for (var i in backup) {
-		writeFile("kbotbackup/" + folder + "/" + String(backup[i]).substr(23), readFile(backup[i]));
+		writeFile("emulated/0/kbotbackup/" + folder + "/" + String(backup[i]).substr(35), readFile(backup[i]));
 	}
-	var response = "/sdcard/kbot/response.js";
-	writeFile("kbotbackup/" + folder + "/" + "response.js" , readFile(response));
+	var response = "/storage/emulated/0/kbot/response.js";
+	writeFile("emulated/0/kbotbackup/" + folder + "/" + "response.js" , readFile(response));
 	Api.replyRoom(r.room, "전체 Backup 완료");
 }
 
@@ -46,8 +52,8 @@ var funccheck = 0;
 
 if(funccheck == 0 ){
 	T.interruptAll();
-	for (var i in File("/sdcard/kbot/functions").listFiles()) {
-		eval(readFile(File("/sdcard/kbot/functions").listFiles()[i]));
+	for (var i in File("/storage/emulated/0/kbot/functions").listFiles()) {
+		eval(readFile(File("/storage/emulated/0/kbot/functions").listFiles()[i]));
 	}
 	funccheck = 1;
 }
@@ -55,14 +61,14 @@ if(funccheck == 0 ){
 function freload(r) {
 	backup(r);
 	T.interruptAll();
-	for (var i in File("/sdcard/kbot/functions").listFiles()) {
-		eval(readFile(File("/sdcard/kbot/functions").listFiles()[i]));
+	for (var i in File("/storage/emulated/0/kbot/functions").listFiles()) {
+		eval(readFile(File("/storage/emulated/0/kbot/functions").listFiles()[i]));
 	}
 	Api.replyRoom(r.room, "Function reloading 완료");
 }
 
 function reload(r) {
-	if (r.sender == "배주현") {
+	if (r.sender == "배주현" || r.sender == "관리") {
 		backup(r);
 		var Timer = new Date();
 		Api.replyRoom(r.room, "Reloading Start\n" + time().now);
@@ -72,8 +78,8 @@ function reload(r) {
 		reloadcheck = 0;
 		java.lang.Thread.sleep(1500);
 		T.interruptAll();
-		for (var i in File("/sdcard/kbot/functions").listFiles()) {
-			eval(readFile(File("/sdcard/kbot/functions").listFiles()[i]));
+		for (var i in File("/storage/emulated/0/kbot/functions").listFiles()) {
+			eval(readFile(File("/storage/emulated/0/kbot/functions").listFiles()[i]));
 		}
 		Api.replyRoom(r.room, "Reloading End / " + ((new Date() - Timer) / 1000) + "s\n" + time().now);
 	}
@@ -96,75 +102,6 @@ Flag=(function(){
 	   }
 	   return Flag;
 	})();
-
-function controlEdit(r) {
-	I.register("controlEdit", r.room, r.sender, function (input) {
-		var edit = String(readFile(File("/sdcard/kbot/functions/control.js")));		
-		var temp1 = '';
-		var temp2 = '';
-		var msg;
-		var i = 0;
-		r.replier.reply("방을 선택하세요\n" + roomList.map(v=> (1 + i++) + ". " + v ).join("\n"));
-		msg = input.getMsg() * 1;
-		if (!isNaN(msg) && msg >= 1 && msg <= roomList.length) {
-			temp1 = roomList[Number(msg-1)];
-			var msg;
-			var i = 0;
-			r.replier.reply("기능을 선택하세요\n" + functionList.map(v=> (1 + i++) + ". " + v ).join("\n"));
-			msg = input.getMsg() * 1;
-			if (!isNaN(msg) && msg >= 1 && msg <= functionList.length) {
-				temp2 = Number(msg-1);
-				var msg;
-				r.replier.reply("켜려면 1, 끄러면 0을 입력하세요");
-				msg = input.getMsg() * 1;
-				if( msg == 0 ){
-					controlList[temp1][temp2] = 0;
-					r.replier.reply("수정 완료");
-				} else if ( msg == 1 ) {
-					controlList[temp1][temp2] = 1;
-					r.replier.reply("수정 완료");
-				} else {
-					r.replier.reply('잘못 입력했습니다.');
-					return;
-				}
-			} else {
-				r.replier.reply('잘못 입력했습니다.');
-				return;
-			}
-		} else {
-			r.replier.reply('잘못 입력했습니다.');
-			return;
-		}
-	})
-}
-
-const funccList = ['!날씨','!실검','!로또', '!시간', '!명단', '!쪽지','!메뉴','!식당','!맛집','!서브웨이','!유튜브','!노래','!가사','!제이플라','!번역','!오버워치','!주사위','!건의']
-const funccList1 = ['!최근채팅','!야구','!블랙잭'];
-const funccList3 = ['!사진조회', '!사진삭제', '!사진목록','!전체채팅']
-const funccList4 = ['!방','!쓰레드','!디비','!로드','!로딩','!리부트']
-
-function funcCheck(r) {
-	var str1 = "!날씨\n이 외의 기능은 전체보기를 통해 확인해주세요."+es+"\n\n";
-	for (var i = 1; i < funccList.length ; i++) {
-		str1 += funccList[i] + "\n";
-	}
-	if ( r.room == '관리' ) {
-		for (var i = 0; i < funccList3.length ; i++) {
-			str1 += funccList3[i] + "\n";
-		}
-	}
-	if ( r.room == '관리' || r.room =='봇방' ) {
-		for (var i = 0; i < funccList4.length ; i++) {
-			str1 += funccList4[i] + "\n";
-		}
-	}
-	for (var i = 0; i < funccList1.length ; i++) {
-		if(controlList[r.room][i] == 1){
-			str1 += funccList1[i] + "\n";
-		}
-	}
-	return str1.trim();
-}
 
 write64 = function (file, base64) {
 	var base64Array = new java.lang.String(base64).getBytes();
@@ -230,16 +167,13 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 	var r = {replier: replier, msg: msg, sender: sender, room: room, imageDB: imageDB};
 	I.run(room, sender, msg);
 	try {
-		if (room == "관리" || room == "봇방") {
-			if (msg.indexOf("]") == 0) {
-				replier.reply(String(eval(msg.substring(1))).encoding());
-				return;
-			}
-			if (msg == "!test") {
-				replier.reply(String(eval(readFile("/sdcard/kbot/evalpad.js"))).encoding());
-			}
-			blankFunc(r);
+		if (msg.indexOf("]") == 0) {
+			onlyEval(r);
 		}
+		if (msg == "!test") {
+			replier.reply(String(eval(readFile("/storage/emulated/0/kbot/evalpad.js"))).encoding());
+		}
+		blankFunc(r);
 	}
 	catch (e) {
 		replier.reply(e + "\n" + e.stack);
@@ -249,6 +183,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		if (sender != "시립봇" || room != "가족" || room != "블랙" || room != "야구" || room != "기타") {
 			D.insert("chatdb", {time: time().hour + ":" + time().minute + ":" + time().second, name: sender, msg: msg, room: room});
 		}
+		photoBackup()
 		if (msg == "사진을 보냈습니다.") {
 			saveImage(r);
 		}
@@ -277,14 +212,45 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			freload(r);
 			return;
 		}
-		if ((msg.indexOf("!사진조회") == 0 && room == '관리') || Flag.get("image", r.room) == 1) {
+		if (msg.indexOf("!사진조회") == 0 && ( room == '봇방' || room == '관리' )){
+			recentPhoto(r);
+			return;
+		}
+		if (msg.indexOf("!닉변내역 ")==0){
+			nicknameHistory(r);
+			return;
+		}
+		if (msg.indexOf("!아이디조회 ")==0){
+			idsearch(r);
+			return;
+		}
+		if (msg.indexOf("!신원조회")==0){
+			who(r);
+			return;
+		}
+		if (msg.indexOf("!출입내역")==0){
+			roomAceess(r);
+			return;
+		}
+		if (msg.indexOf("!방아이디조회")==0 && room == '관리'){
+			roomidsearch(r);
+			return;
+		}
+		if (msg.indexOf("!전체검색")==0 && room == '관리'){
+			realidsearch(r);
+			return;
+		}
+ 		if ((msg.indexOf("!사진확인") == 0 && room == '관리') || Flag.get("image", r.room) == 1) {
 			loadimage(r);
+			return;
 		}
 		if (msg.indexOf("!사진목록") == 0 && room == '관리') {
 			checkimage(r);
+			return;
 		}
 		if (msg.indexOf("!사진삭제") == 0 && room == '관리') {
 			deleteimage(r);
+			return;
 		}
 		if (msg == "!리부트" && ( room == '봇방' || room == '관리' )) {
 			replier.reply("Rebooting...");
@@ -298,13 +264,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			naver(r);
 			return;
 		}
-		if (msg.indexOf("!가사 ") == 0 ) {
-			if( msg.substr(4).length > 0){
-				lyrics(r);
-				return;
-			} else {
-				r.replier.reply('검색할 단어가 너무 짧습니다.')
-			}
+		if (msg.indexOf("!가사 ") == 0) {
+			lyrics(r);
+			return;
 		}
 		if (msg.indexOf('!쪽지 ') == 0){
 			poemsend(r);
@@ -327,13 +289,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			return;
 		}
 		if (msg == "!로또확률") {
-			var str = "";
-			str += "1등 확률 : 1/8,145,060\n0.000012277380399898834%\n";
-			str += "2등 확률 : 1/1,357,510\n0.000073664282399393%\n";
-			str += "3등 확률 : 1/35,724\n0.002799238607098869%\n";
-			str += "4등 확률 : 1/733\n0.1364256480218281%\n";
-			str += "5등 확률 : 1/45\n2.2222222222222%";
-			replier.reply(str);
+			replier.reply(lottopossibility);
 			return;
 		}
 		if (msg == "!로또개수목록" ) {
@@ -488,13 +444,16 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 			replier.reply("https://open.kakao.com/o/gQwX2Shb 로 입장해주세요. 중복되지 않는 자신만의 닉네임을 설정하셔야됩니다. 중복되는 닉네임으로 게임을 진핼할 경우 제재당할 수 있습니다.");
 			return;
 		}
-		if (msg == "!전적초기화" && D.selectForArray("baseball", "clear", "room=? and name = ?", [room, sender]) > 0) {
-			var point = D.selectForArray("baseball", "point", "room=? and name = ?", [room, sender])[0][0] - 2000;
-			var clear = D.selectForArray("baseball", "clear", "room=? and name = ?", [room, sender])[0][0] - 1;
-			D.update("baseball", {point: point, win: 0, lose: 0, solowin: 0, clear: clear}, "name=? and room=?", [sender, room]);
-			replier.reply(sender + "님의 정보가 초기화 되었습니다.");
-			inform(r);
-			return;
+		if (msg == "!전적초기화"){
+			var userid = B(D.selectForObject("history", "userid", "username=? and room=?", [sender, room], {orderBy : "key desc"})[0])
+			if (D.selectForArray("baseball", "clear", "room=? and name = ?", [room, userid]) > 0) {
+				var point = D.selectForArray("baseball", "point", "room=? and name = ?", [room, userid])[0][0] - 2000;
+				var clear = D.selectForArray("baseball", "clear", "room=? and name = ?", [room, userid])[0][0] - 1;
+				D.update("baseball", {point: point, win: 0, lose: 0, solowin: 0, clear: clear}, "name=? and room=?", [userid, room]);
+				replier.reply(sender + "님의 정보가 초기화 되었습니다.");
+				inform(r);
+				return;
+			}
 		}
 		if (msg == "!야구정보") {
 			inform(r);
@@ -502,7 +461,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 		}
 		if (msg == "!야구랭킹") {
 			var i = 1;
-			replier.reply("전체 순위\n" + es + D.selectForArray("baseball", ["point", "win", "lose", "solowin", "name"], "room=?", r.room, {orderBy: "point desc"}).map(v => String(i++).extension(" ", 2) + ". [" + String(v[0]).extension(" ", 6) + "P " + String(v[1]).extension(" ", 2) + "승 " + String(v[2]).extension(" ", 2) + "패 " + String(v[3]).extension(" ", 3) + "S/P ] " + String(v[4])).join("\n"));
+			replier.reply("전체 순위\n" + es + D.selectForArray("baseball", ["point", "win", "lose", "solowin", "name"], "room=?", r.room, {orderBy: "point desc"}).map(v => String(i++).extension(" ", 2) + ". [" + String(v[0]).extension(" ", 6) + "P " + String(v[1]).extension(" ", 2) + "승 " + String(v[2]).extension(" ", 2) + "패 " + String(v[3]).extension(" ", 3) + "S/P ] " + String(D.selectForArray("history" , "username", "userid=?", [v[4]]))).join("\n"));
 			return;
 		}
 		if (Flag.get("gameinfo", r.room).start == 1 || Flag.get("gameinfo", r.room).start1 == 1 || Flag.get("gameinfo", r.room).start2 == 1 || Flag.get("gameinfo", r.room).start3 == 1 || Flag.get("gameinfo", r.room).start4 == 1) {
@@ -513,8 +472,9 @@ function response(room, msg, sender, isGroupChat, replier, imageDB) {
 				return;
 			}
 		}
-		if (D.selectForArray("baseball", "name", "room=?", room) == undefined || D.selectForArray("baseball", "name", "room=?", room).map(v => v[0]).indexOf(sender) == -1) {
-			D.insert("baseball", {name: sender, point: 100000, room: room, win: 0, lose: 0, solowin: 0, clear: 2});
+		var name = B(D.selectForObject("history", "userid", "username=? and room=?", [sender, room], {orderBy : "key desc"})[0])
+		if (D.selectForArray("baseball", "name", "room=?", room) == undefined || D.selectForArray("baseball", "name", "room=?", room).map(v => v[0]).indexOf(name) == -1) {
+			D.insert("baseball", {name: name, point: 100000, room: room, win: 0, lose: 0, solowin: 0, clear: 2});
 		}
 		if ((msg == "!야구" &&  controlList[room][1] == 1) || ((Flag.get("start", r.room) == 1 || Flag.get("start1", r.room) == 1 || Flag.get("start2", r.room) == 1) && (!isNaN(msg) || msg == "참가" || msg == "시작" || msg == "!야구종료" || msg == "!힌트" || msg == "!패스"))) {
 			baseball(r);

@@ -1,14 +1,15 @@
 inform = function (r) {
-	if (D.selectForArray("baseball", null, "name=? and room=?", [r.sender, r.room]) != undefined) {
-		var wincount = D.selectForArray("baseball", "win", "name=? and room=?", [r.sender, r.room])[0][0];
-		var losecount = D.selectForArray("baseball", "lose", "name=? and room=?", [r.sender, r.room])[0][0];
+	var userid = B(D.selectForObject("history", "userid", "username=? and room =?" , [r.sender, r.room], {orderBy : "key desc"})[0])
+	if (D.selectForArray("baseball", null, "name=? and room=?", [userid, r.room]) != undefined) {
+		var wincount = D.selectForArray("baseball", "win", "name=? and room=?", [userid, r.room])[0][0];
+		var losecount = D.selectForArray("baseball", "lose", "name=? and room=?", [userid, r.room])[0][0];
 		var str = "";
 		str += r.sender + "님의 정보";
-		str += "\n순위 : " + Number(D.selectForArray("baseball", ["name", "point"], "room=?", [r.room], {orderBy: "point desc"}).map(v => v[0]).indexOf(r.sender) + 1) + "등";
-		str += "\n포인트 : " + D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0];
+		str += "\n순위 : " + Number(D.selectForArray("baseball", ["name", "point"], "room=?", [r.room], {orderBy: "point desc"}).map(v => v[0]).indexOf(userid) + 1) + "등";
+		str += "\n포인트 : " + D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0];
 		str += "\n전적 : " + wincount + "승 / " + losecount + "패";
 		str += "\n승률 : " + Math.floor(wincount / (losecount + wincount) * 1000) / 10 + "%";
-		str += "\n초기화카운트 : " + Number(2 - D.selectForArray("baseball", "clear", "name=? and room=?", [r.sender, r.room]));
+		str += "\n초기화카운트 : " + Number(2 - D.selectForArray("baseball", "clear", "name=? and room=?", [userid, r.room]));
 		r.replier.reply(str);
 		return;
 	} else {
@@ -18,14 +19,16 @@ inform = function (r) {
 }
 
 baseball = function (r) {
-	if (Flag.get("supposelist", r.room) == 0 && r.msg == "!힌트" && Flag.get("baseball", r.room)[Flag.get("k", r.room)] == r.sender) {
+	var userid = B(D.selectForObject("history", "userid", "username=? and room =?" , [r.sender, r.room], {orderBy : "key desc"})[0])
+	
+	if (Flag.get("supposelist", r.room) == 0 && r.msg == "!힌트" && Flag.get("baseball", r.room)[Flag.get("k", r.room)] == userid) {
 		r.replier.reply("힌트를 쓰려면 8턴이 지나야 합니다.");
 		return;
 	}
 	if (Flag.get("supposelist", r.room) != 0) {
-		if (r.msg == "!힌트" && Flag.get("supposelist", r.room).split("\n").length - 1 > 7 && Flag.get("baseball", r.room)[Flag.get("k", r.room)] == r.sender) {
+		if (r.msg == "!힌트" && Flag.get("supposelist", r.room).split("\n").length - 1 > 7 && userid.minus(Flag.get("baseball", r.room)[Flag.get("k", r.room)]) == 0) {
 			var str = "";
-			str += Flag.get("baseball", r.room)[Flag.get("k", r.room)] + " | " + D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)], r.room])[0][0] + " → ";
+			str += r.sender + " | " + D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)], r.room])[0][0] + " → ";
 			var temppoint = D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)], r.room])[0][0] - 500;
 			D.update("baseball", {point: temppoint}, "name=? and room=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)], r.room]);
 			str += D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)], r.room])[0][0];
@@ -35,7 +38,7 @@ baseball = function (r) {
 			r.replier.reply("Hint!\n" + str + "\n" + answer.join(" "));
 			return;
 		} else {
-			if (r.msg == "!힌트" && Flag.get("supposelist", r.room).split("\n").length - 1 < 8 && Flag.get("baseball", r.room)[Flag.get("k", r.room)] == r.sender) {
+			if (r.msg == "!힌트" && Flag.get("supposelist", r.room).split("\n").length - 1 < 8 && userid.minus(Flag.get("baseball", r.room)[Flag.get("k", r.room)]) == 0 ) {
 				r.replier.reply("힌트를 쓰려면 " + (9 - Number(Flag.get("supposelist", r.room).split("\n").length)) + "턴이 지나야 합니다.");
 				return;
 			}
@@ -43,7 +46,7 @@ baseball = function (r) {
 	}
 	if ((Flag.get("start", r.room) == 1 || Flag.get("start1", r.room) == 1 || Flag.get("start2", r.room) == 1) && r.msg == "!야구종료" && Flag.get("baseball", r.room).length > 1) {
 		for (var i = 0; i < Flag.get("baseball", r.room).length; i++) {
-			if (r.sender == Flag.get("baseball", r.room)[i]) {
+			if (userid == Flag.get("baseball", r.room)[i]) {
 				Flag.set("start", r.room, 0);
 				Flag.set("start1", r.room, 0);
 				Flag.set("start2", r.room, 0);
@@ -88,16 +91,16 @@ baseball = function (r) {
 		return;
 	}
 	if (r.msg == "!야구") {
-		if (Flag.get("start", r.room) == 0 && Flag.get("start1", r.room) == 0 && Flag.get("start2", r.room) == 0 && D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] >= 1000) {
+		if (Flag.get("start", r.room) == 0 && Flag.get("start1", r.room) == 0 && Flag.get("start2", r.room) == 0 && D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] >= 1000) {
 			r.replier.reply("게임을 시작합니다. 참여할 사람은 [참가] 를 입력해주세요. 시작하려면 [시작]을 입력해주세요.");
 			Flag.set("baseballtime", r.room, new Date().getTime());
 			Flag.set("start", r.room, 1);
-			Flag.set("suggest", r.room, r.sender);
-			var temp = [r.sender];
+			Flag.set("suggest", r.room, userid);
+			var temp = [userid];
 			Flag.set("baseball", r.room, temp);
-			r.replier.reply(r.sender + "님(" + D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] + ")이 참가하셨습니다. 현재 " + temp.length + "명");
+			r.replier.reply(r.sender + "님(" + D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] + ")이 참가하셨습니다. 현재 " + temp.length + "명");
 		} else {
-			if (D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] < 1000) {
+			if (D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] < 1000) {
 				r.replier.reply("포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.");
 			} else {
 				r.replier.reply("게임이 진행중입니다.");
@@ -106,19 +109,19 @@ baseball = function (r) {
 		}
 	}
 	if (r.msg == "참가" && Flag.get("start", r.room) == 1) {
-		if (Flag.get("baseball", r.room).indexOf(r.sender) == -1 && Flag.get("baseball", r.room).length < 3 && D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] >= 1000) {
+		if (Flag.get("baseball", r.room).indexOf(userid) == -1 && Flag.get("baseball", r.room).length < 3 && D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] >= 1000) {
 			var temp = Flag.get("baseball", r.room);
-			temp.push(r.sender);
+			temp.push(userid);
 			Flag.set("baseball", r.room, temp);
-			r.replier.reply(r.sender + "님(" + D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] + ")이 참가하셨습니다. 현재 " + temp.length + "명");
+			r.replier.reply(r.sender + "님(" + D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] + ")이 참가하셨습니다. 현재 " + temp.length + "명");
 		} else {
-			if (D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] < 1000) {
+			if (D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] < 1000) {
 				r.replier.reply("포인트가 부족합니다. [!전적초기화]를 통해 전적을 초기화 하세요.");
 				return;
 			}
 		}
 	}
-	if (Flag.get("start", r.room) == 1 && (Flag.get("baseball", r.room).length == 3 || (r.msg == "시작" && Flag.get("suggest", r.room) == r.sender))) {
+	if (Flag.get("start", r.room) == 1 && (Flag.get("baseball", r.room).length == 3 || (r.msg == "시작" && userid.minus(Flag.get("suggest", r.room)) == 0 ))) {
 		if (Flag.get("baseball", r.room).length > 0) {
 			r.replier.reply(Flag.get("baseball", r.room).length + "명이 참가했습니다. 게임을 시작합니다. 4자리 숫자만 입력하세요.");
 			Flag.set("start", r.room, 0);
@@ -144,7 +147,7 @@ baseball = function (r) {
 		Flag.set("passtime", r.room, new Date().getTime());
 		return;
 	}
-	if (Flag.get("start2", r.room) == 1 && Flag.get("baseball", r.room)[Flag.get("k", r.room)] == r.sender && /^\d+$/.test(r.msg)) {
+	if (Flag.get("start2", r.room) == 1 && userid.minus(Flag.get("baseball", r.room)[Flag.get("k", r.room)]) == 0 && /^\d+$/.test(r.msg)) {
 		if (String(r.msg).split("").length != 4) {
 			r.replier.reply("4자리 숫자만 입력해주세요.");
 			return;
@@ -188,31 +191,31 @@ baseball = function (r) {
 			if (scount == 4) {
 				var str = "";
 				for (var i = 0; i < Flag.get("baseball", r.room).length; i++) {
-					if (Flag.get("baseball", r.room)[i] != r.sender) {
-						str += Flag.get("baseball", r.room)[i] + " | " + D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + " → ";
+					if ( userid.minus(Flag.get("baseball", r.room)[i]) != 0 ) {
+						str += String(D.selectForArray("history", "username", "userid=?", [Flag.get("baseball", r.room)[i]], {orderBy : "key desc"})[0]) + " | " + D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + " → ";
 						var temppoint = D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] - 1000;
 						D.update("baseball", {point: temppoint}, "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room]);
 						str += D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + " \n";
 					} else {
-						str += Flag.get("baseball", r.room)[i] + " | " + D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + " → ";
-						var temppoint = D.selectForArray("baseball", "point", "name=? and room=?", [r.sender, r.room])[0][0] + Number(Flag.get("baseball", r.room).length * 1100) - 1000;
+						str += String(D.selectForArray("history", "username", "userid=?", [Flag.get("baseball", r.room)[i]], {orderBy : "key desc"})[0] ) + " | " + D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + " → ";
+						var temppoint = D.selectForArray("baseball", "point", "name=? and room=?", [userid, r.room])[0][0] + Number(Flag.get("baseball", r.room).length * 1100) - 1000;
 						D.update("baseball", {point: temppoint}, "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room]);
 						str += D.selectForArray("baseball", "point", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + " \n";
 					}
 				}
 				r.replier.reply(str + "	 <" + r.sender + "님 정답!>");
 				if (Flag.get("baseball", r.room).length > 1) {
-					var tempwin = D.selectForArray("baseball", "win", "name=? and room=?", [r.sender, r.room])[0][0] + 1;
-					D.update("baseball", {win: tempwin}, "name=? and room=?", [r.sender, r.room]);
+					var tempwin = D.selectForArray("baseball", "win", "name=? and room=?", [userid, r.room])[0][0] + 1;
+					D.update("baseball", {win: tempwin}, "name=? and room=?", [userid, r.room]);
 					for (var i = 0; i < Flag.get("baseball", r.room).length; i++) {
-						if (Flag.get("baseball", r.room)[i] != r.sender) {
+						if (Flag.get("baseball", r.room)[i] != userid) {
 							var templose = D.selectForArray("baseball", "lose", "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room])[0][0] + 1;
 							D.update("baseball", {lose: templose}, "name=? and room=?", [Flag.get("baseball", r.room)[i], r.room]);
 						}
 					}
 				} else {
-					var tempwin = D.selectForArray("baseball", "solowin", "name=? and room=?", [r.sender, r.room])[0][0] + 1;
-					D.update("baseball", {solowin: tempwin}, "name=? and room=?", [r.sender, r.room]);
+					var tempwin = D.selectForArray("baseball", "solowin", "name=? and room=?", [userid, r.room])[0][0] + 1;
+					D.update("baseball", {solowin: tempwin}, "name=? and room=?", [userid, r.room]);
 				}
 				Flag.set("supposelist", r.room, "");
 				Flag.set("start2", r.room, 0);
@@ -232,21 +235,21 @@ baseball = function (r) {
 			}
 			Flag.set("k", r.room, k);
 			if (Flag.get("baseball", r.room).length > 1) {
-				r.replier.reply(Flag.get("baseball", r.room)[Flag.get("k", r.room)] + "님 차례입니다.");
+				r.replier.reply(String(D.selectForArray("history", "username", "userid=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)]], {orderBy : "key desc"})[0]) + "님 차례입니다.");
 			}
 			Flag.set("passtime", r.room, new Date().getTime());
 		}
 	} else {
-		if (Flag.get("start2", r.room) == 1 && Flag.get("baseball", r.room)[Flag.get("k", r.room)] != r.sender && r.msg == "!패스") {
+		if (Flag.get("start2", r.room) == 1 && userid.minus(Flag.get("baseball", r.room)[Flag.get("k", r.room)]) != 0  && r.msg == "!패스") {
 			for (var i = 0; i < Flag.get("baseball", r.room).length; i++) {
-				if (r.sender == Flag.get("baseball", r.room)[i]) {
+				if (userid == Flag.get("baseball", r.room)[i]) {
 					if (((Flag.get("passtime", r.room) + 1000 * 1 * 30) < new Date().getTime())) {
 						var k = Flag.get("k", r.room) + 1;
 						if (k >= Flag.get("baseball", r.room).length) {
 							k = 0;
 						}
 						Flag.set("k", r.room, k);
-						r.replier.reply(Flag.get("baseball", r.room)[Flag.get("k", r.room)] + "님 차례입니다.");
+						r.replier.reply(String(D.selectForArray("history", "username", "userid=?", [Flag.get("baseball", r.room)[Flag.get("k", r.room)]], {orderBy : "key desc"})[0]) + "님 차례입니다.");
 						Flag.set("passtime", r.room, new Date().getTime());
 					} else {
 						r.replier.reply((Math.floor((Flag.get("passtime", r.room) + 1000 * 30 * 1 - new Date().getTime()) / 1000)) + "초 뒤에 패스가 가능합니다.");

@@ -14,7 +14,7 @@ weather = function (r) {
 			}
 		} else {
 			var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=" + searchPlace + "+날씨").get();
-			var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+			var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 			
 			var placeList = org.jsoup.Jsoup.connect('https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q='+searchPlace).get().select('div.coll_cont.poi_cont').select('select.opt_select > option').toArray().map(v=>v.text());
 			if ( placeList.length > 1 ){//같은 행정명
@@ -27,7 +27,7 @@ weather = function (r) {
 					r.replier.reply('잘못 입력했습니다.')
 				}
 				var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=" + searchPlace + "+날씨").get();
-				var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+				var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 				
 			} else if ( String(templink.select('h2.place_section_header.no_line.type_nx').text()).length > 0 && link.indexOf("regionCode") == -1 && link.indexOf("weather") == -1) {//도로명//지번주소
 				var fullname = String(org.jsoup.Jsoup.connect('https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query='+searchPlace).get().select('div.place_section._2pEtqquEyu').select('div.SIWUKLijMM').select('div._2JYGT1h7wv>span.fxPOnXHuAM').text()) +' '
@@ -62,17 +62,17 @@ weather = function (r) {
 					var searchPlace = searchPlace.join(' ');
 				}
 				var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=" + searchPlace + "+날씨").get();
-				var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+				var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 				if (link.indexOf("regionCode") == -1 || link.indexOf("weather") == -1) {
 					while ( searchPlace.split(' ').length > 1 && (link.indexOf("regionCode") == -1 || link.indexOf("weather") == -1)) {			
 						var searchPlace = searchPlace.split(' ');
 						searchPlace.pop()
 						var searchPlace = searchPlace.join(' ');
 						var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+" + searchPlace).get();
-						var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+						var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 						if (String(link).indexOf("regionCode") == -1) {
 							var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+" + searchPlace + "날씨").get();
-							var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+							var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 						}
 					}
 				}
@@ -83,7 +83,7 @@ weather = function (r) {
 				msg = input.getMsg() * 1;
 				if (!isNaN(msg) && msg >= 1 && msg <= placeList.length) {
 					var templink = templink.select('div.wt_map_area.map_state').select('a').get(msg - 1).attr("abs:href")
-					var link = org.jsoup.Jsoup.connect(templink).get().select("div.api_more_wrap").select("a").attr("abs:href");
+					var link = org.jsoup.Jsoup.connect(templink).get().select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 				} else {
 					r.replier.reply('잘못 입력했습니다.')
 				}
@@ -139,10 +139,10 @@ weather = function (r) {
 						var searchPlace = searchPlace.join(' ');
 					}
 					var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+" + searchPlace).get();
-					var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+					var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 					if (String(link).indexOf("regionCode") == -1) {
 						var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+" + searchPlace + "날씨").get();
-						var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+						var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 					}
 					if (link.indexOf("regionCode") == -1 || link.indexOf("weather") == -1) {
 						while ( searchPlace.split(' ').length > 1 && (link.indexOf("regionCode") == -1 || link.indexOf("weather") == -1)) {			
@@ -150,10 +150,10 @@ weather = function (r) {
 							searchPlace.pop()
 							var searchPlace = searchPlace.join(' ');
 							var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+" + searchPlace).get();
-							var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+							var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 							if (String(link).indexOf("regionCode") == -1) {
 								var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+" + searchPlace + "날씨").get();
-								var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+								var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 							}
 						}
 					}
@@ -165,7 +165,7 @@ weather = function (r) {
 				var placeList = templink.map(v => [v.select("a").first().text().replace(" 펼치기/접기", ""), v.select("dd.cont").text()+' ']);
 				if(placeList.length == 0){
 					var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=" + searchPlace + "+날씨").get();
-					var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+					var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 				} else {
 					for (var i in placeList){//고려대 같은 케이스
 						var fullname = String(placeList[i][1])
@@ -212,10 +212,10 @@ weather = function (r) {
 					}
 					if (!isNaN(msg) && msg >= 1 && msg <= placeList.length) {
 						var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+" + placeList[msg-1][1].trim()).get();
-						var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+						var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 						if (String(link).indexOf("regionCode") == -1) {
 							var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+" + placeList[msg-1][1].trim() + "날씨").get();
-							var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+							var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 						}
 						if (link.indexOf("regionCode") == -1 || link.indexOf("weather") == -1) {
 							var tempPlace = placeList[msg-1][1].trim()
@@ -224,10 +224,10 @@ weather = function (r) {
 								tempPlace.pop()
 								var tempPlace = tempPlace.join(' ');
 								var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=날씨+" + tempPlace).get();
-								var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+								var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 								if (String(link).indexOf("regionCode") == -1) {
 									var templink = org.jsoup.Jsoup.connect("https://m.search.naver.com/search.naver?query=+" + tempPlace + "날씨").get();
-									var link = templink.select("div.api_more_wrap").select("a").attr("abs:href");
+									var link = templink.select("#ct > section.sc.csm.cs_weather._cs_weather > div > div.weather_body > div.csm_more_wrap > a").attr("abs:href");
 								}
 							}
 						}
